@@ -1,0 +1,64 @@
+@startuml sd12-flee-and-leave
+!include seq-style.iuml
+title SD12 — Flee from Combat or Leave a Conversation (UC04 5b, UC03 step 7; F04, F03; Command, State)
+
+actor "Player" as P
+boundary "__:SwingGameView__" as V
+control "__:GameController__" as GC
+participant "__:CommandFactory__" as CF
+participant "__:RulesEngine__" as RE
+participant "__flee : FleeCommand__" as F
+participant "__leave : LeaveCommand__" as LV
+participant "__:GameState__" as GS
+participant "__combatMode : CombatMode__" as CM
+participant "__player : Player__" as PL
+participant "__stats : Stats__" as ST
+participant "__explorationMode : ExplorationMode__" as EM
+
+P -> V : click "Flee" in the combat view,\nor "Leave" in the dialogue panel
+V -> GC : performAction(proposal)
+note right of V : proposal = new ActionProposal(FLEE or LEAVE, null, null).\nTyped "flee" also arrives through SD02; the CLI's "leave"\ncalls performAction(), so it never reaches sendDialogue()
+GC -> CF : create(proposal)
+CF -->> GC : command
+GC -> RE : executeAll([command], state)
+ref over RE, GS : SD03 — mode check: allows(FLEE) is true only in CombatMode,\nallows(LEAVE) only in DialogueMode
+alt command is flee
+  RE -> F : execute(state, rules)
+    F -> GS : getMode()
+    GS -->> F : combatMode
+    F -> CM : getEnemy()
+    CM -->> F : wolf
+    F -> GS : getPlayer()
+    GS -->> F : player
+    F -> PL : getStats()
+    PL -->> F : stats
+    F -> ST : modifier(AGILITY)
+    ST -->> F : agility
+    F -> RE : skillCheck(agility, DIFFICULTY)
+    note right : d20 + agility ≥ DIFFICULTY (12)
+    RE -->> F : escaped
+    alt escaped
+      F -> EM ** : <<create>> ExplorationMode()
+      F -> GS : setMode(explorationMode)
+      GS -->> F
+    else failed: the enemy takes its turn
+      F -> RE : resolveAttack(wolf, player)
+      ref over RE : SD04 — d20 + attack bonus\nagainst the player's defense
+      RE -->> F : enemyAttack
+    end
+  F -->> RE : result : ActionResult (COMBAT event "fled" or "failed to flee")
+else command is leave
+  RE -> LV : execute(state, rules)
+    LV -> EM ** : <<create>> ExplorationMode()
+    LV -> GS : setMode(explorationMode)
+    GS -->> LV
+  LV -->> RE : result : ActionResult (DIALOGUE event "left the conversation")
+end
+ref over RE : SD03 — the event is published (SD05)
+RE -->> GC : results
+GC -> V : showNarration(text)
+note right of GC : text = the results' messages (no LLM)
+V -->> GC
+GC -->> V : turnResult
+V -->> P
+@enduml

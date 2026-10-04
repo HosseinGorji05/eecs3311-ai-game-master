@@ -1,0 +1,23 @@
+' Shared style for all AI Game Master UML diagrams
+skinparam shadowing false
+skinparam defaultFontName Helvetica
+skinparam defaultFontSize 12
+skinparam monochrome false
+skinparam BackgroundColor #FFFFFF
+skinparam ArrowColor #333333
+skinparam ArrowFontSize 11
+skinparam classAttributeIconSize 0
+skinparam ClassBackgroundColor #FFFFFF
+skinparam ClassBorderColor #333333
+skinparam ClassHeaderBackgroundColor #F2F2F2
+skinparam ClassFontStyle bold
+skinparam StereotypeFontSize 10
+skinparam PackageBorderColor #888888
+skinparam PackageBackgroundColor #FCFCFC
+skinparam PackageFontStyle bold
+skinparam NoteBackgroundColor #FFFDE7
+skinparam NoteBorderColor #B0A060
+skinparam TitleFontSize 16
+skinparam TitleFontStyle bold
+hide circle
+hide empty members

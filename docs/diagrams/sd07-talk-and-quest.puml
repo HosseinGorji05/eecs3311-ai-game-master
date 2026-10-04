@@ -1,0 +1,92 @@
+@startuml sd07-talk-and-quest
+!include seq-style.iuml
+title SD07 — Talk to NPC and Accept Quest (UC03, UC07; F03, F07)
+
+actor "Player" as P
+boundary "__:SwingGameView__" as V
+control "__:GameController__" as GC
+participant "__:NpcDialogueAgent__" as NA
+participant "__llm : LLMClient__" as LLM
+participant "__:QuestGenerator__" as QG
+participant "__:CommandFactory__" as CF
+participant "__:RulesEngine__" as RE
+participant "__:GameState__" as GS
+participant "__mode : DialogueMode__" as DM
+participant "__:QuestLog__" as QL
+participant "__blacksmith : NPC__" as NPC
+participant "__:GameEventBus__" as BUS
+
+ref over P, RE : SD02 / SD03 — "talk to the blacksmith": TalkCommand.execute()\nsets the mode to new DialogueMode(blacksmith)
+P -> V : type "Do you have any work for me?"
+V -> GC : sendDialogue(message)
+GC -> NA : reply(message)
+  NA -> NA : run(message)
+  ref over NA, LLM : SD00 — Run an LLM Task\n(prompt: NPC profile and knowledge + memory context, focus = the NPC;\nisValid: no secret revealed, side effect well-formed;\nfallback: pre-written line for the NPC's role)
+  NA -->> NA : reply
+NA -->> GC : reply : NpcReply
+opt reply.getSideEffect() is present
+  GC -> CF : create(reply.getSideEffect())
+  CF -->> GC : command
+  GC -> RE : executeAll([command], state)
+  ref over RE, GS : SD03 — an invalid side effect (e.g. a TAKE of\nan item that is not in the location) is rejected
+  RE -->> GC : results
+end
+GC -> V : showNarration(reply.getText())
+V -->> GC
+GC -> BUS : publish(dialogue)
+ref over BUS : SD05 — recorded in the event log\nand story memory (SD06)
+BUS -->> GC
+GC -> GS : getMode()
+GS -->> GC : mode
+GC -> DM : isQuestOffered()
+DM -->> GC : offered
+GC -> DM : getNpc()
+DM -->> GC : blacksmith
+GC -> GS : getQuestLog()
+GS -->> GC : questLog
+GC -> QL : canOfferFrom(blacksmith)
+  QL -> NPC : isQuestGiver()
+  NPC -->> QL : questGiver
+  QL -> QL : hasQuestFrom(blacksmith)
+  QL -->> QL : hasOpenQuest
+  QL -> QL : activeSideQuestCount()
+  QL -->> QL : count
+QL -->> GC : canOffer
+note right of QL : canOffer = questGiver and not hasOpenQuest\nand count < MAX_SIDE_QUESTS (the engine decides)
+opt canOffer and not offered
+  GC -> DM : setQuestOffered()
+  note right : at most one offer\nper conversation
+  DM -->> GC
+  GC -> QG : generate(blacksmith)
+    QG -> QG : run(blacksmith)
+    ref over LLM, QG : SD00 — Run an LLM Task (LLM returns a QuestProposal as JSON)\nisValid: QuestValidator.validate(proposal) checks that every\nlocation, item and NPC exists; retry once, then fallback:\ntemplate quest. toQuest() clamps the reward to the level maximum.
+    QG -->> QG : quest
+  QG -->> GC : quest
+  GC -> V : showQuestOffer(quest)
+  V -->> GC
+end
+GC -->> V : reply
+V -->> P : reply shown
+
+opt a quest was offered
+  alt player clicks "Accept"
+    P -> V : click "Accept"
+    V -> GC : respondToQuest(quest, true)
+    GC -> QL : accept(quest)
+    QL -->> GC : accepted
+    opt not accepted (side-quest limit reached meanwhile)
+      GC -> V : showError("Your quest log is full.")
+      V -->> GC
+    end
+    GC -->> V
+    V -->> P : quest log updated
+  else player clicks "Decline"
+    P -> V : click "Decline"
+    V -> GC : respondToQuest(quest, false)
+    note right of GC : the quest is discarded; the NPC can make\na new offer only in a later conversation
+    GC -->> V
+    V -->> P : offer closed
+  end
+end
+note over P, GC : The conversation ends with "Leave" (SD12).
+@enduml

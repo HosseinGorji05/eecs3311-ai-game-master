@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="1375" viewBox="0 0 1100 1375" font-family="Helvetica, Arial, sans-serif">
+<defs><marker id="open" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto"><path d="M1 1 L11 6 L1 11" fill="none" stroke="#222" stroke-width="1.4"/></marker></defs>
+<rect width="1100" height="1375" fill="#fff"/>
+<text x="550.0" y="30" text-anchor="middle" font-size="17" font-weight="bold">Use-Case Diagram — AI Game Master</text>
+<rect x="190" y="55" width="600" height="1290" fill="#FCFCFC" stroke="#222" stroke-width="1.3"/>
+<text x="490.0" y="77" text-anchor="middle" font-size="15" font-weight="bold">AI Game Master</text>
+<line x1="86.0" y1="670.0" x2="345.0" y2="110.0" stroke="#222" stroke-width="1.2"/>
+<line x1="86.0" y1="670.0" x2="345.0" y2="205.0" stroke="#222" stroke-width="1.2"/>
+<line x1="86.0" y1="670.0" x2="355.0" y2="330.0" stroke="#222" stroke-width="1.2"/>
+<line x1="86.0" y1="670.0" x2="335.0" y2="460.0" stroke="#222" stroke-width="1.2"/>
+<line x1="86.0" y1="670.0" x2="350.0" y2="595.0" stroke="#222" stroke-width="1.2"/>
+<line x1="86.0" y1="670.0" x2="345.0" y2="685.0" stroke="#222" stroke-width="1.2"/>
+<line x1="86.0" y1="670.0" x2="345.0" y2="760.0" stroke="#222" stroke-width="1.2"/>
+<line x1="86.0" y1="670.0" x2="345.0" y2="840.0" stroke="#222" stroke-width="1.2"/>
+<line x1="86.0" y1="670.0" x2="345.0" y2="920.0" stroke="#222" stroke-width="1.2"/>
+<line x1="86.0" y1="670.0" x2="345.0" y2="995.0" stroke="#222" stroke-width="1.2"/>
+<line x1="86.0" y1="670.0" x2="345.0" y2="1070.0" stroke="#222" stroke-width="1.2"/>
+<line x1="86.0" y1="670.0" x2="345.0" y2="1145.0" stroke="#222" stroke-width="1.2"/>
+<line x1="86.0" y1="670.0" x2="360.0" y2="1220.0" stroke="#222" stroke-width="1.2"/>
+<line x1="86.0" y1="670.0" x2="360.0" y2="1290.0" stroke="#222" stroke-width="1.2"/>
+<line x1="894.0" y1="550.0" x2="595.0" y2="110.0" stroke="#222" stroke-width="1.2"/>
+<line x1="894.0" y1="550.0" x2="605.0" y2="460.0" stroke="#222" stroke-width="1.2"/>
+<line x1="894.0" y1="550.0" x2="595.0" y2="205.0" stroke="#222" stroke-width="1.2"/>
+<line x1="894.0" y1="550.0" x2="595.0" y2="685.0" stroke="#222" stroke-width="1.2"/>
+<line x1="894.0" y1="550.0" x2="585.0" y2="330.0" stroke="#222" stroke-width="1.2"/>
+<line x1="894.0" y1="550.0" x2="595.0" y2="1145.0" stroke="#222" stroke-width="1.2"/>
+<line x1="894.0" y1="1210.0" x2="580.0" y2="1220.0" stroke="#222" stroke-width="1.2"/>
+<line x1="894.0" y1="1210.0" x2="580.0" y2="1290.0" stroke="#222" stroke-width="1.2"/>
+<line x1="470.0" y1="298.0" x2="470.0" y2="247.0" stroke="#222" stroke-width="1.2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="480.0" y="276.5" text-anchor="start" font-size="12" paint-order="stroke" stroke="#fff" stroke-width="5">«extend»</text>
+<text x="480.0" y="291.5" text-anchor="start" font-size="11.5" fill="#444" paint-order="stroke" stroke="#fff" stroke-width="5">(quest offered)</text>
+<line x1="470.0" y1="563.0" x2="470.0" y2="512.0" stroke="#222" stroke-width="1.2" stroke-dasharray="7 5" marker-end="url(#open)"/>
+<text x="480.0" y="541.5" text-anchor="start" font-size="12" paint-order="stroke" stroke="#fff" stroke-width="5">«extend»</text>
+<text x="480.0" y="556.5" text-anchor="start" font-size="11.5" fill="#444" paint-order="stroke" stroke="#fff" stroke-width="5">(LLM unavailable)</text>
+<ellipse cx="470" cy="110" rx="125" ry="27" fill="#fff" stroke="#222" stroke-width="1.3"/>
+<text x="470" y="114.5" text-anchor="middle" font-size="13">UC01 Create Character</text>
+<ellipse cx="470" cy="205" rx="125" ry="42" fill="#fff" stroke="#222" stroke-width="1.3"/>
+<text x="470" y="183" text-anchor="middle" font-size="13">UC03 Talk to NPC</text>
+<line x1="352.1" y1="191" x2="587.9" y2="191" stroke="#222" stroke-width="1"/>
+<text x="470" y="206" text-anchor="middle" font-size="11.5" font-weight="bold">Extension points:</text>
+<text x="470" y="220" text-anchor="middle" font-size="11.5">quest offered</text>
+<ellipse cx="470" cy="330" rx="115" ry="32" fill="#fff" stroke="#222" stroke-width="1.3"/>
+<text x="470" y="327.0" text-anchor="middle" font-size="13">UC07 Receive and</text>
+<text x="470" y="342.0" text-anchor="middle" font-size="13">Accept Quest</text>
+<ellipse cx="470" cy="460" rx="135" ry="52" fill="#fff" stroke="#222" stroke-width="1.3"/>
+<text x="470" y="428" text-anchor="middle" font-size="13">UC02 Perform Action in</text>
+<text x="470" y="443" text-anchor="middle" font-size="13">Natural Language</text>
+<line x1="337.0" y1="451" x2="603.0" y2="451" stroke="#222" stroke-width="1"/>
+<text x="470" y="466" text-anchor="middle" font-size="11.5" font-weight="bold">Extension points:</text>
+<text x="470" y="480" text-anchor="middle" font-size="11.5">LLM unavailable</text>
+<ellipse cx="470" cy="595" rx="120" ry="32" fill="#fff" stroke="#222" stroke-width="1.3"/>
+<text x="470" y="592.0" text-anchor="middle" font-size="13">UC14 Use Basic Commands</text>
+<text x="470" y="607.0" text-anchor="middle" font-size="13">(LLM Offline)</text>
+<ellipse cx="470" cy="685" rx="125" ry="27" fill="#fff" stroke="#222" stroke-width="1.3"/>
+<text x="470" y="689.5" text-anchor="middle" font-size="13">UC04 Fight Enemy</text>
+<ellipse cx="470" cy="760" rx="125" ry="27" fill="#fff" stroke="#222" stroke-width="1.3"/>
+<text x="470" y="764.5" text-anchor="middle" font-size="13">UC05 Manage Inventory</text>
+<ellipse cx="470" cy="840" rx="125" ry="32" fill="#fff" stroke="#222" stroke-width="1.3"/>
+<text x="470" y="837.0" text-anchor="middle" font-size="13">UC06 Explore World</text>
+<text x="470" y="852.0" text-anchor="middle" font-size="13">and View Map</text>
+<ellipse cx="470" cy="920" rx="125" ry="27" fill="#fff" stroke="#222" stroke-width="1.3"/>
+<text x="470" y="924.5" text-anchor="middle" font-size="13">UC08 Track Quest Progress</text>
+<ellipse cx="470" cy="995" rx="125" ry="27" fill="#fff" stroke="#222" stroke-width="1.3"/>
+<text x="470" y="999.5" text-anchor="middle" font-size="13">UC12 View Event History</text>
+<ellipse cx="470" cy="1070" rx="125" ry="27" fill="#fff" stroke="#222" stroke-width="1.3"/>
+<text x="470" y="1074.5" text-anchor="middle" font-size="13">UC09 Review Journal</text>
+<ellipse cx="470" cy="1145" rx="125" ry="27" fill="#fff" stroke="#222" stroke-width="1.3"/>
+<text x="470" y="1149.5" text-anchor="middle" font-size="13">UC13 Reach Ending</text>
+<ellipse cx="470" cy="1220" rx="110" ry="27" fill="#fff" stroke="#222" stroke-width="1.3"/>
+<text x="470" y="1224.5" text-anchor="middle" font-size="13">UC10 Save Game</text>
+<ellipse cx="470" cy="1290" rx="110" ry="27" fill="#fff" stroke="#222" stroke-width="1.3"/>
+<text x="470" y="1294.5" text-anchor="middle" font-size="13">UC11 Load Game</text>
+<g stroke="#222" stroke-width="1.4" fill="#fff"><circle cx="70" cy="640" r="10"/><line x1="70" y1="650" x2="70" y2="682"/><line x1="54" y1="662" x2="86" y2="662"/><line x1="70" y1="682" x2="57" y2="704"/><line x1="70" y1="682" x2="83" y2="704"/></g>
+<text x="70" y="722" text-anchor="middle" font-size="13" font-weight="bold">Player</text>
+<g stroke="#222" stroke-width="1.4" fill="#fff"><circle cx="910" cy="520" r="10"/><line x1="910" y1="530" x2="910" y2="562"/><line x1="894" y1="542" x2="926" y2="542"/><line x1="910" y1="562" x2="897" y2="584"/><line x1="910" y1="562" x2="923" y2="584"/></g>
+<text x="934" y="528" text-anchor="start" font-size="11.5" font-style="italic">«external system»</text>
+<text x="934" y="546" text-anchor="start" font-size="13" font-weight="bold">LLM Service</text>
+<text x="934" y="561" text-anchor="start" font-size="13" font-weight="bold">(DeepSeek / Groq)</text>
+<g stroke="#222" stroke-width="1.4" fill="#fff"><circle cx="910" cy="1180" r="10"/><line x1="910" y1="1190" x2="910" y2="1222"/><line x1="894" y1="1202" x2="926" y2="1202"/><line x1="910" y1="1222" x2="897" y2="1244"/><line x1="910" y1="1222" x2="923" y2="1244"/></g>
+<text x="934" y="1188" text-anchor="start" font-size="11.5" font-style="italic">«external system»</text>
+<text x="934" y="1206" text-anchor="start" font-size="13" font-weight="bold">File System</text>
+</svg>

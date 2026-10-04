@@ -1,0 +1,190 @@
+@startuml class-1-presentation
+!include style.iuml
+skinparam linetype ortho
+set separator none
+title Class Diagram 1 — Presentation and Control (MVC, Facade)
+
+package "presentation" {
+  interface GameView <<interface>> <<View>> {
+    + render(state: GameState)
+    + showNarration(text: String)
+    + showNotice(text: String)
+    + showError(message: String)
+    + showQuestOffer(quest: Quest)
+    + showEnding(ending: Ending)
+  }
+  class SwingGameView <<View>> {
+    - controller: GameController
+    - frame: JFrame
+    - newGamePanel: JPanel
+    - storyArea: JTextArea
+    - inputField: JTextField
+    - mapPanel: JPanel
+    - inventoryTree: JTree
+    - questList: JList<Quest>
+    - eventTable: JTable
+    - journalArea: JTextArea
+    - dialoguePanel: JPanel
+    - combatPanel: JPanel
+    - saveDialog: JDialog
+    - endPanel: JPanel
+    + render(state: GameState)
+    + showNarration(text: String)
+    + showNotice(text: String)
+    + showError(message: String)
+    + showQuestOffer(quest: Quest)
+    + showEnding(ending: Ending)
+    + onEvent(event: GameEvent)
+    - refresh()
+  }
+  class CliGameView <<View>> {
+    - controller: GameController
+    - in: Scanner
+    - out: PrintStream
+    + readLoop()
+    - dispatch(line: String)
+    + render(state: GameState)
+    + showNarration(text: String)
+    + showNotice(text: String)
+    + showError(message: String)
+    + showQuestOffer(quest: Quest)
+    + showEnding(ending: Ending)
+    + onEvent(event: GameEvent)
+  }
+  class GameApp {
+    + {static} main(args: String[])
+    - {static} createLlmClient(provider: String): LLMClient
+  }
+  class GameController <<Controller>> <<Facade>> {
+    - state: GameState
+    - views: List<GameView>
+    - rules: RulesEngine
+    - commandFactory: CommandFactory
+    - eventBus: GameEventBus
+    - saves: SaveManager
+    - memory: MemoryManager
+    - endingCalculator: EndingCalculator
+    - interpreter: ActionInterpreter
+    - narrator: Narrator
+    - dialogueAgent: NpcDialogueAgent
+    - questGenerator: QuestGenerator
+    - backstoryWriter: BackstoryWriter
+    - endingWriter: EndingWriter
+    + GameController(llm: LLMClient)
+    + addView(view: GameView)
+    + getState(): GameState
+    + newGame(name: String, cls: CharacterClass, stats: Stats): Player
+    + regenerateBackstory(): String
+    + startGame()
+    + submitCommand(text: String): TurnResult
+    + performAction(proposal: ActionProposal): TurnResult
+    + sendDialogue(message: String): NpcReply
+    + respondToQuest(quest: Quest, accept: boolean)
+    + saveGame(slot: String)
+    + loadGame(slot: String)
+    + listSaves(): List<SaveSlotInfo>
+    + getJournal(): String
+    + getHistory(filter: EventType): List<GameEvent>
+    + getRecentHistory(count: int): List<GameEvent>
+    + endGame(): Ending
+  }
+  class TurnResult {
+    - narration: String
+    - results: List<ActionResult>
+    - gameOver: boolean
+    + TurnResult(narration: String, results: List<ActionResult>, gameOver: boolean)
+  }
+}
+package "engine.core" {
+  class GameState <<Model>> <<Originator>> <<Context>>
+  class RulesEngine <<Invoker>>
+  class EndingCalculator
+  class Ending
+}
+package "engine.commands" {
+  class CommandFactory
+  class ActionProposal
+  class ActionResult
+}
+package "engine.character" {
+  class Stats
+  abstract class CharacterFactory <<Creator>>
+}
+package "engine.world" {
+  class World
+}
+package "engine.events" {
+  interface GameEventListener <<interface>> <<Observer>>
+  class GameEventBus <<Subject>>
+}
+package "engine.persistence" {
+  class SaveManager <<Caretaker>>
+  class SaveSlotInfo
+}
+package "agent" {
+  class ActionInterpreter <<ConcreteClass>>
+  class Narrator <<ConcreteClass>>
+  class NpcDialogueAgent <<ConcreteClass>>
+  class QuestGenerator <<ConcreteClass>>
+  class BackstoryWriter <<ConcreteClass>>
+  class EndingWriter <<ConcreteClass>>
+  class MemoryManager <<ConcreteObserver>>
+}
+
+GameView <|.. SwingGameView
+GameView <|.. CliGameView
+SwingGameView "0..*" --> "1" GameController : forwards input
+CliGameView "0..*" --> "1" GameController : forwards input
+GameController "1" --> "1..*" GameView : updates
+GameController "1" *-- "1" GameState
+GameController "1" --> "1" RulesEngine
+GameController "1" --> "1" CommandFactory
+GameController "1" --> "1" GameEventBus
+GameController "1" --> "1" SaveManager
+GameController "1" --> "1" MemoryManager
+GameController "1" --> "1" EndingCalculator
+GameController "1" --> "1" ActionInterpreter
+GameController "1" --> "1" Narrator
+GameController "1" --> "1" NpcDialogueAgent
+GameController "1" --> "1" QuestGenerator
+GameController "1" --> "1" BackstoryWriter
+GameController "1" --> "1" EndingWriter
+GameController ..> CharacterFactory : <<use>>
+GameController ..> World : <<use>>
+GameController ..> Stats : <<use>>
+GameController ..> ActionResult : <<use>>
+GameController ..> SaveSlotInfo
+GameController ..> TurnResult : <<create>>
+GameController ..> Ending : <<create>>
+SwingGameView ..> Stats : <<create>>
+CliGameView ..> Stats : <<create>>
+SwingGameView ..> ActionProposal : <<create>>
+CliGameView ..> ActionProposal : <<create>>
+GameApp ..> GameController : <<create>>
+GameApp ..> SwingGameView : <<create>>
+GameApp ..> CliGameView : <<create>>
+TurnResult "0..1" o-- "0..*" ActionResult
+GameEventListener <|.. SwingGameView
+GameEventListener <|.. CliGameView
+legend right
+Classes shown as a name only are detailed in another view.
+endlegend
+note left of GameController
+Facade over the engine and agent layers:
+the single entry point used by both views.
+end note
+note bottom of CliGameView
+CLI command table used by dispatch(line):
+  map, quests  →  render(getState())
+  journal  →  getJournal()
+  history  →  getRecentHistory(20);  history <type>  →  getHistory(type)
+  save <name>, load <name>, saves  →  saveGame(), loadGame(), listSaves()
+  accept, decline  →  respondToQuest(quest, accept)
+  leave, flee  →  performAction(proposal)
+  any other line  →  sendDialogue(line) in dialogue mode,
+                          otherwise submitCommand(line)
+end note
+GameState -[hidden]down- Narrator
+CommandFactory -[hidden]down- QuestGenerator
+SaveManager -[hidden]down- MemoryManager
+@enduml

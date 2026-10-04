@@ -1,0 +1,170 @@
+@startuml class-2-engine-core
+!include style.iuml
+skinparam linetype ortho
+set separator none
+title Class Diagram 2 — Engine Core (State)
+
+package "engine.core" {
+  class GameState <<Model>> <<Originator>> <<Context>> {
+    - turn: int
+    - player: Player
+    - world: World
+    - currentLocation: Location
+    - mode: GameMode
+    - questLog: QuestLog
+    - eventLog: EventLog
+    - storyMemory: StoryMemory
+    + start(player: Player, world: World)
+    + getTurn(): int
+    + getPlayer(): Player
+    + getWorld(): World
+    + currentLocation(): Location
+    + setCurrentLocation(location: Location)
+    + getMode(): GameMode
+    + setMode(mode: GameMode)
+    + allows(type: ActionType): boolean
+    + canSave(): boolean
+    + getQuestLog(): QuestLog
+    + getEventLog(): EventLog
+    + getStoryMemory(): StoryMemory
+    + nextTurn()
+    + isGameOver(): boolean
+    + createSnapshot(): GameSnapshot
+    + restore(snapshot: GameSnapshot)
+  }
+  interface GameMode <<interface>> <<State>> {
+    + allows(type: ActionType): boolean
+    + canSave(): boolean
+  }
+  class ExplorationMode <<ConcreteState>> {
+    --
+    + ExplorationMode()
+    + allows(type: ActionType): boolean
+    + canSave(): boolean
+    --
+    <i>{allows every ActionType except FLEE and LEAVE}</i>
+  }
+  class CombatMode <<ConcreteState>> {
+    - enemy: Enemy
+    --
+    + CombatMode(enemy: Enemy)
+    + getEnemy(): Enemy
+    + allows(type: ActionType): boolean
+    + canSave(): boolean
+    --
+    <i>{allows ATTACK, FLEE, USE, EQUIP, LOOK, INVENTORY}</i>
+  }
+  class DialogueMode <<ConcreteState>> {
+    - npc: NPC
+    - questOffered: boolean
+    --
+    + DialogueMode(npc: NPC)
+    + getNpc(): NPC
+    + isQuestOffered(): boolean
+    + setQuestOffered()
+    + allows(type: ActionType): boolean
+    + canSave(): boolean
+    --
+    <i>{allows LEAVE, TAKE (an item the NPC hands over), LOOK, INVENTORY}</i>
+  }
+  class StoryMemory {
+    - fixedFacts: List<String>
+    - summaries: List<String>
+    - recentEvents: List<GameEvent>
+    + record(event: GameEvent)
+    + addFixedFact(fact: String)
+    + recentCount(): int
+    + takeOldest(n: int): List<GameEvent>
+    + addSummary(summary: String)
+    + getFixedFacts(): List<String>
+    + getSummaries(): List<String>
+    + getRecentEvents(): List<GameEvent>
+  }
+  class RulesEngine <<Invoker>> {
+    - dice: DiceRoller
+    - eventBus: GameEventBus
+    + executeAll(commands: List<GameCommand>, state: GameState): List<ActionResult>
+    + resolveAttack(attacker: Combatant, target: Combatant): ActionResult
+    + skillCheck(statValue: int, difficulty: int): boolean
+    - reject(command: GameCommand, reason: String): ActionResult
+  }
+  class DiceRoller {
+    - random: Random
+    + DiceRoller(seed: long)
+    + rollD20(): int
+  }
+  class EndingCalculator {
+    + alignmentScore(log: EventLog): int
+    + determineType(state: GameState, score: int): EndingType
+    + statistics(log: EventLog): Map<String, Integer>
+  }
+  class Ending {
+    - type: EndingType
+    - statistics: Map<String, Integer>
+    - epilogue: String
+    + Ending(type: EndingType, statistics: Map<String, Integer>)
+    + setEpilogue(text: String)
+  }
+  enum EndingType <<enumeration>> {
+    HEROIC
+    NEUTRAL
+    DARK
+    DEATH
+  }
+}
+package "engine.commands" {
+  interface GameCommand <<interface>> <<Command>>
+  enum ActionType <<enumeration>>
+}
+package "engine.character" {
+  class Player
+  class Enemy
+}
+package "engine.world" {
+  class World
+  class Location
+  class NPC
+}
+package "engine.quests" {
+  class QuestLog
+}
+package "engine.events" {
+  class GameEventBus <<Subject>>
+  class GameEvent
+  class EventLog <<ConcreteObserver>>
+}
+package "engine.persistence" {
+  class GameSnapshot <<Memento>>
+}
+
+GameState "1" *-- "1" GameMode : current mode
+GameMode <|.. ExplorationMode
+GameMode <|.. CombatMode
+GameMode <|.. DialogueMode
+GameMode ..> ActionType
+GameState ..> ExplorationMode : <<create>>
+CombatMode "0..1" --> "1" Enemy : opponent
+DialogueMode "0..1" --> "1" NPC : partner
+GameState "1" *-- "1" Player
+GameState "1" *-- "1" World
+GameState "1" *-- "1" QuestLog
+GameState "1" *-- "1" EventLog
+GameState "1" *-- "1" StoryMemory
+GameState "0..1" --> "1" Location : current location
+GameState ..> GameSnapshot : <<create>>
+StoryMemory "0..1" o-- "0..*" GameEvent : recent events
+RulesEngine ..> GameCommand : <<call>>
+RulesEngine ..> GameState
+RulesEngine "1" *-- "1" DiceRoller
+RulesEngine "0..1" --> "1" GameEventBus : publishes to
+EndingCalculator ..> EndingType
+Ending "0..*" --> "1" EndingType
+legend right
+Classes shown as a name only are detailed in another view.
+endlegend
+CombatMode -[hidden]right- DialogueMode
+DialogueMode -[hidden]right- ExplorationMode
+GameMode -[hidden]down- DialogueMode
+RulesEngine -[hidden]left- DiceRoller
+StoryMemory -[hidden]right- DiceRoller
+@enduml

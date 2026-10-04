@@ -1,0 +1,227 @@
+@startuml class-4-domain
+!include style.iuml
+skinparam linetype ortho
+set separator none
+title Class Diagram 4 — Domain Model (Factory Method, Composite)
+
+package "engine.character" {
+  abstract class Combatant {
+    # name: String
+    # hp: int
+    # maxHp: int
+    + takeDamage(amount: int)
+    + isAlive(): boolean
+    + {abstract} attackBonus(): int
+    + {abstract} defense(): int
+    + {abstract} damage(): int
+  }
+  class Player {
+    - characterClass: CharacterClass
+    - stats: Stats
+    - inventory: Inventory
+    - equippedWeapon: Weapon
+    - gold: int
+    - xp: int
+    - backstory: String
+    + Player(name: String, cls: CharacterClass, stats: Stats, hp: int, kit: List<Item>)
+    + getStats(): Stats
+    + getInventory(): Inventory
+    + getLevel(): int
+    + attackBonus(): int
+    + defense(): int
+    + damage(): int
+    + heal(amount: int)
+    + equip(weapon: Weapon)
+    + setBackstory(text: String)
+    + addReward(reward: Reward)
+  }
+  class Enemy {
+    - attack: int
+    - defenseRating: int
+    + attackBonus(): int
+    + defense(): int
+    + damage(): int
+  }
+  class Stats {
+    - {static} TOTAL_POINTS: int = 10
+    - {static} MIN: int = 1
+    - {static} MAX: int = 8
+    - strength: int
+    - agility: int
+    - intelligence: int
+    --
+    + Stats(strength: int, agility: int, intelligence: int)
+    + isValid(): boolean
+    + modifier(stat: StatType): int
+    --
+    <i>{strength + agility + intelligence = TOTAL_POINTS}</i>
+    <i>{MIN ≤ strength, agility, intelligence ≤ MAX}</i>
+  }
+  enum StatType <<enumeration>> {
+    STRENGTH
+    AGILITY
+    INTELLIGENCE
+  }
+  enum CharacterClass <<enumeration>> {
+    WARRIOR
+    ROGUE
+    MAGE
+  }
+  abstract class CharacterFactory <<Creator>> {
+    + {static} forClass(cls: CharacterClass): CharacterFactory
+    + createCharacter(name: String, stats: Stats): Player
+    # {abstract} baseHp(): int
+    # {abstract} createStartingKit(): List<Item>
+  }
+  class WarriorFactory <<ConcreteCreator>> {
+    # baseHp(): int
+    # createStartingKit(): List<Item>
+  }
+  class RogueFactory <<ConcreteCreator>> {
+    # baseHp(): int
+    # createStartingKit(): List<Item>
+  }
+  class MageFactory <<ConcreteCreator>> {
+    # baseHp(): int
+    # createStartingKit(): List<Item>
+  }
+}
+package "engine.items" {
+  class Inventory {
+    - maxWeight: double
+    - root: Container
+    --
+    + add(item: Item): boolean
+    + remove(name: String): Item
+    + find(name: String): Item
+    + canCarry(item: Item): boolean
+    + totalWeight(): double
+    --
+    <i>{totalWeight() ≤ maxWeight}</i>
+  }
+  abstract class Item <<Component>> <<Product>> {
+    # name: String
+    # weight: double
+    # ownerId: String
+    + getName(): String
+    + getOwnerId(): String
+    + {abstract} getWeight(): double
+    + describe(): String
+  }
+  class Weapon <<Leaf>> <<ConcreteProduct>> {
+    - damage: int
+    + getDamage(): int
+    + getWeight(): double
+  }
+  class Consumable <<Leaf>> <<ConcreteProduct>> {
+    - healAmount: int
+    + getHealAmount(): int
+    + getWeight(): double
+  }
+  class KeyItem <<Leaf>> <<ConcreteProduct>> {
+    + getWeight(): double
+  }
+  class Container <<Composite>> {
+    - capacity: int
+    - contents: List<Item>
+    --
+    + add(item: Item): boolean
+    + remove(item: Item): boolean
+    + getContents(): List<Item>
+    + getWeight(): double
+    --
+    <i>{getWeight() = weight + sum of item.getWeight() over contents}</i>
+    <i>{a container cannot contain itself}</i>
+  }
+}
+package "engine.world" {
+  class World {
+    - regions: List<Region>
+    - startLocation: Location
+    + {static} createDefault(): World
+    + findLocation(id: String): Location
+    + getStartLocation(): Location
+    + summarize(): String
+  }
+  class Region {
+    - name: String
+    - locations: List<Location>
+  }
+  class Location {
+    - id: String
+    - name: String
+    - description: String
+    - visited: boolean
+    - exits: List<Exit>
+    - items: List<Item>
+    - npcs: List<NPC>
+    - enemies: List<Enemy>
+    + getExit(dir: Direction): Exit
+    + findExitTo(locationName: String): Exit
+    + findItem(name: String): Item
+    + addItem(item: Item)
+    + removeItem(name: String): Item
+    + findNpc(name: String): NPC
+    + findEnemy(name: String): Enemy
+    + removeEnemy(enemy: Enemy)
+    + markVisited()
+  }
+  class Exit {
+    - id: String
+    - direction: Direction
+    - destination: Location
+    - locked: boolean
+    - requiredKeyName: String
+    + getDestination(): Location
+    + getRequiredKeyName(): String
+    + isLocked(): boolean
+    + unlock(key: KeyItem): boolean
+  }
+  enum Direction <<enumeration>> {
+    NORTH
+    SOUTH
+    EAST
+    WEST
+  }
+  class NPC {
+    - id: String
+    - name: String
+    - role: String
+    - personality: String
+    - knowledge: List<String>
+    - secrets: List<String>
+    - questGiver: boolean
+    + getId(): String
+    + isQuestGiver(): boolean
+  }
+}
+
+Combatant <|-- Player
+Combatant <|-- Enemy
+Player "1" *-- "1" Stats
+Player "1" *-- "1" Inventory
+Player "0..*" --> "1" CharacterClass
+Player "0..1" --> "0..1" Weapon : equipped
+Stats ..> StatType
+CharacterFactory <|-- WarriorFactory
+CharacterFactory <|-- RogueFactory
+CharacterFactory <|-- MageFactory
+CharacterFactory ..> Player : <<create>>
+CharacterFactory ..> Item : <<create>>
+Inventory "0..1" *-- "1" Container : root
+Item <|-- Weapon
+Item <|-- Consumable
+Item <|-- KeyItem
+Item <|-- Container
+Container "0..1" o-- "0..*" Item : contents
+World "1" *-- "2" Region
+World "0..1" --> "1" Location : start
+Region "1" *-- "1..*" Location
+Location "1" *-- "0..4" Exit
+Exit "0..*" --> "1" Location : leads to
+Exit "0..*" --> "1" Direction
+Exit ..> KeyItem : <<use>>
+Location "0..1" o-- "0..*" Item
+Location "1" o-- "0..*" NPC
+Location "1" o-- "0..*" Enemy
+@enduml

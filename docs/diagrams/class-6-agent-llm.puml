@@ -1,0 +1,244 @@
+@startuml class-6-agent-llm
+!include style.iuml
+skinparam linetype ortho
+set separator none
+title Class Diagram 6 — Agent and LLM Access (Template Method, Strategy, Adapter)
+
+package "presentation" {
+  class GameApp
+}
+package "engine.core" {
+  class GameState <<Model>> <<Originator>> <<Context>>
+}
+package "engine.commands" {
+  class ActionProposal
+}
+package "engine.world" {
+  class World
+}
+package "engine.quests" {
+  class Quest
+  class Objective
+  class Reward
+}
+package "engine.events" {
+  interface GameEventListener <<interface>> <<Observer>>
+}
+package "agent" {
+  abstract class "LlmTask<I, O>" as LlmTask <<AbstractClass>> <<Context>> {
+    # {static} MAX_ATTEMPTS: int = 2
+    # llm: LLMClient
+    # prompts: PromptBuilder
+    # parser: ResponseParser
+    # state: GameState
+    - fallbackUsed: boolean
+    + run(input: I): O {leaf}
+    + isFallbackUsed(): boolean
+    # {abstract} buildPrompt(input: I): LlmRequest
+    # {abstract} parse(response: LlmResponse): O
+    # {abstract} isValid(output: O, input: I): boolean
+    # {abstract} fallback(input: I): O
+  }
+  class ActionInterpreter <<ConcreteClass>> {
+    - offlineParser: OfflineFallbackParser
+    + interpret(text: String): List<ActionProposal>
+    # buildPrompt(input: String): LlmRequest
+    # parse(response: LlmResponse): List<ActionProposal>
+    # isValid(output: List<ActionProposal>, input: String): boolean
+    # fallback(input: String): List<ActionProposal>
+  }
+  class Narrator <<ConcreteClass>> {
+    + narrate(results: List<ActionResult>): String
+    # buildPrompt(input: List<ActionResult>): LlmRequest
+    # parse(response: LlmResponse): String
+    # isValid(output: String, input: List<ActionResult>): boolean
+    # fallback(input: List<ActionResult>): String
+  }
+  class NpcDialogueAgent <<ConcreteClass>> {
+    + reply(message: String): NpcReply
+    # buildPrompt(input: String): LlmRequest
+    # parse(response: LlmResponse): NpcReply
+    # isValid(output: NpcReply, input: String): boolean
+    # fallback(input: String): NpcReply
+  }
+  class QuestGenerator <<ConcreteClass>> {
+    - questValidator: QuestValidator
+    + generate(giver: NPC): Quest
+    # buildPrompt(input: NPC): LlmRequest
+    # parse(response: LlmResponse): QuestProposal
+    # isValid(output: QuestProposal, input: NPC): boolean
+    # fallback(input: NPC): QuestProposal
+    - toQuest(proposal: QuestProposal): Quest
+  }
+  class BackstoryWriter <<ConcreteClass>> {
+    + write(player: Player): String
+    # buildPrompt(input: Player): LlmRequest
+    # parse(response: LlmResponse): String
+    # isValid(output: String, input: Player): boolean
+    # fallback(input: Player): String
+  }
+  class MemorySummarizer <<ConcreteClass>> {
+    + summarize(events: List<GameEvent>): String
+    # buildPrompt(input: List<GameEvent>): LlmRequest
+    # parse(response: LlmResponse): String
+    # isValid(output: String, input: List<GameEvent>): boolean
+    # fallback(input: List<GameEvent>): String
+  }
+  class EndingWriter <<ConcreteClass>> {
+    + write(ending: Ending): String
+    # buildPrompt(input: Ending): LlmRequest
+    # parse(response: LlmResponse): String
+    # isValid(output: String, input: Ending): boolean
+    # fallback(input: Ending): String
+  }
+  class PromptBuilder {
+    - memory: MemoryManager
+    - templates: Map<String, String>
+    + stateSummary(state: GameState): String
+    + memoryContext(focus: String, maxChars: int): String
+    + fromTemplate(name: String, vars: Map<String, String>): String
+  }
+  class ResponseParser {
+    + parseJson<T>(text: String, type: Class<T>): T
+  }
+  class OfflineFallbackParser {
+    + parse(text: String): List<ActionProposal>
+  }
+  class QuestValidator {
+    - world: World
+    + validate(proposal: QuestProposal): ValidationResult
+  }
+  class QuestProposal {
+    - title: String
+    - description: String
+    - objectives: List<Objective>
+    - reward: Reward
+  }
+  class NpcReply {
+    - text: String
+    - sideEffect: ActionProposal
+    + getText(): String
+    + getSideEffect(): ActionProposal
+  }
+  class MemoryManager <<ConcreteObserver>> {
+    - {static} SUMMARIZE_THRESHOLD: int = 20
+    - state: GameState
+    - summarizer: MemorySummarizer
+    + onEvent(event: GameEvent)
+    + buildContext(focus: String, maxChars: int): String
+    + journalText(): String
+    - isKeyFact(event: GameEvent): boolean
+  }
+}
+package "llm" {
+  interface LLMClient <<interface>> <<Strategy>> <<Target>> {
+    + complete(request: LlmRequest): LlmResponse
+    + isAvailable(): boolean
+    + providerName(): String
+  }
+  abstract class OpenAiCompatibleClient <<Adapter>> {
+    - baseUrl: String
+    - model: String
+    - apiKey: String
+    - http: HttpClient
+    # OpenAiCompatibleClient(baseUrl: String, model: String, apiKey: String)
+    + complete(request: LlmRequest): LlmResponse
+    + isAvailable(): boolean
+    + {abstract} providerName(): String
+    # toHttpRequest(request: LlmRequest): HttpRequest
+    # toLlmResponse(response: HttpResponse<String>): LlmResponse
+  }
+  class DeepSeekClient <<ConcreteStrategy>> {
+    + DeepSeekClient(apiKey: String)
+    + providerName(): String
+  }
+  class GroqClient <<ConcreteStrategy>> {
+    + GroqClient(apiKey: String)
+    + providerName(): String
+  }
+  class ScriptedLLMClient <<ConcreteStrategy>> {
+    - responses: Queue<String>
+    + ScriptedLLMClient(responses: List<String>)
+    + complete(request: LlmRequest): LlmResponse
+    + isAvailable(): boolean
+    + providerName(): String
+  }
+  class LlmRequest {
+    - systemPrompt: String
+    - userPrompt: String
+    - jsonMode: boolean
+    - maxTokens: int
+  }
+  class LlmResponse {
+    - text: String
+    - ok: boolean
+    - error: String
+    + getText(): String
+    + isOk(): boolean
+  }
+}
+package "java.net.http" {
+  abstract class HttpClient <<Adaptee>> <<library>> {
+    + {abstract} send<T>(request: HttpRequest, handler: BodyHandler<T>): HttpResponse<T>
+  }
+}
+
+GameApp ..> DeepSeekClient : <<create>>
+GameApp ..> GroqClient : <<create>>
+GameEventListener <|.. MemoryManager
+LlmTask <|-- ActionInterpreter
+LlmTask <|-- Narrator
+LlmTask <|-- NpcDialogueAgent
+LlmTask <|-- QuestGenerator
+LlmTask <|-- BackstoryWriter
+LlmTask <|-- MemorySummarizer
+LlmTask <|-- EndingWriter
+LlmTask "0..*" o--> "1" LLMClient : delegates to
+LlmTask "0..*" --> "1" PromptBuilder
+LlmTask "0..*" --> "1" ResponseParser
+LlmTask "0..*" --> "1" GameState : reads
+ActionInterpreter "1" --> "1" OfflineFallbackParser
+ActionInterpreter ..> ActionProposal : <<create>>
+NpcDialogueAgent ..> NpcReply : <<create>>
+QuestGenerator "1" --> "1" QuestValidator
+QuestGenerator ..> QuestProposal : <<create>>
+QuestGenerator ..> Quest : <<create>>
+QuestProposal "0..1" --> "1..3" Objective
+QuestProposal "0..1" --> "1" Reward
+NpcReply "0..1" --> "0..1" ActionProposal : side effect
+QuestValidator "0..*" --> "1" World : checks against
+PromptBuilder "0..1" --> "1" MemoryManager : reads context
+MemoryManager "1" --> "1" MemorySummarizer
+MemoryManager "0..1" --> "1" GameState : updates memory of
+LLMClient <|.. OpenAiCompatibleClient
+OpenAiCompatibleClient <|-- DeepSeekClient
+OpenAiCompatibleClient <|-- GroqClient
+LLMClient <|.. ScriptedLLMClient
+OpenAiCompatibleClient "0..*" --> "1" HttpClient : adapts
+LLMClient ..> LlmRequest
+LLMClient ..> LlmResponse
+legend right
+Classes shown as a name only are detailed in another view.
+endlegend
+note top of LlmTask
+run(input):  // template method, {leaf} = final
+  fallbackUsed = false
+  request = buildPrompt(input)
+  repeat up to MAX_ATTEMPTS times:
+    if llm.isAvailable():
+      response = llm.complete(request)
+      if response.isOk():
+        output = parse(response)
+        if output != null and isValid(output, input):
+          return output
+  fallbackUsed = true
+  return fallback(input)
+end note
+note "Type bindings of LlmTask<I, O>:\nActionInterpreter <String, List<ActionProposal>>\nNarrator <List<ActionResult>, String>\nNpcDialogueAgent <String, NpcReply>\nQuestGenerator <NPC, QuestProposal>\nBackstoryWriter <Player, String>\nMemorySummarizer <List<GameEvent>, String>\nEndingWriter <Ending, String>" as NB
+NB .. LlmTask
+ActionInterpreter -[hidden]down- QuestGenerator
+Narrator -[hidden]down- BackstoryWriter
+NpcDialogueAgent -[hidden]down- MemorySummarizer
+QuestValidator -[hidden]down- LLMClient
+QuestProposal -[hidden]down- ScriptedLLMClient
+@enduml

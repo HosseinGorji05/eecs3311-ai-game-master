@@ -1,0 +1,60 @@
+@startuml sd02-natural-language-turn
+!include seq-style.iuml
+title SD02 — Perform Action in Natural Language (UC02, UC05, UC06, UC14; F02, F05, F06; Facade, Command)
+
+actor "Player" as P
+boundary "__:SwingGameView__" as V
+control "__:GameController__" as GC
+participant "__:ActionInterpreter__" as AI
+participant "__llm : LLMClient__" as LLM
+participant "__:Narrator__" as N
+participant "__:CommandFactory__" as CF
+participant "__:RulesEngine__" as RE
+participant "__:GameState__" as GS
+participant "__:TurnResult__" as TR
+
+note over V, GC : In dialogue mode the view calls sendDialogue() instead (SD07).\nButtons and map clicks call performAction(proposal), which skips\ninterpret() and narrate() (SD10, SD11, SD12). :CliGameView can\ntake the place of :SwingGameView in every diagram.
+P -> V : type "pick up the iron key and go north"
+V -> GC : submitCommand(text)
+GC -> AI : interpret(text)
+  AI -> AI : run(text)
+  ref over AI, LLM : SD00 — Run an LLM Task\n(LLM returns JSON actions, e.g. take "iron key", move NORTH;\nfallback (UC14): OfflineFallbackParser.parse(text), which\nreturns no proposals if the text matches no known pattern)
+  AI -->> AI : proposals
+AI -->> GC : proposals : List<ActionProposal>
+GC -> AI : isFallbackUsed()
+AI -->> GC : offline
+opt offline (UC14: LLM unavailable, or unusable answers twice)
+  GC -> V : showNotice("Basic-command mode: simple commands only.")
+  V -->> GC
+end
+alt proposals is empty (not understood or ambiguous)
+  GC -> V : showError("I didn't understand. Please rephrase.")
+  V -->> GC
+  note right of GC : narration = the error text,\nresults = [], gameOver = false
+else proposals understood
+  loop for each proposal in proposals
+    GC -> CF : create(proposal)
+    CF -->> GC : command : GameCommand
+  end
+  GC -> RE : executeAll(commands, state)
+  ref over RE, GS : SD03 — Execute Game Commands
+  RE -->> GC : results : List<ActionResult>
+  GC -> N : narrate(results)
+    N -> N : run(results)
+    ref over LLM, N : SD00 — Run an LLM Task\n(isValid: narration only describes the results;\nfallback: template text built from the results)
+    N -->> N : narration
+  N -->> GC : narration
+  GC -> GS : isGameOver()
+  GS -->> GC : gameOver
+  GC -> V : showNarration(narration)
+  V -->> GC
+  opt gameOver
+    GC -> GC : endGame()
+    ref over GC : SD09 — Reach Ending
+    GC -->> GC : ending
+  end
+end
+GC -> TR ** : <<create>> TurnResult(narration, results, gameOver)
+GC -->> V : turnResult
+V -->> P
+@enduml

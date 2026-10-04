@@ -1,0 +1,106 @@
+@startuml class-0-overview
+!include style.iuml
+skinparam linetype ortho
+set separator none
+title Class Diagram 0 — Architecture Overview
+
+package "presentation" {
+  interface GameView <<interface>> <<View>>
+  class SwingGameView <<View>>
+  class CliGameView <<View>>
+  class GameController <<Controller>> <<Facade>>
+}
+package "engine.core" {
+  class GameState <<Model>> <<Originator>> <<Context>>
+  interface GameMode <<interface>> <<State>>
+  class RulesEngine <<Invoker>>
+}
+package "engine.commands" {
+  interface GameCommand <<interface>> <<Command>>
+  class CommandFactory
+}
+package "engine.character" {
+  class Player
+  abstract class CharacterFactory <<Creator>>
+}
+package "engine.world" {
+  class World
+}
+package "engine.quests" {
+  class QuestLog
+}
+package "engine.events" {
+  interface GameEventListener <<interface>> <<Observer>>
+  class GameEventBus <<Subject>>
+  class EventLog <<ConcreteObserver>>
+}
+package "engine.persistence" {
+  class GameSnapshot <<Memento>>
+  class SaveManager <<Caretaker>>
+}
+package "agent" {
+  abstract class "LlmTask<I, O>" as LlmTask <<AbstractClass>> <<Context>>
+  class ActionInterpreter <<ConcreteClass>>
+  class Narrator <<ConcreteClass>>
+  class MemoryManager <<ConcreteObserver>>
+}
+package "llm" {
+  interface LLMClient <<interface>> <<Strategy>> <<Target>>
+  abstract class OpenAiCompatibleClient <<Adapter>>
+  class DeepSeekClient <<ConcreteStrategy>>
+  class GroqClient <<ConcreteStrategy>>
+}
+
+GameView <|.. SwingGameView
+GameView <|.. CliGameView
+SwingGameView --> GameController
+CliGameView --> GameController
+GameController --> GameView
+GameController *-- GameState
+GameController --> RulesEngine
+GameController --> CommandFactory
+GameController --> GameEventBus
+GameController --> SaveManager
+GameController --> MemoryManager
+GameController --> ActionInterpreter
+GameController --> Narrator
+GameController ..> CharacterFactory
+GameController ..> World
+GameController ..> Player
+GameController ..> QuestLog
+GameController ..> EventLog
+GameController ..> GameSnapshot
+GameState *-- GameMode
+GameState *-- Player
+GameState *-- World
+GameState *-- QuestLog
+GameState *-- EventLog
+GameState ..> GameSnapshot
+CommandFactory ..> GameCommand
+RulesEngine ..> GameCommand
+RulesEngine ..> GameState
+RulesEngine --> GameEventBus
+CharacterFactory ..> Player
+GameEventListener <|.. EventLog
+GameEventListener <|.. MemoryManager
+GameEventListener <|.. SwingGameView
+GameEventListener <|.. CliGameView
+GameEventBus o-- GameEventListener
+SaveManager ..> GameSnapshot
+LlmTask <|-- ActionInterpreter
+LlmTask <|-- Narrator
+LlmTask o--> LLMClient
+LlmTask --> GameState
+MemoryManager --> GameState
+LLMClient <|.. OpenAiCompatibleClient
+OpenAiCompatibleClient <|-- DeepSeekClient
+OpenAiCompatibleClient <|-- GroqClient
+legend right
+Backbone classes and how the layers connect.
+Attributes, operations, multiplicities and all
+other classes are shown in views 1–6.
+endlegend
+GameController -[hidden]down- RulesEngine
+GameState -[hidden]down- Player
+ActionInterpreter -[hidden]down- LLMClient
+@enduml

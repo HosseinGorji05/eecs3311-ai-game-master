@@ -1,0 +1,36 @@
+@startuml sd09-reach-ending
+!include seq-style.iuml
+title SD09 — Reach Ending (UC13, F12; Template Method)\nbody of GameController.endGame(), referenced by SD02 and SD04
+
+boundary "__:SwingGameView__" as V
+control "__:GameController__" as GC
+participant "__:GameState__" as GS
+participant "__:EndingCalculator__" as EC
+participant "__:Ending__" as EN
+participant "__:EndingWriter__" as EW
+participant "__llm : LLMClient__" as LLM
+
+note over GC, GS : Called from SD02 when isGameOver() is true:\nthe main quest completed, or the player's HP reached 0 (SD04).
+[-> GC : endGame()
+GC -> GS : getEventLog()
+GS -->> GC : log
+GC -> EC : alignmentScore(log)
+note right : sum of getAlignmentDelta() over all events:\n+2 per side quest completed for an NPC,\n−1 per failed quest, −2 per item stolen from an NPC
+EC -->> GC : score
+GC -> EC : determineType(state, score)
+EC -->> GC : type
+note right : DEATH if the player died; otherwise\nHEROIC (score ≥ 3), DARK (score ≤ −3) or NEUTRAL
+GC -> EC : statistics(log)
+EC -->> GC : stats
+GC -> EN ** : <<create>> Ending(type, stats)
+GC -> EW : write(ending)
+  EW -> EW : run(ending)
+  ref over EW, LLM : SD00 — Run an LLM Task\n(prompt includes the fixed facts from story memory;\nisValid: mentions only recorded events and fits the ending type;\nfallback: template epilogue for the ending type)
+  EW -->> EW : epilogue
+EW -->> GC : epilogue
+GC -> EN : setEpilogue(epilogue)
+EN -->> GC
+GC -> V : showEnding(ending)
+V -->> GC
+[<<-- GC : ending
+@enduml

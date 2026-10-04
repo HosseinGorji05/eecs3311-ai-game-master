@@ -1,0 +1,74 @@
+@startuml sd01-create-character
+!include seq-style.iuml
+title SD01 — Create Character (UC01, F01; Factory Method)
+
+actor "Player" as P
+boundary "__:SwingGameView__" as V
+control "__:GameController__" as GC
+participant "__stats : Stats__" as S
+participant "CharacterFactory" as CF <<static>>
+participant "__f : WarriorFactory__" as WF
+participant "__player : Player__" as PL
+participant "__:BackstoryWriter__" as BW
+participant "__llm : LLMClient__" as LLM
+participant "World" as W <<static>>
+participant "__:GameState__" as GS
+
+P -> V : enter name, choose class, spend stat points,\nclick "Create"
+V -> S ** : <<create>> Stats(strength, agility, intelligence)
+V -> GC : newGame(name, cls, stats)
+GC -> S : isValid()
+S -->> GC : valid
+alt name is blank
+  GC -> V : showError("Enter a name for your character")
+  V -->> GC
+else stats are not valid
+  GC -> V : showError("Spend exactly 10 points, 1–8 per stat")
+  V -->> GC
+else name and stats are valid
+  GC -> CF : forClass(cls)
+  CF -->> GC : f
+  note right of CF : static call on the class;\ncls = WARRIOR in this example
+  GC -> WF : createCharacter(name, stats)
+    WF -> WF : baseHp()
+    WF -->> WF : hp
+    WF -> WF : createStartingKit()
+    WF -->> WF : kit
+    WF -> PL ** : <<create>> Player(name, cls, stats, hp, kit)
+  WF -->> GC : player
+  GC -> BW : write(player)
+    BW -> BW : run(player)
+    ref over BW, LLM : SD00 — Run an LLM Task\n(fallback: template backstory for the class)
+    BW -->> BW : backstory
+  BW -->> GC : backstory
+  GC -> PL : setBackstory(backstory)
+  PL -->> GC
+end
+GC -->> V : player (null if input was invalid)
+V -->> P : backstory shown with "Regenerate" and "Start"
+
+opt player was created
+  loop while the player clicks "Regenerate" (UC01 6a)
+    P -> V : click "Regenerate"
+    V -> GC : regenerateBackstory()
+      GC -> BW : write(player)
+      ref over BW, LLM : SD00
+      BW -->> GC : backstory
+      GC -> PL : setBackstory(backstory)
+      PL -->> GC
+    GC -->> V : backstory
+    V -->> P : new backstory shown
+  end
+  P -> V : click "Start" (accepts the backstory)
+  V -> GC : startGame()
+    GC -> W : createDefault()
+    W -->> GC : world
+    GC -> GS : start(player, world)
+    note right : current location = start location,\nmode = new ExplorationMode()
+    GS -->> GC
+    GC -> V : render(state)
+    V -->> GC
+  GC -->> V
+  V -->> P : game begins in the start location
+end
+@enduml
