@@ -1,4 +1,3 @@
-# eecs3311-ai-game-master
 # AI Game Master
 
 A text adventure for EECS 3311 (York University) in which an LLM acts as the game master. The design rule is **"the LLM proposes, the engine decides"**: the model interprets the player's words and narrates the story, but a deterministic rules engine validates and executes every action that changes the game state.
