@@ -10,12 +10,12 @@ A text adventure for EECS 3311 (York University) in which an LLM acts as the gam
 |-------|-------------|--------|
 | 1 | Design (UML, patterns, traceability) | Done |
 | 2 | Implementation | Planned |
-| 3 | Final version | Planned |
+| 3 | Testing and validation | Planned |
 
 ## Stage 1 deliverables
 
 - [Stage 1 Design Report (PDF)](docs/AI-Game-Master-Stage1-Design-Report.pdf): project overview, feature specifications, class diagram, design patterns, use cases, sequence diagrams, feature-to-design traceability, and feature implementation explanations.
-- [`docs/diagrams/`](docs/diagrams/): all UML diagrams (use-case, class views, sequence diagrams) as PNG and SVG, with their PlantUML sources.
+- [`docs/diagrams/`](docs/diagrams/): all UML diagrams (use-case, seven class-diagram views, thirteen sequence diagrams), drawn in UMLet. Each one is an editable UMLet file (`.uxf`) with PNG and SVG exports.
 
 ## Design at a glance
 
