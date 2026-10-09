@@ -1,0 +1,511 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>Text</id>
+    <coordinates><x>30</x><y>14</y><w>620</w><h>28</h></coordinates>
+    <panel_attributes>*Class Diagram 5 — Quests, Events and Persistence (Observer, Memento)*
+fontsize=16</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates><x>290</x><y>80</y><w>730</w><h>720</h></coordinates>
+    <panel_attributes>engine.quests</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates><x>1160</x><y>80</y><w>740</w><h>690</h></coordinates>
+    <panel_attributes>engine.events</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates><x>100</x><y>900</y><w>150</w><h>90</h></coordinates>
+    <panel_attributes>engine.world</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates><x>80</x><y>1040</y><w>190</w><h>90</h></coordinates>
+    <panel_attributes>engine.character</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates><x>390</x><y>900</y><w>1090</w><h>480</h></coordinates>
+    <panel_attributes>engine.persistence</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates><x>1600</x><y>900</y><w>170</w><h>140</h></coordinates>
+    <panel_attributes>engine.core</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates><x>1890</x><y>900</y><w>230</w><h>110</h></coordinates>
+    <panel_attributes>agent</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>330</x><y>120</y><w>360</w><h>170</h></coordinates>
+    <panel_attributes>*QuestLog*
+--
+_- MAX_SIDE_QUESTS: int = 3_
+- quests: List&lt;Quest&gt;
+--
++ accept(quest: Quest): boolean
++ activeQuests(): List&lt;Quest&gt;
++ activeSideQuestCount(): int
++ hasQuestFrom(giver: NPC): boolean
++ canOfferFrom(giver: NPC): boolean
+--
+/{activeSideQuestCount() ≤ MAX_SIDE_QUESTS}/</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>750</x><y>150</y><w>230</w><h>100</h></coordinates>
+    <panel_attributes>&lt;&lt;ConcreteObserver&gt;&gt;
+*QuestTracker*
+--
+- state: GameState
+- eventBus: GameEventBus
+--
++ onEvent(event: GameEvent)</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>310</x><y>360</y><w>260</w><h>250</h></coordinates>
+    <panel_attributes>*Quest*
+--
+- id: String
+- title: String
+- description: String
+- giverId: String
+- main: boolean
+- status: QuestStatus
+- objectives: List&lt;Objective&gt;
+- reward: Reward
+--
++ getObjectives(): List&lt;Objective&gt;
++ getReward(): Reward
++ isComplete(): boolean
++ complete()
++ fail()</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>680</x><y>400</y><w>320</w><h>170</h></coordinates>
+    <panel_attributes>*Objective*
+--
+- type: ObjectiveType
+- targetId: String
+- required: int
+- progress: int
+--
++ matches(event: GameEvent): boolean
++ isBlockedBy(event: GameEvent): boolean
++ advance()
++ isDone(): boolean</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>370</x><y>680</y><w>150</w><h>100</h></coordinates>
+    <panel_attributes>&lt;&lt;enumeration&gt;&gt;
+*QuestStatus*
+--
+ACTIVE
+COMPLETED
+FAILED</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>570</x><y>690</y><w>160</w><h>80</h></coordinates>
+    <panel_attributes>*Reward*
+--
+- gold: int
+- xp: int
+- itemName: String</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>780</x><y>680</y><w>150</w><h>100</h></coordinates>
+    <panel_attributes>&lt;&lt;enumeration&gt;&gt;
+*ObjectiveType*
+--
+FETCH
+DEFEAT
+VISIT</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>1180</x><y>140</y><w>230</w><h>80</h></coordinates>
+    <panel_attributes>&lt;&lt;interface&gt;&gt;
+&lt;&lt;Observer&gt;&gt;
+/*GameEventListener*/
+--
++ onEvent(event: GameEvent)</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>1540</x><y>120</y><w>330</w><h>120</h></coordinates>
+    <panel_attributes>&lt;&lt;Subject&gt;&gt;
+*GameEventBus*
+--
+- listeners: List&lt;GameEventListener&gt;
+--
++ subscribe(listener: GameEventListener)
++ unsubscribe(listener: GameEventListener)
++ publish(event: GameEvent)</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>1260</x><y>310</y><w>320</w><h>140</h></coordinates>
+    <panel_attributes>&lt;&lt;ConcreteObserver&gt;&gt;
+*EventLog*
+--
+- events: List&lt;GameEvent&gt;
+--
++ onEvent(event: GameEvent)
++ filter(type: EventType): List&lt;GameEvent&gt;
++ recent(count: int): List&lt;GameEvent&gt;
+- append(event: GameEvent)</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>1640</x><y>310</y><w>150</w><h>150</h></coordinates>
+    <panel_attributes>&lt;&lt;enumeration&gt;&gt;
+*EventType*
+--
+MOVEMENT
+ITEM
+COMBAT
+DIALOGUE
+QUEST
+REJECTED</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>1180</x><y>530</y><w>700</w><h>220</h></coordinates>
+    <panel_attributes>*GameEvent*
+--
+- type: EventType
+- turn: int
+- timestamp: Instant
+- description: String
+- subjectId: String
+- alignmentDelta: int
+--
++ GameEvent(type: EventType, turn: int, description: String, subjectId: String, alignmentDelta: int)
++ getType(): EventType
++ getTurn(): int
++ getDescription(): String
++ getAlignmentDelta(): int</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>140</x><y>940</y><w>60</w><h>30</h></coordinates>
+    <panel_attributes>*NPC*</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>140</x><y>1080</y><w>70</w><h>30</h></coordinates>
+    <panel_attributes>*Player*</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>410</x><y>990</y><w>340</w><h>120</h></coordinates>
+    <panel_attributes>&lt;&lt;Caretaker&gt;&gt;
+*SaveManager*
+--
+- saveDirectory: Path
+--
++ save(slot: String, snapshot: GameSnapshot)
++ load(slot: String): GameSnapshot
++ listSlots(): List&lt;SaveSlotInfo&gt;</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>870</x><y>940</y><w>590</w><h>230</h></coordinates>
+    <panel_attributes>&lt;&lt;Memento&gt;&gt;
+*GameSnapshot*
+--
+_- CURRENT_VERSION: int = 1_
+- version: int
+- createdAt: Instant
+- characterName: String
+- locationName: String
+- stateJson: String
+--
++ GameSnapshot(stateJson: String, characterName: String, locationName: String)
+_+ fromJson(json: String): GameSnapshot_
++ toJson(): String
++ isCompatible(): boolean
++ toSlotInfo(slot: String): SaveSlotInfo</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>610</x><y>1240</y><w>650</w><h>120</h></coordinates>
+    <panel_attributes>*SaveSlotInfo*
+--
+- slot: String
+- characterName: String
+- locationName: String
+- savedAt: Instant
+--
++ SaveSlotInfo(slot: String, characterName: String, locationName: String, savedAt: Instant)</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>1620</x><y>940</y><w>130</w><h>80</h></coordinates>
+    <panel_attributes>&lt;&lt;Model&gt;&gt;
+&lt;&lt;Originator&gt;&gt;
+&lt;&lt;Context&gt;&gt;
+*GameState*</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>1910</x><y>940</y><w>190</w><h>50</h></coordinates>
+    <panel_attributes>&lt;&lt;ConcreteObserver&gt;&gt;
+*MemoryManager*</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates><x>1680</x><y>1410</y><w>440</w><h>40</h></coordinates>
+    <panel_attributes>bg=#FFFDE7
+Classes shown as a name only are detailed in another view.</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>356</x><y>586</y><w>48</w><h>118</h></coordinates>
+    <panel_attributes>lt=-&gt;
+m1=0..*
+m2=1</panel_attributes>
+    <additional_attributes>24.0;24.0;24.0;94.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>766</x><y>546</y><w>48</w><h>158</h></coordinates>
+    <panel_attributes>lt=-&gt;
+m1=0..*
+m2=1</panel_attributes>
+    <additional_attributes>24.0;24.0;24.0;134.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>776</x><y>226</y><w>48</w><h>198</h></coordinates>
+    <panel_attributes>lt=.&gt;
+«use»</panel_attributes>
+    <additional_attributes>24.0;24.0;24.0;174.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>1246</x><y>196</y><w>48</w><h>138</h></coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>24.0;24.0;24.0;114.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>316</x><y>266</y><w>48</w><h>118</h></coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=0..1
+m2=0..*
+m2pos=-34,-12</panel_attributes>
+    <additional_attributes>24.0;24.0;24.0;94.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>666</x><y>136</y><w>108</w><h>48</h></coordinates>
+    <panel_attributes>lt=.&gt;
+«use»
+cbase=d</panel_attributes>
+    <additional_attributes>84.0;24.0;24.0;24.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>1246</x><y>426</y><w>48</w><h>128</h></coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..*</panel_attributes>
+    <additional_attributes>24.0;24.0;24.0;104.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>546</x><y>386</y><w>158</w><h>48</h></coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=0..1
+m2=1..3</panel_attributes>
+    <additional_attributes>24.0;24.0;134.0;24.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>1386</x><y>126</y><w>178</w><h>48</h></coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;-
+m1=1
+m2=0..*
+notifies
+cbase=d
+cpos=10,0</panel_attributes>
+    <additional_attributes>154.0;24.0;24.0;24.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>1626</x><y>436</y><w>48</w><h>118</h></coordinates>
+    <panel_attributes>lt=-&gt;
+m1=0..*
+m2=1
+m2pos=-15,6</panel_attributes>
+    <additional_attributes>24.0;94.0;24.0;24.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>956</x><y>136</y><w>248</w><h>48</h></coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>224.0;24.0;24.0;24.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>546</x><y>576</y><w>68</w><h>138</h></coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=0..1
+m2=1</panel_attributes>
+    <additional_attributes>24.0;24.0;44.0;24.0;44.0;114.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>856</x><y>1146</y><w>48</w><h>118</h></coordinates>
+    <panel_attributes>lt=.&gt;
+«create»</panel_attributes>
+    <additional_attributes>24.0;24.0;24.0;94.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>726</x><y>976</y><w>168</w><h>48</h></coordinates>
+    <panel_attributes>lt=.&gt;
+«create»
+cbase=d</panel_attributes>
+    <additional_attributes>24.0;24.0;144.0;24.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>1436</x><y>986</y><w>208</w><h>48</h></coordinates>
+    <panel_attributes>lt=.&gt;
+«create»
+cbase=d</panel_attributes>
+    <additional_attributes>184.0;24.0;24.0;24.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>596</x><y>1086</y><w>48</w><h>178</h></coordinates>
+    <panel_attributes>lt=.&gt;</panel_attributes>
+    <additional_attributes>24.0;24.0;24.0;154.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>1576</x><y>216</y><w>48</w><h>338</h></coordinates>
+    <panel_attributes>lt=.&gt;
+«send»
+cpos=0,-90</panel_attributes>
+    <additional_attributes>24.0;24.0;24.0;314.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>546</x><y>226</y><w>238</w><h>168</h></coordinates>
+    <panel_attributes>lt=.&gt;
+«use»
+cbase=d</panel_attributes>
+    <additional_attributes>214.0;24.0;214.0;144.0;24.0;144.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>976</x><y>516</y><w>228</w><h>48</h></coordinates>
+    <panel_attributes>lt=.&gt;
+«use»
+cbase=d</panel_attributes>
+    <additional_attributes>24.0;24.0;204.0;24.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>936</x><y>96</y><w>628</w><h>78</h></coordinates>
+    <panel_attributes>lt=-&gt;
+m1=0..1
+m2=1
+publishes to
+m1pos=-31,0
+cbase=d
+cpos=-110,0</panel_attributes>
+    <additional_attributes>24.0;54.0;24.0;24.0;574.0;24.0;574.0;34.0;604.0;34.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>1546</x><y>426</y><w>388</w><h>538</h></coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1
+m2pos=-15,0</panel_attributes>
+    <additional_attributes>194.0;514.0;194.0;354.0;364.0;354.0;364.0;54.0;24.0;54.0;24.0;24.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>176</x><y>246</y><w>178</w><h>728</h></coordinates>
+    <panel_attributes>lt=.&gt;
+«use»
+cbase=l</panel_attributes>
+    <additional_attributes>154.0;24.0;64.0;24.0;64.0;704.0;24.0;704.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>1376</x><y>196</y><w>618</w><h>768</h></coordinates>
+    <panel_attributes>lt=&lt;&lt;.</panel_attributes>
+    <additional_attributes>24.0;24.0;24.0;94.0;594.0;94.0;594.0;744.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>186</x><y>226</y><w>618</w><h>888</h></coordinates>
+    <panel_attributes>lt=.&gt;
+«use»</panel_attributes>
+    <additional_attributes>594.0;24.0;594.0;114.0;74.0;114.0;74.0;864.0;24.0;864.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>956</x><y>216</y><w>688</w><h>758</h></coordinates>
+    <panel_attributes>lt=-&gt;
+m1=0..1
+m2=1
+updates quests of
+cpos=0,10</panel_attributes>
+    <additional_attributes>24.0;24.0;194.0;24.0;194.0;674.0;634.0;674.0;634.0;734.0;664.0;734.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>666</x><y>256</y><w>978</w><h>738</h></coordinates>
+    <panel_attributes>lt=&lt;&lt;&lt;&lt;&lt;-
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>954.0;714.0;824.0;714.0;824.0;524.0;364.0;524.0;364.0;24.0;24.0;24.0</additional_attributes>
+  </element>
+</diagram>

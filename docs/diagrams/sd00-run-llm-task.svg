@@ -1,1 +1,412 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="SEQUENCE" height="1599px" preserveAspectRatio="none" style="width:1341px;height:1599px;background:#FFFFFF;" version="1.1" viewBox="0 0 1341 1599" width="1341px" zoomAndPan="magnify"><title>SD00 &#8212; Run an LLM Task (Template Method, Strategy, Adapter)</title><defs/><g><text fill="#000000" font-family="Helvetica" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="502.0078" x="421.1357" y="30.5">SD00 &#8212; Run an LLM Task (Template Method, Strategy, Adapter)</text><text fill="#000000" font-family="Helvetica" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="361.9766" x="491.1514" y="49.8594">referenced by SD01, SD02, SD06, SD07, SD09</text><g><title>__task . LlmTask__</title><rect fill="#FFFFFF" height="1264.3008" style="stroke:#777777;stroke-width:1;" width="10" x="176.8223" y="309.9531"/></g><g><title>__task . LlmTask__</title><rect fill="#FFFFFF" height="302.7148" style="stroke:#777777;stroke-width:1;" width="10" x="181.8223" y="346.4727"/></g><g><title>__task . LlmTask__</title><rect fill="#FFFFFF" height="96.5586" style="stroke:#777777;stroke-width:1;" width="10" x="181.8223" y="1157.5"/></g><g><title>__task . LlmTask__</title><rect fill="#FFFFFF" height="39.5195" style="stroke:#777777;stroke-width:1;" width="10" x="181.8223" y="1321.0977"/></g><g><title>__task . LlmTask__</title><rect fill="#FFFFFF" height="57.7988" style="stroke:#777777;stroke-width:1;" width="10" x="181.8223" y="1473.9355"/></g><g><title>__.PromptBuilder__</title><rect fill="#FFFFFF" height="28.5195" style="stroke:#777777;stroke-width:1;" width="10" x="406.5078" y="379.9922"/></g><g><title>__.PromptBuilder__</title><rect fill="#FFFFFF" height="103.0781" style="stroke:#777777;stroke-width:1;" width="10" x="406.5078" y="454.5508"/></g><g><title>__.PromptBuilder__</title><rect fill="#FFFFFF" height="28.5195" style="stroke:#777777;stroke-width:1;" width="10" x="406.5078" y="586.1484"/></g><g><title>__.MemoryManager__</title><rect fill="#FFFFFF" height="28.5195" style="stroke:#777777;stroke-width:1;" width="10" x="612.3203" y="500.5898"/></g><g><title>__llm . DeepSeekClient__</title><rect fill="#FFFFFF" height="28.5195" style="stroke:#777777;stroke-width:1;" width="10" x="745.29" y="708.2266"/></g><g><title>__llm . DeepSeekClient__</title><rect fill="#FFFFFF" height="308.6758" style="stroke:#777777;stroke-width:1;" width="10" x="745.29" y="788.7852"/></g><g><title>__llm . DeepSeekClient__</title><rect fill="#FFFFFF" height="39.5195" style="stroke:#777777;stroke-width:1;" width="10" x="750.29" y="825.3047"/></g><g><title>__llm . DeepSeekClient__</title><rect fill="#FFFFFF" height="39.5195" style="stroke:#777777;stroke-width:1;" width="10" x="750.29" y="1022.4219"/></g><g><title>__.HttpClient__</title><rect fill="#FFFFFF" height="85.5586" style="stroke:#777777;stroke-width:1;" width="10" x="953.6943" y="900.3438"/></g><g><title>..external system..</title><rect fill="#FFFFFF" height="28.5195" style="stroke:#777777;stroke-width:1;" width="10" x="1120.8818" y="928.8633"/></g><g><title>__.ResponseParser__</title><rect fill="#FFFFFF" height="28.5195" style="stroke:#777777;stroke-width:1;" width="10" x="1245.1592" y="1191.0195"/></g><rect fill="none" height="725.4297" style="stroke:#555555;stroke-width:1.5;" width="1241.1563" x="94.123" y="671.1875"/><rect fill="none" height="637.8711" style="stroke:#555555;stroke-width:1.5;" width="1221.1563" x="104.123" y="751.7461"/><rect fill="none" height="270.1563" style="stroke:#555555;stroke-width:1.5;" width="1201.1563" x="114.123" y="1112.4609"/><rect fill="none" height="99.5586" style="stroke:#555555;stroke-width:1.5;" width="311.334" x="124.123" y="1276.0586"/><rect fill="none" height="136.1172" style="stroke:#555555;stroke-width:1.5;" width="533.123" x="124.123" y="1410.6172"/><g><title>__task . LlmTask__</title><rect fill="#000000" fill-opacity="0.00000" height="1468.9766" width="8" x="177.8223" y="123.2773"/><line style="stroke:#777777;stroke-width:0.5;stroke-dasharray:5,5;" x1="181.123" x2="181.123" y1="123.2773" y2="1592.2539"/></g><g><title>__.PromptBuilder__</title><rect fill="#000000" fill-opacity="0.00000" height="1468.9766" width="8" x="407.5078" y="123.2773"/><line style="stroke:#777777;stroke-width:0.5;stroke-dasharray:5,5;" x1="411.3877" x2="411.3877" y1="123.2773" y2="1592.2539"/></g><g><title>__.MemoryManager__</title><rect fill="#000000" fill-opacity="0.00000" height="1468.9766" width="8" x="613.3203" y="123.2773"/><line style="stroke:#777777;stroke-width:0.5;stroke-dasharray:5,5;" x1="617.0498" x2="617.0498" y1="123.2773" y2="1592.2539"/></g><g><title>__llm . DeepSeekClient__</title><rect fill="#000000" fill-opacity="0.00000" height="1468.9766" width="8" x="746.29" y="123.2773"/><line style="stroke:#777777;stroke-width:0.5;stroke-dasharray:5,5;" x1="749.5908" x2="749.5908" y1="123.2773" y2="1592.2539"/></g><g><title>__.HttpClient__</title><rect fill="#000000" fill-opacity="0.00000" height="1468.9766" width="8" x="954.6943" y="123.2773"/><line style="stroke:#777777;stroke-width:0.5;stroke-dasharray:5,5;" x1="958.6123" x2="958.6123" y1="123.2773" y2="1592.2539"/></g><g><title>..external system..</title><rect fill="#000000" fill-opacity="0.00000" height="1468.9766" width="8" x="1121.8818" y="123.2773"/><line style="stroke:#777777;stroke-width:0.5;stroke-dasharray:5,5;" x1="1125.7246" x2="1125.7246" y1="123.2773" y2="1592.2539"/></g><g><title>__.ResponseParser__</title><rect fill="#000000" fill-opacity="0.00000" height="1468.9766" width="8" x="1246.1592" y="123.2773"/><line style="stroke:#777777;stroke-width:0.5;stroke-dasharray:5,5;" x1="1250.0391" x2="1250.0391" y1="123.2773" y2="1592.2539"/></g><g class="participant participant-head" data-participant="T"><rect fill="#FFFFFF" height="28.5195" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="95.3984" x="134.123" y="93.7578"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" text-decoration="underline" textLength="81.3984" x="141.123" y="112.3828">task : LlmTask</text></g><g class="participant participant-head" data-participant="PB"><rect fill="#FFFFFF" height="28.5195" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="98.2402" x="362.3877" y="93.7578"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" text-decoration="underline" textLength="84.2402" x="369.3877" y="112.3828">:PromptBuilder</text></g><g class="participant participant-head" data-participant="MM"><rect fill="#FFFFFF" height="28.5195" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="114.541" x="560.0498" y="93.7578"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" text-decoration="underline" textLength="100.541" x="567.0498" y="112.3828">:MemoryManager</text></g><g class="participant participant-head" data-participant="LLM"><rect fill="#FFFFFF" height="28.5195" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="131.3984" x="684.5908" y="93.7578"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" text-decoration="underline" textLength="117.3984" x="691.5908" y="112.3828">llm : DeepSeekClient</text></g><g class="participant participant-head" data-participant="HTTP"><rect fill="#FFFFFF" height="28.5195" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="74.1641" x="921.6123" y="93.7578"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" text-decoration="underline" textLength="60.1641" x="928.6123" y="112.3828">:HttpClient</text></g><g class="participant participant-head" data-participant="SVC"><rect fill="#FFFFFF" height="57.5586" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="118.3145" x="1066.7246" y="64.7188"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="104.3145" x="1073.7246" y="83.3438">&#171;external system&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="80.8184" x="1085.4727" y="97.8633">DeepSeek API</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="79.2539" x="1086.2549" y="112.3828">(LLM Service)</text></g><g class="participant participant-head" data-participant="RP"><rect fill="#FFFFFF" height="28.5195" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="110.2402" x="1195.0391" y="93.7578"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" text-decoration="underline" textLength="96.2402" x="1202.0391" y="112.3828">:ResponseParser</text></g><g><title>__task . LlmTask__</title><rect fill="#FFFFFF" height="1264.3008" style="stroke:#777777;stroke-width:1;" width="10" x="176.8223" y="309.9531"/></g><g><title>__task . LlmTask__</title><rect fill="#FFFFFF" height="302.7148" style="stroke:#777777;stroke-width:1;" width="10" x="181.8223" y="346.4727"/></g><g><title>__task . LlmTask__</title><rect fill="#FFFFFF" height="96.5586" style="stroke:#777777;stroke-width:1;" width="10" x="181.8223" y="1157.5"/></g><g><title>__task . LlmTask__</title><rect fill="#FFFFFF" height="39.5195" style="stroke:#777777;stroke-width:1;" width="10" x="181.8223" y="1321.0977"/></g><g><title>__task . LlmTask__</title><rect fill="#FFFFFF" height="57.7988" style="stroke:#777777;stroke-width:1;" width="10" x="181.8223" y="1473.9355"/></g><g><title>__.PromptBuilder__</title><rect fill="#FFFFFF" height="28.5195" style="stroke:#777777;stroke-width:1;" width="10" x="406.5078" y="379.9922"/></g><g><title>__.PromptBuilder__</title><rect fill="#FFFFFF" height="103.0781" style="stroke:#777777;stroke-width:1;" width="10" x="406.5078" y="454.5508"/></g><g><title>__.PromptBuilder__</title><rect fill="#FFFFFF" height="28.5195" style="stroke:#777777;stroke-width:1;" width="10" x="406.5078" y="586.1484"/></g><g><title>__.MemoryManager__</title><rect fill="#FFFFFF" height="28.5195" style="stroke:#777777;stroke-width:1;" width="10" x="612.3203" y="500.5898"/></g><g><title>__llm . DeepSeekClient__</title><rect fill="#FFFFFF" height="28.5195" style="stroke:#777777;stroke-width:1;" width="10" x="745.29" y="708.2266"/></g><g><title>__llm . DeepSeekClient__</title><rect fill="#FFFFFF" height="308.6758" style="stroke:#777777;stroke-width:1;" width="10" x="745.29" y="788.7852"/></g><g><title>__llm . DeepSeekClient__</title><rect fill="#FFFFFF" height="39.5195" style="stroke:#777777;stroke-width:1;" width="10" x="750.29" y="825.3047"/></g><g><title>__llm . DeepSeekClient__</title><rect fill="#FFFFFF" height="39.5195" style="stroke:#777777;stroke-width:1;" width="10" x="750.29" y="1022.4219"/></g><g><title>__.HttpClient__</title><rect fill="#FFFFFF" height="85.5586" style="stroke:#777777;stroke-width:1;" width="10" x="953.6943" y="900.3438"/></g><g><title>..external system..</title><rect fill="#FFFFFF" height="28.5195" style="stroke:#777777;stroke-width:1;" width="10" x="1120.8818" y="928.8633"/></g><g><title>__.ResponseParser__</title><rect fill="#FFFFFF" height="28.5195" style="stroke:#777777;stroke-width:1;" width="10" x="1245.1592" y="1191.0195"/></g><path d="M5,138.2773 L5,220.2773 L360,220.2773 L360,148.2773 L350,138.2773 L5,138.2773" fill="#FFFDE7" style="stroke:#B0A060;stroke-width:0.5;"/><path d="M350,138.2773 L350,148.2773 L360,148.2773 L350,138.2773" fill="#FFFDE7" style="stroke:#B0A060;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="295.6875" x="11" y="154.9023">task is any LlmTask subclass, e.g. ActionInterpreter.</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="334.1602" x="11" y="169.4219">It is entered from the subclass's public method (interpret(),</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="326.1387" x="11" y="183.9414">narrate(), reply(), generate(), write(), summarize()), which</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="331.623" x="11" y="198.4609">calls run(input). run() is the template method; buildPrompt,</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="317.5488" x="11" y="212.9805">parse, isValid and fallback are supplied by the subclass.</text><path d="M645,230.875 L645,283.875 L855,283.875 L855,240.875 L845,230.875 L645,230.875" fill="#FFFDE7" style="stroke:#B0A060;stroke-width:0.5;"/><path d="M845,230.875 L845,240.875 L855,240.875 L845,230.875" fill="#FFFDE7" style="stroke:#B0A060;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="164.0801" x="651" y="247.5">llm is the LLMClient strategy,</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="173.7949" x="651" y="262.0195">here bound to DeepSeekClient</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="189.2109" x="651" y="276.5391">(GroqClient works the same way)</text><g class="message" data-participant-1="T" data-participant-2="T"><polygon fill="#333333" points="164.8223,305.9531,174.8223,309.9531,164.8223,313.9531" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="0" x2="170.8223" y1="309.9531" y2="309.9531"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="55.8223" x="7" y="305.0586">run(input)</text></g><g class="message" data-participant-1="T" data-participant-2="T"><line style="stroke:#333333;stroke-width:1;" x1="186.8223" x2="233.8223" y1="333.4727" y2="333.4727"/><line style="stroke:#333333;stroke-width:1;" x1="233.8223" x2="233.8223" y1="333.4727" y2="346.4727"/><line style="stroke:#333333;stroke-width:1;" x1="192.8223" x2="233.8223" y1="346.4727" y2="346.4727"/><polygon fill="#333333" points="202.8223,342.4727,192.8223,346.4727,202.8223,350.4727" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="105.8848" x="198.8223" y="328.5781">buildPrompt(input)</text></g><g class="message" data-participant-1="T" data-participant-2="PB"><polygon fill="#333333" points="394.5078,375.9922,404.5078,379.9922,394.5078,383.9922" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="191.8223" x2="400.5078" y1="379.9922" y2="379.9922"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="118.4121" x="198.8223" y="375.0977">stateSummary(state)</text></g><g class="message" data-participant-1="PB" data-participant-2="T"><line style="stroke:#333333;stroke-width:1;" x1="192.8223" x2="202.8223" y1="408.5117" y2="404.5117"/><line style="stroke:#333333;stroke-width:1;" x1="192.8223" x2="202.8223" y1="408.5117" y2="412.5117"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="191.8223" x2="410.5078" y1="408.5117" y2="408.5117"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="52.4531" x="208.8223" y="403.6172">summary</text></g><g class="message" data-participant-1="T" data-participant-2="PB"><polygon fill="#333333" points="394.5078,450.5508,404.5078,454.5508,394.5078,458.5508" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="191.8223" x2="400.5078" y1="454.5508" y2="454.5508"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="195.6855" x="198.8223" y="449.6563">memoryContext(focus, maxChars)</text></g><path d="M421,421.5117 L421,474.5117 L711,474.5117 L711,431.5117 L701,421.5117 L421,421.5117" fill="#FFFDE7" style="stroke:#B0A060;stroke-width:0.5;"/><path d="M701,421.5117 L701,431.5117 L711,431.5117 L701,421.5117" fill="#FFFDE7" style="stroke:#B0A060;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="269.7305" x="427" y="438.1367">focus = what the prompt is about (the NPC's id,</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="247.0137" x="427" y="452.6563">the current location's id, ...): fixed facts and</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="234.8438" x="427" y="467.1758">summaries that mention it are picked first</text><g class="message" data-participant-1="PB" data-participant-2="MM"><polygon fill="#333333" points="600.3203,496.5898,610.3203,500.5898,600.3203,504.5898" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="416.5078" x2="606.3203" y1="500.5898" y2="500.5898"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="176.8125" x="423.5078" y="495.6953">buildContext(focus, maxChars)</text></g><g class="message" data-participant-1="MM" data-participant-2="PB"><line style="stroke:#333333;stroke-width:1;" x1="417.5078" x2="427.5078" y1="529.1094" y2="525.1094"/><line style="stroke:#333333;stroke-width:1;" x1="417.5078" x2="427.5078" y1="529.1094" y2="533.1094"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="416.5078" x2="616.3203" y1="529.1094" y2="529.1094"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="42.5391" x="433.5078" y="524.2148">context</text></g><g class="message" data-participant-1="PB" data-participant-2="T"><line style="stroke:#333333;stroke-width:1;" x1="192.8223" x2="202.8223" y1="557.6289" y2="553.6289"/><line style="stroke:#333333;stroke-width:1;" x1="192.8223" x2="202.8223" y1="557.6289" y2="561.6289"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="191.8223" x2="410.5078" y1="557.6289" y2="557.6289"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="42.5391" x="208.8223" y="552.7344">context</text></g><g class="message" data-participant-1="T" data-participant-2="PB"><polygon fill="#333333" points="394.5078,582.1484,404.5078,586.1484,394.5078,590.1484" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="191.8223" x2="400.5078" y1="586.1484" y2="586.1484"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="151.0898" x="198.8223" y="581.2539">fromTemplate(name, vars)</text></g><g class="message" data-participant-1="PB" data-participant-2="T"><line style="stroke:#333333;stroke-width:1;" x1="192.8223" x2="202.8223" y1="614.668" y2="610.668"/><line style="stroke:#333333;stroke-width:1;" x1="192.8223" x2="202.8223" y1="614.668" y2="618.668"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="191.8223" x2="410.5078" y1="614.668" y2="614.668"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="66.0645" x="208.8223" y="609.7734">promptText</text></g><g class="message" data-participant-1="T" data-participant-2="T"><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="191.8223" x2="233.8223" y1="648.1875" y2="648.1875"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="233.8223" x2="233.8223" y1="648.1875" y2="661.1875"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="185.8223" x2="233.8223" y1="661.1875" y2="661.1875"/><line style="stroke:#333333;stroke-width:1;" x1="186.8223" x2="196.8223" y1="661.1875" y2="657.1875"/><line style="stroke:#333333;stroke-width:1;" x1="186.8223" x2="196.8223" y1="661.1875" y2="665.1875"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="43.2129" x="198.8223" y="643.293">request</text></g><path d="M94.123,671.1875 L164.6582,671.1875 L164.6582,677.707 L154.6582,687.707 L94.123,687.707 L94.123,671.1875" fill="#F2F2F2" style="stroke:#555555;stroke-width:1.5;"/><rect fill="none" height="725.4297" style="stroke:#555555;stroke-width:1.5;" width="1241.1563" x="94.123" y="671.1875"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="25.5352" x="109.123" y="683.8125">loop</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="307.1836" x="179.6582" y="684.8125">[attempt &#8804; MAX_ATTEMPTS and no valid output yet]</text><g class="message" data-participant-1="T" data-participant-2="LLM"><polygon fill="#333333" points="733.29,704.2266,743.29,708.2266,733.29,712.2266" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="186.8223" x2="739.29" y1="708.2266" y2="708.2266"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="69.5566" x="193.8223" y="703.332">isAvailable()</text></g><g class="message" data-participant-1="LLM" data-participant-2="T"><line style="stroke:#333333;stroke-width:1;" x1="187.8223" x2="197.8223" y1="736.7461" y2="732.7461"/><line style="stroke:#333333;stroke-width:1;" x1="187.8223" x2="197.8223" y1="736.7461" y2="740.7461"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="186.8223" x2="749.29" y1="736.7461" y2="736.7461"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="50.0215" x="203.8223" y="731.8516">available</text></g><path d="M104.123,751.7461 L168.4414,751.7461 L168.4414,758.2656 L158.4414,768.2656 L104.123,768.2656 L104.123,751.7461" fill="#F2F2F2" style="stroke:#555555;stroke-width:1.5;"/><rect fill="none" height="637.8711" style="stroke:#555555;stroke-width:1.5;" width="1221.1563" x="104.123" y="751.7461"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="19.3184" x="119.123" y="764.3711">opt</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="61.6113" x="183.4414" y="765.3711">[available]</text><g class="message" data-participant-1="T" data-participant-2="LLM"><polygon fill="#333333" points="733.29,784.7852,743.29,788.7852,733.29,792.7852" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="186.8223" x2="739.29" y1="788.7852" y2="788.7852"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="104.7012" x="193.8223" y="783.8906">complete(request)</text></g><g class="message" data-participant-1="LLM" data-participant-2="LLM"><line style="stroke:#333333;stroke-width:1;" x1="755.29" x2="802.29" y1="812.3047" y2="812.3047"/><line style="stroke:#333333;stroke-width:1;" x1="802.29" x2="802.29" y1="812.3047" y2="825.3047"/><line style="stroke:#333333;stroke-width:1;" x1="761.29" x2="802.29" y1="825.3047" y2="825.3047"/><polygon fill="#333333" points="771.29,821.3047,761.29,825.3047,771.29,829.3047" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="133.623" x="767.29" y="807.4102">toHttpRequest(request)</text></g><g class="message" data-participant-1="LLM" data-participant-2="LLM"><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="760.29" x2="802.29" y1="863.8242" y2="863.8242"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="802.29" x2="802.29" y1="863.8242" y2="876.8242"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="754.29" x2="802.29" y1="876.8242" y2="876.8242"/><line style="stroke:#333333;stroke-width:1;" x1="755.29" x2="765.29" y1="876.8242" y2="872.8242"/><line style="stroke:#333333;stroke-width:1;" x1="755.29" x2="765.29" y1="876.8242" y2="880.8242"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="68.7129" x="767.29" y="858.9297">httpRequest</text></g><g class="message" data-participant-1="LLM" data-participant-2="HTTP"><polygon fill="#333333" points="941.6943,896.3438,951.6943,900.3438,941.6943,904.3438" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="755.29" x2="947.6943" y1="900.3438" y2="900.3438"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="154.7578" x="762.29" y="895.4492">send(httpRequest, handler)</text></g><g class="message" data-participant-1="HTTP" data-participant-2="SVC"><polygon fill="#333333" points="1108.8818,924.8633,1118.8818,928.8633,1108.8818,932.8633" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="963.6943" x2="1114.8818" y1="928.8633" y2="928.8633"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="138.1875" x="970.6943" y="923.9688">POST /chat/completions</text></g><g class="message" data-participant-1="SVC" data-participant-2="HTTP"><line style="stroke:#333333;stroke-width:1;" x1="964.6943" x2="974.6943" y1="957.3828" y2="953.3828"/><line style="stroke:#333333;stroke-width:1;" x1="964.6943" x2="974.6943" y1="957.3828" y2="961.3828"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="963.6943" x2="1124.8818" y1="957.3828" y2="957.3828"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="64.7754" x="980.6943" y="952.4883">JSON body</text></g><g class="message" data-participant-1="HTTP" data-participant-2="LLM"><line style="stroke:#333333;stroke-width:1;" x1="756.29" x2="766.29" y1="985.9023" y2="981.9023"/><line style="stroke:#333333;stroke-width:1;" x1="756.29" x2="766.29" y1="985.9023" y2="989.9023"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="755.29" x2="957.6943" y1="985.9023" y2="985.9023"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="78.3105" x="772.29" y="981.0078">httpResponse</text></g><g class="message" data-participant-1="LLM" data-participant-2="LLM"><line style="stroke:#333333;stroke-width:1;" x1="755.29" x2="802.29" y1="1009.4219" y2="1009.4219"/><line style="stroke:#333333;stroke-width:1;" x1="802.29" x2="802.29" y1="1009.4219" y2="1022.4219"/><line style="stroke:#333333;stroke-width:1;" x1="761.29" x2="802.29" y1="1022.4219" y2="1022.4219"/><polygon fill="#333333" points="771.29,1018.4219,761.29,1022.4219,771.29,1026.4219" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="174.4043" x="767.29" y="1004.5273">toLlmResponse(httpResponse)</text></g><g class="message" data-participant-1="LLM" data-participant-2="LLM"><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="760.29" x2="802.29" y1="1060.9414" y2="1060.9414"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="802.29" x2="802.29" y1="1060.9414" y2="1073.9414"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="754.29" x2="802.29" y1="1073.9414" y2="1073.9414"/><line style="stroke:#333333;stroke-width:1;" x1="755.29" x2="765.29" y1="1073.9414" y2="1069.9414"/><line style="stroke:#333333;stroke-width:1;" x1="755.29" x2="765.29" y1="1073.9414" y2="1077.9414"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="52.8105" x="767.29" y="1056.0469">response</text></g><g class="message" data-participant-1="LLM" data-participant-2="T"><line style="stroke:#333333;stroke-width:1;" x1="187.8223" x2="197.8223" y1="1097.4609" y2="1093.4609"/><line style="stroke:#333333;stroke-width:1;" x1="187.8223" x2="197.8223" y1="1097.4609" y2="1101.4609"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="186.8223" x2="749.29" y1="1097.4609" y2="1097.4609"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="52.8105" x="203.8223" y="1092.5664">response</text></g><path d="M114.123,1112.4609 L178.4414,1112.4609 L178.4414,1118.9805 L168.4414,1128.9805 L114.123,1128.9805 L114.123,1112.4609" fill="#F2F2F2" style="stroke:#555555;stroke-width:1.5;"/><rect fill="none" height="270.1563" style="stroke:#555555;stroke-width:1.5;" width="1201.1563" x="114.123" y="1112.4609"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="19.3184" x="129.123" y="1125.0859">opt</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="276.1934" x="193.4414" y="1126.0859">[response.isOk() (no network error or timeout)]</text><g class="message" data-participant-1="T" data-participant-2="T"><line style="stroke:#333333;stroke-width:1;" x1="186.8223" x2="233.8223" y1="1144.5" y2="1144.5"/><line style="stroke:#333333;stroke-width:1;" x1="233.8223" x2="233.8223" y1="1144.5" y2="1157.5"/><line style="stroke:#333333;stroke-width:1;" x1="192.8223" x2="233.8223" y1="1157.5" y2="1157.5"/><polygon fill="#333333" points="202.8223,1153.5,192.8223,1157.5,202.8223,1161.5" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="93.498" x="198.8223" y="1139.6055">parse(response)</text></g><g class="message" data-participant-1="T" data-participant-2="RP"><polygon fill="#333333" points="1233.1592,1187.0195,1243.1592,1191.0195,1233.1592,1195.0195" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="191.8223" x2="1239.1592" y1="1191.0195" y2="1191.0195"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="208.5234" x="198.8223" y="1186.125">parseJson(response.getText(), type)</text></g><g class="message" data-participant-1="RP" data-participant-2="T"><line style="stroke:#333333;stroke-width:1;" x1="192.8223" x2="202.8223" y1="1219.5391" y2="1215.5391"/><line style="stroke:#333333;stroke-width:1;" x1="192.8223" x2="202.8223" y1="1219.5391" y2="1223.5391"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="191.8223" x2="1249.1592" y1="1219.5391" y2="1219.5391"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="36.5859" x="208.8223" y="1214.6445">output</text></g><g class="message" data-participant-1="T" data-participant-2="T"><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="191.8223" x2="233.8223" y1="1253.0586" y2="1253.0586"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="233.8223" x2="233.8223" y1="1253.0586" y2="1266.0586"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="185.8223" x2="233.8223" y1="1266.0586" y2="1266.0586"/><line style="stroke:#333333;stroke-width:1;" x1="186.8223" x2="196.8223" y1="1266.0586" y2="1262.0586"/><line style="stroke:#333333;stroke-width:1;" x1="186.8223" x2="196.8223" y1="1266.0586" y2="1270.0586"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="36.5859" x="198.8223" y="1248.1641">output</text></g><path d="M124.123,1276.0586 L188.4414,1276.0586 L188.4414,1282.5781 L178.4414,1292.5781 L124.123,1292.5781 L124.123,1276.0586" fill="#F2F2F2" style="stroke:#555555;stroke-width:1.5;"/><rect fill="none" height="99.5586" style="stroke:#555555;stroke-width:1.5;" width="311.334" x="124.123" y="1276.0586"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="19.3184" x="139.123" y="1288.6836">opt</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="227.0156" x="203.4414" y="1289.6836">[output is not null (well-formed JSON)]</text><g class="message" data-participant-1="T" data-participant-2="T"><line style="stroke:#333333;stroke-width:1;" x1="186.8223" x2="233.8223" y1="1308.0977" y2="1308.0977"/><line style="stroke:#333333;stroke-width:1;" x1="233.8223" x2="233.8223" y1="1308.0977" y2="1321.0977"/><line style="stroke:#333333;stroke-width:1;" x1="192.8223" x2="233.8223" y1="1321.0977" y2="1321.0977"/><polygon fill="#333333" points="202.8223,1317.0977,192.8223,1321.0977,202.8223,1325.0977" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="117.9551" x="198.8223" y="1303.2031">isValid(output, input)</text></g><g class="message" data-participant-1="T" data-participant-2="T"><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="191.8223" x2="233.8223" y1="1359.6172" y2="1359.6172"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="233.8223" x2="233.8223" y1="1359.6172" y2="1372.6172"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="185.8223" x2="233.8223" y1="1372.6172" y2="1372.6172"/><line style="stroke:#333333;stroke-width:1;" x1="186.8223" x2="196.8223" y1="1372.6172" y2="1368.6172"/><line style="stroke:#333333;stroke-width:1;" x1="186.8223" x2="196.8223" y1="1372.6172" y2="1376.6172"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="26.6426" x="198.8223" y="1354.7227">valid</text></g><path d="M124.123,1410.6172 L188.4414,1410.6172 L188.4414,1417.1367 L178.4414,1427.1367 L124.123,1427.1367 L124.123,1410.6172" fill="#F2F2F2" style="stroke:#555555;stroke-width:1.5;"/><rect fill="none" height="136.1172" style="stroke:#555555;stroke-width:1.5;" width="533.123" x="124.123" y="1410.6172"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="19.3184" x="139.123" y="1423.2422">opt</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="448.8047" x="203.4414" y="1424.2422">[no valid output: LLM unavailable, timeout, malformed JSON or invalid twice]</text><g class="message" data-participant-1="T" data-participant-2="T"><line style="stroke:#333333;stroke-width:1;" x1="186.8223" x2="233.8223" y1="1460.9355" y2="1460.9355"/><line style="stroke:#333333;stroke-width:1;" x1="233.8223" x2="233.8223" y1="1460.9355" y2="1473.9355"/><line style="stroke:#333333;stroke-width:1;" x1="192.8223" x2="233.8223" y1="1473.9355" y2="1473.9355"/><polygon fill="#333333" points="202.8223,1469.9355,192.8223,1473.9355,202.8223,1477.9355" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="81.6387" x="198.8223" y="1456.041">fallback(input)</text></g><path d="M301.6387,1432.1367 L301.6387,1500.1367 L524.6387,1500.1367 L524.6387,1442.1367 L514.6387,1432.1367 L301.6387,1432.1367" fill="#FFFDE7" style="stroke:#B0A060;stroke-width:0.5;"/><path d="M514.6387,1432.1367 L514.6387,1442.1367 L524.6387,1442.1367 L514.6387,1432.1367" fill="#FFFDE7" style="stroke:#B0A060;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="149.2148" x="307.6387" y="1448.7617">deterministic fallback, e.g.</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="202.8398" x="307.6387" y="1463.2813">OfflineFallbackParser, template text</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="144.5039" x="307.6387" y="1477.8008">or a pre-written NPC line;</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="169.1484" x="307.6387" y="1492.3203">run() sets fallbackUsed = true</text><g class="message" data-participant-1="T" data-participant-2="T"><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="191.8223" x2="233.8223" y1="1530.7344" y2="1530.7344"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="233.8223" x2="233.8223" y1="1530.7344" y2="1543.7344"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="185.8223" x2="233.8223" y1="1543.7344" y2="1543.7344"/><line style="stroke:#333333;stroke-width:1;" x1="186.8223" x2="196.8223" y1="1543.7344" y2="1539.7344"/><line style="stroke:#333333;stroke-width:1;" x1="186.8223" x2="196.8223" y1="1543.7344" y2="1547.7344"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="36.5859" x="198.8223" y="1525.8398">output</text></g><g class="message" data-participant-1="T" data-participant-2="T"><line style="stroke:#333333;stroke-width:1;" x1="1" x2="11" y1="1574.2539" y2="1570.2539"/><line style="stroke:#333333;stroke-width:1;" x1="1" x2="11" y1="1574.2539" y2="1578.2539"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="0" x2="180.8223" y1="1574.2539" y2="1574.2539"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="36.5859" x="17" y="1569.3594">output</text></g><!--SRC=[VLRDRkCs4BxhAQPxgGpOscqFBPhD1d2oRJUBU2FOwgB06WXeUMmJfaY5f9AefrvxxoFqoVP9EaFzM7RI0eaYaT_yVVDnc6-apbMrHd1uFt6-LfZ8gb2HbruXBDw_UGDV__mRvfK6eU7cPWQPS7k8ConA9Jp23FtEhCUmy9O-j_KOfcjHUhIZfRQuGOiwnpMiQdRstPYVtuVd3-7vOtZ-54Mbi5xciXJQmwkxEyzHpk165HplxkuL20VPAUeijQOe_MKbrHfjYqeldy5cM1XRpuGMsnuscvt2b2eev7l4Se6ulr8IjM_1LFWpfn-yBuz07x8iFKPrlc2QNYzrpFGjq3x874V1Ol7v2ixFyOdeqaA1gvt7ukBYMQWvkj9eXwcmhYzWdaQHDjG2yu0MCaeza2OTTQhkc0DNhN8bd1i39ji4fhcNHbzhYbXQf6UorDUUZP3Ng5CReXJy3dlBRnsKrKh978hGQuXbPnwFnakjXUNMqpjOB5NDBrlKs2q-MjcykAeeX9L_q0SlxsI-M-fSAEN0LfgybfKV9U5zn1bn4hxJMHFxBQourqtRANR9X8m9_5aekQR2ANzok1Bv7eJb6igIMXJqDwmf6J37NJa3RduRanQQleBhHBtKEo87LgQY2DwSY8HQ-wirzwtHex7xnf4J1SAZg4THz6Lo4LfqA3JAe5qRbDJj0OJTz9AsdQSS5e6xEWuVl4zRayb5uw0XjZwoAeBahmorwid76vDN9852F5tjY39s010ei7AxyuGF27X7RH4-95-6X8ASg6mFCIz-Igz83d9DXF1dNbdB9IkJ2zPLimT9aep8etnYEOdSioBNIzts7vaS2bAG9Tc0zA5LfSptZ9VM-P0ULtX1nxHZw7zh8LYW8zIUDyWJbWwh1vPOxDqeYpMrQmmFhS-XQSD5njRPOTNYVOMKRAICAK5urgg7ht_z0xFfxtVJBFjvbcQB84fjo2yhb9Ya1aEDVHwD_AIRFWYfn4hHwQ0jNkq3YMwBDWo567uVUSafJKMdEcvJQxXflNKWRtXopHl4YqYEss1t1-InAvvrh3pKwtW06iEEobKq_LiuD4You5bt1kdj8eFNEVN_TPiiIS3rO0Q5yAt_ZulRJtJgrdKqT7QQNpCSNwwLvc07Y8Ve_oZO3fqTDU5eXxlGBIJItUvfOiNKP8sUZp-WjSO2_NXPeAbwUlip7mPNR4-IQG7pj4DyT4Rtg6IBGOCyItrT3gpcwI7FHc67U2-kS_wj5Ec0qo00NIa5yICgDTaOMz19PEvF4ik2KiEiZHjpchtTn7eMCIY-tI2TH8U__EJVYFCuEHjdWVPAzo8VToJocLU3v9XVgHjR_qYNQZH8ixi63XFrQDoj-Uuhf9QEBjeUt5oIItsxsIYfyPTskRbsnuVBYEV8KbDuGQC19tp3UTGy7O7jtjA_Fk4ISqYphtF-cwEytu6tLPleIMUOa2_dvvF9OF5V]--></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.0//EN'
+          'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg fill-opacity="1" xmlns:xlink="http://www.w3.org/1999/xlink" color-rendering="auto" color-interpolation="auto" text-rendering="auto" stroke="black" stroke-linecap="square" width="2860" stroke-miterlimit="10" shape-rendering="auto" stroke-opacity="1" fill="black" stroke-dasharray="none" font-weight="normal" stroke-width="1" viewBox="-10 -10 2860 2350" height="2350" xmlns="http://www.w3.org/2000/svg" font-family="'Dialog'" font-style="normal" stroke-linejoin="miter" font-size="12px" stroke-dashoffset="0" image-rendering="auto"
+><!--Generated by the Batik Graphics2D SVG Generator--><defs id="genericDefs"
+  /><g
+  ><defs id="defs1"
+    ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath1"
+      ><path d="M0 0 L2147483647 0 L2147483647 2147483647 L0 2147483647 L0 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath2"
+      ><path d="M0 0 L0 2310 L2820 2310 L2820 0 Z"
+      /></clipPath
+    ></defs
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><text x="5" xml:space="preserve" y="16.0938" clip-path="url(#clipPath2)" stroke="none"
+      >SD00 — Run an LLM Task (Template Method, Strategy, Adapter)</text
+      ><text x="5" xml:space="preserve" y="32.1875" clip-path="url(#clipPath2)" stroke="none"
+      >referenced by SD01, SD02, SD06, SD07, SD09</text
+      ><path fill="none" d="M0.5 38.6875 L446.6123 38.6875 L466.6123 23.4125 L466.6123 0.5" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M0.5 0.5 L2819 0.5" clip-path="url(#clipPath2)"
+      /><text x="10" xml:space="preserve" y="61.2812" clip-path="url(#clipPath2)" stroke="none"
+      >Notes</text
+      ><text x="10" xml:space="preserve" y="77.375" clip-path="url(#clipPath2)" stroke="none"
+      >(n1) task is any LlmTask subclass, e.g. ActionInterpreter. It is entered from the subclass's public method (interpret(),</text
+      ><text x="10" xml:space="preserve" y="93.4688" clip-path="url(#clipPath2)" stroke="none"
+      >      narrate(), reply(), generate(), write(), summarize()), which calls run(input). run() is the template method;</text
+      ><text x="10" xml:space="preserve" y="109.5625" clip-path="url(#clipPath2)" stroke="none"
+      >      buildPrompt, parse, isValid and fallback are supplied by the subclass.</text
+      ><text x="10" xml:space="preserve" y="125.6562" clip-path="url(#clipPath2)" stroke="none"
+      >(n2) llm is the LLMClient strategy, here bound to DeepSeekClient (GroqClient works the same way)</text
+      ><text x="10" xml:space="preserve" y="141.75" clip-path="url(#clipPath2)" stroke="none"
+      >(n3) focus = what the prompt is about (the NPC's id, the current location's id, ...): fixed facts and summaries that mention</text
+      ><text x="10" xml:space="preserve" y="157.8438" clip-path="url(#clipPath2)" stroke="none"
+      >      it are picked first</text
+      ><text x="10" xml:space="preserve" y="173.9375" clip-path="url(#clipPath2)" stroke="none"
+      >(n4) deterministic fallback, e.g. OfflineFallbackParser, template text or a pre-written NPC line; run() sets fallbackUsed =</text
+      ><text x="10" xml:space="preserve" y="190.0312" clip-path="url(#clipPath2)" stroke="none"
+      >      true</text
+      ><path fill="none" d="M0.5 355.9062 L230.7935 355.9062" clip-path="url(#clipPath2)"
+      /><path d="M219.5352 362.4062 L230.7935 355.9062 L219.5352 349.4062 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M219.5352 362.4062 L230.7935 355.9062 L219.5352 349.4062 Z" clip-path="url(#clipPath2)"
+      /><text x="82" xml:space="preserve" y="352.4062" clip-path="url(#clipPath2)" stroke="none"
+      >run(input)</text
+      ><path fill="none" d="M230.7935 394.0938 L250.7935 394.0938 L250.7935 432.2812 L230.7935 432.2812" clip-path="url(#clipPath2)"
+      /><path d="M242.0518 425.7812 L230.7935 432.2812 L242.0518 438.7812 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M242.0518 425.7812 L230.7935 432.2812 L242.0518 438.7812 Z" clip-path="url(#clipPath2)"
+      /><text x="255.2935" xml:space="preserve" y="409.6875" clip-path="url(#clipPath2)" stroke="none"
+      >buildPrompt(</text
+      ><text x="255.2935" xml:space="preserve" y="425.7812" clip-path="url(#clipPath2)" stroke="none"
+      >input)</text
+      ><path fill="none" d="M230.7935 432.2812 L607.3624 432.2812" clip-path="url(#clipPath2)"
+      /><path d="M596.104 438.7812 L607.3624 432.2812 L596.104 425.7812 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M596.104 438.7812 L607.3624 432.2812 L596.104 425.7812 Z" clip-path="url(#clipPath2)"
+      /><text x="349" xml:space="preserve" y="428.7812" clip-path="url(#clipPath2)" stroke="none"
+      >stateSummary(state)</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M607.3624 470.4688 L230.7935 470.4688" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M242.0518 463.9688 L230.7935 470.4688 L242.0518 476.9688" clip-path="url(#clipPath2)"
+      /><text x="387" xml:space="preserve" y="466.9688" clip-path="url(#clipPath2)" stroke="none"
+      >summary</text
+      ><path fill="none" d="M230.7935 524.75 L607.3624 524.75" clip-path="url(#clipPath2)"
+      /><path d="M596.104 531.25 L607.3624 524.75 L596.104 518.25 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M596.104 531.25 L607.3624 524.75 L596.104 518.25 Z" clip-path="url(#clipPath2)"
+      /><text x="342" xml:space="preserve" y="505.1562" clip-path="url(#clipPath2)" stroke="none"
+      >memoryContext(focus,</text
+      ><text x="367" xml:space="preserve" y="521.25" clip-path="url(#clipPath2)" stroke="none"
+      >maxChars) (n3)</text
+      ><path fill="none" d="M627.3624 595.125 L1003.9312 595.125" clip-path="url(#clipPath2)"
+      /><path d="M992.6729 601.625 L1003.9312 595.125 L992.6729 588.625 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M992.6729 601.625 L1003.9312 595.125 L992.6729 588.625 Z" clip-path="url(#clipPath2)"
+      /><text x="749" xml:space="preserve" y="575.5312" clip-path="url(#clipPath2)" stroke="none"
+      >buildContext(focus,</text
+      ><text x="779" xml:space="preserve" y="591.625" clip-path="url(#clipPath2)" stroke="none"
+      >maxChars)</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1003.9312 649.4062 L627.3624 649.4062" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M638.6207 642.9062 L627.3624 649.4062 L638.6207 655.9062" clip-path="url(#clipPath2)"
+      /><text x="790" xml:space="preserve" y="645.9062" clip-path="url(#clipPath2)" stroke="none"
+      >context</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M607.3624 687.5938 L230.7935 687.5938" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M242.0518 681.0938 L230.7935 687.5938 L242.0518 694.0938" clip-path="url(#clipPath2)"
+      /><text x="393" xml:space="preserve" y="684.0938" clip-path="url(#clipPath2)" stroke="none"
+      >context</text
+      ><path fill="none" d="M230.7935 725.7812 L607.3624 725.7812" clip-path="url(#clipPath2)"
+      /><path d="M596.104 732.2812 L607.3624 725.7812 L596.104 719.2812 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M596.104 732.2812 L607.3624 725.7812 L596.104 719.2812 Z" clip-path="url(#clipPath2)"
+      /><text x="330" xml:space="preserve" y="722.2812" clip-path="url(#clipPath2)" stroke="none"
+      >fromTemplate(name, vars)</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M607.3624 763.9688 L230.7935 763.9688" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M242.0518 757.4688 L230.7935 763.9688 L242.0518 770.4688" clip-path="url(#clipPath2)"
+      /><text x="380" xml:space="preserve" y="760.4688" clip-path="url(#clipPath2)" stroke="none"
+      >promptText</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M230.7935 796.0625 L250.7935 796.0625 L250.7935 829.0625 L230.7935 829.0625" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M242.0518 822.5625 L230.7935 829.0625 L242.0518 835.5625" clip-path="url(#clipPath2)"
+      /><text x="255.2935" xml:space="preserve" y="817.1094" clip-path="url(#clipPath2)" stroke="none"
+      >request</text
+      ><path fill="none" d="M230.7935 899.3438 L1400.5 899.3438" clip-path="url(#clipPath2)"
+      /><path d="M1389.2417 905.8438 L1400.5 899.3438 L1389.2417 892.8438 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M1389.2417 905.8438 L1400.5 899.3438 L1389.2417 892.8438 Z" clip-path="url(#clipPath2)"
+      /><text x="774" xml:space="preserve" y="895.8438" clip-path="url(#clipPath2)" stroke="none"
+      >isAvailable()</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1400.5 937.5312 L230.7935 937.5312" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M242.0518 931.0312 L230.7935 937.5312 L242.0518 944.0312" clip-path="url(#clipPath2)"
+      /><text x="785" xml:space="preserve" y="934.0312" clip-path="url(#clipPath2)" stroke="none"
+      >available</text
+      ><path fill="none" d="M230.7935 1034.7188 L1400.5 1034.7188" clip-path="url(#clipPath2)"
+      /><path d="M1389.2417 1041.2188 L1400.5 1034.7188 L1389.2417 1028.2188 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M1389.2417 1041.2188 L1400.5 1034.7188 L1389.2417 1028.2188 Z" clip-path="url(#clipPath2)"
+      /><text x="754" xml:space="preserve" y="1031.2188" clip-path="url(#clipPath2)" stroke="none"
+      >complete(request)</text
+      ><path fill="none" d="M1420.5 1072.9062 L1440.5 1072.9062 L1440.5 1111.0938 L1420.5 1111.0938" clip-path="url(#clipPath2)"
+      /><path d="M1431.7583 1104.5938 L1420.5 1111.0938 L1431.7583 1117.5938 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M1431.7583 1104.5938 L1420.5 1111.0938 L1431.7583 1117.5938 Z" clip-path="url(#clipPath2)"
+      /><text x="1445" xml:space="preserve" y="1088.5" clip-path="url(#clipPath2)" stroke="none"
+      >toHttpRequest(</text
+      ><text x="1445" xml:space="preserve" y="1104.5938" clip-path="url(#clipPath2)" stroke="none"
+      >request)</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1420.5 1111.0938 L1440.5 1111.0938 L1440.5 1165.375 L1420.5 1165.375" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M1431.7583 1158.875 L1420.5 1165.375 L1431.7583 1171.875" clip-path="url(#clipPath2)"
+      /><text x="1445" xml:space="preserve" y="1142.7812" clip-path="url(#clipPath2)" stroke="none"
+      >httpRequest</text
+      ><path fill="none" d="M1420.5 1165.375 L1797.0688 1165.375" clip-path="url(#clipPath2)"
+      /><path d="M1785.8105 1171.875 L1797.0688 1165.375 L1785.8105 1158.875 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M1785.8105 1171.875 L1797.0688 1165.375 L1785.8105 1158.875 Z" clip-path="url(#clipPath2)"
+      /><text x="1547" xml:space="preserve" y="1145.7812" clip-path="url(#clipPath2)" stroke="none"
+      >send(httpRequest,</text
+      ><text x="1580" xml:space="preserve" y="1161.875" clip-path="url(#clipPath2)" stroke="none"
+      >handler)</text
+      ><path fill="none" d="M1817.0688 1219.6562 L2193.6377 1219.6562" clip-path="url(#clipPath2)"
+      /><path d="M2182.3794 1226.1562 L2193.6377 1219.6562 L2182.3794 1213.1562 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M2182.3794 1226.1562 L2193.6377 1219.6562 L2182.3794 1213.1562 Z" clip-path="url(#clipPath2)"
+      /><text x="1924" xml:space="preserve" y="1216.1562" clip-path="url(#clipPath2)" stroke="none"
+      >POST /chat/completions</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M2193.6377 1257.8438 L1817.0688 1257.8438" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M1828.3271 1251.3438 L1817.0688 1257.8438 L1828.3271 1264.3438" clip-path="url(#clipPath2)"
+      /><text x="1967" xml:space="preserve" y="1254.3438" clip-path="url(#clipPath2)" stroke="none"
+      >JSON body</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1797.0688 1296.0312 L1420.5 1296.0312" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M1431.7583 1289.5312 L1420.5 1296.0312 L1431.7583 1302.5312" clip-path="url(#clipPath2)"
+      /><text x="1562" xml:space="preserve" y="1292.5312" clip-path="url(#clipPath2)" stroke="none"
+      >httpResponse</text
+      ><path fill="none" d="M1420.5 1334.2188 L1440.5 1334.2188 L1440.5 1372.4062 L1420.5 1372.4062" clip-path="url(#clipPath2)"
+      /><path d="M1431.7583 1365.9062 L1420.5 1372.4062 L1431.7583 1378.9062 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M1431.7583 1365.9062 L1420.5 1372.4062 L1431.7583 1378.9062 Z" clip-path="url(#clipPath2)"
+      /><text x="1445" xml:space="preserve" y="1349.8125" clip-path="url(#clipPath2)" stroke="none"
+      >toLlmResponse(</text
+      ><text x="1445" xml:space="preserve" y="1365.9062" clip-path="url(#clipPath2)" stroke="none"
+      >httpResponse)</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1420.5 1372.4062 L1440.5 1372.4062 L1440.5 1410.5938 L1420.5 1410.5938" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M1431.7583 1404.0938 L1420.5 1410.5938 L1431.7583 1417.0938" clip-path="url(#clipPath2)"
+      /><text x="1445" xml:space="preserve" y="1396.0469" clip-path="url(#clipPath2)" stroke="none"
+      >response</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1400.5 1410.5938 L230.7935 1410.5938" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M242.0518 1404.0938 L230.7935 1410.5938 L242.0518 1417.0938" clip-path="url(#clipPath2)"
+      /><text x="784" xml:space="preserve" y="1407.0938" clip-path="url(#clipPath2)" stroke="none"
+      >response</text
+      ><path fill="none" d="M230.7935 1519.9688 L250.7935 1519.9688 L250.7935 1574.25 L230.7935 1574.25" clip-path="url(#clipPath2)"
+      /><path d="M242.0518 1567.75 L230.7935 1574.25 L242.0518 1580.75 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M242.0518 1567.75 L230.7935 1574.25 L242.0518 1580.75 Z" clip-path="url(#clipPath2)"
+      /><text x="255.2935" xml:space="preserve" y="1543.6094" clip-path="url(#clipPath2)" stroke="none"
+      >parse(</text
+      ><text x="255.2935" xml:space="preserve" y="1559.7031" clip-path="url(#clipPath2)" stroke="none"
+      >response)</text
+      ><path fill="none" d="M230.7935 1574.25 L2590.2065 1574.25" clip-path="url(#clipPath2)"
+      /><path d="M2578.9482 1580.75 L2590.2065 1574.25 L2578.9482 1567.75 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M2578.9482 1580.75 L2590.2065 1574.25 L2578.9482 1567.75 Z" clip-path="url(#clipPath2)"
+      /><text x="1339" xml:space="preserve" y="1554.6562" clip-path="url(#clipPath2)" stroke="none"
+      >parseJson(response.</text
+      ><text x="1358" xml:space="preserve" y="1570.75" clip-path="url(#clipPath2)" stroke="none"
+      >getText(), type)</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M2590.2065 1628.5312 L230.7935 1628.5312" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M242.0518 1622.0312 L230.7935 1628.5312 L242.0518 1635.0312" clip-path="url(#clipPath2)"
+      /><text x="1388" xml:space="preserve" y="1625.0312" clip-path="url(#clipPath2)" stroke="none"
+      >output</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M230.7935 1660.625 L250.7935 1660.625 L250.7935 1693.625 L230.7935 1693.625" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M242.0518 1687.125 L230.7935 1693.625 L242.0518 1700.125" clip-path="url(#clipPath2)"
+      /><text x="255.2935" xml:space="preserve" y="1681.6719" clip-path="url(#clipPath2)" stroke="none"
+      >output</text
+      ><path fill="none" d="M230.7935 1771.9531 L250.7935 1771.9531 L250.7935 1826.2344 L230.7935 1826.2344" clip-path="url(#clipPath2)"
+      /><path d="M242.0518 1819.7344 L230.7935 1826.2344 L242.0518 1832.7344 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M242.0518 1819.7344 L230.7935 1826.2344 L242.0518 1832.7344 Z" clip-path="url(#clipPath2)"
+      /><text x="255.2935" xml:space="preserve" y="1787.5469" clip-path="url(#clipPath2)" stroke="none"
+      >isValid(</text
+      ><text x="255.2935" xml:space="preserve" y="1803.6406" clip-path="url(#clipPath2)" stroke="none"
+      >output,</text
+      ><text x="255.2935" xml:space="preserve" y="1819.7344" clip-path="url(#clipPath2)" stroke="none"
+      >input)</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M230.7935 1866.375 L250.7935 1866.375 L250.7935 1892.375 L230.7935 1892.375" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M242.0518 1885.875 L230.7935 1892.375 L242.0518 1898.875" clip-path="url(#clipPath2)"
+      /><text x="255.2935" xml:space="preserve" y="1883.9219" clip-path="url(#clipPath2)" stroke="none"
+      >valid</text
+    ></g
+    ><g font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke="rgb(255,255,255)" stroke-opacity="0"
+    ><path d="M63.5091 1676.625 L399.0779 1676.625 L399.0779 1909.375 L63.5091 1909.375 Z" stroke="none" clip-path="url(#clipPath2)"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><path fill="none" d="M63.5091 1676.625 L399.0779 1676.625 L399.0779 1909.375 L63.5091 1909.375 Z" clip-path="url(#clipPath2)"
+      /><text x="68.0091" xml:space="preserve" y="1692.2188" clip-path="url(#clipPath2)" stroke="none"
+      >opt</text
+      ><path fill="none" d="M63.5091 1698.7188 L103.3275 1698.7188 L123.3275 1689.8812 L123.3275 1676.625" clip-path="url(#clipPath2)"
+    /></g
+    ><g font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke="rgb(255,255,255)" stroke-opacity="0"
+    ><path d="M56.5091 1432.6875 L2764.491 1432.6875 L2764.491 1942.375 L56.5091 1942.375 Z" stroke="none" clip-path="url(#clipPath2)"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><path fill="none" d="M56.5091 1432.6875 L2764.491 1432.6875 L2764.491 1942.375 L56.5091 1942.375 Z" clip-path="url(#clipPath2)"
+      /><text x="61.0091" xml:space="preserve" y="1448.2812" clip-path="url(#clipPath2)" stroke="none"
+      >opt</text
+      ><path fill="none" d="M56.5091 1454.7812 L96.3275 1454.7812 L116.3275 1445.9437 L116.3275 1432.6875" clip-path="url(#clipPath2)"
+    /></g
+    ><g font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke="rgb(255,255,255)" stroke-opacity="0"
+    ><path d="M49.5091 959.625 L2771.491 959.625 L2771.491 1975.375 L49.5091 1975.375 Z" stroke="none" clip-path="url(#clipPath2)"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><path fill="none" d="M49.5091 959.625 L2771.491 959.625 L2771.491 1975.375 L49.5091 1975.375 Z" clip-path="url(#clipPath2)"
+      /><text x="54.0091" xml:space="preserve" y="975.2188" clip-path="url(#clipPath2)" stroke="none"
+      >opt</text
+      ><path fill="none" d="M49.5091 981.7188 L89.3275 981.7188 L109.3275 972.8812 L109.3275 959.625" clip-path="url(#clipPath2)"
+    /></g
+    ><g font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke="rgb(255,255,255)" stroke-opacity="0"
+    ><path d="M42.5091 812.0625 L2778.491 812.0625 L2778.491 2008.375 L42.5091 2008.375 Z" stroke="none" clip-path="url(#clipPath2)"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><path fill="none" d="M42.5091 812.0625 L2778.491 812.0625 L2778.491 2008.375 L42.5091 2008.375 Z" clip-path="url(#clipPath2)"
+      /><text x="47.0091" xml:space="preserve" y="827.6562" clip-path="url(#clipPath2)" stroke="none"
+      >loop</text
+      ><path fill="none" d="M42.5091 834.1562 L89.5325 834.1562 L109.5325 825.3187 L109.5325 812.0625" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M230.7935 2133.8438 L250.7935 2133.8438 L250.7935 2172.0312 L230.7935 2172.0312" clip-path="url(#clipPath2)"
+      /><path d="M242.0518 2165.5312 L230.7935 2172.0312 L242.0518 2178.5312 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M242.0518 2165.5312 L230.7935 2172.0312 L242.0518 2178.5312 Z" clip-path="url(#clipPath2)"
+      /><text x="255.2935" xml:space="preserve" y="2149.4375" clip-path="url(#clipPath2)" stroke="none"
+      >fallback(</text
+      ><text x="255.2935" xml:space="preserve" y="2165.5312" clip-path="url(#clipPath2)" stroke="none"
+      >input) (n4)</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M230.7935 2172.0312 L250.7935 2172.0312 L250.7935 2204.125 L230.7935 2204.125" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M242.0518 2197.625 L230.7935 2204.125 L242.0518 2210.625" clip-path="url(#clipPath2)"
+      /><text x="255.2935" xml:space="preserve" y="2192.625" clip-path="url(#clipPath2)" stroke="none"
+      >output</text
+    ></g
+    ><g font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke="rgb(255,255,255)" stroke-opacity="0"
+    ><path d="M42.5091 2014.375 L399.0779 2014.375 L399.0779 2221.125 L42.5091 2221.125 Z" stroke="none" clip-path="url(#clipPath2)"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><path fill="none" d="M42.5091 2014.375 L399.0779 2014.375 L399.0779 2221.125 L42.5091 2221.125 Z" clip-path="url(#clipPath2)"
+      /><text x="47.0091" xml:space="preserve" y="2029.9688" clip-path="url(#clipPath2)" stroke="none"
+      >opt</text
+      ><path fill="none" d="M42.5091 2036.4688 L82.3275 2036.4688 L102.3275 2027.6312 L102.3275 2014.375" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M230.7935 2243.2188 L0.5 2243.2188" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M11.7583 2236.7188 L0.5 2243.2188 L11.7583 2249.7188" clip-path="url(#clipPath2)"
+      /><text x="324" xml:space="preserve" y="2239.7188" clip-path="url(#clipPath2)" stroke="none"
+      >output</text
+    ></g
+    ><g font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke="rgb(255,255,255)" stroke-opacity="0"
+    ><rect x="42.5091" width="356.5688" height="58.2812" y="223.5312" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="42.5091" width="356.5688" height="58.2812" y="223.5312" clip-path="url(#clipPath2)"
+      /><text x="172" xml:space="preserve" y="257.2188" clip-path="url(#clipPath2)" text-decoration="underline" stroke="none"
+      >task : LlmTask</text
+      ><text x="208" xml:space="preserve" y="302.3594" clip-path="url(#clipPath2)" stroke="none"
+      >(n1)</text
+      ><text x="112" xml:space="preserve" y="857.6562" clip-path="url(#clipPath2)" stroke="none"
+      >[attempt ≤ MAX_ATTEMPTS and</text
+      ><text x="156" xml:space="preserve" y="873.75" clip-path="url(#clipPath2)" stroke="none"
+      >no valid output yet]</text
+      ><text x="186" xml:space="preserve" y="1007.1719" clip-path="url(#clipPath2)" stroke="none"
+      >[available]</text
+      ><text x="152" xml:space="preserve" y="1478.2812" clip-path="url(#clipPath2)" stroke="none"
+      >[response.isOk() (no</text
+      ><text x="134" xml:space="preserve" y="1494.375" clip-path="url(#clipPath2)" stroke="none"
+      >network error or timeout)]</text
+      ><text x="162" xml:space="preserve" y="1722.2188" clip-path="url(#clipPath2)" stroke="none"
+      >[output is not null</text
+      ><text x="151" xml:space="preserve" y="1738.3125" clip-path="url(#clipPath2)" stroke="none"
+      >(well-formed JSON)]</text
+      ><text x="150" xml:space="preserve" y="2059.9688" clip-path="url(#clipPath2)" stroke="none"
+      >[no valid output: LLM</text
+      ><text x="152" xml:space="preserve" y="2076.0625" clip-path="url(#clipPath2)" stroke="none"
+      >unavailable, timeout,</text
+      ><text x="131" xml:space="preserve" y="2092.1562" clip-path="url(#clipPath2)" stroke="none"
+      >malformed JSON or invalid</text
+      ><text x="199" xml:space="preserve" y="2108.25" clip-path="url(#clipPath2)" stroke="none"
+      >twice]</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M220.7935 281.8125 L220.7935 289.7656" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M220.7935 305.8594 L220.7935 355.9062" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M210.7935 355.9062 L210.7935 845.0625" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M230.7935 355.9062 L230.7935 845.0625" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M210.7935 355.9062 L230.7935 355.9062" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M210.7935 877.25 L210.7935 994.5781" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M230.7935 877.25 L230.7935 994.5781" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M210.7935 1010.6719 L210.7935 1465.6875" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M230.7935 1010.6719 L230.7935 1465.6875" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M210.7935 1497.875 L210.7935 1709.625" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M230.7935 1497.875 L230.7935 1709.625" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M210.7935 1741.8125 L210.7935 2047.375" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M230.7935 1741.8125 L230.7935 2047.375" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M210.7935 2111.75 L210.7935 2243.2188" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M230.7935 2111.75 L230.7935 2243.2188" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M210.7935 2243.2188 L230.7935 2243.2188" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M220.7935 2243.2188 L220.7935 2285.3125" clip-path="url(#clipPath2)" stroke-linecap="butt"
+    /></g
+    ><g stroke-linecap="butt" font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke-dasharray="8,5" stroke="rgb(255,255,255)" stroke-opacity="0" stroke-miterlimit="5"
+    ><rect x="439.0779" width="356.5688" height="58.2812" y="223.5312" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="439.0779" width="356.5688" height="58.2812" y="223.5312" clip-path="url(#clipPath2)"
+      /><text x="567" xml:space="preserve" y="257.2188" clip-path="url(#clipPath2)" text-decoration="underline" stroke="none"
+      >:PromptBuilder</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M617.3624 281.8125 L617.3624 432.2812" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M607.3624 432.2812 L607.3624 470.4688" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M627.3624 432.2812 L627.3624 470.4688" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M607.3624 432.2812 L627.3624 432.2812" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M607.3624 470.4688 L627.3624 470.4688" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M617.3624 470.4688 L617.3624 524.75" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M607.3624 524.75 L607.3624 687.5938" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M627.3624 524.75 L627.3624 687.5938" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M607.3624 524.75 L627.3624 524.75" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M607.3624 687.5938 L627.3624 687.5938" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M617.3624 687.5938 L617.3624 725.7812" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M607.3624 725.7812 L607.3624 763.9688" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M627.3624 725.7812 L627.3624 763.9688" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M607.3624 725.7812 L627.3624 725.7812" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M607.3624 763.9688 L627.3624 763.9688" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M617.3624 763.9688 L617.3624 2285.3125" clip-path="url(#clipPath2)" stroke-linecap="butt"
+    /></g
+    ><g stroke-linecap="butt" font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke-dasharray="8,5" stroke="rgb(255,255,255)" stroke-opacity="0" stroke-miterlimit="5"
+    ><rect x="835.6468" width="356.5688" height="58.2812" y="223.5312" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="835.6468" width="356.5688" height="58.2812" y="223.5312" clip-path="url(#clipPath2)"
+      /><text x="954" xml:space="preserve" y="257.2188" clip-path="url(#clipPath2)" text-decoration="underline" stroke="none"
+      >:MemoryManager</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1013.9312 281.8125 L1013.9312 595.125" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M1003.9312 595.125 L1003.9312 649.4062" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1023.9312 595.125 L1023.9312 649.4062" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1003.9312 595.125 L1023.9312 595.125" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1003.9312 649.4062 L1023.9312 649.4062" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1013.9312 649.4062 L1013.9312 2285.3125" clip-path="url(#clipPath2)" stroke-linecap="butt"
+    /></g
+    ><g stroke-linecap="butt" font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke-dasharray="8,5" stroke="rgb(255,255,255)" stroke-opacity="0" stroke-miterlimit="5"
+    ><rect x="1232.2156" width="356.5688" height="58.2812" y="223.5312" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="1232.2156" width="356.5688" height="58.2812" y="223.5312" clip-path="url(#clipPath2)"
+      /><text x="1341" xml:space="preserve" y="257.2188" clip-path="url(#clipPath2)" text-decoration="underline" stroke="none"
+      >llm : DeepSeekClient</text
+      ><text x="1396" xml:space="preserve" y="328.3594" clip-path="url(#clipPath2)" stroke="none"
+      >(n2)</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1410.5 281.8125 L1410.5 315.7656" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1410.5 331.8594 L1410.5 899.3438" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M1400.5 899.3438 L1400.5 937.5312" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1420.5 899.3438 L1420.5 937.5312" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1400.5 899.3438 L1420.5 899.3438" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1400.5 937.5312 L1420.5 937.5312" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1410.5 937.5312 L1410.5 1034.7188" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M1400.5 1034.7188 L1400.5 1410.5938" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1420.5 1034.7188 L1420.5 1410.5938" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1400.5 1034.7188 L1420.5 1034.7188" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1400.5 1410.5938 L1420.5 1410.5938" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1410.5 1410.5938 L1410.5 2285.3125" clip-path="url(#clipPath2)" stroke-linecap="butt"
+    /></g
+    ><g stroke-linecap="butt" font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke-dasharray="8,5" stroke="rgb(255,255,255)" stroke-opacity="0" stroke-miterlimit="5"
+    ><rect x="1628.7844" width="356.5688" height="58.2812" y="223.5312" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="1628.7844" width="356.5688" height="58.2812" y="223.5312" clip-path="url(#clipPath2)"
+      /><text x="1771" xml:space="preserve" y="257.2188" clip-path="url(#clipPath2)" text-decoration="underline" stroke="none"
+      >:HttpClient</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1807.0688 281.8125 L1807.0688 1165.375" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M1797.0688 1165.375 L1797.0688 1296.0312" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1817.0688 1165.375 L1817.0688 1296.0312" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1797.0688 1165.375 L1817.0688 1165.375" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1797.0688 1296.0312 L1817.0688 1296.0312" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1807.0688 1296.0312 L1807.0688 2285.3125" clip-path="url(#clipPath2)" stroke-linecap="butt"
+    /></g
+    ><g stroke-linecap="butt" font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke-dasharray="8,5" stroke="rgb(255,255,255)" stroke-opacity="0" stroke-miterlimit="5"
+    ><rect x="2025.3532" width="356.5688" height="58.2812" y="223.5312" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="2025.3532" width="356.5688" height="58.2812" y="223.5312" clip-path="url(#clipPath2)"
+      /><text x="2142" xml:space="preserve" y="241.125" clip-path="url(#clipPath2)" stroke="none"
+      >«external system»</text
+      ><text x="2155" xml:space="preserve" y="257.2188" clip-path="url(#clipPath2)" stroke="none"
+      >DeepSeek API</text
+      ><text x="2156" xml:space="preserve" y="273.3125" clip-path="url(#clipPath2)" stroke="none"
+      >(LLM Service)</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M2203.6377 281.8125 L2203.6377 1219.6562" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M2193.6377 1219.6562 L2193.6377 1257.8438" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M2213.6377 1219.6562 L2213.6377 1257.8438" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M2193.6377 1219.6562 L2213.6377 1219.6562" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M2193.6377 1257.8438 L2213.6377 1257.8438" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M2203.6377 1257.8438 L2203.6377 2285.3125" clip-path="url(#clipPath2)" stroke-linecap="butt"
+    /></g
+    ><g stroke-linecap="butt" font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke-dasharray="8,5" stroke="rgb(255,255,255)" stroke-opacity="0" stroke-miterlimit="5"
+    ><rect x="2421.9221" width="356.5688" height="58.2812" y="223.5312" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="2421.9221" width="356.5688" height="58.2812" y="223.5312" clip-path="url(#clipPath2)"
+      /><text x="2543" xml:space="preserve" y="257.2188" clip-path="url(#clipPath2)" text-decoration="underline" stroke="none"
+      >:ResponseParser</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M2600.2065 281.8125 L2600.2065 1574.25" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M2590.2065 1574.25 L2590.2065 1628.5312" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M2610.2065 1574.25 L2610.2065 1628.5312" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M2590.2065 1574.25 L2610.2065 1574.25" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M2590.2065 1628.5312 L2610.2065 1628.5312" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M2600.2065 1628.5312 L2600.2065 2285.3125" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M0.5 2309 L2819 2309" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M0.5 0.5 L0.5 2309" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M2819 0.5 L2819 2309" clip-path="url(#clipPath2)"
+    /></g
+  ></g
+></svg
+>

@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLSequenceAllInOne</id>
+    <coordinates>
+      <x>10</x>
+      <y>10</y>
+      <w>4410</w>
+      <h>2800</h>
+    </coordinates>
+    <panel_attributes>title=SD01 — Create Character (UC01, F01; Factory Method)
+desc=Notes\n(n1) static call on the class; cls = WARRIOR in this example\n(n2) current location = start location, mode = new ExplorationMode()
+obj=Player~P ACTOR
+obj=«boundary»\n_:SwingGameView_~V
+obj=«control»\n_:GameController_~GC
+obj=_stats : Stats_~S CREATED_LATER
+obj=«static»\nCharacterFactory~CF
+obj=_f : WarriorFactory_~WF
+obj=_player : Player_~PL CREATED_LATER
+obj=_:BackstoryWriter_~BW
+obj=_llm : LLMClient_~LLM
+obj=«static»\nWorld~W
+obj=_:GameState_~GS
+
+P-&gt;&gt;&gt;V :enter name, choose\nclass, spend stat\npoints,\nclick "Create"; on=V
+tick=2
+V-&gt;&gt;&gt;S :«create» Stats(strength,\nagility, intelligence)
+V-&gt;&gt;&gt;GC :newGame(name, cls,\nstats); on=GC
+GC-&gt;&gt;&gt;S :isValid(); on=S
+S.&gt;GC :valid; off=S
+combinedFragment=alt~cf1 V LLM
+V:[name is blank]
+GC-&gt;&gt;&gt;V :showError("Enter a name\nfor your character")
+V.&gt;GC
+..=cf1
+V:[stats are not valid]
+GC-&gt;&gt;&gt;V :showError("Spend exactly\n10 points, 1–8 per\nstat")
+tick=1
+V.&gt;GC
+..=cf1
+V:[name and stats are valid]
+GC-&gt;&gt;&gt;CF :forClass(cls); on=CF
+CF.&gt;GC :f; off=CF
+CF:(n1)
+GC-&gt;&gt;&gt;WF :createCharacter(name,\nstats); on=WF
+WF-&gt;&gt;&gt;WF + :baseHp()
+WF.&gt;WF + :hp
+WF-&gt;&gt;&gt;WF + :createStartingKit()
+WF.&gt;WF + :kit
+WF-&gt;&gt;&gt;PL :«create» Player(name,\ncls, stats, hp, kit)
+WF.&gt;GC :player; off=WF
+GC-&gt;&gt;&gt;BW :write(player); on=BW
+BW-&gt;&gt;&gt;BW + :run(player)
+tick=
+ref=BW LLM :SD00 — Run an LLM Task\n(fallback: template backstory for the class)
+BW.&gt;BW + :backstory
+BW.&gt;GC :backstory; off=BW
+GC-&gt;&gt;&gt;PL :setBackstory(backstory); on=PL
+PL.&gt;GC; off=PL
+--=cf1
+GC.&gt;V :player (null if input\nwas invalid); off=GC
+V.&gt;P :backstory shown with\n"Regenerate" and "Start"; off=V
+combinedFragment=opt~cf2 P GS
+P:[player was created]
+combinedFragment=loop~cf3 P LLM
+P:[while the player clicks\n"Regenerate" (UC01 6a)]
+P-&gt;&gt;&gt;V :click "Regenerate"; on=V
+V-&gt;&gt;&gt;GC :regenerateBackstory(); on=GC
+GC-&gt;&gt;&gt;BW :write(player); on=BW
+ref=BW LLM :SD00
+BW.&gt;GC :backstory; off=BW
+GC-&gt;&gt;&gt;PL :setBackstory(backstory); on=PL
+PL.&gt;GC; off=PL
+GC.&gt;V :backstory; off=GC
+V.&gt;P :new backstory shown; off=V
+--=cf3
+P-&gt;&gt;&gt;V :click "Start" (accepts\nthe backstory); on=V
+V-&gt;&gt;&gt;GC :startGame(); on=GC
+GC-&gt;&gt;&gt;W :createDefault(); on=W
+W.&gt;GC :world; off=W
+GC-&gt;&gt;&gt;GS :start(player, world) (n2); on=GS
+GS.&gt;GC; off=GS
+GC-&gt;&gt;&gt;V :render(state)
+V.&gt;GC
+GC.&gt;V; off=GC
+V.&gt;P :game begins in the start\nlocation; off=V
+--=cf2</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

@@ -1,82 +1,391 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1100" height="1375" viewBox="0 0 1100 1375" font-family="Helvetica, Arial, sans-serif">
-<defs><marker id="open" viewBox="0 0 12 12" refX="11" refY="6" markerWidth="11" markerHeight="11" orient="auto"><path d="M1 1 L11 6 L1 11" fill="none" stroke="#222" stroke-width="1.4"/></marker></defs>
-<rect width="1100" height="1375" fill="#fff"/>
-<text x="550.0" y="30" text-anchor="middle" font-size="17" font-weight="bold">Use-Case Diagram — AI Game Master</text>
-<rect x="190" y="55" width="600" height="1290" fill="#FCFCFC" stroke="#222" stroke-width="1.3"/>
-<text x="490.0" y="77" text-anchor="middle" font-size="15" font-weight="bold">AI Game Master</text>
-<line x1="86.0" y1="670.0" x2="345.0" y2="110.0" stroke="#222" stroke-width="1.2"/>
-<line x1="86.0" y1="670.0" x2="345.0" y2="205.0" stroke="#222" stroke-width="1.2"/>
-<line x1="86.0" y1="670.0" x2="355.0" y2="330.0" stroke="#222" stroke-width="1.2"/>
-<line x1="86.0" y1="670.0" x2="335.0" y2="460.0" stroke="#222" stroke-width="1.2"/>
-<line x1="86.0" y1="670.0" x2="350.0" y2="595.0" stroke="#222" stroke-width="1.2"/>
-<line x1="86.0" y1="670.0" x2="345.0" y2="685.0" stroke="#222" stroke-width="1.2"/>
-<line x1="86.0" y1="670.0" x2="345.0" y2="760.0" stroke="#222" stroke-width="1.2"/>
-<line x1="86.0" y1="670.0" x2="345.0" y2="840.0" stroke="#222" stroke-width="1.2"/>
-<line x1="86.0" y1="670.0" x2="345.0" y2="920.0" stroke="#222" stroke-width="1.2"/>
-<line x1="86.0" y1="670.0" x2="345.0" y2="995.0" stroke="#222" stroke-width="1.2"/>
-<line x1="86.0" y1="670.0" x2="345.0" y2="1070.0" stroke="#222" stroke-width="1.2"/>
-<line x1="86.0" y1="670.0" x2="345.0" y2="1145.0" stroke="#222" stroke-width="1.2"/>
-<line x1="86.0" y1="670.0" x2="360.0" y2="1220.0" stroke="#222" stroke-width="1.2"/>
-<line x1="86.0" y1="670.0" x2="360.0" y2="1290.0" stroke="#222" stroke-width="1.2"/>
-<line x1="894.0" y1="550.0" x2="595.0" y2="110.0" stroke="#222" stroke-width="1.2"/>
-<line x1="894.0" y1="550.0" x2="605.0" y2="460.0" stroke="#222" stroke-width="1.2"/>
-<line x1="894.0" y1="550.0" x2="595.0" y2="205.0" stroke="#222" stroke-width="1.2"/>
-<line x1="894.0" y1="550.0" x2="595.0" y2="685.0" stroke="#222" stroke-width="1.2"/>
-<line x1="894.0" y1="550.0" x2="585.0" y2="330.0" stroke="#222" stroke-width="1.2"/>
-<line x1="894.0" y1="550.0" x2="595.0" y2="1145.0" stroke="#222" stroke-width="1.2"/>
-<line x1="894.0" y1="1210.0" x2="580.0" y2="1220.0" stroke="#222" stroke-width="1.2"/>
-<line x1="894.0" y1="1210.0" x2="580.0" y2="1290.0" stroke="#222" stroke-width="1.2"/>
-<line x1="470.0" y1="298.0" x2="470.0" y2="247.0" stroke="#222" stroke-width="1.2" stroke-dasharray="7 5" marker-end="url(#open)"/>
-<text x="480.0" y="276.5" text-anchor="start" font-size="12" paint-order="stroke" stroke="#fff" stroke-width="5">«extend»</text>
-<text x="480.0" y="291.5" text-anchor="start" font-size="11.5" fill="#444" paint-order="stroke" stroke="#fff" stroke-width="5">(quest offered)</text>
-<line x1="470.0" y1="563.0" x2="470.0" y2="512.0" stroke="#222" stroke-width="1.2" stroke-dasharray="7 5" marker-end="url(#open)"/>
-<text x="480.0" y="541.5" text-anchor="start" font-size="12" paint-order="stroke" stroke="#fff" stroke-width="5">«extend»</text>
-<text x="480.0" y="556.5" text-anchor="start" font-size="11.5" fill="#444" paint-order="stroke" stroke="#fff" stroke-width="5">(LLM unavailable)</text>
-<ellipse cx="470" cy="110" rx="125" ry="27" fill="#fff" stroke="#222" stroke-width="1.3"/>
-<text x="470" y="114.5" text-anchor="middle" font-size="13">UC01 Create Character</text>
-<ellipse cx="470" cy="205" rx="125" ry="42" fill="#fff" stroke="#222" stroke-width="1.3"/>
-<text x="470" y="183" text-anchor="middle" font-size="13">UC03 Talk to NPC</text>
-<line x1="352.1" y1="191" x2="587.9" y2="191" stroke="#222" stroke-width="1"/>
-<text x="470" y="206" text-anchor="middle" font-size="11.5" font-weight="bold">Extension points:</text>
-<text x="470" y="220" text-anchor="middle" font-size="11.5">quest offered</text>
-<ellipse cx="470" cy="330" rx="115" ry="32" fill="#fff" stroke="#222" stroke-width="1.3"/>
-<text x="470" y="327.0" text-anchor="middle" font-size="13">UC07 Receive and</text>
-<text x="470" y="342.0" text-anchor="middle" font-size="13">Accept Quest</text>
-<ellipse cx="470" cy="460" rx="135" ry="52" fill="#fff" stroke="#222" stroke-width="1.3"/>
-<text x="470" y="428" text-anchor="middle" font-size="13">UC02 Perform Action in</text>
-<text x="470" y="443" text-anchor="middle" font-size="13">Natural Language</text>
-<line x1="337.0" y1="451" x2="603.0" y2="451" stroke="#222" stroke-width="1"/>
-<text x="470" y="466" text-anchor="middle" font-size="11.5" font-weight="bold">Extension points:</text>
-<text x="470" y="480" text-anchor="middle" font-size="11.5">LLM unavailable</text>
-<ellipse cx="470" cy="595" rx="120" ry="32" fill="#fff" stroke="#222" stroke-width="1.3"/>
-<text x="470" y="592.0" text-anchor="middle" font-size="13">UC14 Use Basic Commands</text>
-<text x="470" y="607.0" text-anchor="middle" font-size="13">(LLM Offline)</text>
-<ellipse cx="470" cy="685" rx="125" ry="27" fill="#fff" stroke="#222" stroke-width="1.3"/>
-<text x="470" y="689.5" text-anchor="middle" font-size="13">UC04 Fight Enemy</text>
-<ellipse cx="470" cy="760" rx="125" ry="27" fill="#fff" stroke="#222" stroke-width="1.3"/>
-<text x="470" y="764.5" text-anchor="middle" font-size="13">UC05 Manage Inventory</text>
-<ellipse cx="470" cy="840" rx="125" ry="32" fill="#fff" stroke="#222" stroke-width="1.3"/>
-<text x="470" y="837.0" text-anchor="middle" font-size="13">UC06 Explore World</text>
-<text x="470" y="852.0" text-anchor="middle" font-size="13">and View Map</text>
-<ellipse cx="470" cy="920" rx="125" ry="27" fill="#fff" stroke="#222" stroke-width="1.3"/>
-<text x="470" y="924.5" text-anchor="middle" font-size="13">UC08 Track Quest Progress</text>
-<ellipse cx="470" cy="995" rx="125" ry="27" fill="#fff" stroke="#222" stroke-width="1.3"/>
-<text x="470" y="999.5" text-anchor="middle" font-size="13">UC12 View Event History</text>
-<ellipse cx="470" cy="1070" rx="125" ry="27" fill="#fff" stroke="#222" stroke-width="1.3"/>
-<text x="470" y="1074.5" text-anchor="middle" font-size="13">UC09 Review Journal</text>
-<ellipse cx="470" cy="1145" rx="125" ry="27" fill="#fff" stroke="#222" stroke-width="1.3"/>
-<text x="470" y="1149.5" text-anchor="middle" font-size="13">UC13 Reach Ending</text>
-<ellipse cx="470" cy="1220" rx="110" ry="27" fill="#fff" stroke="#222" stroke-width="1.3"/>
-<text x="470" y="1224.5" text-anchor="middle" font-size="13">UC10 Save Game</text>
-<ellipse cx="470" cy="1290" rx="110" ry="27" fill="#fff" stroke="#222" stroke-width="1.3"/>
-<text x="470" y="1294.5" text-anchor="middle" font-size="13">UC11 Load Game</text>
-<g stroke="#222" stroke-width="1.4" fill="#fff"><circle cx="70" cy="640" r="10"/><line x1="70" y1="650" x2="70" y2="682"/><line x1="54" y1="662" x2="86" y2="662"/><line x1="70" y1="682" x2="57" y2="704"/><line x1="70" y1="682" x2="83" y2="704"/></g>
-<text x="70" y="722" text-anchor="middle" font-size="13" font-weight="bold">Player</text>
-<g stroke="#222" stroke-width="1.4" fill="#fff"><circle cx="910" cy="520" r="10"/><line x1="910" y1="530" x2="910" y2="562"/><line x1="894" y1="542" x2="926" y2="542"/><line x1="910" y1="562" x2="897" y2="584"/><line x1="910" y1="562" x2="923" y2="584"/></g>
-<text x="934" y="528" text-anchor="start" font-size="11.5" font-style="italic">«external system»</text>
-<text x="934" y="546" text-anchor="start" font-size="13" font-weight="bold">LLM Service</text>
-<text x="934" y="561" text-anchor="start" font-size="13" font-weight="bold">(DeepSeek / Groq)</text>
-<g stroke="#222" stroke-width="1.4" fill="#fff"><circle cx="910" cy="1180" r="10"/><line x1="910" y1="1190" x2="910" y2="1222"/><line x1="894" y1="1202" x2="926" y2="1202"/><line x1="910" y1="1222" x2="897" y2="1244"/><line x1="910" y1="1222" x2="923" y2="1244"/></g>
-<text x="934" y="1188" text-anchor="start" font-size="11.5" font-style="italic">«external system»</text>
-<text x="934" y="1206" text-anchor="start" font-size="13" font-weight="bold">File System</text>
-</svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.0//EN'
+          'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg fill-opacity="1" xmlns:xlink="http://www.w3.org/1999/xlink" color-rendering="auto" color-interpolation="auto" text-rendering="auto" stroke="black" stroke-linecap="square" width="987" stroke-miterlimit="10" shape-rendering="auto" stroke-opacity="1" fill="black" stroke-dasharray="none" font-weight="normal" stroke-width="1" viewBox="38 -10 987 1395" height="1395" xmlns="http://www.w3.org/2000/svg" font-family="'Dialog'" font-style="normal" stroke-linejoin="miter" font-size="12px" stroke-dashoffset="0" image-rendering="auto"
+><!--Generated by the Batik Graphics2D SVG Generator--><defs id="genericDefs"
+  /><g
+  ><defs id="defs1"
+    ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath1"
+      ><path d="M0 0 L2147483647 0 L2147483647 2147483647 L0 2147483647 L0 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath2"
+      ><path d="M0 0 L0 126 L135 126 L135 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath3"
+      ><path d="M0 0 L0 142 L151 142 L151 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath4"
+      ><path d="M0 0 L0 110 L65 110 L65 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath5"
+      ><path d="M0 0 L0 54 L220 54 L220 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath6"
+      ><path d="M0 0 L0 54 L250 54 L250 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath7"
+      ><path d="M0 0 L0 64 L250 64 L250 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath8"
+      ><path d="M0 0 L0 64 L240 64 L240 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath9"
+      ><path d="M0 0 L0 120 L290 120 L290 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath10"
+      ><path d="M0 0 L0 64 L230 64 L230 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath11"
+      ><path d="M0 0 L0 100 L270 100 L270 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath12"
+      ><path d="M0 0 L0 1290 L600 1290 L600 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath13"
+      ><path d="M0 0 L0 28 L520 28 L520 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath14"
+      ><path d="M0 0 L0 80 L150 80 L150 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath15"
+      ><path d="M0 0 L0 80 L130 80 L130 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath16"
+      ><path d="M0 0 L0 110 L350 110 L350 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath17"
+      ><path d="M0 0 L0 40 L350 40 L350 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath18"
+      ><path d="M0 0 L0 630 L330 630 L330 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath19"
+      ><path d="M0 0 L0 250 L340 250 L340 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath20"
+      ><path d="M0 0 L0 170 L330 170 L330 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath21"
+      ><path d="M0 0 L0 380 L320 380 L320 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath22"
+      ><path d="M0 0 L0 120 L310 120 L310 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath23"
+      ><path d="M0 0 L0 470 L330 470 L330 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath24"
+      ><path d="M0 0 L0 650 L310 650 L310 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath25"
+      ><path d="M0 0 L0 580 L310 580 L310 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath26"
+      ><path d="M0 0 L0 510 L290 510 L290 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath27"
+      ><path d="M0 0 L0 430 L290 430 L290 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath28"
+      ><path d="M0 0 L0 360 L290 360 L290 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath29"
+      ><path d="M0 0 L0 280 L290 280 L290 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath30"
+      ><path d="M0 0 L0 200 L290 200 L290 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath31"
+      ><path d="M0 0 L0 50 L290 50 L290 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath32"
+      ><path d="M0 0 L0 110 L300 110 L300 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath33"
+      ><path d="M0 0 L0 240 L270 240 L270 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath34"
+      ><path d="M0 0 L0 370 L300 370 L300 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath35"
+      ><path d="M0 0 L0 500 L280 500 L280 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath36"
+      ><path d="M0 0 L0 590 L290 590 L290 0 Z"
+      /></clipPath
+    ></defs
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(862,1188)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><circle r="7" clip-path="url(#clipPath2)" cx="67.5" cy="7.5" stroke="none"
+    /></g
+    ><g transform="translate(862,1188)"
+    ><circle fill="none" r="7" clip-path="url(#clipPath2)" cx="67.5" cy="7.5"
+      /><path fill="none" d="M46.5 21.5 L88.5 21.5" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M67.5 14.5 L67.5 42.5" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M67.5 42.5 L53.5 70.5" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M67.5 42.5 L81.5 70.5" clip-path="url(#clipPath2)"
+      /><text x="6" font-size="14px" y="93.0938" clip-path="url(#clipPath2)" font-family="sans-serif" font-style="italic" stroke="none" xml:space="preserve"
+      >«external system»</text
+      ><text x="27" font-size="14px" y="109.1875" clip-path="url(#clipPath2)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >File System</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(854,528)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><circle r="7" clip-path="url(#clipPath3)" cx="75.5" cy="7.5" stroke="none"
+    /></g
+    ><g transform="translate(854,528)"
+    ><circle fill="none" r="7" clip-path="url(#clipPath3)" cx="75.5" cy="7.5"
+      /><path fill="none" d="M54.5 21.5 L96.5 21.5" clip-path="url(#clipPath3)"
+      /><path fill="none" d="M75.5 14.5 L75.5 42.5" clip-path="url(#clipPath3)"
+      /><path fill="none" d="M75.5 42.5 L61.5 70.5" clip-path="url(#clipPath3)"
+      /><path fill="none" d="M75.5 42.5 L89.5 70.5" clip-path="url(#clipPath3)"
+      /><text x="14" font-size="14px" y="93.0938" clip-path="url(#clipPath3)" font-family="sans-serif" font-style="italic" stroke="none" xml:space="preserve"
+      >«external system»</text
+      ><text x="33" font-size="14px" y="109.1875" clip-path="url(#clipPath3)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >LLM Service</text
+      ><text x="12" font-size="14px" y="125.2812" clip-path="url(#clipPath3)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >(DeepSeek / Groq)</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(58,648)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><circle r="7" clip-path="url(#clipPath4)" cx="32.5" cy="7.5" stroke="none"
+    /></g
+    ><g transform="translate(58,648)"
+    ><circle fill="none" r="7" clip-path="url(#clipPath4)" cx="32.5" cy="7.5"
+      /><path fill="none" d="M11.5 21.5 L53.5 21.5" clip-path="url(#clipPath4)"
+      /><path fill="none" d="M32.5 14.5 L32.5 42.5" clip-path="url(#clipPath4)"
+      /><path fill="none" d="M32.5 42.5 L18.5 70.5" clip-path="url(#clipPath4)"
+      /><path fill="none" d="M32.5 42.5 L46.5 70.5" clip-path="url(#clipPath4)"
+      /><text x="10" font-size="14px" y="93.0938" clip-path="url(#clipPath4)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >Player</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(380,1283)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><ellipse rx="109.25" ry="26.25" clip-path="url(#clipPath5)" cx="109.75" cy="26.75" stroke="none"
+    /></g
+    ><g transform="translate(380,1283)"
+    ><ellipse rx="109.25" fill="none" ry="26.25" clip-path="url(#clipPath5)" cx="109.75" cy="26.75"
+      /><text x="54" font-size="14px" y="32.0469" clip-path="url(#clipPath5)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >UC11 Load Game</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(380,1213)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><ellipse rx="109.25" ry="26.25" clip-path="url(#clipPath5)" cx="109.75" cy="26.75" stroke="none"
+    /></g
+    ><g transform="translate(380,1213)"
+    ><ellipse rx="109.25" fill="none" ry="26.25" clip-path="url(#clipPath5)" cx="109.75" cy="26.75"
+      /><text x="52" font-size="14px" y="32.0469" clip-path="url(#clipPath5)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >UC10 Save Game</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(365,1138)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><ellipse rx="124.25" ry="26.25" clip-path="url(#clipPath6)" cx="124.75" cy="26.75" stroke="none"
+    /></g
+    ><g transform="translate(365,1138)"
+    ><ellipse rx="124.25" fill="none" ry="26.25" clip-path="url(#clipPath6)" cx="124.75" cy="26.75"
+      /><text x="60" font-size="14px" y="32.0469" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >UC13 Reach Ending</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(365,1063)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><ellipse rx="124.25" ry="26.25" clip-path="url(#clipPath6)" cx="124.75" cy="26.75" stroke="none"
+    /></g
+    ><g transform="translate(365,1063)"
+    ><ellipse rx="124.25" fill="none" ry="26.25" clip-path="url(#clipPath6)" cx="124.75" cy="26.75"
+      /><text x="53" font-size="14px" y="32.0469" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >UC09 Review Journal</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(365,988)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><ellipse rx="124.25" ry="26.25" clip-path="url(#clipPath6)" cx="124.75" cy="26.75" stroke="none"
+    /></g
+    ><g transform="translate(365,988)"
+    ><ellipse rx="124.25" fill="none" ry="26.25" clip-path="url(#clipPath6)" cx="124.75" cy="26.75"
+      /><text x="43" font-size="14px" y="32.0469" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >UC12 View Event History</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(365,913)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><ellipse rx="124.25" ry="26.25" clip-path="url(#clipPath6)" cx="124.75" cy="26.75" stroke="none"
+    /></g
+    ><g transform="translate(365,913)"
+    ><ellipse rx="124.25" fill="none" ry="26.25" clip-path="url(#clipPath6)" cx="124.75" cy="26.75"
+      /><text x="31" font-size="14px" y="32.0469" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >UC08 Track Quest Progress</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(365,828)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><ellipse rx="124.25" ry="31.25" clip-path="url(#clipPath7)" cx="124.75" cy="31.75" stroke="none"
+    /></g
+    ><g transform="translate(365,828)"
+    ><ellipse rx="124.25" fill="none" ry="31.25" clip-path="url(#clipPath7)" cx="124.75" cy="31.75"
+      /><text x="57" font-size="14px" y="29" clip-path="url(#clipPath7)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >UC06 Explore World</text
+      ><text x="77" font-size="14px" y="45.0938" clip-path="url(#clipPath7)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >and View Map</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(365,753)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><ellipse rx="124.25" ry="26.25" clip-path="url(#clipPath6)" cx="124.75" cy="26.75" stroke="none"
+    /></g
+    ><g transform="translate(365,753)"
+    ><ellipse rx="124.25" fill="none" ry="26.25" clip-path="url(#clipPath6)" cx="124.75" cy="26.75"
+      /><text x="44" font-size="14px" y="32.0469" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >UC05 Manage Inventory</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(365,678)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><ellipse rx="124.25" ry="26.25" clip-path="url(#clipPath6)" cx="124.75" cy="26.75" stroke="none"
+    /></g
+    ><g transform="translate(365,678)"
+    ><ellipse rx="124.25" fill="none" ry="26.25" clip-path="url(#clipPath6)" cx="124.75" cy="26.75"
+      /><text x="62" font-size="14px" y="32.0469" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >UC04 Fight Enemy</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(370,583)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><ellipse rx="119.25" ry="31.25" clip-path="url(#clipPath8)" cx="119.75" cy="31.75" stroke="none"
+    /></g
+    ><g transform="translate(370,583)"
+    ><ellipse rx="119.25" fill="none" ry="31.25" clip-path="url(#clipPath8)" cx="119.75" cy="31.75"
+      /><text x="27" font-size="14px" y="29" clip-path="url(#clipPath8)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >UC14 Use Basic Commands</text
+      ><text x="76" font-size="14px" y="45.0938" clip-path="url(#clipPath8)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >(LLM Offline)</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(345,420)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><ellipse rx="144.25" ry="59.25" clip-path="url(#clipPath9)" cx="144.75" cy="59.75" stroke="none"
+    /></g
+    ><g transform="translate(345,420)"
+    ><ellipse rx="144.25" fill="none" ry="59.25" clip-path="url(#clipPath9)" cx="144.75" cy="59.75"
+      /><text x="66" font-size="14px" y="24.6406" clip-path="url(#clipPath9)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >UC02 Perform Action in</text
+      ><text x="86" font-size="14px" y="40.7344" clip-path="url(#clipPath9)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >Natural Language</text
+      ><path fill="none" d="M4.8678 46.7344 L285.6323 46.7344" clip-path="url(#clipPath9)"
+      /><text x="85" font-size="14px" y="61.8281" clip-path="url(#clipPath9)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >Extension points:</text
+      ><text x="91" font-size="14px" y="77.9219" clip-path="url(#clipPath9)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >LLM unavailable</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(375,318)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><ellipse rx="114.25" ry="31.25" clip-path="url(#clipPath10)" cx="114.75" cy="31.75" stroke="none"
+    /></g
+    ><g transform="translate(375,318)"
+    ><ellipse rx="114.25" fill="none" ry="31.25" clip-path="url(#clipPath10)" cx="114.75" cy="31.75"
+      /><text x="53" font-size="14px" y="29" clip-path="url(#clipPath10)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >UC07 Receive and</text
+      ><text x="69" font-size="14px" y="45.0938" clip-path="url(#clipPath10)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >Accept Quest</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(355,175)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><ellipse rx="134.25" ry="49.25" clip-path="url(#clipPath11)" cx="134.75" cy="49.75" stroke="none"
+    /></g
+    ><g transform="translate(355,175)"
+    ><ellipse rx="134.25" fill="none" ry="49.25" clip-path="url(#clipPath11)" cx="134.75" cy="49.75"
+      /><text x="74" font-size="14px" y="24.6406" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >UC03 Talk to NPC</text
+      ><path fill="none" d="M12.1054 30.6406 L258.3946 30.6406" clip-path="url(#clipPath11)"
+      /><text x="75" font-size="14px" y="45.7344" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >Extension points:</text
+      ><text x="90" font-size="14px" y="61.8281" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >quest offered</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(365,103)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><ellipse rx="124.25" ry="26.25" clip-path="url(#clipPath6)" cx="124.75" cy="26.75" stroke="none"
+    /></g
+    ><g transform="translate(365,103)"
+    ><ellipse rx="124.25" fill="none" ry="26.25" clip-path="url(#clipPath6)" cx="124.75" cy="26.75"
+      /><text x="48" font-size="14px" y="32.0469" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >UC01 Create Character</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(210,75)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="598.5" height="1288.5" y="0.5" clip-path="url(#clipPath12)" stroke="none"
+    /></g
+    ><g transform="translate(210,75)"
+    ><rect fill="none" x="0.5" width="598.5" height="1288.5" y="0.5" clip-path="url(#clipPath12)"
+      /><text x="245" font-size="14px" y="18.0938" clip-path="url(#clipPath12)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >AI Game Master</text
+    ></g
+    ><g font-size="16px" font-weight="bold" font-family="sans-serif" transform="translate(300,10)"
+    ><text x="5" xml:space="preserve" y="19.9688" clip-path="url(#clipPath13)" stroke="none"
+      >Use-Case Diagram — AI Game Master</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(480,530)" stroke-linecap="butt"
+    ><path fill="none" d="M10.5 53.5 L10.5 11.5" clip-path="url(#clipPath14)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M17 22.2583 L10.5 11 L4 22.2583" clip-path="url(#clipPath14)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(480,530)"
+    ><text x="14" xml:space="preserve" y="31.5" clip-path="url(#clipPath14)" stroke="none"
+      >«extend»</text
+      ><text x="14" xml:space="preserve" y="47.5938" clip-path="url(#clipPath14)" stroke="none"
+      >(LLM unavailable)</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(480,265)" stroke-linecap="butt"
+    ><path fill="none" d="M10.5 53.5 L10.5 11.5" clip-path="url(#clipPath15)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M17 22.2583 L10.5 11 L4 22.2583" clip-path="url(#clipPath15)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(480,265)"
+    ><text x="14" xml:space="preserve" y="31.5" clip-path="url(#clipPath15)" stroke="none"
+      >«extend»</text
+      ><text x="14" xml:space="preserve" y="47.5938" clip-path="url(#clipPath15)" stroke="none"
+      >(quest offered)</text
+    ></g
+    ><g transform="translate(590,1220)"
+    ><path fill="none" d="M324.5 10.5 L10.5 90.5" clip-path="url(#clipPath16)"
+    /></g
+    ><g transform="translate(590,1220)"
+    ><path fill="none" d="M324.5 10.5 L10.5 20.5" clip-path="url(#clipPath17)"
+    /></g
+    ><g transform="translate(605,560)"
+    ><path fill="none" d="M309.5 10.5 L259.5 10.5" clip-path="url(#clipPath18)"
+      /><path fill="none" d="M259.5 10.5 L10.5 605.5" clip-path="url(#clipPath18)"
+    /></g
+    ><g transform="translate(595,340)"
+    ><path fill="none" d="M319.5 230.5 L10.5 10.5" clip-path="url(#clipPath19)"
+    /></g
+    ><g transform="translate(605,560)"
+    ><path fill="none" d="M309.5 10.5 L10.5 145.5" clip-path="url(#clipPath20)"
+    /></g
+    ><g transform="translate(615,215)"
+    ><path fill="none" d="M299.5 355.5 L10.5 10.5" clip-path="url(#clipPath21)"
+    /></g
+    ><g transform="translate(625,470)"
+    ><path fill="none" d="M289.5 100.5 L10.5 10.5" clip-path="url(#clipPath22)"
+    /></g
+    ><g transform="translate(605,120)"
+    ><path fill="none" d="M309.5 450.5 L10.5 10.5" clip-path="url(#clipPath23)"
+    /></g
+    ><g transform="translate(96,680)"
+    ><path fill="none" d="M10.5 10.5 L20.5 10.5" clip-path="url(#clipPath24)"
+      /><path fill="none" d="M20.5 10.5 L284.5 630.5" clip-path="url(#clipPath24)"
+    /></g
+    ><g transform="translate(96,680)"
+    ><path fill="none" d="M10.5 10.5 L284.5 560.5" clip-path="url(#clipPath25)"
+    /></g
+    ><g transform="translate(96,680)"
+    ><path fill="none" d="M10.5 10.5 L269.5 485.5" clip-path="url(#clipPath26)"
+    /></g
+    ><g transform="translate(96,680)"
+    ><path fill="none" d="M10.5 10.5 L269.5 410.5" clip-path="url(#clipPath27)"
+    /></g
+    ><g transform="translate(96,680)"
+    ><path fill="none" d="M10.5 10.5 L269.5 335.5" clip-path="url(#clipPath28)"
+    /></g
+    ><g transform="translate(96,680)"
+    ><path fill="none" d="M10.5 10.5 L269.5 260.5" clip-path="url(#clipPath29)"
+    /></g
+    ><g transform="translate(96,680)"
+    ><path fill="none" d="M10.5 10.5 L269.5 180.5" clip-path="url(#clipPath30)"
+    /></g
+    ><g transform="translate(96,680)"
+    ><path fill="none" d="M10.5 10.5 L269.5 100.5" clip-path="url(#clipPath9)"
+    /></g
+    ><g transform="translate(96,680)"
+    ><path fill="none" d="M10.5 10.5 L269.5 25.5" clip-path="url(#clipPath31)"
+    /></g
+    ><g transform="translate(96,605)"
+    ><path fill="none" d="M10.5 85.5 L274.5 10.5" clip-path="url(#clipPath32)"
+    /></g
+    ><g transform="translate(96,470)"
+    ><path fill="none" d="M10.5 220.5 L249.5 10.5" clip-path="url(#clipPath33)"
+    /></g
+    ><g transform="translate(96,340)"
+    ><path fill="none" d="M10.5 350.5 L279.5 10.5" clip-path="url(#clipPath34)"
+    /></g
+    ><g transform="translate(96,215)"
+    ><path fill="none" d="M10.5 475.5 L259.5 10.5" clip-path="url(#clipPath35)"
+    /></g
+    ><g transform="translate(96,120)"
+    ><path fill="none" d="M10.5 570.5 L269.5 10.5" clip-path="url(#clipPath36)"
+    /></g
+  ></g
+></svg
+>

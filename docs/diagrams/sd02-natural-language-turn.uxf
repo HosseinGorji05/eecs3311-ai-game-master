@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLSequenceAllInOne</id>
+    <coordinates>
+      <x>10</x>
+      <y>10</y>
+      <w>2980</w>
+      <h>2460</h>
+    </coordinates>
+    <panel_attributes>title=SD02 — Perform Action in Natural Language (UC02, UC05, UC06, UC14; F02, F05, F06; Facade, Command)
+desc=Notes\n(n1) In dialogue mode the view calls sendDialogue() instead (SD07). Buttons and map clicks call performAction(proposal), which skips interpret() and narrate() (SD10, SD11, SD12).\n      :CliGameView can take the place of :SwingGameView in every diagram.\n(n2) narration = the error text, results = [], gameOver = false
+obj=Player~P ACTOR
+obj=«boundary»\n_:SwingGameView_~V
+obj=«control»\n_:GameController_~GC
+obj=_:ActionInterpreter_~AI
+obj=_llm : LLMClient_~LLM
+obj=_:Narrator_~N
+obj=_:CommandFactory_~CF
+obj=_:RulesEngine_~RE
+obj=_:GameState_~GS
+obj=_:TurnResult_~TR CREATED_LATER
+
+V:(n1)
+P-&gt;&gt;&gt;V :type "pick up the iron\nkey and go north"; on=V
+V-&gt;&gt;&gt;GC :submitCommand(text); on=GC
+GC-&gt;&gt;&gt;AI :interpret(text); on=AI
+AI-&gt;&gt;&gt;AI + :run(text)
+tick=
+ref=AI N :SD00 — Run an LLM Task\n(LLM returns JSON actions, e.g. take "iron key", move NORTH\;\nfallback (UC14): OfflineFallbackParser.parse(text), which\nreturns no proposals if the text matches no known pattern)
+AI.&gt;AI + :proposals
+AI.&gt;GC :proposals :\nList&lt;ActionProposal&gt;; off=AI
+GC-&gt;&gt;&gt;AI :isFallbackUsed(); on=AI
+AI.&gt;GC :offline; off=AI
+combinedFragment=opt~cf1 V GC
+V:[offline (UC14: LLM\nunavailable, or unusable\nanswers twice)]
+GC-&gt;&gt;&gt;V :showNotice(\n"Basic-command mode:\nsimple commands only.")
+tick=1
+V.&gt;GC
+--=cf1
+combinedFragment=alt~cf2 V GS
+V:[proposals is empty (not\nunderstood or ambiguous)]
+GC-&gt;&gt;&gt;V :showError("I didn't\nunderstand. Please\nrephrase.")
+tick=1
+V.&gt;GC
+GC:(n2)
+..=cf2
+V:[proposals understood]
+combinedFragment=loop~cf3 GC CF
+GC:[for each proposal in\nproposals]
+GC-&gt;&gt;&gt;CF :create(proposal); on=CF
+CF.&gt;GC :command : GameCommand; off=CF
+--=cf3
+GC-&gt;&gt;&gt;RE :executeAll(commands,\nstate); on=RE
+ref=RE GS :SD03 — Execute Game Commands
+RE.&gt;GC :results :\nList&lt;ActionResult&gt;; off=RE
+GC-&gt;&gt;&gt;N :narrate(results); on=N
+N-&gt;&gt;&gt;N + :run(results)
+tick=
+ref=LLM CF :SD00 — Run an LLM Task\n(isValid: narration only describes the results\;\nfallback: template text built from the results)
+N.&gt;N + :narration
+N.&gt;GC :narration; off=N
+GC-&gt;&gt;&gt;GS :isGameOver(); on=GS
+GS.&gt;GC :gameOver; off=GS
+GC-&gt;&gt;&gt;V :showNarration(narration)
+V.&gt;GC
+combinedFragment=opt~cf4 GC GC
+GC:[gameOver]
+GC-&gt;&gt;&gt;GC + :endGame()
+tick=
+ref=GC GC :SD09 — Reach Ending
+GC.&gt;GC + :ending
+--=cf4
+--=cf2
+GC-&gt;&gt;&gt;TR :«create»\nTurnResult(narration,\nresults, gameOver)
+tick=1
+GC.&gt;V :turnResult; off=GC
+V.&gt;P; off=V</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

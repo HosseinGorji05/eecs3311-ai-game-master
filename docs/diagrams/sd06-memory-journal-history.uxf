@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLSequenceAllInOne</id>
+    <coordinates>
+      <x>10</x>
+      <y>10</y>
+      <w>1830</w>
+      <h>1210</h>
+    </coordinates>
+    <panel_attributes>title=SD06 — Story Memory, Journal and Event History (UC09, UC12; F09, F11)\nUpdate story memory (every published event, from SD05)
+obj=_:MemoryManager_~MM
+obj=_:GameState_~GS
+obj=_memory : StoryMemory_~SM
+obj=_:MemorySummarizer_~MS
+obj=_llm : LLMClient_~LLM
+
+gate-&gt;&gt;&gt;MM :onEvent(event); on=MM
+MM-&gt;&gt;&gt;GS :getStoryMemory(); on=GS
+GS.&gt;MM :memory; off=GS
+MM-&gt;&gt;&gt;SM :record(event); on=SM
+SM.&gt;MM; off=SM
+MM-&gt;&gt;&gt;MM + :isKeyFact(\nevent)
+MM.&gt;MM + :keyFact
+combinedFragment=opt~cf1 MM SM
+MM:[keyFact: a death, a quest\noutcome, or any event\nwith a non-zero alignment\ndelta (e.g. a theft)]
+MM-&gt;&gt;&gt;SM :addFixedFact(event.\ngetDescription()); on=SM
+SM.&gt;MM; off=SM
+--=cf1
+MM-&gt;&gt;&gt;SM :recentCount(); on=SM
+SM.&gt;MM :count; off=SM
+combinedFragment=opt~cf2 MM LLM
+MM:[count &gt;\nSUMMARIZE_THRESHOLD]
+MM-&gt;&gt;&gt;SM :takeOldest(10); on=SM
+SM.&gt;MM :oldest; off=SM
+MM-&gt;&gt;&gt;MS :summarize(oldest); on=MS
+MS-&gt;&gt;&gt;MS + :run(oldest)
+tick=
+ref=SM LLM :SD00 — Run an LLM Task\n(isValid: summary does not contradict the fixed facts\;\nfallback: the events' own descriptions, joined)
+MS.&gt;MS + :summary
+MS.&gt;MM :summary; off=MS
+MM-&gt;&gt;&gt;SM :addSummary(summary); on=SM
+SM.&gt;MM; off=SM
+--=cf2
+MM.&gt;gate; off=MM</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLSequenceAllInOne</id>
+    <coordinates>
+      <x>10</x>
+      <y>1260</y>
+      <w>1130</w>
+      <h>760</h>
+    </coordinates>
+    <panel_attributes>title=SD06 — Story Memory, Journal and Event History (UC09, UC12; F09, F11)\nReview journal (UC09)
+obj=Player~P ACTOR
+obj=«boundary»\n_:SwingGameView_~V
+obj=«control»\n_:GameController_~GC
+obj=_:MemoryManager_~MM
+obj=_:GameState_~GS
+obj=_memory : StoryMemory_~SM
+
+P-&gt;&gt;&gt;V :open the Journal tab; on=V
+V-&gt;&gt;&gt;GC :getJournal(); on=GC
+GC-&gt;&gt;&gt;MM :journalText(); on=MM
+MM-&gt;&gt;&gt;GS :getStoryMemory(); on=GS
+GS.&gt;MM :memory; off=GS
+MM-&gt;&gt;&gt;SM :getFixedFacts(); on=SM
+SM.&gt;MM :facts; off=SM
+MM-&gt;&gt;&gt;SM :getSummaries(); on=SM
+SM.&gt;MM :summaries; off=SM
+MM-&gt;&gt;&gt;SM :getRecentEvents(); on=SM
+SM.&gt;MM :recent; off=SM
+MM.&gt;GC :text; off=MM
+GC.&gt;V :journal; off=GC
+V.&gt;P :journal shown; off=V</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLSequenceAllInOne</id>
+    <coordinates>
+      <x>10</x>
+      <y>2060</y>
+      <w>1050</w>
+      <h>530</h>
+    </coordinates>
+    <panel_attributes>title=SD06 — Story Memory, Journal and Event History (UC09, UC12; F09, F11)\nView event history (UC12)
+obj=Player~P ACTOR
+obj=«boundary»\n_:SwingGameView_~V
+obj=«control»\n_:GameController_~GC
+obj=_:GameState_~GS
+obj=_:EventLog_~EL
+
+P-&gt;&gt;&gt;V :choose filter "COMBAT"; on=V
+V-&gt;&gt;&gt;GC :getHistory(COMBAT); on=GC
+GC-&gt;&gt;&gt;GS :getEventLog(); on=GS
+GS.&gt;GC :log; off=GS
+GC-&gt;&gt;&gt;EL :filter(COMBAT); on=EL
+EL.&gt;GC :events; off=EL
+GC.&gt;V :events; off=GC
+V.&gt;P :filtered events shown; off=V</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

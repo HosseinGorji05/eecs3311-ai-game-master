@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLSequenceAllInOne</id>
+    <coordinates>
+      <x>10</x>
+      <y>10</y>
+      <w>6160</w>
+      <h>3310</h>
+    </coordinates>
+    <panel_attributes>title=SD07 — Talk to NPC and Accept Quest (UC03, UC07; F03, F07)
+desc=Notes\n(n1) canOffer = questGiver and not hasQuest and count &lt; MAX_SIDE_QUESTS (the engine decides)\n(n2) at most one offer per conversation\n(n3) the quest is discarded; the NPC can make a new offer only in a later conversation\n(n4) The conversation ends with "Leave" (SD12).
+obj=Player~P ACTOR
+obj=«boundary»\n_:SwingGameView_~V
+obj=«control»\n_:GameController_~GC
+obj=_:NpcDialogueAgent_~NA
+obj=_llm : LLMClient_~LLM
+obj=_:QuestGenerator_~QG
+obj=_:CommandFactory_~CF
+obj=_:RulesEngine_~RE
+obj=_:GameState_~GS
+obj=_mode : DialogueMode_~DM
+obj=_:QuestLog_~QL
+obj=_blacksmith : NPC_~NPC
+obj=_:GameEventBus_~BUS
+
+ref=P RE :SD02 / SD03 — "talk to the blacksmith": TalkCommand.execute()\nsets the mode to new DialogueMode(blacksmith)
+P-&gt;&gt;&gt;V :type "Do you have any\nwork for me?"; on=V
+V-&gt;&gt;&gt;GC :sendDialogue(message); on=GC
+GC-&gt;&gt;&gt;NA :reply(message); on=NA
+NA-&gt;&gt;&gt;NA + :run(message)
+tick=
+ref=NA QG :SD00 — Run an LLM Task\n(prompt: NPC profile and knowledge + memory context, focus = the NPC\;\nisValid: no secret revealed, side effect well-formed\;\nfallback: pre-written line for the NPC's role)
+NA.&gt;NA + :reply
+NA.&gt;GC :reply : NpcReply; off=NA
+combinedFragment=opt~cf1 GC GS
+GC:[reply.getSideEffect() is\npresent]
+GC-&gt;&gt;&gt;CF :create(reply.\ngetSideEffect()); on=CF
+CF.&gt;GC :command; off=CF
+GC-&gt;&gt;&gt;RE :executeAll([command],\nstate); on=RE
+ref=RE DM :SD03 — an invalid side effect (e.g. a TAKE of\nan item that is not in the location) is rejected
+RE.&gt;GC :results; off=RE
+--=cf1
+GC-&gt;&gt;&gt;V :showNarration(reply.\ngetText())
+V.&gt;GC
+GC-&gt;&gt;&gt;BUS :publish(dialogue); on=BUS
+ref=NPC BUS :SD05 — recorded in the event log\nand story memory (SD06)
+BUS.&gt;GC; off=BUS
+GC-&gt;&gt;&gt;GS :getMode(); on=GS
+GS.&gt;GC :mode; off=GS
+GC-&gt;&gt;&gt;DM :isQuestOffered(); on=DM
+DM.&gt;GC :offered; off=DM
+GC-&gt;&gt;&gt;DM :getNpc(); on=DM
+DM.&gt;GC :blacksmith; off=DM
+GC-&gt;&gt;&gt;GS :getQuestLog(); on=GS
+GS.&gt;GC :questLog; off=GS
+GC-&gt;&gt;&gt;QL :canOfferFrom(blacksmith); on=QL
+QL-&gt;&gt;&gt;NPC :isQuestGiver(); on=NPC
+NPC.&gt;QL :questGiver; off=NPC
+QL-&gt;&gt;&gt;QL + :hasQuestFrom(\nblacksmith)
+QL.&gt;QL + :hasQuest
+QL-&gt;&gt;&gt;QL + :activeSideQuestCount()
+QL.&gt;QL + :count
+QL.&gt;GC :canOffer; off=QL
+QL:(n1)
+combinedFragment=opt~cf2 V DM
+V:[canOffer and not offered]
+GC-&gt;&gt;&gt;DM :setQuestOffered() (n2); on=DM
+DM.&gt;GC; off=DM
+GC-&gt;&gt;&gt;QG :generate(blacksmith); on=QG
+QG-&gt;&gt;&gt;QG + :run(\nblacksmith)
+tick=
+ref=LLM CF :SD00 — Run an LLM Task (LLM returns a QuestProposal as JSON)\nisValid: QuestValidator.validate(proposal) checks that every\nlocation, item and NPC exists\; retry once, then fallback:\ntemplate quest. toQuest() clamps the reward to the level maximum.
+QG.&gt;QG + :quest
+QG.&gt;GC :quest; off=QG
+GC-&gt;&gt;&gt;V :showQuestOffer(quest)
+V.&gt;GC
+--=cf2
+GC.&gt;V :reply; off=GC
+V.&gt;P :reply shown; off=V
+combinedFragment=opt~cf3 P QL
+P:[a quest was offered]
+combinedFragment=alt~cf4 P QL
+P:[player clicks "Accept"]
+P-&gt;&gt;&gt;V :click "Accept"; on=V
+V-&gt;&gt;&gt;GC :respondToQuest(quest,\ntrue); on=GC
+GC-&gt;&gt;&gt;QL :accept(quest); on=QL
+QL.&gt;GC :accepted; off=QL
+combinedFragment=opt~cf5 V GC
+V:[not accepted (side-quest\nlimit reached meanwhile)]
+GC-&gt;&gt;&gt;V :showError("Your quest\nlog is full.")
+V.&gt;GC
+--=cf5
+GC.&gt;V; off=GC
+V.&gt;P :quest log updated; off=V
+..=cf4
+P:[player clicks "Decline"]
+P-&gt;&gt;&gt;V :click "Decline"; on=V
+V-&gt;&gt;&gt;GC :respondToQuest(quest,\nfalse); on=GC
+GC:(n3)
+GC.&gt;V; off=GC
+V.&gt;P :offer closed; off=V
+--=cf4
+--=cf3
+P:(n4)</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

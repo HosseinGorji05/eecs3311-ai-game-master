@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLSequenceAllInOne</id>
+    <coordinates>
+      <x>10</x>
+      <y>10</y>
+      <w>3790</w>
+      <h>2620</h>
+    </coordinates>
+    <panel_attributes>title=SD11 — Move to an Adjacent Location through a Locked Door (UC06, F06; Command, Observer)
+desc=Notes\n(n1) proposal = new ActionProposal(MOVE, "Tool Shed", null); a typed "go east" arrives through SD02 with target "east"\n(n2) destinationName = "Tool Shed" (for "go east": direction = EAST)\n(n3) the command keeps door and key in its exit and key fields for execute()\n(n4) invalid if door is null (no exit that way, or the destination is not adjacent: the exits are listed), or the door is locked and key is null ("You need the shed key.")\n(n5) text = the results' messages, e.g. the shed's description, items, NPCs and exits (no LLM)
+obj=Player~P ACTOR
+obj=«boundary»\n_:SwingGameView_~V
+obj=«control»\n_:GameController_~GC
+obj=_:CommandFactory_~CF
+obj=_:RulesEngine_~RE
+obj=_move : MoveCommand_~C
+obj=_:GameState_~GS
+obj=_location : Location_~L
+obj=_door : Exit_~E
+obj=_player : Player_~PL
+obj=_inventory : Inventory_~INV
+obj=_shed : Location_~D
+
+P-&gt;&gt;&gt;V :click "Tool Shed" on the\nmap; on=V
+V-&gt;&gt;&gt;GC :performAction(proposal); on=GC
+V:(n1)
+GC-&gt;&gt;&gt;CF :create(proposal); on=CF
+CF.&gt;GC :move; off=CF
+CF:(n2)
+GC-&gt;&gt;&gt;RE :executeAll([move],\nstate); on=RE
+ref=RE GS :SD03 — mode check: allows(MOVE) is false in combat and dialogue
+RE-&gt;&gt;&gt;C :validate(state); on=C
+C-&gt;&gt;&gt;GS :currentLocation(); on=GS
+GS.&gt;C :location; off=GS
+combinedFragment=alt~cf1 C L
+C:[destinationName is set]
+C-&gt;&gt;&gt;L :findExitTo("Tool Shed"); on=L
+L.&gt;C :door; off=L
+..=cf1
+C:[direction is set]
+C-&gt;&gt;&gt;L :getExit(EAST); on=L
+L.&gt;C :door; off=L
+--=cf1
+C-&gt;&gt;&gt;E :isLocked(); on=E
+E.&gt;C :locked; off=E
+combinedFragment=opt~cf2 C INV
+C:[locked]
+C-&gt;&gt;&gt;E :getRequiredKeyName(); on=E
+E.&gt;C :keyName; off=E
+C-&gt;&gt;&gt;GS :getPlayer(); on=GS
+GS.&gt;C :player; off=GS
+C-&gt;&gt;&gt;PL :getInventory(); on=PL
+PL.&gt;C :inventory; off=PL
+C-&gt;&gt;&gt;INV :find(keyName); on=INV
+INV.&gt;C :key (null if not\ncarried); off=INV
+--=cf2
+C:(n3)
+C.&gt;RE :validation; off=C
+RE:(n4)
+combinedFragment=alt~cf3 RE D
+RE:[validation.isValid()]
+RE-&gt;&gt;&gt;C :execute(state, rules); on=C
+combinedFragment=opt~cf4 C E
+C:[locked]
+C-&gt;&gt;&gt;E :unlock(key); on=E
+E.&gt;C :unlocked; off=E
+--=cf4
+C-&gt;&gt;&gt;E :getDestination(); on=E
+E.&gt;C :shed; off=E
+C-&gt;&gt;&gt;GS :setCurrentLocation(shed); on=GS
+GS.&gt;C; off=GS
+C-&gt;&gt;&gt;D :markVisited(); on=D
+D.&gt;C; off=D
+C.&gt;RE :result : ActionResult\n(MOVEMENT event); off=C
+ref=CF C :SD03 — the MOVEMENT event is published (SD05):\nSwingGameView.onEvent() calls refresh(), which redraws the map
+..=cf3
+RE:[invalid]
+RE-&gt;&gt;&gt;RE + :reject(move,\nvalidation.\ngetReason())
+tick=1
+RE.&gt;RE + :result
+--=cf3
+RE.&gt;GC :results; off=RE
+GC-&gt;&gt;&gt;V :showNarration(text)
+GC:(n5)
+V.&gt;GC
+GC.&gt;V :turnResult; off=GC
+V.&gt;P; off=V</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

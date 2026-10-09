@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLSequenceAllInOne</id>
+    <coordinates>
+      <x>10</x>
+      <y>10</y>
+      <w>3530</w>
+      <h>3180</h>
+    </coordinates>
+    <panel_attributes>title=SD04 — Fight Enemy (UC04, F04; Command, State)
+desc=Notes\n(n1) if playerAlive is false, a COMBAT "player died" event is added to the result\n(n2) result holds COMBAT events, e.g. "wolf defeated" or "player died"
+obj=Player~P ACTOR
+obj=«boundary»\n_:SwingGameView_~V
+obj=«control»\n_:GameController_~GC
+obj=_:RulesEngine_~RE
+obj=_attack : AttackCommand_~C
+obj=_:GameState_~GS
+obj=_location : Location_~L
+obj=_:DiceRoller_~D
+obj=_player : Player_~PL
+obj=_wolf : Enemy_~E
+obj=_combatMode : CombatMode_~CM CREATED_LATER
+obj=_explorationMode : ExplorationMode_~EM CREATED_LATER
+obj=_:GameEventBus_~BUS
+
+P-&gt;&gt;&gt;V :type "attack the wolf"; on=V
+V-&gt;&gt;&gt;GC :submitCommand(text); on=GC
+ref=GC C :SD02 — interpret() (SD00) returns an ATTACK proposal\;\nCommandFactory.create() returns attack (targetName = "wolf")
+GC-&gt;&gt;&gt;RE :executeAll([attack],\nstate); on=RE
+ref=RE GS :SD03 — mode check (allows) and attack.validate()
+RE-&gt;&gt;&gt;C :execute(state, rules); on=C
+C-&gt;&gt;&gt;GS :currentLocation(); on=GS
+GS.&gt;C :location; off=GS
+C-&gt;&gt;&gt;L :findEnemy(targetName); on=L
+L.&gt;C :wolf; off=L
+C-&gt;&gt;&gt;GS :getPlayer(); on=GS
+GS.&gt;C :player; off=GS
+C-&gt;&gt;&gt;GS :getMode(); on=GS
+GS.&gt;C :mode; off=GS
+combinedFragment=opt~cf1 C CM
+C:[mode is not a CombatMode]
+C-&gt;&gt;&gt;CM :«create»\nCombatMode(wolf)
+C-&gt;&gt;&gt;GS :setMode(combatMode); on=GS
+GS.&gt;C; off=GS
+--=cf1
+C-&gt;&gt;&gt;RE :resolveAttack(player,\nwolf)
+RE-&gt;&gt;&gt;D :rollD20(); on=D
+D.&gt;RE :roll; off=D
+RE-&gt;&gt;&gt;PL :attackBonus(); on=PL
+PL.&gt;RE :bonus; off=PL
+RE-&gt;&gt;&gt;E :defense(); on=E
+E.&gt;RE :defense; off=E
+combinedFragment=opt~cf2 RE E
+RE:[roll + bonus ≥ defense]
+RE-&gt;&gt;&gt;PL :damage(); on=PL
+PL.&gt;RE :damage; off=PL
+RE-&gt;&gt;&gt;E :takeDamage(damage); on=E
+E.&gt;RE; off=E
+--=cf2
+RE.&gt;C :playerAttack :\nActionResult
+C-&gt;&gt;&gt;E :isAlive(); on=E
+E.&gt;C :alive; off=E
+combinedFragment=alt~cf3 RE EM
+RE:[wolf defeated]
+C-&gt;&gt;&gt;L :removeEnemy(wolf); on=L
+L.&gt;C; off=L
+C-&gt;&gt;&gt;EM :«create»\nExplorationMode()
+C-&gt;&gt;&gt;GS :setMode(explorationMode); on=GS
+GS.&gt;C; off=GS
+..=cf3
+RE:[wolf still alive: enemy's\nturn]
+C-&gt;&gt;&gt;RE :resolveAttack(wolf,\nplayer)
+RE-&gt;&gt;&gt;D :rollD20(); on=D
+D.&gt;RE :roll; off=D
+RE-&gt;&gt;&gt;E :attackBonus(); on=E
+E.&gt;RE :bonus; off=E
+RE-&gt;&gt;&gt;PL :defense(); on=PL
+PL.&gt;RE :defense; off=PL
+combinedFragment=opt~cf4 RE E
+RE:[roll + bonus ≥ defense]
+RE-&gt;&gt;&gt;E :damage(); on=E
+E.&gt;RE :damage; off=E
+RE-&gt;&gt;&gt;PL :takeDamage(damage); on=PL
+PL.&gt;RE; off=PL
+--=cf4
+RE.&gt;C :enemyAttack :\nActionResult
+C-&gt;&gt;&gt;PL :isAlive(); on=PL
+PL.&gt;C :playerAlive; off=PL
+C:(n1)
+--=cf3
+C.&gt;RE :result : ActionResult; off=C
+RE:(n2)
+combinedFragment=loop~cf5 RE BUS
+RE:[for each event in\nresult.getEvents()]
+RE-&gt;&gt;&gt;BUS :publish(event); on=BUS
+ref=BUS BUS :SD05
+BUS.&gt;RE; off=BUS
+--=cf5
+RE.&gt;GC :results; off=RE
+ref=V RE :SD02 — narrate(results) (SD00), isGameOver() and showNarration()\;\nif the player died, endGame() (SD09)
+GC.&gt;V :turnResult; off=GC
+V.&gt;P; off=V</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

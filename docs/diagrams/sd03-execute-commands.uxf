@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLSequenceAllInOne</id>
+    <coordinates>
+      <x>10</x>
+      <y>10</y>
+      <w>2540</w>
+      <h>2000</h>
+    </coordinates>
+    <panel_attributes>title=SD03 — Execute Game Commands (Command, State)\nreferenced by SD02, SD04, SD07 and SD10–SD12
+desc=Notes\n(n1) GameState delegates to its current mode (State pattern)\n(n2) rejected : GameEvent of type REJECTED\n(n3) expanded in SD10 (TakeCommand), SD11 (MoveCommand), SD04 (AttackCommand) and SD12\n      (FleeCommand, LeaveCommand)
+obj=_:RulesEngine_~RE
+obj=_:GameState_~GS
+obj=_mode : GameMode_~M
+obj=_command : GameCommand_~C
+obj=_:GameEventBus_~BUS
+
+gate-&gt;&gt;&gt;RE :executeAll(commands,\nstate); on=RE
+combinedFragment=loop~cf1 RE BUS
+RE:[for each command in\ncommands]
+RE-&gt;&gt;&gt;C :getType(); on=C
+C.&gt;RE :type; off=C
+RE-&gt;&gt;&gt;GS :allows(type); on=GS
+GS-&gt;&gt;&gt;M :allows(type) (n1); on=M
+M.&gt;GS :allowed; off=M
+GS.&gt;RE :allowed; off=GS
+combinedFragment=alt~cf2 RE BUS
+RE:[not allowed in the current\nmode]
+RE-&gt;&gt;&gt;RE + :reject(\ncommand, "not\npossible\nright now")
+tick=2
+RE-&gt;&gt;&gt;BUS :publish(rejected) (n2); on=BUS
+BUS.&gt;RE; off=BUS
+RE.&gt;RE + :result
+..=cf2
+RE:[allowed]
+RE-&gt;&gt;&gt;C :validate(state); on=C
+C.&gt;RE :validation :\nValidationResult; off=C
+combinedFragment=alt~cf3 RE BUS
+RE:[validation.isValid()]
+RE-&gt;&gt;&gt;C :execute(state, rules) (n3); on=C
+C.&gt;RE :result : ActionResult; off=C
+combinedFragment=loop~cf4 RE BUS
+RE:[for each event in\nresult.getEvents()]
+RE-&gt;&gt;&gt;BUS :publish(event); on=BUS
+ref=C BUS :SD05 — Propagate Game Events
+BUS.&gt;RE; off=BUS
+--=cf4
+..=cf3
+RE:[invalid: unknown item,\nblocked exit, cheat\nattempt]
+RE-&gt;&gt;&gt;RE + :reject(\ncommand,\nvalidation.\ngetReason())
+tick=2
+RE-&gt;&gt;&gt;BUS :publish(rejected); on=BUS
+BUS.&gt;RE; off=BUS
+RE.&gt;RE + :result
+--=cf3
+--=cf2
+--=cf1
+RE-&gt;&gt;&gt;GS :nextTurn(); on=GS
+GS.&gt;RE; off=GS
+RE.&gt;gate :results :\nList&lt;ActionResult&gt;; off=RE</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

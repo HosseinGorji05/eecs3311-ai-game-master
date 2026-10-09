@@ -1,1 +1,1154 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="CLASS" height="1148px" preserveAspectRatio="none" style="width:2936px;height:1148px;background:#FFFFFF;" version="1.1" viewBox="0 0 2936 1148" width="2936px" zoomAndPan="magnify"><title>Class Diagram 3 &#8212; Game Commands (Command)</title><defs/><g><g class="title" data-source-line="4"><text fill="#000000" font-family="Helvetica" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="384.9688" x="1268.5156" y="25.5">Class Diagram 3 &#8212; Game Commands (Command)</text></g><!--cluster engine.core--><g class="cluster" data-entity="engine.core" data-source-line="6" data-uid="ent0002" id="cluster_engine.core"><path d="M1357.5,995.3594 L1429.0352,995.3594 A3.75,3.75 0 0 1 1431.5352,997.8594 L1438.5352,1015.8789 L1870.5,1015.8789 A2.5,2.5 0 0 1 1873,1018.3789 L1873,1080.8594 A2.5,2.5 0 0 1 1870.5,1083.3594 L1357.5,1083.3594 A2.5,2.5 0 0 1 1355,1080.8594 L1355,997.8594 A2.5,2.5 0 0 1 1357.5,995.3594" fill="#FCFCFC" style="stroke:#888888;stroke-width:1.5;"/><line style="stroke:#888888;stroke-width:1.5;" x1="1355" x2="1438.5352" y1="1015.8789" y2="1015.8789"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="70.5352" x="1359" y="1008.9844">engine.core</text></g><!--cluster engine.commands--><g class="cluster" data-entity="engine.commands" data-source-line="12" data-uid="ent0007" id="cluster_engine.commands"><path d="M8.5,46.3594 L118.625,46.3594 A3.75,3.75 0 0 1 121.125,48.8594 L128.125,66.8789 L2652.5,66.8789 A2.5,2.5 0 0 1 2655,69.3789 L2655,968.8594 A2.5,2.5 0 0 1 2652.5,971.3594 L8.5,971.3594 A2.5,2.5 0 0 1 6,968.8594 L6,48.8594 A2.5,2.5 0 0 1 8.5,46.3594" fill="#FCFCFC" style="stroke:#888888;stroke-width:1.5;"/><line style="stroke:#888888;stroke-width:1.5;" x1="6" x2="128.125" y1="66.8789" y2="66.8789"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="109.125" x="10" y="59.9844">engine.commands</text></g><!--cluster engine.world--><g class="cluster" data-entity="engine.world" data-source-line="134" data-uid="ent0026" id="cluster_engine.world"><path d="M2681.5,673.3594 L2759.8438,673.3594 A3.75,3.75 0 0 1 2762.3438,675.8594 L2769.3438,693.8789 L2796.5,693.8789 A2.5,2.5 0 0 1 2799,696.3789 L2799,758.8594 A2.5,2.5 0 0 1 2796.5,761.3594 L2681.5,761.3594 A2.5,2.5 0 0 1 2679,758.8594 L2679,675.8594 A2.5,2.5 0 0 1 2681.5,673.3594" fill="#FCFCFC" style="stroke:#888888;stroke-width:1.5;"/><line style="stroke:#888888;stroke-width:1.5;" x1="2679" x2="2769.3438" y1="693.8789" y2="693.8789"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="77.3438" x="2683" y="686.9844">engine.world</text></g><!--cluster engine.events--><g class="cluster" data-entity="engine.events" data-source-line="137" data-uid="ent0028" id="cluster_engine.events"><path d="M2825.5,680.3594 L2910.6582,680.3594 A3.75,3.75 0 0 1 2913.1582,682.8594 L2920.1582,700.8789 L2926.5,700.8789 A2.5,2.5 0 0 1 2929,703.3789 L2929,751.8594 A2.5,2.5 0 0 1 2926.5,754.3594 L2825.5,754.3594 A2.5,2.5 0 0 1 2823,751.8594 L2823,682.8594 A2.5,2.5 0 0 1 2825.5,680.3594" fill="#FCFCFC" style="stroke:#888888;stroke-width:1.5;"/><line style="stroke:#888888;stroke-width:1.5;" x1="2823" x2="2920.1582" y1="700.8789" y2="700.8789"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="84.1582" x="2827" y="693.9844">engine.events</text></g><!--class ExplorationMode--><g class="entity" data-entity="ExplorationMode" data-source-line="7" data-uid="ent0003" id="entity_ExplorationMode"><rect fill="#FFFFFF" height="39.0391" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="106.0078" x="1504" y="1028.3594"/><rect fill="#F2F2F2" height="39.0391" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="106.0078" x="1504" y="1028.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="106.0078" x="1504" y="1064.8984"/><rect fill="none" height="39.0391" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="106.0078" x="1504" y="1028.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="96.0176" x="1508.9951" y="1044.9844">&#171;ConcreteState&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="100.0078" x="1507" y="1059.5039">ExplorationMode</text></g><!--class CombatMode--><g class="entity" data-entity="CombatMode" data-source-line="8" data-uid="ent0004" id="entity_CombatMode"><rect fill="#FFFFFF" height="39.0391" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="98.0176" x="1371" y="1028.3594"/><rect fill="#F2F2F2" height="39.0391" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="98.0176" x="1371" y="1028.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="98.0176" x="1371" y="1064.8984"/><rect fill="none" height="39.0391" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="98.0176" x="1371" y="1028.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="96.0176" x="1372" y="1044.9844">&#171;ConcreteState&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="79.3652" x="1380.3262" y="1059.5039">CombatMode</text></g><!--class DialogueMode--><g class="entity" data-entity="DialogueMode" data-source-line="9" data-uid="ent0005" id="entity_DialogueMode"><rect fill="#FFFFFF" height="39.0391" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="98.0176" x="1645" y="1028.3594"/><rect fill="#F2F2F2" height="39.0391" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="98.0176" x="1645" y="1028.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="98.0176" x="1645" y="1064.8984"/><rect fill="none" height="39.0391" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="98.0176" x="1645" y="1028.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="96.0176" x="1646" y="1044.9844">&#171;ConcreteState&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="84.9492" x="1651.5342" y="1059.5039">DialogueMode</text></g><!--class RulesEngine--><g class="entity" data-entity="RulesEngine" data-source-line="10" data-uid="ent0006" id="entity_RulesEngine"><rect fill="#FFFFFF" height="39.0391" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="78.6855" x="1778.5" y="1028.3594"/><rect fill="#F2F2F2" height="39.0391" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="78.6855" x="1778.5" y="1028.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="78.6855" x="1778.5" y="1064.8984"/><rect fill="none" height="39.0391" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="78.6855" x="1778.5" y="1028.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="56.2734" x="1789.7061" y="1044.9844">&#171;Invoker&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="72.6855" x="1781.5" y="1059.5039">RulesEngine</text></g><!--class GameCommand--><g class="entity" data-entity="GameCommand" data-source-line="13" data-uid="ent0008" id="entity_GameCommand"><rect fill="#FFFFFF" height="105.1172" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="854.5" y="204.8594"/><rect fill="#F2F2F2" height="53.5586" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="854.5" y="204.8594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="854.5" y="255.918"/><rect fill="none" height="105.1172" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="854.5" y="204.8594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="64.9746" x="1002.3291" y="221.4844">&#171;interface&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="72.7852" x="998.4238" y="236.0039">&#171;Command&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" font-weight="bold" lengthAdjust="spacing" textLength="95.3555" x="987.1387" y="250.5234">GameCommand</text><line style="stroke:#333333;stroke-width:0.5;" x1="855.5" x2="1214.1328" y1="258.418" y2="258.418"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="135.7266" x="860.5" y="274.043">+getType(): ActionType</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="256.0781" x="860.5" y="288.5625">+validate(state: GameState): ValidationResult</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="348.6328" x="860.5" y="303.082">+execute(state: GameState, rules: RulesEngine): ActionResult</text></g><!--class MoveCommand--><g class="entity" data-entity="MoveCommand" data-source-line="18" data-uid="ent0009" id="entity_MoveCommand"><rect fill="#FFFFFF" height="156.6758" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="638.5" y="420.3594"/><rect fill="#F2F2F2" height="39.0391" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="638.5" y="420.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="638.5" y="456.8984"/><rect fill="none" height="156.6758" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="638.5" y="420.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="124.9805" x="756.3262" y="436.9844">&#171;ConcreteCommand&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="93.0234" x="772.3047" y="451.5039">MoveCommand</text><line style="stroke:#333333;stroke-width:0.5;" x1="639.5" x2="998.1328" y1="459.3984" y2="459.3984"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="113.1445" x="644.5" y="475.0234">-direction: Direction</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="141.5918" x="644.5" y="489.543">-destinationName: String</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="53.3262" x="644.5" y="504.0625">-exit: Exit</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="79.1367" x="644.5" y="518.582">-key: KeyItem</text><line style="stroke:#333333;stroke-width:0.5;" x1="639.5" x2="998.1328" y1="525.4766" y2="525.4766"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="135.7266" x="644.5" y="541.1016">+getType(): ActionType</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="256.0781" x="644.5" y="555.6211">+validate(state: GameState): ValidationResult</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="348.6328" x="644.5" y="570.1406">+execute(state: GameState, rules: RulesEngine): ActionResult</text></g><!--class TakeCommand--><g class="entity" data-entity="TakeCommand" data-source-line="27" data-uid="ent0010" id="entity_TakeCommand"><rect fill="#FFFFFF" height="113.1172" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="95.5" y="442.3594"/><rect fill="#F2F2F2" height="39.0391" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="95.5" y="442.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="95.5" y="478.8984"/><rect fill="none" height="113.1172" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="95.5" y="442.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="124.9805" x="213.3262" y="458.9844">&#171;ConcreteCommand&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="89.2266" x="231.2031" y="473.5039">TakeCommand</text><line style="stroke:#333333;stroke-width:0.5;" x1="96.5" x2="455.1328" y1="481.3984" y2="481.3984"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="103.4766" x="101.5" y="497.0234">-itemName: String</text><line style="stroke:#333333;stroke-width:0.5;" x1="96.5" x2="455.1328" y1="503.918" y2="503.918"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="135.7266" x="101.5" y="519.543">+getType(): ActionType</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="256.0781" x="101.5" y="534.0625">+validate(state: GameState): ValidationResult</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="348.6328" x="101.5" y="548.582">+execute(state: GameState, rules: RulesEngine): ActionResult</text></g><!--class DropCommand--><g class="entity" data-entity="DropCommand" data-source-line="33" data-uid="ent0011" id="entity_DropCommand"><rect fill="#FFFFFF" height="113.1172" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="1070.5" y="442.3594"/><rect fill="#F2F2F2" height="39.0391" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="1070.5" y="442.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="1070.5" y="478.8984"/><rect fill="none" height="113.1172" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="1070.5" y="442.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="124.9805" x="1188.3262" y="458.9844">&#171;ConcreteCommand&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="88.6172" x="1206.5078" y="473.5039">DropCommand</text><line style="stroke:#333333;stroke-width:0.5;" x1="1071.5" x2="1430.1328" y1="481.3984" y2="481.3984"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="103.4766" x="1076.5" y="497.0234">-itemName: String</text><line style="stroke:#333333;stroke-width:0.5;" x1="1071.5" x2="1430.1328" y1="503.918" y2="503.918"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="135.7266" x="1076.5" y="519.543">+getType(): ActionType</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="256.0781" x="1076.5" y="534.0625">+validate(state: GameState): ValidationResult</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="348.6328" x="1076.5" y="548.582">+execute(state: GameState, rules: RulesEngine): ActionResult</text></g><!--class PutCommand--><g class="entity" data-entity="PutCommand" data-source-line="39" data-uid="ent0012" id="entity_PutCommand"><rect fill="#FFFFFF" height="127.6367" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="1502.5" y="434.8594"/><rect fill="#F2F2F2" height="39.0391" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="1502.5" y="434.8594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="1502.5" y="471.3984"/><rect fill="none" height="127.6367" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="1502.5" y="434.8594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="124.9805" x="1620.3262" y="451.4844">&#171;ConcreteCommand&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="79.7813" x="1642.9258" y="466.0039">PutCommand</text><line style="stroke:#333333;stroke-width:0.5;" x1="1503.5" x2="1862.1328" y1="473.8984" y2="473.8984"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="103.4766" x="1508.5" y="489.5234">-itemName: String</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="132.4512" x="1508.5" y="504.043">-containerName: String</text><line style="stroke:#333333;stroke-width:0.5;" x1="1503.5" x2="1862.1328" y1="510.9375" y2="510.9375"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="135.7266" x="1508.5" y="526.5625">+getType(): ActionType</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="256.0781" x="1508.5" y="541.082">+validate(state: GameState): ValidationResult</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="348.6328" x="1508.5" y="555.6016">+execute(state: GameState, rules: RulesEngine): ActionResult</text></g><!--class UseItemCommand--><g class="entity" data-entity="UseItemCommand" data-source-line="46" data-uid="ent0013" id="entity_UseItemCommand"><rect fill="#FFFFFF" height="113.1172" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="620.5" y="669.3594"/><rect fill="#F2F2F2" height="39.0391" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="620.5" y="669.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="620.5" y="705.8984"/><rect fill="none" height="113.1172" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="620.5" y="669.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="124.9805" x="738.3262" y="685.9844">&#171;ConcreteCommand&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="108.6563" x="746.4883" y="700.5039">UseItemCommand</text><line style="stroke:#333333;stroke-width:0.5;" x1="621.5" x2="980.1328" y1="708.3984" y2="708.3984"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="103.4766" x="626.5" y="724.0234">-itemName: String</text><line style="stroke:#333333;stroke-width:0.5;" x1="621.5" x2="980.1328" y1="730.918" y2="730.918"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="135.7266" x="626.5" y="746.543">+getType(): ActionType</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="256.0781" x="626.5" y="761.0625">+validate(state: GameState): ValidationResult</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="348.6328" x="626.5" y="775.582">+execute(state: GameState, rules: RulesEngine): ActionResult</text></g><!--class EquipCommand--><g class="entity" data-entity="EquipCommand" data-source-line="52" data-uid="ent0014" id="entity_EquipCommand"><rect fill="#FFFFFF" height="113.1172" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="58.5" y="669.3594"/><rect fill="#F2F2F2" height="39.0391" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="58.5" y="669.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="58.5" y="705.8984"/><rect fill="none" height="113.1172" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="58.5" y="669.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="124.9805" x="176.3262" y="685.9844">&#171;ConcreteCommand&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="93.2813" x="192.1758" y="700.5039">EquipCommand</text><line style="stroke:#333333;stroke-width:0.5;" x1="59.5" x2="418.1328" y1="708.3984" y2="708.3984"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="103.4766" x="64.5" y="724.0234">-itemName: String</text><line style="stroke:#333333;stroke-width:0.5;" x1="59.5" x2="418.1328" y1="730.918" y2="730.918"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="135.7266" x="64.5" y="746.543">+getType(): ActionType</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="256.0781" x="64.5" y="761.0625">+validate(state: GameState): ValidationResult</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="348.6328" x="64.5" y="775.582">+execute(state: GameState, rules: RulesEngine): ActionResult</text></g><!--class TalkCommand--><g class="entity" data-entity="TalkCommand" data-source-line="58" data-uid="ent0015" id="entity_TalkCommand"><rect fill="#FFFFFF" height="113.1172" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="1052.5" y="669.3594"/><rect fill="#F2F2F2" height="39.0391" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="1052.5" y="669.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="1052.5" y="705.8984"/><rect fill="none" height="113.1172" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="1052.5" y="669.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="124.9805" x="1170.3262" y="685.9844">&#171;ConcreteCommand&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="85.3301" x="1190.1514" y="700.5039">TalkCommand</text><line style="stroke:#333333;stroke-width:0.5;" x1="1053.5" x2="1412.1328" y1="708.3984" y2="708.3984"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="100.4297" x="1058.5" y="724.0234">-npcName: String</text><line style="stroke:#333333;stroke-width:0.5;" x1="1053.5" x2="1412.1328" y1="730.918" y2="730.918"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="135.7266" x="1058.5" y="746.543">+getType(): ActionType</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="256.0781" x="1058.5" y="761.0625">+validate(state: GameState): ValidationResult</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="348.6328" x="1058.5" y="775.582">+execute(state: GameState, rules: RulesEngine): ActionResult</text></g><!--class LeaveCommand--><g class="entity" data-entity="LeaveCommand" data-source-line="64" data-uid="ent0016" id="entity_LeaveCommand"><rect fill="#FFFFFF" height="90.5977" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="1475.5" y="680.3594"/><rect fill="#F2F2F2" height="39.0391" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="1475.5" y="680.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="1475.5" y="716.8984"/><rect fill="none" height="90.5977" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="1475.5" y="680.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="124.9805" x="1593.3262" y="696.9844">&#171;ConcreteCommand&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="95.3848" x="1608.124" y="711.5039">LeaveCommand</text><line style="stroke:#333333;stroke-width:0.5;" x1="1476.5" x2="1835.1328" y1="719.3984" y2="719.3984"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="135.7266" x="1481.5" y="735.0234">+getType(): ActionType</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="256.0781" x="1481.5" y="749.543">+validate(state: GameState): ValidationResult</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="348.6328" x="1481.5" y="764.0625">+execute(state: GameState, rules: RulesEngine): ActionResult</text></g><!--class AttackCommand--><g class="entity" data-entity="AttackCommand" data-source-line="69" data-uid="ent0017" id="entity_AttackCommand"><rect fill="#FFFFFF" height="113.1172" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="417.5" y="842.3594"/><rect fill="#F2F2F2" height="39.0391" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="417.5" y="842.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="417.5" y="878.8984"/><rect fill="none" height="113.1172" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="417.5" y="842.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="124.9805" x="535.3262" y="858.9844">&#171;ConcreteCommand&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="98.877" x="548.3779" y="873.5039">AttackCommand</text><line style="stroke:#333333;stroke-width:0.5;" x1="418.5" x2="777.1328" y1="881.3984" y2="881.3984"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="112.5996" x="423.5" y="897.0234">-targetName: String</text><line style="stroke:#333333;stroke-width:0.5;" x1="418.5" x2="777.1328" y1="903.918" y2="903.918"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="135.7266" x="423.5" y="919.543">+getType(): ActionType</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="256.0781" x="423.5" y="934.0625">+validate(state: GameState): ValidationResult</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="348.6328" x="423.5" y="948.582">+execute(state: GameState, rules: RulesEngine): ActionResult</text></g><!--class FleeCommand--><g class="entity" data-entity="FleeCommand" data-source-line="75" data-uid="ent0018" id="entity_FleeCommand"><rect fill="#FFFFFF" height="113.1172" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="21.5" y="842.3594"/><rect fill="#F2F2F2" height="39.0391" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="21.5" y="842.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="21.5" y="878.8984"/><rect fill="none" height="113.1172" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="21.5" y="842.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="124.9805" x="139.3262" y="858.9844">&#171;ConcreteCommand&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="84.7324" x="159.4502" y="873.5039">FleeCommand</text><line style="stroke:#333333;stroke-width:0.5;" x1="22.5" x2="381.1328" y1="881.3984" y2="881.3984"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" text-decoration="underline" textLength="122.8066" x="27.5" y="897.0234">-DIFFICULTY: int = 12</text><line style="stroke:#333333;stroke-width:0.5;" x1="22.5" x2="381.1328" y1="903.918" y2="903.918"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="135.7266" x="27.5" y="919.543">+getType(): ActionType</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="256.0781" x="27.5" y="934.0625">+validate(state: GameState): ValidationResult</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="348.6328" x="27.5" y="948.582">+execute(state: GameState, rules: RulesEngine): ActionResult</text></g><!--class LookCommand--><g class="entity" data-entity="LookCommand" data-source-line="81" data-uid="ent0019" id="entity_LookCommand"><rect fill="#FFFFFF" height="90.5977" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="813.5" y="853.3594"/><rect fill="#F2F2F2" height="39.0391" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="813.5" y="853.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="813.5" y="889.8984"/><rect fill="none" height="90.5977" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="813.5" y="853.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="124.9805" x="931.3262" y="869.9844">&#171;ConcreteCommand&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="88.6055" x="949.5137" y="884.5039">LookCommand</text><line style="stroke:#333333;stroke-width:0.5;" x1="814.5" x2="1173.1328" y1="892.3984" y2="892.3984"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="135.7266" x="819.5" y="908.0234">+getType(): ActionType</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="256.0781" x="819.5" y="922.543">+validate(state: GameState): ValidationResult</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="348.6328" x="819.5" y="937.0625">+execute(state: GameState, rules: RulesEngine): ActionResult</text></g><!--class InventoryCommand--><g class="entity" data-entity="InventoryCommand" data-source-line="86" data-uid="ent0020" id="entity_InventoryCommand"><rect fill="#FFFFFF" height="90.5977" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="1209.5" y="853.3594"/><rect fill="#F2F2F2" height="39.0391" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="1209.5" y="853.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="360.6328" x="1209.5" y="889.8984"/><rect fill="none" height="90.5977" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="360.6328" x="1209.5" y="853.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="124.9805" x="1327.3262" y="869.9844">&#171;ConcreteCommand&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="116.6602" x="1331.4863" y="884.5039">InventoryCommand</text><line style="stroke:#333333;stroke-width:0.5;" x1="1210.5" x2="1569.1328" y1="892.3984" y2="892.3984"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="135.7266" x="1215.5" y="908.0234">+getType(): ActionType</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="256.0781" x="1215.5" y="922.543">+validate(state: GameState): ValidationResult</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="348.6328" x="1215.5" y="937.0625">+execute(state: GameState, rules: RulesEngine): ActionResult</text></g><!--class CommandFactory--><g class="entity" data-entity="CommandFactory" data-source-line="91" data-uid="ent0021" id="entity_CommandFactory"><rect fill="#FFFFFF" height="47.0391" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="305.4785" x="1337.5" y="79.3594"/><rect fill="#F2F2F2" height="24.5195" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="305.4785" x="1337.5" y="79.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="305.4785" x="1337.5" y="101.3789"/><rect fill="none" height="47.0391" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="305.4785" x="1337.5" y="79.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="105.0762" x="1437.7012" y="95.9844">CommandFactory</text><line style="stroke:#333333;stroke-width:0.5;" x1="1338.5" x2="1641.9785" y1="103.8789" y2="103.8789"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="293.4785" x="1343.5" y="119.5039">+create(proposal: ActionProposal): GameCommand</text></g><!--class ActionProposal--><g class="entity" data-entity="ActionProposal" data-source-line="94" data-uid="ent0022" id="entity_ActionProposal"><rect fill="#FFFFFF" height="142.1563" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="418.6641" x="1735.5" y="186.3594"/><rect fill="#F2F2F2" height="24.5195" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="418.6641" x="1735.5" y="186.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="418.6641" x="1735.5" y="208.3789"/><rect fill="none" height="142.1563" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="418.6641" x="1735.5" y="186.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="90.3809" x="1899.6416" y="202.9844">ActionProposal</text><line style="stroke:#333333;stroke-width:0.5;" x1="1736.5" x2="2153.1641" y1="210.8789" y2="210.8789"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="102.4512" x="1741.5" y="226.5039">-type: ActionType</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="79.3125" x="1741.5" y="241.0234">-target: String</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="124.9512" x="1741.5" y="255.543">-secondTarget: String</text><line style="stroke:#333333;stroke-width:0.5;" x1="1736.5" x2="2153.1641" y1="262.4375" y2="262.4375"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="406.6641" x="1741.5" y="278.0625">+ActionProposal(type: ActionType, target: String, secondTarget: String)</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="135.7266" x="1741.5" y="292.582">+getType(): ActionType</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="112.5879" x="1741.5" y="307.1016">+getTarget(): String</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="155.7715" x="1741.5" y="321.6211">+getSecondTarget(): String</text></g><!--class ActionResult--><g class="entity" data-entity="ActionResult" data-source-line="103" data-uid="ent0023" id="entity_ActionResult"><rect fill="#FFFFFF" height="142.1563" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="297.4629" x="2218.5" y="427.8594"/><rect fill="#F2F2F2" height="24.5195" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="297.4629" x="2218.5" y="427.8594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="297.4629" x="2218.5" y="449.8789"/><rect fill="none" height="142.1563" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="297.4629" x="2218.5" y="427.8594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="75.3633" x="2329.5498" y="444.4844">ActionResult</text><line style="stroke:#333333;stroke-width:0.5;" x1="2219.5" x2="2514.9629" y1="452.3789" y2="452.3789"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="104.625" x="2224.5" y="468.0039">-success: boolean</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="97.1191" x="2224.5" y="482.5234">-message: String</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="151.4355" x="2224.5" y="497.043">-events: List&lt;GameEvent&gt;</text><line style="stroke:#333333;stroke-width:0.5;" x1="2219.5" x2="2514.9629" y1="503.9375" y2="503.9375"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="285.4629" x="2224.5" y="519.5625">+ActionResult(success: boolean, message: String)</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="173.8477" x="2224.5" y="534.082">+addEvent(event: GameEvent)</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="126.9023" x="2224.5" y="548.6016">+getMessage(): String</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="181.1074" x="2224.5" y="563.1211">+getEvents(): List&lt;GameEvent&gt;</text></g><!--class ValidationResult--><g class="entity" data-entity="ValidationResult" data-source-line="112" data-uid="ent0024" id="entity_ValidationResult"><rect fill="#FFFFFF" height="113.1172" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="284.6836" x="1898.5" y="442.3594"/><rect fill="#F2F2F2" height="24.5195" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="284.6836" x="1898.5" y="442.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="284.6836" x="1898.5" y="464.3789"/><rect fill="none" height="113.1172" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="284.6836" x="1898.5" y="442.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="96.3047" x="1992.6895" y="458.9844">ValidationResult</text><line style="stroke:#333333;stroke-width:0.5;" x1="1899.5" x2="2182.1836" y1="466.8789" y2="466.8789"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="84.4629" x="1904.5" y="482.5039">-valid: boolean</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="84.7207" x="1904.5" y="497.0234">-reason: String</text><line style="stroke:#333333;stroke-width:0.5;" x1="1899.5" x2="2182.1836" y1="503.918" y2="503.918"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="272.6836" x="1904.5" y="519.543">+ValidationResult(valid: boolean, reason: String)</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="106.4121" x="1904.5" y="534.0625">+isValid(): boolean</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="117.3809" x="1904.5" y="548.582">+getReason(): String</text></g><!--class ActionType--><g class="entity" data-entity="ActionType" data-source-line="119" data-uid="ent0025" id="entity_ActionType"><rect fill="#FFFFFF" height="221.2734" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="87.5469" x="2551" y="388.3594"/><rect fill="#F2F2F2" height="39.0391" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="87.5469" x="2551" y="388.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="87.5469" x="2551" y="424.8984"/><rect fill="none" height="221.2734" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="87.5469" x="2551" y="388.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="85.5469" x="2552" y="404.9844">&#171;enumeration&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="68.4434" x="2560.5518" y="419.5039">ActionType</text><line style="stroke:#333333;stroke-width:0.5;" x1="2552" x2="2637.5469" y1="427.3984" y2="427.3984"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="35.5078" x="2557" y="443.0234">MOVE</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="31.3008" x="2557" y="457.543">TAKE</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="33.2227" x="2557" y="472.0625">DROP</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="24.3398" x="2557" y="486.582">PUT</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="23.8418" x="2557" y="501.1016">USE</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="36.2051" x="2557" y="515.6211">EQUIP</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="30.873" x="2557" y="530.1406">TALK</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="37.7695" x="2557" y="544.6602">LEAVE</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="48.8789" x="2557" y="559.1797">ATTACK</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="28.2949" x="2557" y="573.6992">FLEE</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="33.1992" x="2557" y="588.2188">LOOK</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="69.5859" x="2557" y="602.7383">INVENTORY</text></g><!--class Direction--><g class="entity" data-entity="Direction" data-source-line="135" data-uid="ent0027" id="entity_Direction"><rect fill="#FFFFFF" height="39.0391" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="87.5469" x="2695" y="706.3594"/><rect fill="#F2F2F2" height="39.0391" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="87.5469" x="2695" y="706.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="87.5469" x="2695" y="742.8984"/><rect fill="none" height="39.0391" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="87.5469" x="2695" y="706.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-style="italic" lengthAdjust="spacing" textLength="85.5469" x="2696" y="722.9844">&#171;enumeration&#187;</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="53.4902" x="2712.0283" y="737.5039">Direction</text></g><!--class GameEvent--><g class="entity" data-entity="GameEvent" data-source-line="138" data-uid="ent0029" id="entity_GameEvent"><rect fill="#FFFFFF" height="24.5195" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="73.5703" x="2839" y="713.3594"/><rect fill="#F2F2F2" height="24.5195" rx="2.5" ry="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="73.5703" x="2839" y="713.3594"/><rect fill="#F2F2F2" height="2.5" style="stroke:#F2F2F2;stroke-width:0.5;" width="73.5703" x="2839" y="735.3789"/><rect fill="none" height="24.5195" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="73.5703" x="2839" y="713.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="67.5703" x="2842" y="729.9844">GameEvent</text></g><!--link AttackCommand to CombatMode--><g class="link" data-entity-1="AttackCommand" data-entity-2="CombatMode" data-source-line="141" data-uid="lnk30" id="link_AttackCommand_CombatMode"><path codeLine="141" d="M778.65,952.3594 C1020.64,952.3594 1420,952.3594 1420,952.3594 C1420,952.3594 1420,994.0994 1420,1022.0694" fill="none" id="AttackCommand-to-CombatMode" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="#333333" points="1420,1028.0694,1424,1019.0694,1420,1023.0694,1416,1019.0694,1420,1028.0694" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="11" lengthAdjust="spacing" textLength="45.8423" x="1091.18" y="964.0156">&#171;create&#187;</text></g><!--link AttackCommand to ExplorationMode--><g class="link" data-entity-1="AttackCommand" data-entity-2="ExplorationMode" data-source-line="142" data-uid="lnk31" id="link_AttackCommand_ExplorationMode"><path codeLine="142" d="M778.71,948.3594 C1054.38,948.3594 1548.33,948.3594 1548.33,948.3594 C1548.33,948.3594 1548.33,993.1994 1548.33,1022.1994" fill="none" id="AttackCommand-to-ExplorationMode" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="#333333" points="1548.33,1028.1994,1552.33,1019.1994,1548.33,1023.1994,1544.33,1019.1994,1548.33,1028.1994" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="11" lengthAdjust="spacing" textLength="45.8423" x="1157.44" y="960.0156">&#171;create&#187;</text></g><!--link FleeCommand to ExplorationMode--><g class="link" data-entity-1="FleeCommand" data-entity-2="ExplorationMode" data-source-line="143" data-uid="lnk32" id="link_FleeCommand_ExplorationMode"><path codeLine="143" d="M141.83,955.4094 C141.83,975.0994 141.83,992.3594 141.83,992.3594 C141.83,992.3594 1526.17,992.3594 1526.17,992.3594 C1526.17,992.3594 1526.17,1006.1794 1526.17,1022.1394" fill="none" id="FleeCommand-to-ExplorationMode" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="#333333" points="1526.17,1028.1394,1530.17,1019.1394,1526.17,1023.1394,1522.17,1019.1394,1526.17,1028.1394" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="11" lengthAdjust="spacing" textLength="45.8423" x="787.41" y="989.0156">&#171;create&#187;</text></g><!--link FleeCommand to CombatMode--><g class="link" data-entity-1="FleeCommand" data-entity-2="CombatMode" data-source-line="144" data-uid="lnk33" id="link_FleeCommand_CombatMode"><path codeLine="144" d="M262.17,955.4394 C262.17,999.8994 262.17,1054.3594 262.17,1054.3594 C262.17,1054.3594 1144.61,1054.3594 1364.99,1054.3594" fill="none" id="FleeCommand-to-CombatMode" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="#333333" points="1370.99,1054.3594,1361.99,1050.3594,1365.99,1054.3594,1361.99,1058.3594,1370.99,1054.3594" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="11" lengthAdjust="spacing" textLength="31.5391" x="735.12" y="1051.0156">&#171;use&#187;</text></g><!--link UseItemCommand to CombatMode--><g class="link" data-entity-1="UseItemCommand" data-entity-2="CombatMode" data-source-line="145" data-uid="lnk34" id="link_UseItemCommand_CombatMode"><path codeLine="145" d="M796,782.6294 C796,873.4594 796,1041.3594 796,1041.3594 C796,1041.3594 1217.43,1041.3594 1364.78,1041.3594" fill="none" id="UseItemCommand-to-CombatMode" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="#333333" points="1370.78,1041.3594,1361.78,1037.3594,1365.78,1041.3594,1361.78,1045.3594,1370.78,1041.3594" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="11" lengthAdjust="spacing" textLength="31.5391" x="922.02" y="1038.0156">&#171;use&#187;</text></g><!--link LeaveCommand to ExplorationMode--><g class="link" data-entity-1="LeaveCommand" data-entity-2="ExplorationMode" data-source-line="146" data-uid="lnk35" id="link_LeaveCommand_ExplorationMode"><path codeLine="146" d="M1590.25,771.6494 C1590.25,843.0094 1590.25,971.7894 1590.25,1022.1894" fill="none" id="LeaveCommand-to-ExplorationMode" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="#333333" points="1590.25,1028.1894,1594.25,1019.1894,1590.25,1023.1894,1586.25,1019.1894,1590.25,1028.1894" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="11" lengthAdjust="spacing" textLength="45.8423" x="1591.25" y="896.5756">&#171;create&#187;</text></g><!--link TalkCommand to DialogueMode--><g class="link" data-entity-1="TalkCommand" data-entity-2="DialogueMode" data-source-line="147" data-uid="lnk36" id="link_TalkCommand_DialogueMode"><path codeLine="147" d="M1413.55,777.3594 C1542.77,777.3594 1694,777.3594 1694,777.3594 C1694,777.3594 1694,959.4994 1694,1021.9694" fill="none" id="TalkCommand-to-DialogueMode" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="#333333" points="1694,1027.9694,1698,1018.9694,1694,1022.9694,1690,1018.9694,1694,1027.9694" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="11" lengthAdjust="spacing" textLength="45.8423" x="1633.08" y="789.0156">&#171;create&#187;</text></g><!--reverse link GameCommand to MoveCommand--><g class="link" data-entity-1="GameCommand" data-entity-2="MoveCommand" data-source-line="148" data-uid="lnk37" id="link_GameCommand_MoveCommand"><path codeLine="148" d="M927,328.0594 C927,360.2594 927,384.0394 927,420.1094" fill="none" id="GameCommand-backto-MoveCommand" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="none" points="927,310.0594,921,328.0594,933,328.0594,927,310.0594" style="stroke:#333333;stroke-width:1;"/></g><!--reverse link GameCommand to TakeCommand--><g class="link" data-entity-1="GameCommand" data-entity-2="TakeCommand" data-source-line="149" data-uid="lnk38" id="link_GameCommand_TakeCommand"><path codeLine="149" d="M836.16,284.3594 C611.67,284.3594 276,284.3594 276,284.3594 C276,284.3594 276,378.6694 276,442.2194" fill="none" id="GameCommand-backto-TakeCommand" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="none" points="854.16,284.3594,836.16,278.3594,836.16,290.3594,854.16,284.3594" style="stroke:#333333;stroke-width:1;"/></g><!--reverse link GameCommand to DropCommand--><g class="link" data-entity-1="GameCommand" data-entity-2="DropCommand" data-source-line="150" data-uid="lnk39" id="link_GameCommand_DropCommand"><path codeLine="150" d="M1094.67,328.0594 C1094.67,367.0594 1094.67,402.1194 1094.67,442.0594" fill="none" id="GameCommand-backto-DropCommand" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="none" points="1094.67,310.0594,1088.67,328.0594,1100.67,328.0594,1094.67,310.0594" style="stroke:#333333;stroke-width:1;"/></g><!--reverse link GameCommand to PutCommand--><g class="link" data-entity-1="GameCommand" data-entity-2="PutCommand" data-source-line="151" data-uid="lnk40" id="link_GameCommand_PutCommand"><path codeLine="151" d="M1118.83,327.9994 C1118.83,381.7494 1118.83,439.3594 1118.83,439.3594 C1118.83,439.3594 1337.15,439.3594 1502.17,439.3594" fill="none" id="GameCommand-backto-PutCommand" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="none" points="1118.83,309.9994,1112.83,327.9994,1124.83,327.9994,1118.83,309.9994" style="stroke:#333333;stroke-width:1;"/></g><!--reverse link GameCommand to UseItemCommand--><g class="link" data-entity-1="GameCommand" data-entity-2="UseItemCommand" data-source-line="152" data-uid="lnk41" id="link_GameCommand_UseItemCommand"><path codeLine="152" d="M1010.1,328.2494 C1010.1,450.8994 1010.1,726.3594 1010.1,726.3594 C1010.1,726.3594 998.99,726.3594 981.9,726.3594" fill="none" id="GameCommand-backto-UseItemCommand" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="none" points="1010.1,310.2494,1004.1,328.2494,1016.1,328.2494,1010.1,310.2494" style="stroke:#333333;stroke-width:1;"/></g><!--reverse link GameCommand to EquipCommand--><g class="link" data-entity-1="GameCommand" data-entity-2="EquipCommand" data-source-line="153" data-uid="lnk42" id="link_GameCommand_EquipCommand"><path codeLine="153" d="M836.24,257.3594 C558.62,257.3594 77,257.3594 77,257.3594 C77,257.3594 77,544.7394 77,669.3494" fill="none" id="GameCommand-backto-EquipCommand" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="none" points="854.24,257.3594,836.24,251.3594,836.24,263.3594,854.24,257.3594" style="stroke:#333333;stroke-width:1;"/></g><!--reverse link GameCommand to TalkCommand--><g class="link" data-entity-1="GameCommand" data-entity-2="TalkCommand" data-source-line="154" data-uid="lnk43" id="link_GameCommand_TalkCommand"><path codeLine="154" d="M1061.5,328.1894 C1061.5,417.0894 1061.5,577.8194 1061.5,669.2194" fill="none" id="GameCommand-backto-TalkCommand" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="none" points="1061.5,310.1894,1055.5,328.1894,1067.5,328.1894,1061.5,310.1894" style="stroke:#333333;stroke-width:1;"/></g><!--reverse link GameCommand to LeaveCommand--><g class="link" data-entity-1="GameCommand" data-entity-2="LeaveCommand" data-source-line="155" data-uid="lnk44" id="link_GameCommand_LeaveCommand"><path codeLine="155" d="M1233.74,257.3594 C1360.34,257.3594 1489,257.3594 1489,257.3594 C1489,257.3594 1489,562.1994 1489,680.0894" fill="none" id="GameCommand-backto-LeaveCommand" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="none" points="1215.74,257.3594,1233.74,263.3594,1233.74,251.3594,1215.74,257.3594" style="stroke:#333333;stroke-width:1;"/></g><!--reverse link GameCommand to AttackCommand--><g class="link" data-entity-1="GameCommand" data-entity-2="AttackCommand" data-source-line="156" data-uid="lnk45" id="link_GameCommand_AttackCommand"><path codeLine="156" d="M1020.7,327.9794 C1020.7,473.1094 1020.7,850.3594 1020.7,850.3594 C1020.7,850.3594 893.6,850.3594 778.8,850.3594" fill="none" id="GameCommand-backto-AttackCommand" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="none" points="1020.7,309.9794,1014.7,327.9794,1026.7,327.9794,1020.7,309.9794" style="stroke:#333333;stroke-width:1;"/></g><!--reverse link GameCommand to FleeCommand--><g class="link" data-entity-1="GameCommand" data-entity-2="FleeCommand" data-source-line="157" data-uid="lnk46" id="link_GameCommand_FleeCommand"><path codeLine="157" d="M836.24,231.3594 C549.37,231.3594 40,231.3594 40,231.3594 C40,231.3594 40,681.0594 40,842.2394" fill="none" id="GameCommand-backto-FleeCommand" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="none" points="854.24,231.3594,836.24,225.3594,836.24,237.3594,854.24,231.3594" style="stroke:#333333;stroke-width:1;"/></g><!--reverse link GameCommand to LookCommand--><g class="link" data-entity-1="GameCommand" data-entity-2="LookCommand" data-source-line="158" data-uid="lnk47" id="link_GameCommand_LookCommand"><path codeLine="158" d="M1031.3,328.1294 C1031.3,451.1594 1031.3,737.3494 1031.3,853.1294" fill="none" id="GameCommand-backto-LookCommand" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="none" points="1031.3,310.1294,1025.3,328.1294,1037.3,328.1294,1031.3,310.1294" style="stroke:#333333;stroke-width:1;"/></g><!--reverse link GameCommand to InventoryCommand--><g class="link" data-entity-1="GameCommand" data-entity-2="InventoryCommand" data-source-line="159" data-uid="lnk48" id="link_GameCommand_InventoryCommand"><path codeLine="159" d="M1233.52,284.3594 C1346.78,284.3594 1453.5,284.3594 1453.5,284.3594 C1453.5,284.3594 1453.5,710.7594 1453.5,853.1694" fill="none" id="GameCommand-backto-InventoryCommand" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="none" points="1215.52,284.3594,1233.52,290.3594,1233.52,278.3594,1215.52,284.3594" style="stroke:#333333;stroke-width:1;"/></g><!--link GameCommand to ValidationResult--><g class="link" data-entity-1="GameCommand" data-entity-2="ValidationResult" data-source-line="160" data-uid="lnk49" id="link_GameCommand_ValidationResult"><path codeLine="160" d="M1191.33,309.9294 C1191.33,334.4694 1191.33,358.3594 1191.33,358.3594 C1191.33,358.3594 2026.5,358.3594 2026.5,358.3594 C2026.5,358.3594 2026.5,397.1194 2026.5,436.1194" fill="none" id="GameCommand-to-ValidationResult" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="#333333" points="2026.5,442.1194,2030.5,433.1194,2026.5,437.1194,2022.5,433.1194,2026.5,442.1194" style="stroke:#333333;stroke-width:1;"/></g><!--link GameCommand to ActionResult--><g class="link" data-entity-1="GameCommand" data-entity-2="ActionResult" data-source-line="161" data-uid="lnk50" id="link_GameCommand_ActionResult"><path codeLine="161" d="M1143,310.0394 C1143,361.2494 1143,431.3594 1143,431.3594 C1143,431.3594 1886.41,431.3594 2212.44,431.3594" fill="none" id="GameCommand-to-ActionResult" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="#333333" points="2218.44,431.3594,2209.44,427.3594,2213.44,431.3594,2209.44,435.3594,2218.44,431.3594" style="stroke:#333333;stroke-width:1;"/></g><!--link GameCommand to ActionType--><g class="link" data-entity-1="GameCommand" data-entity-2="ActionType" data-source-line="162" data-uid="lnk51" id="link_GameCommand_ActionType"><path codeLine="162" d="M1167.17,310.0194 C1167.17,352.1994 1167.17,404.3594 1167.17,404.3594 C1167.17,404.3594 2303.7,404.3594 2544.7,404.3594" fill="none" id="GameCommand-to-ActionType" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="#333333" points="2550.7,404.3594,2541.7,400.3594,2545.7,404.3594,2541.7,408.3594,2550.7,404.3594" style="stroke:#333333;stroke-width:1;"/></g><!--link CommandFactory to GameCommand--><g class="link" data-entity-1="CommandFactory" data-entity-2="GameCommand" data-source-line="163" data-uid="lnk52" id="link_CommandFactory_GameCommand"><path codeLine="163" d="M1384.5,126.4294 C1384.5,163.5294 1384.5,231.3594 1384.5,231.3594 C1384.5,231.3594 1307.01,231.3594 1221.64,231.3594" fill="none" id="CommandFactory-to-GameCommand" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="#333333" points="1215.64,231.3594,1224.64,235.3594,1220.64,231.3594,1224.64,227.3594,1215.64,231.3594" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="11" lengthAdjust="spacing" textLength="45.8423" x="1306.53" y="228.0156">&#171;create&#187;</text></g><!--link CommandFactory to ActionProposal--><g class="link" data-entity-1="CommandFactory" data-entity-2="ActionProposal" data-source-line="164" data-uid="lnk53" id="link_CommandFactory_ActionProposal"><path codeLine="164" d="M1572.5,126.4494 C1572.5,154.1494 1572.5,196.3594 1572.5,196.3594 C1572.5,196.3594 1644.64,196.3594 1729.34,196.3594" fill="none" id="CommandFactory-to-ActionProposal" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="#333333" points="1735.34,196.3594,1726.34,192.3594,1730.34,196.3594,1726.34,200.3594,1735.34,196.3594" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="11" lengthAdjust="spacing" textLength="31.5391" x="1586.97" y="193.0156">&#171;use&#187;</text></g><!--link MoveCommand to Direction--><g class="link" data-entity-1="MoveCommand" data-entity-2="Direction" data-source-line="165" data-uid="lnk54" id="link_MoveCommand_Direction"><path codeLine="165" d="M999.51,574.3594 C1293.55,574.3594 1843.5,574.3594 1843.5,574.3594 C1843.5,574.3594 1843.5,726.3594 1843.5,726.3594 C1843.5,726.3594 2508.66,726.3594 2688.9,726.3594" fill="none" id="MoveCommand-to-Direction" style="stroke:#333333;stroke-width:1;"/><polygon fill="#333333" points="2694.9,726.3594,2685.9,722.3594,2689.9,726.3594,2685.9,730.3594,2694.9,726.3594" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="11" lengthAdjust="spacing" textLength="18.7881" x="1006.9353" y="574.7233">0..*</text><text fill="#000000" font-family="Helvetica" font-size="11" lengthAdjust="spacing" textLength="17.7515" x="2669.2879" y="723.0443">0..1</text></g><!--reverse link ActionResult to GameEvent--><g class="link" data-entity-1="ActionResult" data-entity-2="GameEvent" data-source-line="166" data-uid="lnk55" id="link_ActionResult_GameEvent"><path codeLine="166" d="M2367,581.9294 C2367,616.7794 2367,639.3594 2367,639.3594 C2367,639.3594 2876,639.3594 2876,639.3594 C2876,639.3594 2876,689.0394 2876,713.0994" fill="none" id="ActionResult-backto-GameEvent" style="stroke:#333333;stroke-width:1;"/><polygon fill="none" points="2367,569.9294,2363,575.9294,2367,581.9294,2371,575.9294,2367,569.9294" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="11" lengthAdjust="spacing" textLength="17.7515" x="2349.1383" y="588.5929">0..1</text><text fill="#000000" font-family="Helvetica" font-size="11" lengthAdjust="spacing" textLength="18.7881" x="2854.3289" y="702.5022">0..*</text></g><!--link ActionProposal to ActionType--><g class="link" data-entity-1="ActionProposal" data-entity-2="ActionType" data-source-line="167" data-uid="lnk56" id="link_ActionProposal_ActionType"><path codeLine="167" d="M2154.69,257.3594 C2344.65,257.3594 2595,257.3594 2595,257.3594 C2595,257.3594 2595,318.7694 2595,382.3594" fill="none" id="ActionProposal-to-ActionType" style="stroke:#333333;stroke-width:1;"/><polygon fill="#333333" points="2595,388.3594,2599,379.3594,2595,383.3594,2591,379.3594,2595,388.3594" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="11" lengthAdjust="spacing" textLength="18.7881" x="2161.8842" y="254.8049">0..*</text><text fill="#000000" font-family="Helvetica" font-size="11" lengthAdjust="spacing" textLength="4.4741" x="2590.892" y="377.7903">1</text></g><!--link RulesEngine to GameCommand--><g class="link" data-entity-1="RulesEngine" data-entity-2="GameCommand" data-source-line="168" data-uid="lnk57" id="link_RulesEngine_GameCommand"><path codeLine="168" d="M1807.5,1028.1694 C1807.5,977.4694 1807.5,846.3594 1807.5,846.3594 C1807.5,846.3594 1041.9,846.3594 1041.9,846.3594 C1041.9,846.3594 1041.9,460.2494 1041.9,315.8894" fill="none" id="RulesEngine-to-GameCommand" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="#333333" points="1041.9,309.8894,1037.9,318.8894,1041.9,314.8894,1045.9,318.8894,1041.9,309.8894" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="11" lengthAdjust="spacing" textLength="30.6045" x="1216.37" y="843.0156">&#171;call&#187;</text></g><!--link RulesEngine to ActionResult--><g class="link" data-entity-1="RulesEngine" data-entity-2="ActionResult" data-source-line="169" data-uid="lnk58" id="link_RulesEngine_ActionResult"><path codeLine="169" d="M1850.5,1028.0894 C1850.5,937.4794 1850.5,566.3594 1850.5,566.3594 C1850.5,566.3594 2059.72,566.3594 2212.3,566.3594" fill="none" id="RulesEngine-to-ActionResult" style="stroke:#333333;stroke-width:1;stroke-dasharray:7,7;"/><polygon fill="#333333" points="2218.3,566.3594,2209.3,562.3594,2213.3,566.3594,2209.3,570.3594,2218.3,566.3594" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="11" lengthAdjust="spacing" textLength="45.8423" x="1804.5" y="609.9756">&#171;create&#187;</text></g><!--link MoveCommand to UseItemCommand--><!--link UseItemCommand to AttackCommand--><!--link TakeCommand to EquipCommand--><!--link EquipCommand to FleeCommand--><!--link DropCommand to TalkCommand--><!--link TalkCommand to LookCommand--><!--link PutCommand to LeaveCommand--><!--link LeaveCommand to InventoryCommand--><g class="legend" data-source-line="170"><rect fill="none" height="26.9395" rx="7.5" ry="7.5" style="stroke:#000000;stroke-width:1;" width="403.9482" x="2506.0518" y="1101.3594"/><text fill="#000000" font-family="Helvetica" font-size="14" lengthAdjust="spacing" textLength="393.9482" x="2511.0518" y="1119.9219">Classes shown as a name only are detailed in another view.</text></g><!--SRC=[tLXHRo8t47xdLxWyaHwWNlksIf5G0XKA2PGiaKvL7toxKx0mDbrxaw1hfFw8_iBx9JVsBeljtIgqJo5F6Cytu_bcx1sFlsCYuNaAHEazXpxBjxobDapiQ4QtX3C1Uhy38ZEzbYq5cYWm8Yqp8gI0bcQQ0xdYL2bopUZAQFr4llxz3_c5Rb4WjrigKaKwvUYYrThHP4DNGDeWLcY_dyWCskHBYv34cXazxxZ49PWKjn8zkxoyaYB9GCEzfXe6Wmg9DZzJ_Ge8lU9obSChi4NEGOsiHuYQY4UvWGpbBmt-5fmAdvdGaFr14x24IvPeePeV3EogTXx7HeUG3sG5EiR8TYuYCamCL_Elb3rIpb9qhwECav6rRFr5y4CXGuK5g9phKWMU8SaRDBeaCyGYbr-rP6NXfGh3hNnqI1o25RhV8odBmDg8CC3by202fPcmBjwX6n6vrnaJgr8Apqn7c6EcouaDx2Do0_k9XktRZarCDoV5XY6J6lCto-ewaxltnsgUw_zDgaSIAJJ55RBp8RnKO4xG-ylawC-SlSCD6bE-EOMLs2NdGseAz9JoyMRz7sgDnVwKj6YQ8OVpoSoOmqcrwujPY2Klv7eo7a-kbjFuKsJkEEHdyl77DxxvfDoSyTx3AoS8l5VlpvX3wUYO9eP8vIsICFxiyAOX5UK70_Fo_qNatftz0-a1ZwSFsTQO7mvbKCiLO3LFuxheGs2z4rhj1WQxZROkJaY9aLab8mq_5_UEKKyUXg48U1K4bIS9A4pEPoavqCFrUujpsAw4rswpkH0xPKfVccYFpCJ02qHXlnFQxOOc3unfcbeh7MkyIAATS49oMwWsyRPGPIHrfuxKmnrRqRVRF2IF6qsPdiHRApJHyLMxWTR1UwQied7GNSJwlh0QjMo1oBTEzl48cnaecjdg-DxE7aPs40zlYi7rOZQtW_aojh_B-q8m-dKvcPVOwOqTJ4V3KdqOnyEhOd8y7HLpqzcic9dSFOpkujdYatMjtiK-oOodHGjhlQwwkD3f1jrYCxazUvKyHBVyAjhl3zn6FKBxnVS0JTUHOVFlmTqYzf_1WG-vCg3WrlolEEzYy-hIxjtEWBqd20_flHdyrU-x_NTTw3IWTQ7JnzM5ntQeBlDZK9Ux5_0cdogkTQ4RjhhKotvTx2ImmVAnsDU5OIdr42OXjJ8O0hmArooqd_UWu1cfY_PotO0DojjnlxdFCEqV-ltlswJN6zZXnxRpuk8LXb8gUxs3pl5O1YkvDb75OUI-WpNIePoZWo7CSyIZpM45g9knrLgtx4CXAABMyaaGgWWbmhmJIi7tX6P0Ki36cqEATqv2XTHhoCWZWwT-2uqKfhpWz7vRipG5yNkA1dlXNWwETm3szv_xkXC0lHFWzQC1qDsoxhjA07FFZFkj263k7dVUCqAKUyQyxrG034_5Dm00]--></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.0//EN'
+          'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg fill-opacity="1" xmlns:xlink="http://www.w3.org/1999/xlink" color-rendering="auto" color-interpolation="auto" text-rendering="auto" stroke="black" stroke-linecap="square" width="2570" stroke-miterlimit="10" shape-rendering="auto" stroke-opacity="1" fill="black" stroke-dasharray="none" font-weight="normal" stroke-width="1" viewBox="-4 -6 2570 1586" height="1586" xmlns="http://www.w3.org/2000/svg" font-family="'Dialog'" font-style="normal" stroke-linejoin="miter" font-size="12px" stroke-dashoffset="0" image-rendering="auto"
+><!--Generated by the Batik Graphics2D SVG Generator--><defs id="genericDefs"
+  /><g
+  ><defs id="defs1"
+    ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath1"
+      ><path d="M0 0 L2147483647 0 L2147483647 2147483647 L0 2147483647 L0 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath2"
+      ><path d="M0 0 L0 40 L440 40 L440 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath3"
+      ><path d="M0 0 L0 50 L160 50 L160 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath4"
+      ><path d="M0 0 L0 50 L110 50 L110 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath5"
+      ><path d="M0 0 L0 30 L110 30 L110 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath6"
+      ><path d="M0 0 L0 250 L150 250 L150 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath7"
+      ><path d="M0 0 L0 150 L380 150 L380 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath8"
+      ><path d="M0 0 L0 120 L360 120 L360 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath9"
+      ><path d="M0 0 L0 150 L520 150 L520 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath10"
+      ><path d="M0 0 L0 100 L460 100 L460 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath11"
+      ><path d="M0 0 L0 120 L460 120 L460 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath12"
+      ><path d="M0 0 L0 140 L460 140 L460 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath13"
+      ><path d="M0 0 L0 170 L460 170 L460 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath14"
+      ><path d="M0 0 L0 50 L390 50 L390 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath15"
+      ><path d="M0 0 L0 30 L60 30 L60 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath16"
+      ><path d="M0 0 L0 30 L70 30 L70 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath17"
+      ><path d="M0 0 L0 60 L140 60 L140 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath18"
+      ><path d="M0 0 L0 30 L90 30 L90 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath19"
+      ><path d="M0 0 L0 60 L180 60 L180 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath20"
+      ><path d="M0 0 L0 30 L50 30 L50 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath21"
+      ><path d="M0 0 L0 50 L150 50 L150 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath22"
+      ><path d="M0 0 L0 440 L200 440 L200 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath23"
+      ><path d="M0 0 L0 90 L160 90 L160 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath24"
+      ><path d="M0 0 L0 1410 L1760 1410 L1760 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath25"
+      ><path d="M0 0 L0 240 L190 240 L190 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath26"
+      ><path d="M0 0 L0 300 L220 300 L220 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath27"
+      ><path d="M0 0 L0 260 L190 260 L190 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath28"
+      ><path d="M0 0 L0 28 L427 28 L427 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath29"
+      ><path d="M0 0 L0 710 L1650 710 L1650 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath30"
+      ><path d="M0 0 L0 450 L1510 450 L1510 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath31"
+      ><path d="M0 0 L0 460 L1470 460 L1470 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath32"
+      ><path d="M0 0 L0 420 L1490 420 L1490 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath33"
+      ><path d="M0 0 L0 460 L660 460 L660 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath34"
+      ><path d="M0 0 L0 400 L840 400 L840 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath35"
+      ><path d="M0 0 L0 50 L1170 50 L1170 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath36"
+      ><path d="M0 0 L0 1010 L90 1010 L90 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath37"
+      ><path d="M0 0 L0 260 L830 260 L830 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath38"
+      ><path d="M0 0 L0 290 L830 290 L830 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath39"
+      ><path d="M0 0 L0 920 L100 920 L100 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath40"
+      ><path d="M0 0 L0 840 L110 840 L110 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath41"
+      ><path d="M0 0 L0 240 L530 240 L530 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath42"
+      ><path d="M0 0 L0 770 L90 770 L90 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath43"
+      ><path d="M0 0 L0 560 L270 560 L270 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath44"
+      ><path d="M0 0 L0 660 L60 660 L60 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath45"
+      ><path d="M0 0 L0 30 L540 30 L540 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath46"
+      ><path d="M0 0 L0 620 L80 620 L80 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath47"
+      ><path d="M0 0 L0 460 L290 460 L290 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath48"
+      ><path d="M0 0 L0 50 L490 50 L490 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath49"
+      ><path d="M0 0 L0 430 L460 430 L460 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath50"
+      ><path d="M0 0 L0 500 L70 500 L70 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath51"
+      ><path d="M0 0 L0 300 L300 300 L300 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath52"
+      ><path d="M0 0 L0 450 L60 450 L60 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath53"
+      ><path d="M0 0 L0 240 L290 240 L290 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath54"
+      ><path d="M0 0 L0 250 L410 250 L410 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath55"
+      ><path d="M0 0 L0 230 L330 230 L330 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath56"
+      ><path d="M0 0 L0 260 L360 260 L360 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath57"
+      ><path d="M0 0 L0 330 L60 330 L60 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath58"
+      ><path d="M0 0 L0 150 L260 150 L260 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath59"
+      ><path d="M0 0 L0 530 L160 530 L160 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath60"
+      ><path d="M0 0 L0 270 L60 270 L60 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath61"
+      ><path d="M0 0 L0 150 L250 150 L250 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath62"
+      ><path d="M0 0 L0 80 L260 80 L260 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath63"
+      ><path d="M0 0 L0 60 L280 60 L280 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath64"
+      ><path d="M0 0 L0 60 L260 60 L260 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath65"
+      ><path d="M0 0 L0 50 L220 50 L220 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath66"
+      ><path d="M0 0 L0 50 L250 50 L250 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath67"
+      ><path d="M0 0 L0 50 L200 50 L200 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath68"
+      ><path d="M0 0 L0 100 L30 100 L30 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath69"
+      ><path d="M0 0 L0 50 L260 50 L260 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath70"
+      ><path d="M0 0 L0 100 L90 100 L90 0 Z"
+      /></clipPath
+    ></defs
+    ><g fill="rgb(255,253,231)" fill-opacity="0.4902" transform="translate(2080,1520)" stroke-opacity="0.4902" stroke="rgb(255,253,231)"
+    ><path d="M0.5 0.5 L428.5 0.5 L439 12.5 L439 39 L0.5 39 Z" stroke="none" clip-path="url(#clipPath2)"
+    /></g
+    ><g transform="translate(2080,1520)"
+    ><path fill="none" d="M0.5 0.5 L428.5 0.5 L439 12.5 L439 39 L0.5 39 Z" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M428.5 0.5 L428.5 12.5 L439 12.5" clip-path="url(#clipPath2)"
+      /><text x="5" font-size="14px" y="18.0938" clip-path="url(#clipPath2)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >Classes shown as a name only are detailed in another view.</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(2340,620)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="158.5" height="48.5" y="0.5" clip-path="url(#clipPath3)" stroke="none"
+    /></g
+    ><g transform="translate(2340,620)"
+    ><rect fill="none" x="0.5" width="158.5" height="48.5" y="0.5" clip-path="url(#clipPath3)"
+      /><text x="24" font-size="14px" y="18.0938" clip-path="url(#clipPath3)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«ConcreteState»</text
+      ><text x="21" font-size="14px" y="34.1875" clip-path="url(#clipPath3)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >ExplorationMode</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(2340,510)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="158.5" height="48.5" y="0.5" clip-path="url(#clipPath3)" stroke="none"
+    /></g
+    ><g transform="translate(2340,510)"
+    ><rect fill="none" x="0.5" width="158.5" height="48.5" y="0.5" clip-path="url(#clipPath3)"
+      /><text x="24" font-size="14px" y="18.0938" clip-path="url(#clipPath3)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«ConcreteState»</text
+      ><text x="33" font-size="14px" y="34.1875" clip-path="url(#clipPath3)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >CombatMode</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(2340,400)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="158.5" height="48.5" y="0.5" clip-path="url(#clipPath3)" stroke="none"
+    /></g
+    ><g transform="translate(2340,400)"
+    ><rect fill="none" x="0.5" width="158.5" height="48.5" y="0.5" clip-path="url(#clipPath3)"
+      /><text x="24" font-size="14px" y="18.0938" clip-path="url(#clipPath3)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«ConcreteState»</text
+      ><text x="30" font-size="14px" y="34.1875" clip-path="url(#clipPath3)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >DialogueMode</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(2360,290)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="108.5" height="48.5" y="0.5" clip-path="url(#clipPath4)" stroke="none"
+    /></g
+    ><g transform="translate(2360,290)"
+    ><rect fill="none" x="0.5" width="108.5" height="48.5" y="0.5" clip-path="url(#clipPath4)"
+      /><text x="22" font-size="14px" y="18.0938" clip-path="url(#clipPath4)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«Invoker»</text
+      ><text x="12" font-size="14px" y="34.1875" clip-path="url(#clipPath4)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >RulesEngine</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(2360,120)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="108.5" height="28.5" y="0.5" clip-path="url(#clipPath5)" stroke="none"
+    /></g
+    ><g transform="translate(2360,120)"
+    ><rect fill="none" x="0.5" width="108.5" height="28.5" y="0.5" clip-path="url(#clipPath5)"
+      /><text x="15" font-size="14px" y="18.0938" clip-path="url(#clipPath5)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >GameEvent</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(1830,750)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="148.5" height="248.5" y="0.5" clip-path="url(#clipPath6)" stroke="none"
+    /></g
+    ><g transform="translate(1830,750)"
+    ><rect fill="none" x="0.5" width="148.5" height="248.5" y="0.5" clip-path="url(#clipPath6)"
+      /><text x="25" font-size="14px" y="18.0938" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«enumeration»</text
+      ><text x="35" font-size="14px" y="34.1875" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >ActionType</text
+      ><path fill="none" d="M1 40.1875 L149 40.1875" clip-path="url(#clipPath6)"
+      /><text x="5" font-size="14px" y="55.2812" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >MOVE</text
+      ><text x="5" font-size="14px" y="71.375" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >TAKE</text
+      ><text x="5" font-size="14px" y="87.4688" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >DROP</text
+      ><text x="5" font-size="14px" y="103.5625" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >PUT</text
+      ><text x="5" font-size="14px" y="119.6562" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >USE</text
+      ><text x="5" font-size="14px" y="135.75" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >EQUIP</text
+      ><text x="5" font-size="14px" y="151.8438" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >TALK</text
+      ><text x="5" font-size="14px" y="167.9375" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >LEAVE</text
+      ><text x="5" font-size="14px" y="184.0312" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >ATTACK</text
+      ><text x="5" font-size="14px" y="200.125" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >FLEE</text
+      ><text x="5" font-size="14px" y="216.2188" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >LOOK</text
+      ><text x="5" font-size="14px" y="232.3125" clip-path="url(#clipPath6)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >INVENTORY</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(1720,530)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="378.5" height="148.5" y="0.5" clip-path="url(#clipPath7)" stroke="none"
+    /></g
+    ><g transform="translate(1720,530)"
+    ><rect fill="none" x="0.5" width="378.5" height="148.5" y="0.5" clip-path="url(#clipPath7)"
+      /><text x="146" font-size="14px" y="18.0938" clip-path="url(#clipPath7)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >ActionResult</text
+      ><path fill="none" d="M1 24.0938 L379 24.0938" clip-path="url(#clipPath7)"
+      /><text x="5" font-size="14px" y="39.1875" clip-path="url(#clipPath7)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- success: boolean</text
+      ><text x="5" font-size="14px" y="55.2812" clip-path="url(#clipPath7)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- message: String</text
+      ><text x="5" font-size="14px" y="71.375" clip-path="url(#clipPath7)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- events: List&lt;GameEvent&gt;</text
+      ><path fill="none" d="M1 77.375 L379 77.375" clip-path="url(#clipPath7)"
+      /><text x="5" font-size="14px" y="92.4688" clip-path="url(#clipPath7)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ ActionResult(success: boolean, message: String)</text
+      ><text x="5" font-size="14px" y="108.5625" clip-path="url(#clipPath7)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ addEvent(event: GameEvent)</text
+      ><text x="5" font-size="14px" y="124.6562" clip-path="url(#clipPath7)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ getMessage(): String</text
+      ><text x="5" font-size="14px" y="140.75" clip-path="url(#clipPath7)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ getEvents(): List&lt;GameEvent&gt;</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(1730,340)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="358.5" height="118.5" y="0.5" clip-path="url(#clipPath8)" stroke="none"
+    /></g
+    ><g transform="translate(1730,340)"
+    ><rect fill="none" x="0.5" width="358.5" height="118.5" y="0.5" clip-path="url(#clipPath8)"
+      /><text x="123" font-size="14px" y="18.0938" clip-path="url(#clipPath8)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >ValidationResult</text
+      ><path fill="none" d="M1 24.0938 L359 24.0938" clip-path="url(#clipPath8)"
+      /><text x="5" font-size="14px" y="39.1875" clip-path="url(#clipPath8)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- valid: boolean</text
+      ><text x="5" font-size="14px" y="55.2812" clip-path="url(#clipPath8)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- reason: String</text
+      ><path fill="none" d="M1 61.2812 L359 61.2812" clip-path="url(#clipPath8)"
+      /><text x="5" font-size="14px" y="76.375" clip-path="url(#clipPath8)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ ValidationResult(valid: boolean, reason: String)</text
+      ><text x="5" font-size="14px" y="92.4688" clip-path="url(#clipPath8)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ isValid(): boolean</text
+      ><text x="5" font-size="14px" y="108.5625" clip-path="url(#clipPath8)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ getReason(): String</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(1650,120)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="518.5" height="148.5" y="0.5" clip-path="url(#clipPath9)" stroke="none"
+    /></g
+    ><g transform="translate(1650,120)"
+    ><rect fill="none" x="0.5" width="518.5" height="148.5" y="0.5" clip-path="url(#clipPath9)"
+      /><text x="207" font-size="14px" y="18.0938" clip-path="url(#clipPath9)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >ActionProposal</text
+      ><path fill="none" d="M1 24.0938 L519 24.0938" clip-path="url(#clipPath9)"
+      /><text x="5" font-size="14px" y="39.1875" clip-path="url(#clipPath9)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- type: ActionType</text
+      ><text x="5" font-size="14px" y="55.2812" clip-path="url(#clipPath9)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- target: String</text
+      ><text x="5" font-size="14px" y="71.375" clip-path="url(#clipPath9)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- secondTarget: String</text
+      ><path fill="none" d="M1 77.375 L519 77.375" clip-path="url(#clipPath9)"
+      /><text x="5" font-size="14px" y="92.4688" clip-path="url(#clipPath9)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ ActionProposal(type: ActionType, target: String, secondTarget: String)</text
+      ><text x="5" font-size="14px" y="108.5625" clip-path="url(#clipPath9)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ getType(): ActionType</text
+      ><text x="5" font-size="14px" y="124.6562" clip-path="url(#clipPath9)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ getTarget(): String</text
+      ><text x="5" font-size="14px" y="140.75" clip-path="url(#clipPath9)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ getSecondTarget(): String</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(1080,1240)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="458.5" height="98.5" y="0.5" clip-path="url(#clipPath10)" stroke="none"
+    /></g
+    ><g transform="translate(1080,1240)"
+    ><rect fill="none" x="0.5" width="458.5" height="98.5" y="0.5" clip-path="url(#clipPath10)"
+      /><text x="157" font-size="14px" y="18.0938" clip-path="url(#clipPath10)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«ConcreteCommand»</text
+      ><text x="161" font-size="14px" y="34.1875" clip-path="url(#clipPath10)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >InventoryCommand</text
+      ><path fill="none" d="M1 40.1875 L459 40.1875" clip-path="url(#clipPath10)"
+      /><text x="5" font-size="14px" y="55.2812" clip-path="url(#clipPath10)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ getType(): ActionType</text
+      ><text x="5" font-size="14px" y="71.375" clip-path="url(#clipPath10)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ validate(state: GameState): ValidationResult</text
+      ><text x="5" font-size="14px" y="87.4688" clip-path="url(#clipPath10)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ execute(state: GameState, rules: RulesEngine): ActionResult</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(1080,1090)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="458.5" height="98.5" y="0.5" clip-path="url(#clipPath10)" stroke="none"
+    /></g
+    ><g transform="translate(1080,1090)"
+    ><rect fill="none" x="0.5" width="458.5" height="98.5" y="0.5" clip-path="url(#clipPath10)"
+      /><text x="157" font-size="14px" y="18.0938" clip-path="url(#clipPath10)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«ConcreteCommand»</text
+      ><text x="178" font-size="14px" y="34.1875" clip-path="url(#clipPath10)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >LookCommand</text
+      ><path fill="none" d="M1 40.1875 L459 40.1875" clip-path="url(#clipPath10)"
+      /><text x="5" font-size="14px" y="55.2812" clip-path="url(#clipPath10)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ getType(): ActionType</text
+      ><text x="5" font-size="14px" y="71.375" clip-path="url(#clipPath10)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ validate(state: GameState): ValidationResult</text
+      ><text x="5" font-size="14px" y="87.4688" clip-path="url(#clipPath10)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ execute(state: GameState, rules: RulesEngine): ActionResult</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(1080,940)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="458.5" height="98.5" y="0.5" clip-path="url(#clipPath10)" stroke="none"
+    /></g
+    ><g transform="translate(1080,940)"
+    ><rect fill="none" x="0.5" width="458.5" height="98.5" y="0.5" clip-path="url(#clipPath10)"
+      /><text x="157" font-size="14px" y="18.0938" clip-path="url(#clipPath10)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«ConcreteCommand»</text
+      ><text x="174" font-size="14px" y="34.1875" clip-path="url(#clipPath10)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >LeaveCommand</text
+      ><path fill="none" d="M1 40.1875 L459 40.1875" clip-path="url(#clipPath10)"
+      /><text x="5" font-size="14px" y="55.2812" clip-path="url(#clipPath10)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ getType(): ActionType</text
+      ><text x="5" font-size="14px" y="71.375" clip-path="url(#clipPath10)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ validate(state: GameState): ValidationResult</text
+      ><text x="5" font-size="14px" y="87.4688" clip-path="url(#clipPath10)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ execute(state: GameState, rules: RulesEngine): ActionResult</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(1080,770)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="458.5" height="118.5" y="0.5" clip-path="url(#clipPath11)" stroke="none"
+    /></g
+    ><g transform="translate(1080,770)"
+    ><rect fill="none" x="0.5" width="458.5" height="118.5" y="0.5" clip-path="url(#clipPath11)"
+      /><text x="157" font-size="14px" y="18.0938" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«ConcreteCommand»</text
+      ><text x="166" font-size="14px" y="34.1875" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >UseItemCommand</text
+      ><path fill="none" d="M1 40.1875 L459 40.1875" clip-path="url(#clipPath11)"
+      /><text x="5" font-size="14px" y="55.2812" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- itemName: String</text
+      ><path fill="none" d="M1 61.2812 L459 61.2812" clip-path="url(#clipPath11)"
+      /><text x="5" font-size="14px" y="76.375" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ getType(): ActionType</text
+      ><text x="5" font-size="14px" y="92.4688" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ validate(state: GameState): ValidationResult</text
+      ><text x="5" font-size="14px" y="108.5625" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ execute(state: GameState, rules: RulesEngine): ActionResult</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(1080,600)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="458.5" height="118.5" y="0.5" clip-path="url(#clipPath11)" stroke="none"
+    /></g
+    ><g transform="translate(1080,600)"
+    ><rect fill="none" x="0.5" width="458.5" height="118.5" y="0.5" clip-path="url(#clipPath11)"
+      /><text x="157" font-size="14px" y="18.0938" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«ConcreteCommand»</text
+      ><text x="180" font-size="14px" y="34.1875" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >TalkCommand</text
+      ><path fill="none" d="M1 40.1875 L459 40.1875" clip-path="url(#clipPath11)"
+      /><text x="5" font-size="14px" y="55.2812" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- npcName: String</text
+      ><path fill="none" d="M1 61.2812 L459 61.2812" clip-path="url(#clipPath11)"
+      /><text x="5" font-size="14px" y="76.375" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ getType(): ActionType</text
+      ><text x="5" font-size="14px" y="92.4688" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ validate(state: GameState): ValidationResult</text
+      ><text x="5" font-size="14px" y="108.5625" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ execute(state: GameState, rules: RulesEngine): ActionResult</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(1080,430)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="458.5" height="118.5" y="0.5" clip-path="url(#clipPath11)" stroke="none"
+    /></g
+    ><g transform="translate(1080,430)"
+    ><rect fill="none" x="0.5" width="458.5" height="118.5" y="0.5" clip-path="url(#clipPath11)"
+      /><text x="157" font-size="14px" y="18.0938" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«ConcreteCommand»</text
+      ><text x="175" font-size="14px" y="34.1875" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >EquipCommand</text
+      ><path fill="none" d="M1 40.1875 L459 40.1875" clip-path="url(#clipPath11)"
+      /><text x="5" font-size="14px" y="55.2812" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- itemName: String</text
+      ><path fill="none" d="M1 61.2812 L459 61.2812" clip-path="url(#clipPath11)"
+      /><text x="5" font-size="14px" y="76.375" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ getType(): ActionType</text
+      ><text x="5" font-size="14px" y="92.4688" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ validate(state: GameState): ValidationResult</text
+      ><text x="5" font-size="14px" y="108.5625" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ execute(state: GameState, rules: RulesEngine): ActionResult</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(450,1330)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="458.5" height="138.5" y="0.5" clip-path="url(#clipPath12)" stroke="none"
+    /></g
+    ><g transform="translate(450,1330)"
+    ><rect fill="none" x="0.5" width="458.5" height="138.5" y="0.5" clip-path="url(#clipPath12)"
+      /><text x="157" font-size="14px" y="18.0938" clip-path="url(#clipPath12)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«ConcreteCommand»</text
+      ><text x="183" font-size="14px" y="34.1875" clip-path="url(#clipPath12)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >PutCommand</text
+      ><path fill="none" d="M1 40.1875 L459 40.1875" clip-path="url(#clipPath12)"
+      /><text x="5" font-size="14px" y="55.2812" clip-path="url(#clipPath12)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- itemName: String</text
+      ><text x="5" font-size="14px" y="71.375" clip-path="url(#clipPath12)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- containerName: String</text
+      ><path fill="none" d="M1 77.375 L459 77.375" clip-path="url(#clipPath12)"
+      /><text x="5" font-size="14px" y="92.4688" clip-path="url(#clipPath12)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ getType(): ActionType</text
+      ><text x="5" font-size="14px" y="108.5625" clip-path="url(#clipPath12)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ validate(state: GameState): ValidationResult</text
+      ><text x="5" font-size="14px" y="124.6562" clip-path="url(#clipPath12)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ execute(state: GameState, rules: RulesEngine): ActionResult</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(450,1160)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="458.5" height="118.5" y="0.5" clip-path="url(#clipPath11)" stroke="none"
+    /></g
+    ><g transform="translate(450,1160)"
+    ><rect fill="none" x="0.5" width="458.5" height="118.5" y="0.5" clip-path="url(#clipPath11)"
+      /><text x="157" font-size="14px" y="18.0938" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«ConcreteCommand»</text
+      ><text x="178" font-size="14px" y="34.1875" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >DropCommand</text
+      ><path fill="none" d="M1 40.1875 L459 40.1875" clip-path="url(#clipPath11)"
+      /><text x="5" font-size="14px" y="55.2812" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- itemName: String</text
+      ><path fill="none" d="M1 61.2812 L459 61.2812" clip-path="url(#clipPath11)"
+      /><text x="5" font-size="14px" y="76.375" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ getType(): ActionType</text
+      ><text x="5" font-size="14px" y="92.4688" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ validate(state: GameState): ValidationResult</text
+      ><text x="5" font-size="14px" y="108.5625" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ execute(state: GameState, rules: RulesEngine): ActionResult</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(450,990)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="458.5" height="118.5" y="0.5" clip-path="url(#clipPath11)" stroke="none"
+    /></g
+    ><g transform="translate(450,990)"
+    ><rect fill="none" x="0.5" width="458.5" height="118.5" y="0.5" clip-path="url(#clipPath11)"
+      /><text x="157" font-size="14px" y="18.0938" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«ConcreteCommand»</text
+      ><text x="180" font-size="14px" y="34.1875" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >FleeCommand</text
+      ><path fill="none" d="M1 40.1875 L459 40.1875" clip-path="url(#clipPath11)"
+      /><text x="5" font-size="14px" y="55.2812" text-decoration="underline" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- DIFFICULTY: int = 12</text
+      ><path fill="none" d="M1 61.2812 L459 61.2812" clip-path="url(#clipPath11)"
+      /><text x="5" font-size="14px" y="76.375" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ getType(): ActionType</text
+      ><text x="5" font-size="14px" y="92.4688" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ validate(state: GameState): ValidationResult</text
+      ><text x="5" font-size="14px" y="108.5625" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ execute(state: GameState, rules: RulesEngine): ActionResult</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(450,820)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="458.5" height="118.5" y="0.5" clip-path="url(#clipPath11)" stroke="none"
+    /></g
+    ><g transform="translate(450,820)"
+    ><rect fill="none" x="0.5" width="458.5" height="118.5" y="0.5" clip-path="url(#clipPath11)"
+      /><text x="157" font-size="14px" y="18.0938" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«ConcreteCommand»</text
+      ><text x="172" font-size="14px" y="34.1875" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >AttackCommand</text
+      ><path fill="none" d="M1 40.1875 L459 40.1875" clip-path="url(#clipPath11)"
+      /><text x="5" font-size="14px" y="55.2812" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- targetName: String</text
+      ><path fill="none" d="M1 61.2812 L459 61.2812" clip-path="url(#clipPath11)"
+      /><text x="5" font-size="14px" y="76.375" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ getType(): ActionType</text
+      ><text x="5" font-size="14px" y="92.4688" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ validate(state: GameState): ValidationResult</text
+      ><text x="5" font-size="14px" y="108.5625" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ execute(state: GameState, rules: RulesEngine): ActionResult</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(450,650)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="458.5" height="118.5" y="0.5" clip-path="url(#clipPath11)" stroke="none"
+    /></g
+    ><g transform="translate(450,650)"
+    ><rect fill="none" x="0.5" width="458.5" height="118.5" y="0.5" clip-path="url(#clipPath11)"
+      /><text x="157" font-size="14px" y="18.0938" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«ConcreteCommand»</text
+      ><text x="177" font-size="14px" y="34.1875" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >TakeCommand</text
+      ><path fill="none" d="M1 40.1875 L459 40.1875" clip-path="url(#clipPath11)"
+      /><text x="5" font-size="14px" y="55.2812" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- itemName: String</text
+      ><path fill="none" d="M1 61.2812 L459 61.2812" clip-path="url(#clipPath11)"
+      /><text x="5" font-size="14px" y="76.375" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ getType(): ActionType</text
+      ><text x="5" font-size="14px" y="92.4688" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ validate(state: GameState): ValidationResult</text
+      ><text x="5" font-size="14px" y="108.5625" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ execute(state: GameState, rules: RulesEngine): ActionResult</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(450,430)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="458.5" height="168.5" y="0.5" clip-path="url(#clipPath13)" stroke="none"
+    /></g
+    ><g transform="translate(450,430)"
+    ><rect fill="none" x="0.5" width="458.5" height="168.5" y="0.5" clip-path="url(#clipPath13)"
+      /><text x="157" font-size="14px" y="18.0938" clip-path="url(#clipPath13)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«ConcreteCommand»</text
+      ><text x="175" font-size="14px" y="34.1875" clip-path="url(#clipPath13)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >MoveCommand</text
+      ><path fill="none" d="M1 40.1875 L459 40.1875" clip-path="url(#clipPath13)"
+      /><text x="5" font-size="14px" y="55.2812" clip-path="url(#clipPath13)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- direction: Direction</text
+      ><text x="5" font-size="14px" y="71.375" clip-path="url(#clipPath13)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- destinationName: String</text
+      ><text x="5" font-size="14px" y="87.4688" clip-path="url(#clipPath13)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- exit: Exit</text
+      ><text x="5" font-size="14px" y="103.5625" clip-path="url(#clipPath13)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >- key: KeyItem</text
+      ><path fill="none" d="M1 109.5625 L459 109.5625" clip-path="url(#clipPath13)"
+      /><text x="5" font-size="14px" y="124.6562" clip-path="url(#clipPath13)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ getType(): ActionType</text
+      ><text x="5" font-size="14px" y="140.75" clip-path="url(#clipPath13)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ validate(state: GameState): ValidationResult</text
+      ><text x="5" font-size="14px" y="156.8438" clip-path="url(#clipPath13)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ execute(state: GameState, rules: RulesEngine): ActionResult</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(760,240)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="458.5" height="118.5" y="0.5" clip-path="url(#clipPath11)" stroke="none"
+    /></g
+    ><g transform="translate(760,240)"
+    ><rect fill="none" x="0.5" width="458.5" height="118.5" y="0.5" clip-path="url(#clipPath11)"
+      /><text x="192" font-size="14px" y="18.0938" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«interface»</text
+      ><text x="187" font-size="14px" y="34.1875" clip-path="url(#clipPath11)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«Command»</text
+    ></g
+    ><g font-style="italic" font-size="14px" font-weight="bold" font-family="sans-serif" transform="translate(760,240)"
+    ><text x="174" xml:space="preserve" y="50.2812" clip-path="url(#clipPath11)" stroke="none"
+      >GameCommand</text
+      ><path fill="none" d="M1 56.2812 L459 56.2812" clip-path="url(#clipPath11)"
+      /><text x="5" y="71.375" clip-path="url(#clipPath11)" font-style="normal" stroke="none" font-weight="normal" xml:space="preserve"
+      >+ getType(): ActionType</text
+      ><text x="5" y="87.4688" clip-path="url(#clipPath11)" font-style="normal" stroke="none" font-weight="normal" xml:space="preserve"
+      >+ validate(state: GameState): ValidationResult</text
+      ><text x="5" y="103.5625" clip-path="url(#clipPath11)" font-style="normal" stroke="none" font-weight="normal" xml:space="preserve"
+      >+ execute(state: GameState, rules: RulesEngine): ActionResult</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(800,120)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="388.5" height="48.5" y="0.5" clip-path="url(#clipPath14)" stroke="none"
+    /></g
+    ><g transform="translate(800,120)"
+    ><rect fill="none" x="0.5" width="388.5" height="48.5" y="0.5" clip-path="url(#clipPath14)"
+      /><text x="133" font-size="14px" y="18.0938" clip-path="url(#clipPath14)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >CommandFactory</text
+      ><path fill="none" d="M1 24.0938 L389 24.0938" clip-path="url(#clipPath14)"
+      /><text x="5" font-size="14px" y="39.1875" clip-path="url(#clipPath14)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >+ create(proposal: ActionProposal): GameCommand</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(150,950)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="58.5" height="28.5" y="0.5" clip-path="url(#clipPath15)" stroke="none"
+    /></g
+    ><g transform="translate(150,950)"
+    ><rect fill="none" x="0.5" width="58.5" height="28.5" y="0.5" clip-path="url(#clipPath15)"
+      /><text x="12" font-size="14px" y="18.0938" clip-path="url(#clipPath15)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >Stats</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(150,875)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="68.5" height="28.5" y="0.5" clip-path="url(#clipPath16)" stroke="none"
+    /></g
+    ><g transform="translate(150,875)"
+    ><rect fill="none" x="0.5" width="68.5" height="28.5" y="0.5" clip-path="url(#clipPath16)"
+      /><text x="11" font-size="14px" y="18.0938" clip-path="url(#clipPath16)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >Enemy</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(150,800)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="68.5" height="28.5" y="0.5" clip-path="url(#clipPath16)" stroke="none"
+    /></g
+    ><g transform="translate(150,800)"
+    ><rect fill="none" x="0.5" width="68.5" height="28.5" y="0.5" clip-path="url(#clipPath16)"
+      /><text x="13" font-size="14px" y="18.0938" clip-path="url(#clipPath16)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >Player</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(120,620)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="138.5" height="58.5" y="0.5" clip-path="url(#clipPath17)" stroke="none"
+    /></g
+    ><g transform="translate(120,620)"
+    ><rect fill="none" x="0.5" width="138.5" height="58.5" y="0.5" clip-path="url(#clipPath17)"
+      /><text x="23" font-size="14px" y="18.0938" clip-path="url(#clipPath17)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«Component»</text
+      ><text x="35" font-size="14px" y="34.1875" clip-path="url(#clipPath17)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«Product»</text
+    ></g
+    ><g font-style="italic" font-size="14px" font-weight="bold" font-family="sans-serif" transform="translate(120,620)"
+    ><text x="54" xml:space="preserve" y="50.2812" clip-path="url(#clipPath17)" stroke="none"
+      >Item</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(140,545)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="88.5" height="28.5" y="0.5" clip-path="url(#clipPath18)" stroke="none"
+    /></g
+    ><g transform="translate(140,545)"
+    ><rect fill="none" x="0.5" width="88.5" height="28.5" y="0.5" clip-path="url(#clipPath18)"
+      /><text x="12" font-size="14px" y="18.0938" clip-path="url(#clipPath18)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >Inventory</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(100,440)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="178.5" height="58.5" y="0.5" clip-path="url(#clipPath19)" stroke="none"
+    /></g
+    ><g transform="translate(100,440)"
+    ><rect fill="none" x="0.5" width="178.5" height="58.5" y="0.5" clip-path="url(#clipPath19)"
+      /><text x="67" font-size="14px" y="18.0938" clip-path="url(#clipPath19)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«Leaf»</text
+      ><text x="25" font-size="14px" y="34.1875" clip-path="url(#clipPath19)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«ConcreteProduct»</text
+      ><text x="61" font-size="14px" y="50.2812" clip-path="url(#clipPath19)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >KeyItem</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(140,290)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="88.5" height="28.5" y="0.5" clip-path="url(#clipPath18)" stroke="none"
+    /></g
+    ><g transform="translate(140,290)"
+    ><rect fill="none" x="0.5" width="88.5" height="28.5" y="0.5" clip-path="url(#clipPath18)"
+      /><text x="15" font-size="14px" y="18.0938" clip-path="url(#clipPath18)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >Location</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(160,215)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="48.5" height="28.5" y="0.5" clip-path="url(#clipPath20)" stroke="none"
+    /></g
+    ><g transform="translate(160,215)"
+    ><rect fill="none" x="0.5" width="48.5" height="28.5" y="0.5" clip-path="url(#clipPath20)"
+      /><text x="12" font-size="14px" y="18.0938" clip-path="url(#clipPath20)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >Exit</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(110,120)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><rect x="0.5" width="148.5" height="48.5" y="0.5" clip-path="url(#clipPath21)" stroke="none"
+    /></g
+    ><g transform="translate(110,120)"
+    ><rect fill="none" x="0.5" width="148.5" height="48.5" y="0.5" clip-path="url(#clipPath21)"
+      /><text x="25" font-size="14px" y="18.0938" clip-path="url(#clipPath21)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >«enumeration»</text
+      ><text x="43" font-size="14px" y="34.1875" clip-path="url(#clipPath21)" font-family="sans-serif" stroke="none" font-weight="bold" xml:space="preserve"
+      >Direction</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(2320,250)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><path d="M0.5 0.5 L89.2021 0.5 L89.2021 21.5938 L199 21.5938 L199 439 L0.5 439 Z" stroke="none" clip-path="url(#clipPath22)"
+    /></g
+    ><g transform="translate(2320,250)"
+    ><path fill="none" d="M0.5 0.5 L89.2021 0.5 L89.2021 21.5938 L199 21.5938 L199 439 L0.5 439 Z" clip-path="url(#clipPath22)"
+      /><path fill="none" d="M0.5 21.5938 L89.2021 21.5938" clip-path="url(#clipPath22)"
+      /><text x="5" font-size="14px" y="16.0938" clip-path="url(#clipPath22)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >engine.core</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(2340,80)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><path d="M0.5 0.5 L103.8105 0.5 L103.8105 21.5938 L159 21.5938 L159 89 L0.5 89 Z" stroke="none" clip-path="url(#clipPath23)"
+    /></g
+    ><g transform="translate(2340,80)"
+    ><path fill="none" d="M0.5 0.5 L103.8105 0.5 L103.8105 21.5938 L159 21.5938 L159 89 L0.5 89 Z" clip-path="url(#clipPath23)"
+      /><path fill="none" d="M0.5 21.5938 L103.8105 21.5938" clip-path="url(#clipPath23)"
+      /><text x="5" font-size="14px" y="16.0938" clip-path="url(#clipPath23)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >engine.events</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(430,80)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><path d="M0.5 0.5 L704.5 0.5 L704.5 21.5938 L1759 21.5938 L1759 1409 L0.5 1409 Z" stroke="none" clip-path="url(#clipPath24)"
+    /></g
+    ><g transform="translate(430,80)"
+    ><path fill="none" d="M0.5 0.5 L704.5 0.5 L704.5 21.5938 L1759 21.5938 L1759 1409 L0.5 1409 Z" clip-path="url(#clipPath24)"
+      /><path fill="none" d="M0.5 21.5938 L704.5 21.5938" clip-path="url(#clipPath24)"
+      /><text x="5" font-size="14px" y="16.0938" clip-path="url(#clipPath24)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >engine.commands</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(90,760)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><path d="M0.5 0.5 L122.6572 0.5 L122.6572 21.5938 L189 21.5938 L189 239 L0.5 239 Z" stroke="none" clip-path="url(#clipPath25)"
+    /></g
+    ><g transform="translate(90,760)"
+    ><path fill="none" d="M0.5 0.5 L122.6572 0.5 L122.6572 21.5938 L189 21.5938 L189 239 L0.5 239 Z" clip-path="url(#clipPath25)"
+      /><path fill="none" d="M0.5 21.5938 L122.6572 21.5938" clip-path="url(#clipPath25)"
+      /><text x="5" font-size="14px" y="16.0938" clip-path="url(#clipPath25)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >engine.character</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(80,400)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><path d="M0.5 0.5 L95.1631 0.5 L95.1631 21.5938 L219 21.5938 L219 299 L0.5 299 Z" stroke="none" clip-path="url(#clipPath26)"
+    /></g
+    ><g transform="translate(80,400)"
+    ><path fill="none" d="M0.5 0.5 L95.1631 0.5 L95.1631 21.5938 L219 21.5938 L219 299 L0.5 299 Z" clip-path="url(#clipPath26)"
+      /><path fill="none" d="M0.5 21.5938 L95.1631 21.5938" clip-path="url(#clipPath26)"
+      /><text x="5" font-size="14px" y="16.0938" clip-path="url(#clipPath26)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >engine.items</text
+    ></g
+    ><g fill="rgb(255,255,255)" fill-opacity="0" transform="translate(90,80)" stroke-opacity="0" stroke="rgb(255,255,255)"
+    ><path d="M0.5 0.5 L96.4619 0.5 L96.4619 21.5938 L189 21.5938 L189 259 L0.5 259 Z" stroke="none" clip-path="url(#clipPath27)"
+    /></g
+    ><g transform="translate(90,80)"
+    ><path fill="none" d="M0.5 0.5 L96.4619 0.5 L96.4619 21.5938 L189 21.5938 L189 259 L0.5 259 Z" clip-path="url(#clipPath27)"
+      /><path fill="none" d="M0.5 21.5938 L96.4619 21.5938" clip-path="url(#clipPath27)"
+      /><text x="5" font-size="14px" y="16.0938" clip-path="url(#clipPath27)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >engine.world</text
+    ></g
+    ><g font-size="16px" font-weight="bold" font-family="sans-serif" transform="translate(30,14)"
+    ><text x="5" xml:space="preserve" y="19.9688" clip-path="url(#clipPath28)" stroke="none"
+      >Class Diagram 3 — Game Commands (Command)</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(896,536)" stroke-linecap="butt"
+    ><path fill="none" d="M14.5 564.5 L84.5 564.5" clip-path="url(#clipPath29)"
+      /><path fill="none" d="M84.5 564.5 L84.5 674.5" clip-path="url(#clipPath29)"
+      /><path fill="none" d="M84.5 674.5 L1634.5 674.5" clip-path="url(#clipPath29)"
+      /><path fill="none" d="M1634.5 674.5 L1634.5 14.5" clip-path="url(#clipPath29)"
+      /><path fill="none" d="M1634.5 14.5 L1605.5 14.5" clip-path="url(#clipPath29)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M1616.2583 8 L1605 14.5 L1616.2583 21" clip-path="url(#clipPath29)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(896,536)"
+    ><text x="1093.9297" xml:space="preserve" y="694.0938" clip-path="url(#clipPath29)" stroke="none"
+      >«use»</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(896,656)" stroke-linecap="butt"
+    ><path fill="none" d="M14.5 414.5 L1494.5 414.5" clip-path="url(#clipPath30)"
+      /><path fill="none" d="M1494.5 414.5 L1494.5 15.5" clip-path="url(#clipPath30)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M1501 26.2583 L1494.5 15 L1488 26.2583" clip-path="url(#clipPath30)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(896,656)"
+    ><text x="924.8276" xml:space="preserve" y="434.0938" clip-path="url(#clipPath30)" stroke="none"
+      >«create»</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(896,466)" stroke-linecap="butt"
+    ><path fill="none" d="M14.5 444.5 L774.5 444.5" clip-path="url(#clipPath31)"
+      /><path fill="none" d="M774.5 444.5 L774.5 14.5" clip-path="url(#clipPath31)"
+      /><path fill="none" d="M774.5 14.5 L1454.5 14.5" clip-path="url(#clipPath31)"
+      /><path fill="none" d="M1454.5 14.5 L1454.5 43.5" clip-path="url(#clipPath31)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M1448 32.7417 L1454.5 44 L1461 32.7417" clip-path="url(#clipPath31)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(896,466)"
+    ><text x="711.6553" xml:space="preserve" y="262.0469" clip-path="url(#clipPath31)" stroke="none"
+      >«create»</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(896,656)" stroke-linecap="butt"
+    ><path fill="none" d="M14.5 274.5 L64.5 274.5" clip-path="url(#clipPath32)"
+      /><path fill="none" d="M64.5 274.5 L64.5 404.5" clip-path="url(#clipPath32)"
+      /><path fill="none" d="M64.5 404.5 L1474.5 404.5" clip-path="url(#clipPath32)"
+      /><path fill="none" d="M1474.5 404.5 L1474.5 15.5" clip-path="url(#clipPath32)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M1481 26.2583 L1474.5 15 L1468 26.2583" clip-path="url(#clipPath32)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(896,656)"
+    ><text x="844.8276" xml:space="preserve" y="400" clip-path="url(#clipPath32)" stroke="none"
+      >«create»</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(1186,346)" stroke-linecap="butt"
+    ><path fill="none" d="M14.5 14.5 L14.5 64.5" clip-path="url(#clipPath33)"
+      /><path fill="none" d="M14.5 64.5 L494.5 64.5" clip-path="url(#clipPath33)"
+      /><path fill="none" d="M494.5 64.5 L494.5 444.5" clip-path="url(#clipPath33)"
+      /><path fill="none" d="M494.5 444.5 L643.5 444.5" clip-path="url(#clipPath33)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M632.7417 451 L644 444.5 L632.7417 438" clip-path="url(#clipPath33)" stroke-linecap="square"
+    /></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(1526,656)" stroke-linecap="butt"
+    ><path fill="none" d="M14.5 364.5 L824.5 364.5" clip-path="url(#clipPath34)"
+      /><path fill="none" d="M824.5 364.5 L824.5 15.5" clip-path="url(#clipPath34)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M831 26.2583 L824.5 15 L818 26.2583" clip-path="url(#clipPath34)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(1526,656)"
+    ><text x="564.8276" xml:space="preserve" y="384.0938" clip-path="url(#clipPath34)" stroke="none"
+      >«create»</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(1206,286)" stroke-linecap="butt"
+    ><path fill="none" d="M1154.5 14.5 L15.5 14.5" clip-path="url(#clipPath35)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M26.2583 8 L15 14.5 L26.2583 21" clip-path="url(#clipPath35)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(1206,286)"
+    ><text x="564.5244" xml:space="preserve" y="34.0938" clip-path="url(#clipPath35)" stroke="none"
+      >«call»</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(896,346)" stroke-linecap="butt"
+    ><path fill="none" d="M74.5 15.5 L74.5 994.5" clip-path="url(#clipPath36)"
+      /><path fill="none" d="M74.5 994.5 L14.5 994.5" clip-path="url(#clipPath36)"
+      /><path fill="white" d="M68 26.2583 L74.5 15 L81 26.2583 Z" clip-path="url(#clipPath36)" stroke="none"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M68 26.2583 L74.5 15 L81 26.2583 Z" clip-path="url(#clipPath36)" stroke-linecap="square"
+    /></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(1526,536)" stroke-linecap="butt"
+    ><path fill="none" d="M14.5 244.5 L284.5 244.5" clip-path="url(#clipPath37)"
+      /><path fill="none" d="M284.5 244.5 L284.5 174.5" clip-path="url(#clipPath37)"
+      /><path fill="none" d="M284.5 174.5 L784.5 174.5" clip-path="url(#clipPath37)"
+      /><path fill="none" d="M784.5 174.5 L784.5 14.5" clip-path="url(#clipPath37)"
+      /><path fill="none" d="M784.5 14.5 L813.5 14.5" clip-path="url(#clipPath37)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M802.7417 21 L814 14.5 L802.7417 8" clip-path="url(#clipPath37)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(1526,536)"
+    ><text x="438.9297" xml:space="preserve" y="194.0938" clip-path="url(#clipPath37)" stroke="none"
+      >«use»</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(1526,426)" stroke-linecap="butt"
+    ><path fill="none" d="M14.5 274.5 L774.5 274.5" clip-path="url(#clipPath38)"
+      /><path fill="none" d="M774.5 274.5 L774.5 14.5" clip-path="url(#clipPath38)"
+      /><path fill="none" d="M774.5 14.5 L813.5 14.5" clip-path="url(#clipPath38)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M802.7417 21 L814 14.5 L802.7417 8" clip-path="url(#clipPath38)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(1526,426)"
+    ><text x="514.8276" xml:space="preserve" y="270" clip-path="url(#clipPath38)" stroke="none"
+      >«create»</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(996,346)" stroke-linecap="butt"
+    ><path fill="none" d="M14.5 15.5 L14.5 904.5" clip-path="url(#clipPath39)"
+      /><path fill="none" d="M14.5 904.5 L84.5 904.5" clip-path="url(#clipPath39)"
+      /><path fill="white" d="M8 26.2583 L14.5 15 L21 26.2583 Z" clip-path="url(#clipPath39)" stroke="none"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M8 26.2583 L14.5 15 L21 26.2583 Z" clip-path="url(#clipPath39)" stroke-linecap="square"
+    /></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(896,346)" stroke-linecap="butt"
+    ><path fill="none" d="M94.5 15.5 L94.5 824.5" clip-path="url(#clipPath40)"
+      /><path fill="none" d="M94.5 824.5 L14.5 824.5" clip-path="url(#clipPath40)"
+      /><path fill="white" d="M88 26.2583 L94.5 15 L101 26.2583 Z" clip-path="url(#clipPath40)" stroke="none"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M88 26.2583 L94.5 15 L101 26.2583 Z" clip-path="url(#clipPath40)" stroke-linecap="square"
+    /></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(1206,316)" stroke-linecap="butt"
+    ><path fill="none" d="M14.5 14.5 L484.5 14.5" clip-path="url(#clipPath41)"
+      /><path fill="none" d="M484.5 14.5 L484.5 224.5" clip-path="url(#clipPath41)"
+      /><path fill="none" d="M484.5 224.5 L513.5 224.5" clip-path="url(#clipPath41)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M502.7417 231 L514 224.5 L502.7417 218" clip-path="url(#clipPath41)" stroke-linecap="square"
+    /></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(1006,346)" stroke-linecap="butt"
+    ><path fill="none" d="M14.5 15.5 L14.5 754.5" clip-path="url(#clipPath42)"
+      /><path fill="none" d="M14.5 754.5 L74.5 754.5" clip-path="url(#clipPath42)"
+      /><path fill="white" d="M8 26.2583 L14.5 15 L21 26.2583 Z" clip-path="url(#clipPath42)" stroke="none"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M8 26.2583 L14.5 15 L21 26.2583 Z" clip-path="url(#clipPath42)" stroke-linecap="square"
+    /></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(196,306)" stroke-linecap="butt"
+    ><path fill="none" d="M254.5 544.5 L114.5 544.5" clip-path="url(#clipPath43)"
+      /><path fill="none" d="M114.5 544.5 L114.5 44.5" clip-path="url(#clipPath43)"
+      /><path fill="none" d="M114.5 44.5 L14.5 44.5" clip-path="url(#clipPath43)"
+      /><path fill="none" d="M14.5 44.5 L14.5 15.5" clip-path="url(#clipPath43)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M21 26.2583 L14.5 15 L8 26.2583" clip-path="url(#clipPath43)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(196,306)"
+    ><text x="118" xml:space="preserve" y="307.0469" clip-path="url(#clipPath43)" stroke="none"
+      >«use»</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(886,346)" stroke-linecap="butt"
+    ><path fill="none" d="M44.5 15.5 L44.5 614.5" clip-path="url(#clipPath44)"
+      /><path fill="none" d="M44.5 614.5 L14.5 614.5" clip-path="url(#clipPath44)"
+      /><path fill="none" d="M14.5 614.5 L14.5 644.5" clip-path="url(#clipPath44)"
+      /><path fill="white" d="M38 26.2583 L44.5 15 L51 26.2583 Z" clip-path="url(#clipPath44)" stroke="none"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M38 26.2583 L44.5 15 L51 26.2583 Z" clip-path="url(#clipPath44)" stroke-linecap="square"
+    /></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(1206,336)" stroke-linecap="butt"
+    ><path fill="none" d="M14.5 14.5 L523.5 14.5" clip-path="url(#clipPath45)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M512.7417 21 L524 14.5 L512.7417 8" clip-path="url(#clipPath45)" stroke-linecap="square"
+    /></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(1016,346)" stroke-linecap="butt"
+    ><path fill="none" d="M14.5 15.5 L14.5 604.5" clip-path="url(#clipPath46)"
+      /><path fill="none" d="M14.5 604.5 L64.5 604.5" clip-path="url(#clipPath46)"
+      /><path fill="white" d="M8 26.2583 L14.5 15 L21 26.2583 Z" clip-path="url(#clipPath46)" stroke="none"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M8 26.2583 L14.5 15 L21 26.2583 Z" clip-path="url(#clipPath46)" stroke-linecap="square"
+    /></g
+    ><g transform="translate(2086,126)"
+    ><path fill="none" d="M15.5 434.5 L204.5 434.5" clip-path="url(#clipPath47)"
+      /><path fill="none" d="M204.5 434.5 L204.5 14.5" clip-path="url(#clipPath47)"
+      /><path fill="none" d="M204.5 14.5 L274.5 14.5" clip-path="url(#clipPath47)"
+      /><path fill="white" d="M26.2583 441 L15 434.5 L26.2583 428 L37.0167 434.5 Z" clip-path="url(#clipPath47)" stroke="none"
+      /><path fill="none" d="M26.2583 441 L15 434.5 L26.2583 428 L37.0167 434.5 Z" clip-path="url(#clipPath47)"
+      /><text x="33" font-size="14px" y="448.0938" clip-path="url(#clipPath47)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >0..1</text
+      ><text x="230.0879" font-size="14px" y="28.0938" clip-path="url(#clipPath47)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >0..*</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(1176,116)" stroke-linecap="butt"
+    ><path fill="none" d="M14.5 14.5 L473.5 14.5" clip-path="url(#clipPath48)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M462.7417 21 L474 14.5 L462.7417 8" clip-path="url(#clipPath48)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(1176,116)"
+    ><text x="223.9297" xml:space="preserve" y="34.0938" clip-path="url(#clipPath48)" stroke="none"
+      >«use»</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(16,296)" stroke-linecap="butt"
+    ><path fill="none" d="M434.5 414.5 L44.5 414.5" clip-path="url(#clipPath49)"
+      /><path fill="none" d="M44.5 414.5 L44.5 14.5" clip-path="url(#clipPath49)"
+      /><path fill="none" d="M44.5 14.5 L123.5 14.5" clip-path="url(#clipPath49)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M112.7417 21 L124 14.5 L112.7417 8" clip-path="url(#clipPath49)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(16,296)"
+    ><text x="-0.1406" xml:space="preserve" y="377.0469" clip-path="url(#clipPath49)" stroke="none"
+      >«use»</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(896,346)" stroke-linecap="butt"
+    ><path fill="none" d="M54.5 15.5 L54.5 484.5" clip-path="url(#clipPath50)"
+      /><path fill="none" d="M54.5 484.5 L14.5 484.5" clip-path="url(#clipPath50)"
+      /><path fill="white" d="M48 26.2583 L54.5 15 L61 26.2583 Z" clip-path="url(#clipPath50)" stroke="none"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M48 26.2583 L54.5 15 L61 26.2583 Z" clip-path="url(#clipPath50)" stroke-linecap="square"
+    /></g
+    ><g transform="translate(246,146)"
+    ><path fill="none" d="M254.5 284.5 L254.5 14.5" clip-path="url(#clipPath51)"
+      /><path fill="none" d="M254.5 14.5 L15.5 14.5" clip-path="url(#clipPath51)"
+      /><path fill="none" d="M26.2583 8 L15 14.5 L26.2583 21" clip-path="url(#clipPath51)"
+      /><text x="258" font-size="14px" y="244" clip-path="url(#clipPath51)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >0..*</text
+      ><text x="33" font-size="14px" y="28.0938" clip-path="url(#clipPath51)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >0..1</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(1036,346)" stroke-linecap="butt"
+    ><path fill="none" d="M14.5 15.5 L14.5 434.5" clip-path="url(#clipPath52)"
+      /><path fill="none" d="M14.5 434.5 L44.5 434.5" clip-path="url(#clipPath52)"
+      /><path fill="white" d="M8 26.2583 L14.5 15 L21 26.2583 Z" clip-path="url(#clipPath52)" stroke="none"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M8 26.2583 L14.5 15 L21 26.2583 Z" clip-path="url(#clipPath52)" stroke-linecap="square"
+    /></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(2086,316)" stroke-linecap="butt"
+    ><path fill="none" d="M274.5 14.5 L44.5 14.5" clip-path="url(#clipPath53)"
+      /><path fill="none" d="M44.5 14.5 L44.5 224.5" clip-path="url(#clipPath53)"
+      /><path fill="none" d="M44.5 224.5 L15.5 224.5" clip-path="url(#clipPath53)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M26.2583 218 L15 224.5 L26.2583 231" clip-path="url(#clipPath53)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(2086,316)"
+    ><text x="48" xml:space="preserve" y="27.0469" clip-path="url(#clipPath53)" stroke="none"
+      >«create»</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(56,576)" stroke-linecap="butt"
+    ><path fill="none" d="M394.5 14.5 L14.5 14.5" clip-path="url(#clipPath54)"
+      /><path fill="none" d="M14.5 14.5 L14.5 234.5" clip-path="url(#clipPath54)"
+      /><path fill="none" d="M14.5 234.5 L93.5 234.5" clip-path="url(#clipPath54)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M82.7417 241 L94 234.5 L82.7417 228" clip-path="url(#clipPath54)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(56,576)"
+    ><text x="33.9297" xml:space="preserve" y="34.0938" clip-path="url(#clipPath54)" stroke="none"
+      >«use»</text
+    ></g
+    ><g transform="translate(196,216)"
+    ><path fill="none" d="M284.5 214.5 L284.5 14.5" clip-path="url(#clipPath55)"
+      /><path fill="none" d="M284.5 14.5 L15.5 14.5" clip-path="url(#clipPath55)"
+      /><path fill="none" d="M26.2583 8 L15 14.5 L26.2583 21" clip-path="url(#clipPath55)"
+      /><text x="196.5386" font-size="14px" y="34.0938" clip-path="url(#clipPath55)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >resolved exit</text
+      ><text x="288" font-size="14px" y="198" clip-path="url(#clipPath55)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >0..*</text
+      ><text x="33" font-size="14px" y="28.0938" clip-path="url(#clipPath55)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >0..1</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(106,806)" stroke-linecap="butt"
+    ><path fill="none" d="M344.5 224.5 L14.5 224.5" clip-path="url(#clipPath56)"
+      /><path fill="none" d="M14.5 224.5 L14.5 14.5" clip-path="url(#clipPath56)"
+      /><path fill="none" d="M14.5 14.5 L43.5 14.5" clip-path="url(#clipPath56)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M32.7417 21 L44 14.5 L32.7417 8" clip-path="url(#clipPath56)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(106,806)"
+    ><text x="38.9297" xml:space="preserve" y="244.0938" clip-path="url(#clipPath56)" stroke="none"
+      >«use»</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(896,346)" stroke-linecap="butt"
+    ><path fill="none" d="M44.5 15.5 L44.5 314.5" clip-path="url(#clipPath57)"
+      /><path fill="none" d="M44.5 314.5 L14.5 314.5" clip-path="url(#clipPath57)"
+      /><path fill="white" d="M38 26.2583 L44.5 15 L51 26.2583 Z" clip-path="url(#clipPath57)" stroke="none"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M38 26.2583 L44.5 15 L51 26.2583 Z" clip-path="url(#clipPath57)" stroke-linecap="square"
+    /></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(216,296)" stroke-linecap="butt"
+    ><path fill="none" d="M244.5 134.5 L244.5 14.5" clip-path="url(#clipPath58)"
+      /><path fill="none" d="M244.5 14.5 L15.5 14.5" clip-path="url(#clipPath58)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M26.2583 8 L15 14.5 L26.2583 21" clip-path="url(#clipPath58)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(216,296)"
+    ><text x="168.9297" xml:space="preserve" y="34.0938" clip-path="url(#clipPath58)" stroke="none"
+      >«use»</text
+    ></g
+    ><g transform="translate(1686,256)"
+    ><path fill="none" d="M14.5 14.5 L14.5 504.5" clip-path="url(#clipPath59)"
+      /><path fill="none" d="M14.5 504.5 L143.5 504.5" clip-path="url(#clipPath59)"
+      /><path fill="none" d="M132.7417 511 L144 504.5 L132.7417 498" clip-path="url(#clipPath59)"
+      /><text x="18" font-size="14px" y="55.0938" clip-path="url(#clipPath59)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >0..*</text
+      ><text x="112.3057" font-size="14px" y="518.0938" clip-path="url(#clipPath59)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >1</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(1046,346)" stroke-linecap="butt"
+    ><path fill="none" d="M14.5 15.5 L14.5 224.5" clip-path="url(#clipPath60)"
+      /><path fill="none" d="M14.5 224.5 L44.5 224.5" clip-path="url(#clipPath60)"
+      /><path fill="none" d="M44.5 224.5 L44.5 254.5" clip-path="url(#clipPath60)"
+      /><path fill="white" d="M8 26.2583 L14.5 15 L21 26.2583 Z" clip-path="url(#clipPath60)" stroke="none"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M8 26.2583 L14.5 15 L21 26.2583 Z" clip-path="url(#clipPath60)" stroke-linecap="square"
+    /></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(216,546)" stroke-linecap="butt"
+    ><path fill="none" d="M234.5 134.5 L64.5 134.5" clip-path="url(#clipPath61)"
+      /><path fill="none" d="M64.5 134.5 L64.5 14.5" clip-path="url(#clipPath61)"
+      /><path fill="none" d="M64.5 14.5 L15.5 14.5" clip-path="url(#clipPath61)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M26.2583 8 L15 14.5 L26.2583 21" clip-path="url(#clipPath61)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(216,546)"
+    ><text x="19.8594" xml:space="preserve" y="140" clip-path="url(#clipPath61)" stroke="none"
+      >«use»</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(206,746)" stroke-linecap="butt"
+    ><path fill="none" d="M244.5 14.5 L84.5 14.5" clip-path="url(#clipPath62)"
+      /><path fill="none" d="M84.5 14.5 L84.5 64.5" clip-path="url(#clipPath62)"
+      /><path fill="none" d="M84.5 64.5 L15.5 64.5" clip-path="url(#clipPath62)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M26.2583 58 L15 64.5 L26.2583 71" clip-path="url(#clipPath62)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(206,746)"
+    ><text x="113.9297" xml:space="preserve" y="34.0938" clip-path="url(#clipPath62)" stroke="none"
+      >«use»</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(186,966)" stroke-linecap="butt"
+    ><path fill="none" d="M264.5 44.5 L14.5 44.5" clip-path="url(#clipPath63)"
+      /><path fill="none" d="M14.5 44.5 L14.5 15.5" clip-path="url(#clipPath63)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M21 26.2583 L14.5 15 L8 26.2583" clip-path="url(#clipPath63)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(186,966)"
+    ><text x="103.9297" xml:space="preserve" y="40" clip-path="url(#clipPath63)" stroke="none"
+      >«use»</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(206,806)" stroke-linecap="butt"
+    ><path fill="none" d="M244.5 24.5 L44.5 24.5" clip-path="url(#clipPath64)"
+      /><path fill="none" d="M44.5 24.5 L44.5 14.5" clip-path="url(#clipPath64)"
+      /><path fill="none" d="M44.5 14.5 L15.5 14.5" clip-path="url(#clipPath64)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M26.2583 8 L15 14.5 L26.2583 21" clip-path="url(#clipPath64)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(206,806)"
+    ><text x="53.9297" xml:space="preserve" y="44.0938" clip-path="url(#clipPath64)" stroke="none"
+      >«use»</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(246,636)" stroke-linecap="butt"
+    ><path fill="none" d="M204.5 24.5 L15.5 24.5" clip-path="url(#clipPath65)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M26.2583 18 L15 24.5 L26.2583 31" clip-path="url(#clipPath65)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(246,636)"
+    ><text x="88.9297" xml:space="preserve" y="20" clip-path="url(#clipPath65)" stroke="none"
+      >«use»</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(216,536)" stroke-linecap="butt"
+    ><path fill="none" d="M234.5 14.5 L15.5 14.5" clip-path="url(#clipPath66)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M26.2583 8 L15 14.5 L26.2583 21" clip-path="url(#clipPath66)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(216,536)"
+    ><text x="103.9297" xml:space="preserve" y="34.0938" clip-path="url(#clipPath66)" stroke="none"
+      >«use»</text
+    ></g
+    ><g transform="translate(266,436)"
+    ><path fill="none" d="M184.5 14.5 L15.5 14.5" clip-path="url(#clipPath67)"
+      /><path fill="none" d="M26.2583 8 L15 14.5 L26.2583 21" clip-path="url(#clipPath67)"
+      /><text x="87.1431" font-size="14px" y="34.0938" clip-path="url(#clipPath67)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >key</text
+      ><text x="140.0879" font-size="14px" y="28.0938" clip-path="url(#clipPath67)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >0..*</text
+      ><text x="45" font-size="14px" y="28.0938" clip-path="url(#clipPath67)" font-family="sans-serif" stroke="none" xml:space="preserve"
+      >0..1</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(756,346)" stroke-linecap="butt"
+    ><path fill="none" d="M14.5 15.5 L14.5 84.5" clip-path="url(#clipPath68)"
+      /><path fill="white" d="M8 26.2583 L14.5 15 L21 26.2583 Z" clip-path="url(#clipPath68)" stroke="none"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M8 26.2583 L14.5 15 L21 26.2583 Z" clip-path="url(#clipPath68)" stroke-linecap="square"
+    /></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(1076,346)" stroke-linecap="butt"
+    ><path fill="none" d="M14.5 15.5 L14.5 84.5" clip-path="url(#clipPath68)"
+      /><path fill="white" d="M8 26.2583 L14.5 15 L21 26.2583 Z" clip-path="url(#clipPath68)" stroke="none"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M8 26.2583 L14.5 15 L21 26.2583 Z" clip-path="url(#clipPath68)" stroke-linecap="square"
+    /></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(206,866)" stroke-linecap="butt"
+    ><path fill="none" d="M244.5 14.5 L15.5 14.5" clip-path="url(#clipPath69)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M26.2583 8 L15 14.5 L26.2583 21" clip-path="url(#clipPath69)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(206,866)"
+    ><text x="108.9297" xml:space="preserve" y="34.0938" clip-path="url(#clipPath69)" stroke="none"
+      >«use»</text
+    ></g
+    ><g stroke-dasharray="8,5" stroke-miterlimit="5" transform="translate(796,156)" stroke-linecap="butt"
+    ><path fill="none" d="M14.5 14.5 L14.5 83.5" clip-path="url(#clipPath70)"
+      /><path fill="none" stroke-miterlimit="10" stroke-dasharray="none" d="M8 72.7417 L14.5 84 L21 72.7417" clip-path="url(#clipPath70)" stroke-linecap="square"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(796,156)"
+    ><text x="18" xml:space="preserve" y="57.0469" clip-path="url(#clipPath70)" stroke="none"
+      >«create»</text
+    ></g
+  ></g
+></svg
+>

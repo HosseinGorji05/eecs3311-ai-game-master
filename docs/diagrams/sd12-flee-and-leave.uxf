@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLSequenceAllInOne</id>
+    <coordinates>
+      <x>10</x>
+      <y>10</y>
+      <w>3320</w>
+      <h>2460</h>
+    </coordinates>
+    <panel_attributes>title=SD12 — Flee from Combat or Leave a Conversation (UC04 5b, UC03 step 7; F04, F03; Command, State)
+desc=Notes\n(n1) proposal = new ActionProposal(FLEE or LEAVE, null, null). Typed "flee" also arrives through SD02; the CLI's "leave" calls performAction(), so it never reaches sendDialogue()\n(n2) d20 + agility ≥ DIFFICULTY (12)\n(n3) text = the results' messages (no LLM)
+obj=Player~P ACTOR
+obj=«boundary»\n_:SwingGameView_~V
+obj=«control»\n_:GameController_~GC
+obj=_:CommandFactory_~CF
+obj=_:RulesEngine_~RE
+obj=_flee : FleeCommand_~F
+obj=_leave : LeaveCommand_~LV
+obj=_:GameState_~GS
+obj=_combatMode : CombatMode_~CM
+obj=_player : Player_~PL
+obj=_stats : Stats_~ST
+obj=_afterFlee : ExplorationMode_~EM CREATED_LATER
+obj=_afterLeave : ExplorationMode_~EM2 CREATED_LATER
+
+P-&gt;&gt;&gt;V :click "Flee" in the\ncombat view,\nor "Leave" in the\ndialogue panel; on=V
+tick=2
+V-&gt;&gt;&gt;GC :performAction(proposal); on=GC
+V:(n1)
+GC-&gt;&gt;&gt;CF :create(proposal); on=CF
+CF.&gt;GC :command; off=CF
+GC-&gt;&gt;&gt;RE :executeAll([command],\nstate); on=RE
+ref=RE GS :SD03 — mode check: allows(FLEE) is true only in CombatMode,\nallows(LEAVE) only in DialogueMode
+combinedFragment=alt~cf1 RE EM2
+RE:[command is flee]
+RE-&gt;&gt;&gt;F :execute(state, rules); on=F
+F-&gt;&gt;&gt;GS :getMode(); on=GS
+GS.&gt;F :combatMode; off=GS
+F-&gt;&gt;&gt;CM :getEnemy(); on=CM
+CM.&gt;F :wolf; off=CM
+F-&gt;&gt;&gt;GS :getPlayer(); on=GS
+GS.&gt;F :player; off=GS
+F-&gt;&gt;&gt;PL :getStats(); on=PL
+PL.&gt;F :stats; off=PL
+F-&gt;&gt;&gt;ST :modifier(AGILITY); on=ST
+ST.&gt;F :agility; off=ST
+F-&gt;&gt;&gt;RE :skillCheck(agility,\nDIFFICULTY) (n2)
+RE.&gt;F :escaped
+combinedFragment=alt~cf2 RE EM
+RE:[escaped]
+F-&gt;&gt;&gt;EM :«create»\nExplorationMode()
+F-&gt;&gt;&gt;GS :setMode(afterFlee); on=GS
+GS.&gt;F; off=GS
+..=cf2
+RE:[failed: the enemy takes\nits turn]
+F-&gt;&gt;&gt;RE :resolveAttack(wolf,\nplayer)
+ref=RE F :SD04 — d20 + attack bonus\nagainst the player's defense
+RE.&gt;F :enemyAttack
+--=cf2
+F.&gt;RE :result : ActionResult\n(COMBAT event "fled" or\n"failed to flee"); off=F
+tick=1
+..=cf1
+RE:[command is leave]
+RE-&gt;&gt;&gt;LV :execute(state, rules); on=LV
+LV-&gt;&gt;&gt;EM2 :«create»\nExplorationMode()
+LV-&gt;&gt;&gt;GS :setMode(afterLeave); on=GS
+GS.&gt;LV; off=GS
+LV.&gt;RE :result : ActionResult\n(DIALOGUE event "left\nthe conversation"); off=LV
+tick=1
+--=cf1
+ref=RE F :SD03 — the event is published (SD05)
+RE.&gt;GC :results; off=RE
+GC-&gt;&gt;&gt;V :showNarration(text)
+GC:(n3)
+V.&gt;GC
+GC.&gt;V :turnResult; off=GC
+V.&gt;P; off=V</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

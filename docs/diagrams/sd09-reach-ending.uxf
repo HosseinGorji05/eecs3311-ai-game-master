@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLSequenceAllInOne</id>
+    <coordinates>
+      <x>10</x>
+      <y>10</y>
+      <w>2010</w>
+      <h>1130</h>
+    </coordinates>
+    <panel_attributes>title=SD09 — Reach Ending (UC13, F12; Template Method)\nbody of GameController.endGame(), referenced by SD02 and SD04
+desc=Notes\n(n1) Called from SD02 when isGameOver() is true: the main quest completed, or the player's HP reached 0 (SD04).\n(n2) sum of getAlignmentDelta() over all events: +2 per side quest completed for an NPC, −1 per failed quest, −2 per item\n      stolen from an NPC\n(n3) DEATH if the player died; otherwise HEROIC (score ≥ 3), DARK (score ≤ −3) or NEUTRAL
+obj=«boundary»\n_:SwingGameView_~V
+obj=«control»\n_:GameController_~GC
+obj=_:GameState_~GS
+obj=_:EndingCalculator_~EC
+obj=_:Ending_~EN CREATED_LATER
+obj=_:EndingWriter_~EW
+obj=_llm : LLMClient_~LLM
+
+GC:(n1)
+gate-&gt;&gt;&gt;GC :endGame(); on=GC
+GC-&gt;&gt;&gt;GS :getEventLog(); on=GS
+GS.&gt;GC :log; off=GS
+GC-&gt;&gt;&gt;EC :alignmentScore(log) (n2); on=EC
+EC.&gt;GC :score; off=EC
+GC-&gt;&gt;&gt;EC :determineType(state,\nscore); on=EC
+EC.&gt;GC :type (n3); off=EC
+GC-&gt;&gt;&gt;EC :statistics(log); on=EC
+EC.&gt;GC :stats; off=EC
+GC-&gt;&gt;&gt;EN :«create» Ending(type,\nstats)
+GC-&gt;&gt;&gt;EW :write(ending); on=EW
+EW-&gt;&gt;&gt;EW + :run(ending)
+tick=
+ref=EN LLM :SD00 — Run an LLM Task\n(prompt includes the fixed facts from story memory\;\nisValid: mentions only recorded events and fits the ending type\;\nfallback: template epilogue for the ending type)
+EW.&gt;EW + :epilogue
+EW.&gt;GC :epilogue; off=EW
+GC-&gt;&gt;&gt;EN :setEpilogue(epilogue); on=EN
+EN.&gt;GC; off=EN
+GC-&gt;&gt;&gt;V :showEnding(ending); on=V
+V.&gt;GC; off=V
+GC.&gt;gate :ending; off=GC</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

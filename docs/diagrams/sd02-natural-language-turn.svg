@@ -1,1 +1,456 @@
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" contentStyleType="text/css" data-diagram-type="SEQUENCE" height="1519px" preserveAspectRatio="none" style="width:1812px;height:1519px;background:#FFFFFF;" version="1.1" viewBox="0 0 1812 1519" width="1812px" zoomAndPan="magnify"><title>SD02 &#8212; Perform Action in Natural Language (UC02, UC05, UC06, UC14; F02, F05, F06; Facade, Command)</title><defs/><g><text fill="#000000" font-family="Helvetica" font-size="16" font-weight="bold" lengthAdjust="spacing" textLength="838.2969" x="486.2598" y="30.5">SD02 &#8212; Perform Action in Natural Language (UC02, UC05, UC06, UC14; F02, F05, F06; Facade, Command)</text><g><title>__.SwingGameView__</title><rect fill="#FFFFFF" height="1265.8594" style="stroke:#777777;stroke-width:1;" width="10" x="271.7227" y="228.4766"/></g><g><title>__.SwingGameView__</title><rect fill="#FFFFFF" height="14" style="stroke:#777777;stroke-width:1;" width="10" x="276.7227" y="593.75"/></g><g><title>__.SwingGameView__</title><rect fill="#FFFFFF" height="14" style="stroke:#777777;stroke-width:1;" width="10" x="276.7227" y="666.7891"/></g><g><title>__.SwingGameView__</title><rect fill="#FFFFFF" height="14" style="stroke:#777777;stroke-width:1;" width="10" x="276.7227" y="1233.6992"/></g><g><title>__.GameController__</title><rect fill="#FFFFFF" height="1223.3398" style="stroke:#777777;stroke-width:1;" width="10" x="661.4629" y="256.9961"/></g><g><title>__.GameController__</title><rect fill="#FFFFFF" height="83.5586" style="stroke:#777777;stroke-width:1;" width="10" x="666.4629" y="1307.7383"/></g><g><title>__.ActionInterpreter__</title><rect fill="#FFFFFF" height="199.1563" style="stroke:#777777;stroke-width:1;" width="10" x="883.5664" y="285.5156"/></g><g><title>__.ActionInterpreter__</title><rect fill="#FFFFFF" height="127.1172" style="stroke:#777777;stroke-width:1;" width="10" x="888.5664" y="322.0352"/></g><g><title>__.ActionInterpreter__</title><rect fill="#FFFFFF" height="28.5195" style="stroke:#777777;stroke-width:1;" width="10" x="883.5664" y="513.1914"/></g><g><title>__.Narrator__</title><rect fill="#FFFFFF" height="184.6367" style="stroke:#777777;stroke-width:1;" width="10" x="1329.7598" y="963.5039"/></g><g><title>__.Narrator__</title><rect fill="#FFFFFF" height="112.5977" style="stroke:#777777;stroke-width:1;" width="10" x="1334.7598" y="1000.0234"/></g><g><title>__.CommandFactory__</title><rect fill="#FFFFFF" height="28.5195" style="stroke:#777777;stroke-width:1;" width="10" x="1431.4229" y="798.3867"/></g><g><title>__.RulesEngine__</title><rect fill="#FFFFFF" height="72.5586" style="stroke:#777777;stroke-width:1;" width="10" x="1544.3447" y="862.4258"/></g><g><title>__.GameState__</title><rect fill="#FFFFFF" height="28.5195" style="stroke:#777777;stroke-width:1;" width="10" x="1672.959" y="1176.6602"/></g><rect fill="none" height="59.0391" style="stroke:#555555;stroke-width:1.5;" width="511.8428" x="213.9561" y="556.7109"/><rect fill="none" height="783.5469" style="stroke:#555555;stroke-width:1.5;" width="1513.9736" x="213.9561" y="629.75"/><rect fill="none" height="73.5586" style="stroke:#555555;stroke-width:1.5;" width="898.6348" x="607.127" y="761.3477"/><rect fill="none" height="143.5977" style="stroke:#555555;stroke-width:1.5;" width="161.7227" x="607.127" y="1262.6992"/><g><title>Player</title><rect fill="#000000" fill-opacity="0.00000" height="1392.457" width="8" x="21.7832" y="119.8789"/><line style="stroke:#777777;stroke-width:0.5;stroke-dasharray:5,5;" x1="25" x2="25" y1="119.8789" y2="1512.3359"/></g><g><title>__.SwingGameView__</title><rect fill="#000000" fill-opacity="0.00000" height="1392.457" width="8" x="272.7227" y="119.8789"/><line style="stroke:#777777;stroke-width:0.5;stroke-dasharray:5,5;" x1="275.9561" x2="275.9561" y1="119.8789" y2="1512.3359"/></g><g><title>__.GameController__</title><rect fill="#000000" fill-opacity="0.00000" height="1392.457" width="8" x="662.4629" y="119.8789"/><line style="stroke:#777777;stroke-width:0.5;stroke-dasharray:5,5;" x1="666.127" x2="666.127" y1="119.8789" y2="1512.3359"/></g><g><title>__.ActionInterpreter__</title><rect fill="#000000" fill-opacity="0.00000" height="1392.457" width="8" x="884.5664" y="119.8789"/><line style="stroke:#777777;stroke-width:0.5;stroke-dasharray:5,5;" x1="887.6855" x2="887.6855" y1="119.8789" y2="1512.3359"/></g><g><title>__llm . LLMClient__</title><rect fill="#000000" fill-opacity="0.00000" height="1392.457" width="8" x="1147.6855" y="119.8789"/><line style="stroke:#777777;stroke-width:0.5;stroke-dasharray:5,5;" x1="1150.9199" x2="1150.9199" y1="119.8789" y2="1512.3359"/></g><g><title>__.Narrator__</title><rect fill="#000000" fill-opacity="0.00000" height="1392.457" width="8" x="1330.7598" y="119.8789"/><line style="stroke:#777777;stroke-width:0.5;stroke-dasharray:5,5;" x1="1334.4355" x2="1334.4355" y1="119.8789" y2="1512.3359"/></g><g><title>__.CommandFactory__</title><rect fill="#000000" fill-opacity="0.00000" height="1392.457" width="8" x="1432.4229" y="119.8789"/><line style="stroke:#777777;stroke-width:0.5;stroke-dasharray:5,5;" x1="1436.084" x2="1436.084" y1="119.8789" y2="1512.3359"/></g><g><title>__.RulesEngine__</title><rect fill="#000000" fill-opacity="0.00000" height="1392.457" width="8" x="1545.3447" y="119.8789"/><line style="stroke:#777777;stroke-width:0.5;stroke-dasharray:5,5;" x1="1548.7617" x2="1548.7617" y1="119.8789" y2="1512.3359"/></g><g><title>__.GameState__</title><rect fill="#000000" fill-opacity="0.00000" height="1392.457" width="8" x="1673.959" y="119.8789"/><line style="stroke:#777777;stroke-width:0.5;stroke-dasharray:5,5;" x1="1676.9883" x2="1676.9883" y1="119.8789" y2="1512.3359"/></g><g><title>__.TurnResult__</title><rect fill="#000000" fill-opacity="0.00000" height="62.2793" width="8" x="1763.373" y="1450.0566"/><line style="stroke:#777777;stroke-width:0.5;stroke-dasharray:5,5;" x1="1766.9297" x2="1766.9297" y1="1450.0566" y2="1512.3359"/></g><g class="participant participant-head" data-participant="P"><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="35.5664" x="5" y="116.9844">Player</text><ellipse cx="25.7832" cy="53.8594" fill="#FFFFFF" rx="8" ry="8" style="stroke:#333333;stroke-width:0.5;"/><path d="M25.7832,61.8594 L25.7832,88.8594 M12.7832,69.8594 L38.7832,69.8594 M25.7832,88.8594 L12.7832,103.8594 M25.7832,88.8594 L38.7832,103.8594" fill="none" style="stroke:#333333;stroke-width:0.5;"/></g><g class="participant participant-head" data-participant="V"><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" text-decoration="underline" textLength="99.5332" x="223.9561" y="116.9844">:SwingGameView</text><path d="M256.2227,77.3594 L256.2227,101.3594 M256.2227,89.3594 L273.2227,89.3594" fill="none" style="stroke:#181818;stroke-width:0.5;"/><ellipse cx="285.2227" cy="89.3594" fill="#E2E2F0" rx="12" ry="12" style="stroke:#181818;stroke-width:0.5;"/></g><g class="participant participant-head" data-participant="GC"><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" text-decoration="underline" textLength="92.6719" x="617.127" y="116.9844">:GameController</text><ellipse cx="666.4629" cy="89.3594" fill="#E2E2F0" rx="12" ry="12" style="stroke:#181818;stroke-width:0.5;"/><polygon fill="#181818" points="662.4629,77.3594,668.4629,72.3594,666.4629,77.3594,668.4629,82.3594,662.4629,77.3594" style="stroke:#181818;stroke-width:1;"/></g><g class="participant participant-head" data-participant="AI"><rect fill="#FFFFFF" height="28.5195" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="113.7617" x="831.6855" y="90.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" text-decoration="underline" textLength="99.7617" x="838.6855" y="108.9844">:ActionInterpreter</text></g><g class="participant participant-head" data-participant="LLM"><rect fill="#FFFFFF" height="28.5195" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="97.5313" x="1102.9199" y="90.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" text-decoration="underline" textLength="83.5313" x="1109.9199" y="108.9844">llm : LLMClient</text></g><g class="participant participant-head" data-participant="N"><rect fill="#FFFFFF" height="28.5195" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="64.6484" x="1302.4355" y="90.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" text-decoration="underline" textLength="50.6484" x="1309.4355" y="108.9844">:Narrator</text></g><g class="participant participant-head" data-participant="CF"><rect fill="#FFFFFF" height="28.5195" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="118.6777" x="1377.084" y="90.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" text-decoration="underline" textLength="104.6777" x="1384.084" y="108.9844">:CommandFactory</text></g><g class="participant participant-head" data-participant="RE"><rect fill="#FFFFFF" height="28.5195" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="87.166" x="1505.7617" y="90.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" text-decoration="underline" textLength="73.166" x="1512.7617" y="108.9844">:RulesEngine</text></g><g class="participant participant-head" data-participant="GS"><rect fill="#FFFFFF" height="28.5195" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="79.9414" x="1637.9883" y="90.3594"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" text-decoration="underline" textLength="65.9414" x="1644.9883" y="108.9844">:GameState</text></g><g><title>__.SwingGameView__</title><rect fill="#FFFFFF" height="1265.8594" style="stroke:#777777;stroke-width:1;" width="10" x="271.7227" y="228.4766"/></g><g><title>__.SwingGameView__</title><rect fill="#FFFFFF" height="14" style="stroke:#777777;stroke-width:1;" width="10" x="276.7227" y="593.75"/></g><g><title>__.SwingGameView__</title><rect fill="#FFFFFF" height="14" style="stroke:#777777;stroke-width:1;" width="10" x="276.7227" y="666.7891"/></g><g><title>__.SwingGameView__</title><rect fill="#FFFFFF" height="14" style="stroke:#777777;stroke-width:1;" width="10" x="276.7227" y="1233.6992"/></g><g><title>__.GameController__</title><rect fill="#FFFFFF" height="1223.3398" style="stroke:#777777;stroke-width:1;" width="10" x="661.4629" y="256.9961"/></g><g><title>__.GameController__</title><rect fill="#FFFFFF" height="83.5586" style="stroke:#777777;stroke-width:1;" width="10" x="666.4629" y="1307.7383"/></g><g><title>__.ActionInterpreter__</title><rect fill="#FFFFFF" height="199.1563" style="stroke:#777777;stroke-width:1;" width="10" x="883.5664" y="285.5156"/></g><g><title>__.ActionInterpreter__</title><rect fill="#FFFFFF" height="127.1172" style="stroke:#777777;stroke-width:1;" width="10" x="888.5664" y="322.0352"/></g><g><title>__.ActionInterpreter__</title><rect fill="#FFFFFF" height="28.5195" style="stroke:#777777;stroke-width:1;" width="10" x="883.5664" y="513.1914"/></g><g><title>__.Narrator__</title><rect fill="#FFFFFF" height="184.6367" style="stroke:#777777;stroke-width:1;" width="10" x="1329.7598" y="963.5039"/></g><g><title>__.Narrator__</title><rect fill="#FFFFFF" height="112.5977" style="stroke:#777777;stroke-width:1;" width="10" x="1334.7598" y="1000.0234"/></g><g><title>__.CommandFactory__</title><rect fill="#FFFFFF" height="28.5195" style="stroke:#777777;stroke-width:1;" width="10" x="1431.4229" y="798.3867"/></g><g><title>__.RulesEngine__</title><rect fill="#FFFFFF" height="72.5586" style="stroke:#777777;stroke-width:1;" width="10" x="1544.3447" y="862.4258"/></g><g><title>__.GameState__</title><rect fill="#FFFFFF" height="28.5195" style="stroke:#777777;stroke-width:1;" width="10" x="1672.959" y="1176.6602"/></g><path d="M228,134.8789 L228,202.8789 L714,202.8789 L714,144.8789 L704,134.8789 L228,134.8789" fill="#FFFDE7" style="stroke:#B0A060;stroke-width:0.5;"/><path d="M704,134.8789 L704,144.8789 L714,144.8789 L704,134.8789" fill="#FFFDE7" style="stroke:#B0A060;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="358.7813" x="281.1616" y="151.5039">In dialogue mode the view calls sendDialogue() instead (SD07).</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="371.5195" x="281.1616" y="166.0234">Buttons and map clicks call performAction(proposal), which skips</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="353.5898" x="281.1616" y="180.543">interpret() and narrate() (SD10, SD11, SD12). :CliGameView can</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="299.4727" x="281.1616" y="195.0625">take the place of :SwingGameView in every diagram.</text><g class="message" data-participant-1="P" data-participant-2="V"><polygon fill="#333333" points="259.7227,224.4766,269.7227,228.4766,259.7227,232.4766" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="25.7832" x2="265.7227" y1="228.4766" y2="228.4766"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="226.9395" x="32.7832" y="223.582">type "pick up the iron key and go north"</text></g><g class="message" data-participant-1="V" data-participant-2="GC"><polygon fill="#333333" points="649.4629,252.9961,659.4629,256.9961,649.4629,260.9961" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="281.7227" x2="655.4629" y1="256.9961" y2="256.9961"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="126.4336" x="288.7227" y="252.1016">submitCommand(text)</text></g><g class="message" data-participant-1="GC" data-participant-2="AI"><polygon fill="#333333" points="871.5664,281.5156,881.5664,285.5156,871.5664,289.5156" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="671.4629" x2="877.5664" y1="285.5156" y2="285.5156"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="78.375" x="678.4629" y="280.6211">interpret(text)</text></g><g class="message" data-participant-1="AI" data-participant-2="AI"><line style="stroke:#333333;stroke-width:1;" x1="893.5664" x2="940.5664" y1="309.0352" y2="309.0352"/><line style="stroke:#333333;stroke-width:1;" x1="940.5664" x2="940.5664" y1="309.0352" y2="322.0352"/><line style="stroke:#333333;stroke-width:1;" x1="899.5664" x2="940.5664" y1="322.0352" y2="322.0352"/><polygon fill="#333333" points="909.5664,318.0352,899.5664,322.0352,909.5664,326.0352" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="48.8555" x="905.5664" y="304.1406">run(text)</text></g><rect fill="#F7F7F7" height="82.5977" style="stroke:#000000;stroke-width:1.5;" width="374.7656" x="828.6855" y="335.0352"/><path d="M828.6855,335.0352 L889.6855,335.0352 L889.6855,341.0352 L879.6855,351.0352 L828.6855,351.0352 L828.6855,335.0352" fill="#EEEEEE" style="stroke:#000000;stroke-width:2;"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="16.8105" x="841.6855" y="348.6602">ref</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="147.9258" x="942.1055" y="366.6602">SD00 &#8212; Run an LLM Task</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="356.7656" x="837.6855" y="381.1797">(LLM returns JSON actions, e.g. take "iron key", move NORTH;</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="321.8438" x="855.1465" y="395.6992">fallback (UC14): OfflineFallbackParser.parse(text), which</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="333.2578" x="849.4395" y="410.2188">returns no proposals if the text matches no known pattern)</text><g class="message" data-participant-1="AI" data-participant-2="AI"><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="898.5664" x2="940.5664" y1="448.1523" y2="448.1523"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="940.5664" x2="940.5664" y1="448.1523" y2="461.1523"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="892.5664" x2="940.5664" y1="461.1523" y2="461.1523"/><line style="stroke:#333333;stroke-width:1;" x1="893.5664" x2="903.5664" y1="461.1523" y2="457.1523"/><line style="stroke:#333333;stroke-width:1;" x1="893.5664" x2="903.5664" y1="461.1523" y2="465.1523"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="55.916" x="905.5664" y="443.2578">proposals</text></g><g class="message" data-participant-1="AI" data-participant-2="GC"><line style="stroke:#333333;stroke-width:1;" x1="672.4629" x2="682.4629" y1="484.6719" y2="480.6719"/><line style="stroke:#333333;stroke-width:1;" x1="672.4629" x2="682.4629" y1="484.6719" y2="488.6719"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="671.4629" x2="887.5664" y1="484.6719" y2="484.6719"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="188.1035" x="688.4629" y="479.7773">proposals : List&lt;ActionProposal&gt;</text></g><g class="message" data-participant-1="GC" data-participant-2="AI"><polygon fill="#333333" points="871.5664,509.1914,881.5664,513.1914,871.5664,517.1914" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="671.4629" x2="877.5664" y1="513.1914" y2="513.1914"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="94.7637" x="678.4629" y="508.2969">isFallbackUsed()</text></g><g class="message" data-participant-1="AI" data-participant-2="GC"><line style="stroke:#333333;stroke-width:1;" x1="672.4629" x2="682.4629" y1="541.7109" y2="537.7109"/><line style="stroke:#333333;stroke-width:1;" x1="672.4629" x2="682.4629" y1="541.7109" y2="545.7109"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="671.4629" x2="887.5664" y1="541.7109" y2="541.7109"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="35.9766" x="688.4629" y="536.8164">offline</text></g><path d="M213.9561,556.7109 L278.2744,556.7109 L278.2744,563.2305 L268.2744,573.2305 L213.9561,573.2305 L213.9561,556.7109" fill="#F2F2F2" style="stroke:#555555;stroke-width:1.5;"/><rect fill="none" height="59.0391" style="stroke:#555555;stroke-width:1.5;" width="511.8428" x="213.9561" y="556.7109"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="19.3184" x="228.9561" y="569.3359">opt</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="355.7227" x="293.2744" y="570.3359">[offline (UC14: LLM unavailable, or unusable answers twice)]</text><g class="message" data-participant-1="GC" data-participant-2="V"><polygon fill="#333333" points="297.7227,589.75,287.7227,593.75,297.7227,597.75" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="291.7227" x2="660.4629" y1="593.75" y2="593.75"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="355.7402" x="303.7227" y="588.8555">showNotice("Basic-command mode: simple commands only.")</text></g><g class="message" data-participant-1="V" data-participant-2="GC"><line style="stroke:#333333;stroke-width:1;" x1="659.4629" x2="649.4629" y1="607.75" y2="603.75"/><line style="stroke:#333333;stroke-width:1;" x1="659.4629" x2="649.4629" y1="607.75" y2="611.75"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="281.7227" x2="660.4629" y1="607.75" y2="607.75"/></g><path d="M213.9561,629.75 L273.5693,629.75 L273.5693,636.2695 L263.5693,646.2695 L213.9561,646.2695 L213.9561,629.75" fill="#F2F2F2" style="stroke:#555555;stroke-width:1.5;"/><rect fill="none" height="783.5469" style="stroke:#555555;stroke-width:1.5;" width="1513.9736" x="213.9561" y="629.75"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="14.6133" x="228.9561" y="642.375">alt</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="305.543" x="288.5693" y="643.375">[proposals is empty (not understood or ambiguous)]</text><g class="message" data-participant-1="GC" data-participant-2="V"><polygon fill="#333333" points="297.7227,662.7891,287.7227,666.7891,297.7227,670.7891" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="291.7227" x2="660.4629" y1="666.7891" y2="666.7891"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="286.8516" x="303.7227" y="661.8945">showError("I didn't understand. Please rephrase.")</text></g><g class="message" data-participant-1="V" data-participant-2="GC"><line style="stroke:#333333;stroke-width:1;" x1="659.4629" x2="649.4629" y1="680.7891" y2="676.7891"/><line style="stroke:#333333;stroke-width:1;" x1="659.4629" x2="649.4629" y1="680.7891" y2="684.7891"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="281.7227" x2="660.4629" y1="680.7891" y2="680.7891"/></g><path d="M676,693.7891 L676,732.7891 L866,732.7891 L866,703.7891 L856,693.7891 L676,693.7891" fill="#FFFDE7" style="stroke:#B0A060;stroke-width:0.5;"/><path d="M856,693.7891 L856,703.7891 L866,703.7891 L856,693.7891" fill="#FFFDE7" style="stroke:#B0A060;stroke-width:0.5;"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="142.7754" x="682" y="710.4141">narration = the error text,</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="169.5293" x="682" y="724.9336">results = [], gameOver = false</text><line style="stroke:#555555;stroke-width:1;stroke-dasharray:2,2;" x1="213.9561" x2="1727.9297" y1="738.8281" y2="738.8281"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="138.2227" x="218.9561" y="750.4531">[proposals understood]</text><path d="M607.127,761.3477 L677.6621,761.3477 L677.6621,767.8672 L667.6621,777.8672 L607.127,777.8672 L607.127,761.3477" fill="#F2F2F2" style="stroke:#555555;stroke-width:1.5;"/><rect fill="none" height="73.5586" style="stroke:#555555;stroke-width:1.5;" width="898.6348" x="607.127" y="761.3477"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="25.5352" x="622.127" y="773.9727">loop</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="186.873" x="692.6621" y="774.9727">[for each proposal in proposals]</text><g class="message" data-participant-1="GC" data-participant-2="CF"><polygon fill="#333333" points="1419.4229,794.3867,1429.4229,798.3867,1419.4229,802.3867" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="671.4629" x2="1425.4229" y1="798.3867" y2="798.3867"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="94.3652" x="678.4629" y="793.4922">create(proposal)</text></g><g class="message" data-participant-1="CF" data-participant-2="GC"><line style="stroke:#333333;stroke-width:1;" x1="672.4629" x2="682.4629" y1="826.9063" y2="822.9063"/><line style="stroke:#333333;stroke-width:1;" x1="672.4629" x2="682.4629" y1="826.9063" y2="830.9063"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="671.4629" x2="1435.4229" y1="826.9063" y2="826.9063"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="157.8164" x="688.4629" y="822.0117">command : GameCommand</text></g><g class="message" data-participant-1="GC" data-participant-2="RE"><polygon fill="#333333" points="1532.3447,858.4258,1542.3447,862.4258,1532.3447,866.4258" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="671.4629" x2="1538.3447" y1="862.4258" y2="862.4258"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="165.5977" x="678.4629" y="857.5313">executeAll(commands, state)</text></g><rect fill="#F7F7F7" height="39.0391" style="stroke:#000000;stroke-width:1.5;" width="218.168" x="1502.7617" y="870.4258"/><path d="M1502.7617,870.4258 L1563.7617,870.4258 L1563.7617,876.4258 L1553.7617,886.4258 L1502.7617,886.4258 L1502.7617,870.4258" fill="#EEEEEE" style="stroke:#000000;stroke-width:2;"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="16.8105" x="1515.7617" y="884.0508">ref</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="200.168" x="1511.7617" y="902.0508">SD03 &#8212; Execute Game Commands</text><g class="message" data-participant-1="RE" data-participant-2="GC"><line style="stroke:#333333;stroke-width:1;" x1="672.4629" x2="682.4629" y1="934.9844" y2="930.9844"/><line style="stroke:#333333;stroke-width:1;" x1="672.4629" x2="682.4629" y1="934.9844" y2="938.9844"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="671.4629" x2="1548.3447" y1="934.9844" y2="934.9844"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="155.3789" x="688.4629" y="930.0898">results : List&lt;ActionResult&gt;</text></g><g class="message" data-participant-1="GC" data-participant-2="N"><polygon fill="#333333" points="1317.7598,959.5039,1327.7598,963.5039,1317.7598,967.5039" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="671.4629" x2="1323.7598" y1="963.5039" y2="963.5039"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="87.3867" x="678.4629" y="958.6094">narrate(results)</text></g><g class="message" data-participant-1="N" data-participant-2="N"><line style="stroke:#333333;stroke-width:1;" x1="1339.7598" x2="1386.7598" y1="987.0234" y2="987.0234"/><line style="stroke:#333333;stroke-width:1;" x1="1386.7598" x2="1386.7598" y1="987.0234" y2="1000.0234"/><line style="stroke:#333333;stroke-width:1;" x1="1345.7598" x2="1386.7598" y1="1000.0234" y2="1000.0234"/><polygon fill="#333333" points="1355.7598,996.0234,1345.7598,1000.0234,1355.7598,1004.0234" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="65.5664" x="1351.7598" y="982.1289">run(results)</text></g><rect fill="#F7F7F7" height="68.0781" style="stroke:#000000;stroke-width:1.5;" width="270.1641" x="1099.9199" y="1013.0234"/><path d="M1099.9199,1013.0234 L1160.9199,1013.0234 L1160.9199,1019.0234 L1150.9199,1029.0234 L1099.9199,1029.0234 L1099.9199,1013.0234" fill="#EEEEEE" style="stroke:#000000;stroke-width:2;"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="16.8105" x="1112.9199" y="1026.6484">ref</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="147.9258" x="1161.0391" y="1044.6484">SD00 &#8212; Run an LLM Task</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="252.1641" x="1108.9199" y="1059.168">(isValid: narration only describes the results;</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="250.3242" x="1109.8398" y="1073.6875">fallback: template text built from the results)</text><g class="message" data-participant-1="N" data-participant-2="N"><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="1344.7598" x2="1386.7598" y1="1111.6211" y2="1111.6211"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="1386.7598" x2="1386.7598" y1="1111.6211" y2="1124.6211"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="1338.7598" x2="1386.7598" y1="1124.6211" y2="1124.6211"/><line style="stroke:#333333;stroke-width:1;" x1="1339.7598" x2="1349.7598" y1="1124.6211" y2="1120.6211"/><line style="stroke:#333333;stroke-width:1;" x1="1339.7598" x2="1349.7598" y1="1124.6211" y2="1128.6211"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="50.7188" x="1351.7598" y="1106.7266">narration</text></g><g class="message" data-participant-1="N" data-participant-2="GC"><line style="stroke:#333333;stroke-width:1;" x1="672.4629" x2="682.4629" y1="1148.1406" y2="1144.1406"/><line style="stroke:#333333;stroke-width:1;" x1="672.4629" x2="682.4629" y1="1148.1406" y2="1152.1406"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="671.4629" x2="1333.7598" y1="1148.1406" y2="1148.1406"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="50.7188" x="688.4629" y="1143.2461">narration</text></g><g class="message" data-participant-1="GC" data-participant-2="GS"><polygon fill="#333333" points="1660.959,1172.6602,1670.959,1176.6602,1660.959,1180.6602" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="671.4629" x2="1666.959" y1="1176.6602" y2="1176.6602"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="78.627" x="678.4629" y="1171.7656">isGameOver()</text></g><g class="message" data-participant-1="GS" data-participant-2="GC"><line style="stroke:#333333;stroke-width:1;" x1="672.4629" x2="682.4629" y1="1205.1797" y2="1201.1797"/><line style="stroke:#333333;stroke-width:1;" x1="672.4629" x2="682.4629" y1="1205.1797" y2="1209.1797"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="671.4629" x2="1676.959" y1="1205.1797" y2="1205.1797"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="59.0391" x="688.4629" y="1200.2852">gameOver</text></g><g class="message" data-participant-1="GC" data-participant-2="V"><polygon fill="#333333" points="297.7227,1229.6992,287.7227,1233.6992,297.7227,1237.6992" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="291.7227" x2="660.4629" y1="1233.6992" y2="1233.6992"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="142.5879" x="303.7227" y="1228.8047">showNarration(narration)</text></g><g class="message" data-participant-1="V" data-participant-2="GC"><line style="stroke:#333333;stroke-width:1;" x1="659.4629" x2="649.4629" y1="1247.6992" y2="1243.6992"/><line style="stroke:#333333;stroke-width:1;" x1="659.4629" x2="649.4629" y1="1247.6992" y2="1251.6992"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="281.7227" x2="660.4629" y1="1247.6992" y2="1247.6992"/></g><path d="M607.127,1262.6992 L671.4453,1262.6992 L671.4453,1269.2188 L661.4453,1279.2188 L607.127,1279.2188 L607.127,1262.6992" fill="#F2F2F2" style="stroke:#555555;stroke-width:1.5;"/><rect fill="none" height="143.5977" style="stroke:#555555;stroke-width:1.5;" width="161.7227" x="607.127" y="1262.6992"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="19.3184" x="622.127" y="1275.3242">opt</text><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="70.1719" x="686.4453" y="1276.3242">[gameOver]</text><g class="message" data-participant-1="GC" data-participant-2="GC"><line style="stroke:#333333;stroke-width:1;" x1="671.4629" x2="718.4629" y1="1294.7383" y2="1294.7383"/><line style="stroke:#333333;stroke-width:1;" x1="718.4629" x2="718.4629" y1="1294.7383" y2="1307.7383"/><line style="stroke:#333333;stroke-width:1;" x1="677.4629" x2="718.4629" y1="1307.7383" y2="1307.7383"/><polygon fill="#333333" points="687.4629,1303.7383,677.4629,1307.7383,687.4629,1311.7383" style="stroke:#333333;stroke-width:1;"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="63.3867" x="683.4629" y="1289.8438">endGame()</text></g><rect fill="#F7F7F7" height="39.0391" style="stroke:#000000;stroke-width:1.5;" width="135.9102" x="614.127" y="1320.7383"/><path d="M614.127,1320.7383 L675.127,1320.7383 L675.127,1326.7383 L665.127,1336.7383 L614.127,1336.7383 L614.127,1320.7383" fill="#EEEEEE" style="stroke:#000000;stroke-width:2;"/><text fill="#000000" font-family="Helvetica" font-size="12" font-weight="bold" lengthAdjust="spacing" textLength="16.8105" x="627.127" y="1334.3633">ref</text><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="127.9102" x="618.127" y="1352.3633">SD09 &#8212; Reach Ending</text><g class="message" data-participant-1="GC" data-participant-2="GC"><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="676.4629" x2="718.4629" y1="1390.2969" y2="1390.2969"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="718.4629" x2="718.4629" y1="1390.2969" y2="1403.2969"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="670.4629" x2="718.4629" y1="1403.2969" y2="1403.2969"/><line style="stroke:#333333;stroke-width:1;" x1="671.4629" x2="681.4629" y1="1403.2969" y2="1399.2969"/><line style="stroke:#333333;stroke-width:1;" x1="671.4629" x2="681.4629" y1="1403.2969" y2="1407.2969"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="38.7891" x="683.4629" y="1385.4023">ending</text></g><g class="message" data-participant-1="GC" data-participant-2="TR"><polygon fill="#333333" points="1715.9297,1436.8164,1725.9297,1440.8164,1715.9297,1444.8164" style="stroke:#333333;stroke-width:1;"/><line style="stroke:#333333;stroke-width:1;" x1="671.4629" x2="1721.9297" y1="1440.8164" y2="1440.8164"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="285.0996" x="678.4629" y="1435.9219">&#171;create&#187; TurnResult(narration, results, gameOver)</text></g><rect fill="#FFFFFF" height="28.5195" rx="2.5" ry="2.5" style="stroke:#333333;stroke-width:0.5;" width="78.8867" x="1727.9297" y="1420.2969"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" text-decoration="underline" textLength="64.8867" x="1734.9297" y="1438.9219">:TurnResult</text><g class="message" data-participant-1="GC" data-participant-2="V"><line style="stroke:#333333;stroke-width:1;" x1="282.7227" x2="292.7227" y1="1480.3359" y2="1476.3359"/><line style="stroke:#333333;stroke-width:1;" x1="282.7227" x2="292.7227" y1="1480.3359" y2="1484.3359"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="281.7227" x2="665.4629" y1="1480.3359" y2="1480.3359"/><text fill="#000000" font-family="Helvetica" font-size="12" lengthAdjust="spacing" textLength="57.6094" x="298.7227" y="1475.4414">turnResult</text></g><g class="message" data-participant-1="V" data-participant-2="P"><line style="stroke:#333333;stroke-width:1;" x1="26.7832" x2="36.7832" y1="1494.3359" y2="1490.3359"/><line style="stroke:#333333;stroke-width:1;" x1="26.7832" x2="36.7832" y1="1494.3359" y2="1498.3359"/><line style="stroke:#333333;stroke-width:1;stroke-dasharray:2,2;" x1="25.7832" x2="275.7227" y1="1494.3359" y2="1494.3359"/></g><!--SRC=[VLLHS-8s47xthzZoKdFZC4dQNgUvN6Po7AHqSeI172-ban7s0XfaoPNaSBprHzmlx2_fIh8CX9a-86pjQhNxxVUjV-0o5tM1OF3l2sFt0dkyBaLYkHK8iy-Nr_3lFzzXWdgbT0dtkULA0fSmPhRMJC0Za-kQhH7Ih_tBwmne_SMlxzrwzVC76BhjeTiTNhwdLvQp0ZFegx9aikWc2Skjqj2P2BP7tG5cO98iLIqBflVGUNcvcUsuN3-m4kSSToyltcMUv4fQhOJtSCP-U1Ue6vU7Vb8nRNdEAoQjzmlvZwH5NMcqhUlzwAsh42NSmEFZbxxWA6tZH-zdCSTCQqOLD2xZCuUcqg6lSz-uzOTdVjDQe1d8DPVOE4q7PqwkqfbbDheypCvSdcijfsXg4RD-dYQ9L1P1lQA6UKR8K6qZ2GLdGgrhX58H1Um6uPKGXfm9OOWHilZSEAHTwhcno0f8YHI_TdiB-QcsLaa3L1gKh89Sy7nh_66e0by2t6cbLQKC4zqCTXkURy1iUMKMaiS-K7WNHNeatMLqoTLbHloxklBhTRS7DzI9I0AwHIwaPTkGTILOJjMju9GgZgT89UzTeMlDobuoWOixc5FrTbyXT2fA6UhA1-6QcBt5lKzbhK0gRJUTPEvEUC1ClIovRRgPMlnckmaPo7m_8lEXcc02jnsDkfRjjiPLwCJzA7EC8ZDXUkc5DgqbtUztdvdPBcJg7YaezTJ07xEdCJ0Fgia0U-iUU0mwCVTEHgryHHW_JPz__x2GAsh6ab6DgTDYzmQULYj1_1es-nEc3UfUvVv2VasB5ZBUAHN4_XdWAm-LywIUsto3tc4hrKv2nImX86Fb5tTDxUtn96vxE0zHIMVSsDl0bacpVNU2hOaPVpLOfDtJI2eKbQZAnkTGi1Smr9AzCYxOKj3OeKbJozgu5mBQx50Ri3kUeqixtEZeOJPgDrOaAqmxdvZX-KKU-kwbGdPULXIXsJIWfDZtEYx6F2QMa7uI9kmnV0QmhEmUKf8ZvL7GxLQfmcN5oYLVrwesvuaCj5OwxOo8neNyiJr85_TW8f0P98PK6qqFRtC0yCBNVBrns0IyWixS8F_esuaklczgvlhk9eSXqvz_PR0cAJqvhdu4ufB116avgkXG0rqbbAg0T0_8IEJHoQdmG060M5r_IAda6ftYsmdXxMGvD3VYVWDXoFitSaE_Xb3J0Pdn6-QrnNiXqjYM38mRbIUYcmve_is2vdxocXk4Wpv-_2ovH2dg8Oq8ombNmvIzQ_COj-1YsXm85OsZrSs14qkR5p4ryox_CmkucJF1Y-CEEk91WIRNV4bYTEriuX_9dyOTyKvGMa6woveJBrTQbSS7sbHTqUDZdYJjzYb_si8zeDmyD6n9FOTdHqSYZyv55cEbRTIt37QoFZhVtkdY4WlSfUaRCBsDWFmj0EdvE905VHlQ06rg6FSTezmlX7-UmhjtPBwz3HmbzyE7zP1i5j4xQ2Ly5Lny_w5f3oLDKPF_0000]--></g></svg>
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE svg PUBLIC '-//W3C//DTD SVG 1.0//EN'
+          'http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd'>
+<svg fill-opacity="1" xmlns:xlink="http://www.w3.org/1999/xlink" color-rendering="auto" color-interpolation="auto" text-rendering="auto" stroke="black" stroke-linecap="square" width="3020" stroke-miterlimit="10" shape-rendering="auto" stroke-opacity="1" fill="black" stroke-dasharray="none" font-weight="normal" stroke-width="1" viewBox="-10 -10 3020 2500" height="2500" xmlns="http://www.w3.org/2000/svg" font-family="'Dialog'" font-style="normal" stroke-linejoin="miter" font-size="12px" stroke-dashoffset="0" image-rendering="auto"
+><!--Generated by the Batik Graphics2D SVG Generator--><defs id="genericDefs"
+  /><g
+  ><defs id="defs1"
+    ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath1"
+      ><path d="M0 0 L2147483647 0 L2147483647 2147483647 L0 2147483647 L0 0 Z"
+      /></clipPath
+      ><clipPath clipPathUnits="userSpaceOnUse" id="clipPath2"
+      ><path d="M0 0 L0 2460 L2980 2460 L2980 0 Z"
+      /></clipPath
+    ></defs
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><text x="5" xml:space="preserve" y="16.0938" clip-path="url(#clipPath2)" stroke="none"
+      >SD02 — Perform Action in Natural Language (UC02, UC05, UC06, UC14; F02, F05, F06; Facade, Command)</text
+      ><path fill="none" d="M0.5 22.5938 L735.041 22.5938 L755.041 13.7563 L755.041 0.5" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M0.5 0.5 L2979 0.5" clip-path="url(#clipPath2)"
+      /><text x="10" xml:space="preserve" y="45.1875" clip-path="url(#clipPath2)" stroke="none"
+      >Notes</text
+      ><text x="10" xml:space="preserve" y="61.2812" clip-path="url(#clipPath2)" stroke="none"
+      >(n1) In dialogue mode the view calls sendDialogue() instead (SD07). Buttons and map clicks call performAction(proposal), which skips interpret() and narrate() (SD10, SD11, SD12).</text
+      ><text x="10" xml:space="preserve" y="77.375" clip-path="url(#clipPath2)" stroke="none"
+      >      :CliGameView can take the place of :SwingGameView in every diagram.</text
+      ><text x="10" xml:space="preserve" y="93.4688" clip-path="url(#clipPath2)" stroke="none"
+      >(n2) narration = the error text, results = [], gameOver = false</text
+      ><path fill="none" d="M169.5194 257.25 L453.0706 257.25" clip-path="url(#clipPath2)"
+      /><path d="M441.8123 263.75 L453.0706 257.25 L441.8123 250.75 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M441.8123 263.75 L453.0706 257.25 L441.8123 250.75 Z" clip-path="url(#clipPath2)"
+      /><text x="239" xml:space="preserve" y="237.6562" clip-path="url(#clipPath2)" stroke="none"
+      >type "pick up the iron</text
+      ><text x="251" xml:space="preserve" y="253.75" clip-path="url(#clipPath2)" stroke="none"
+      >key and go north"</text
+      ><path fill="none" d="M473.0706 311.5312 L746.6219 311.5312" clip-path="url(#clipPath2)"
+      /><path d="M735.3635 318.0312 L746.6219 311.5312 L735.3635 305.0312 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M735.3635 318.0312 L746.6219 311.5312 L735.3635 305.0312 Z" clip-path="url(#clipPath2)"
+      /><text x="535" xml:space="preserve" y="308.0312" clip-path="url(#clipPath2)" stroke="none"
+      >submitCommand(text)</text
+      ><path fill="none" d="M766.6219 349.7188 L1040.1731 349.7188" clip-path="url(#clipPath2)"
+      /><path d="M1028.9148 356.2188 L1040.1731 349.7188 L1028.9148 343.2188 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M1028.9148 356.2188 L1040.1731 349.7188 L1028.9148 343.2188 Z" clip-path="url(#clipPath2)"
+      /><text x="857" xml:space="preserve" y="346.2188" clip-path="url(#clipPath2)" stroke="none"
+      >interpret(text)</text
+      ><path fill="none" d="M1060.1731 381.8125 L1080.1731 381.8125 L1080.1731 407.8125 L1060.1731 407.8125" clip-path="url(#clipPath2)"
+      /><path d="M1071.4314 401.3125 L1060.1731 407.8125 L1071.4314 414.3125 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M1071.4314 401.3125 L1060.1731 407.8125 L1071.4314 414.3125 Z" clip-path="url(#clipPath2)"
+      /><text x="1084.6731" xml:space="preserve" y="399.3594" clip-path="url(#clipPath2)" stroke="none"
+      >run(text)</text
+    ></g
+    ><g font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke="rgb(255,255,255)" stroke-opacity="0"
+    ><rect x="923.3975" width="840.6537" height="74.375" y="423.8125" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="923.3975" width="840.6537" height="74.375" y="423.8125" clip-path="url(#clipPath2)"
+      /><text x="927.8975" xml:space="preserve" y="439.4062" clip-path="url(#clipPath2)" stroke="none"
+      >ref</text
+      ><path fill="none" d="M923.3975 445.9062 L960.2833 445.9062 L980.2833 437.0688 L980.2833 423.8125" clip-path="url(#clipPath2)"
+      /><text x="1256" xml:space="preserve" y="441.4062" clip-path="url(#clipPath2)" stroke="none"
+      >SD00 — Run an LLM Task</text
+      ><text x="1135" xml:space="preserve" y="457.5" clip-path="url(#clipPath2)" stroke="none"
+      >(LLM returns JSON actions, e.g. take "iron key", move NORTH;</text
+      ><text x="1155" xml:space="preserve" y="473.5938" clip-path="url(#clipPath2)" stroke="none"
+      >fallback (UC14): OfflineFallbackParser.parse(text), which</text
+      ><text x="1148" xml:space="preserve" y="489.6875" clip-path="url(#clipPath2)" stroke="none"
+      >returns no proposals if the text matches no known pattern)</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1060.1731 514.1875 L1080.1731 514.1875 L1080.1731 562.375 L1060.1731 562.375" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M1071.4314 555.875 L1060.1731 562.375 L1071.4314 568.875" clip-path="url(#clipPath2)"
+      /><text x="1084.6731" xml:space="preserve" y="542.8281" clip-path="url(#clipPath2)" stroke="none"
+      >proposals</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1040.1731 562.375 L766.6219 562.375" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M777.8802 555.875 L766.6219 562.375 L777.8802 568.875" clip-path="url(#clipPath2)"
+      /><text x="866" xml:space="preserve" y="542.7812" clip-path="url(#clipPath2)" stroke="none"
+      >proposals :</text
+      ><text x="831" xml:space="preserve" y="558.875" clip-path="url(#clipPath2)" stroke="none"
+      >List&lt;ActionProposal&gt;</text
+      ><path fill="none" d="M766.6219 616.6562 L1040.1731 616.6562" clip-path="url(#clipPath2)"
+      /><path d="M1028.9148 623.1562 L1040.1731 616.6562 L1028.9148 610.1562 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M1028.9148 623.1562 L1040.1731 616.6562 L1028.9148 610.1562 Z" clip-path="url(#clipPath2)"
+      /><text x="847" xml:space="preserve" y="613.1562" clip-path="url(#clipPath2)" stroke="none"
+      >isFallbackUsed()</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1040.1731 654.8438 L766.6219 654.8438" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M777.8802 648.3438 L766.6219 654.8438 L777.8802 661.3438" clip-path="url(#clipPath2)"
+      /><text x="881" xml:space="preserve" y="651.3438" clip-path="url(#clipPath2)" stroke="none"
+      >offline</text
+      ><path fill="none" d="M746.6219 812.5 L473.0706 812.5" clip-path="url(#clipPath2)"
+      /><path d="M484.3289 806 L473.0706 812.5 L484.3289 819 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M484.3289 806 L473.0706 812.5 L484.3289 819 Z" clip-path="url(#clipPath2)"
+      /><text x="567" xml:space="preserve" y="776.8125" clip-path="url(#clipPath2)" stroke="none"
+      >showNotice(</text
+      ><text x="529" xml:space="preserve" y="792.9062" clip-path="url(#clipPath2)" stroke="none"
+      >"Basic-command mode:</text
+      ><text x="525" xml:space="preserve" y="809" clip-path="url(#clipPath2)" stroke="none"
+      >simple commands only.")</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M473.0706 902.7812 L746.6219 902.7812" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M735.3635 909.2812 L746.6219 902.7812 L735.3635 896.2812" clip-path="url(#clipPath2)"
+    /></g
+    ><g font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke="rgb(255,255,255)" stroke-opacity="0"
+    ><path d="M336.295 676.9375 L883.3975 676.9375 L883.3975 945.7812 L336.295 945.7812 Z" stroke="none" clip-path="url(#clipPath2)"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><path fill="none" d="M336.295 676.9375 L883.3975 676.9375 L883.3975 945.7812 L336.295 945.7812 Z" clip-path="url(#clipPath2)"
+      /><text x="340.795" xml:space="preserve" y="692.5312" clip-path="url(#clipPath2)" stroke="none"
+      >opt</text
+      ><path fill="none" d="M336.295 699.0312 L376.1134 699.0312 L396.1134 690.1937 L396.1134 676.9375" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M746.6219 1071.25 L473.0706 1071.25" clip-path="url(#clipPath2)"
+      /><path d="M484.3289 1064.75 L473.0706 1071.25 L484.3289 1077.75 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M484.3289 1064.75 L473.0706 1071.25 L484.3289 1077.75 Z" clip-path="url(#clipPath2)"
+      /><text x="546" xml:space="preserve" y="1035.5625" clip-path="url(#clipPath2)" stroke="none"
+      >showError("I didn't</text
+      ><text x="545" xml:space="preserve" y="1051.6562" clip-path="url(#clipPath2)" stroke="none"
+      >understand. Please</text
+      ><text x="572" xml:space="preserve" y="1067.75" clip-path="url(#clipPath2)" stroke="none"
+      >rephrase.")</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M473.0706 1161.5312 L746.6219 1161.5312" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M735.3635 1168.0312 L746.6219 1161.5312 L735.3635 1155.0312" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M766.6219 1342.8125 L1920.8269 1342.8125" clip-path="url(#clipPath2)"
+      /><path d="M1909.5686 1349.3125 L1920.8269 1342.8125 L1909.5686 1336.3125 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M1909.5686 1349.3125 L1920.8269 1342.8125 L1909.5686 1336.3125 Z" clip-path="url(#clipPath2)"
+      /><text x="1288" xml:space="preserve" y="1339.3125" clip-path="url(#clipPath2)" stroke="none"
+      >create(proposal)</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1920.8269 1381 L766.6219 1381" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M777.8802 1374.5 L766.6219 1381 L777.8802 1387.5" clip-path="url(#clipPath2)"
+      /><text x="1251" xml:space="preserve" y="1377.5" clip-path="url(#clipPath2)" stroke="none"
+      >command : GameCommand</text
+    ></g
+    ><g font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke="rgb(255,255,255)" stroke-opacity="0"
+    ><path d="M629.8463 1255.5312 L2057.6025 1255.5312 L2057.6025 1430.0938 L629.8463 1430.0938 Z" stroke="none" clip-path="url(#clipPath2)"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><path fill="none" d="M629.8463 1255.5312 L2057.6025 1255.5312 L2057.6025 1430.0938 L629.8463 1430.0938 Z" clip-path="url(#clipPath2)"
+      /><text x="634.3463" xml:space="preserve" y="1271.125" clip-path="url(#clipPath2)" stroke="none"
+      >loop</text
+      ><path fill="none" d="M629.8463 1277.625 L676.8697 1277.625 L696.8697 1268.7875 L696.8697 1255.5312" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M766.6219 1468.2812 L2214.3782 1468.2812" clip-path="url(#clipPath2)"
+      /><path d="M2203.1199 1474.7812 L2214.3782 1468.2812 L2203.1199 1461.7812 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M2203.1199 1474.7812 L2214.3782 1468.2812 L2203.1199 1461.7812 Z" clip-path="url(#clipPath2)"
+      /><text x="1414" xml:space="preserve" y="1448.6875" clip-path="url(#clipPath2)" stroke="none"
+      >executeAll(commands,</text
+      ><text x="1471" xml:space="preserve" y="1464.7812" clip-path="url(#clipPath2)" stroke="none"
+      >state)</text
+    ></g
+    ><g font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke="rgb(255,255,255)" stroke-opacity="0"
+    ><rect x="2097.6025" width="540.1025" height="26.0938" y="1506.4688" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="2097.6025" width="540.1025" height="26.0938" y="1506.4688" clip-path="url(#clipPath2)"
+      /><text x="2102.1025" xml:space="preserve" y="1522.0625" clip-path="url(#clipPath2)" stroke="none"
+      >ref</text
+      ><path fill="none" d="M2097.6025 1528.5625 L2134.4883 1528.5625 L2154.4883 1519.725 L2154.4883 1506.4688" clip-path="url(#clipPath2)"
+      /><text x="2250" xml:space="preserve" y="1524.0625" clip-path="url(#clipPath2)" stroke="none"
+      >SD03 — Execute Game Commands</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M2214.3782 1570.75 L766.6219 1570.75" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M777.8802 1564.25 L766.6219 1570.75 L777.8802 1577.25" clip-path="url(#clipPath2)"
+      /><text x="1463" xml:space="preserve" y="1551.1562" clip-path="url(#clipPath2)" stroke="none"
+      >results :</text
+      ><text x="1427" xml:space="preserve" y="1567.25" clip-path="url(#clipPath2)" stroke="none"
+      >List&lt;ActionResult&gt;</text
+      ><path fill="none" d="M766.6219 1625.0312 L1627.2756 1625.0312" clip-path="url(#clipPath2)"
+      /><path d="M1616.0173 1631.5312 L1627.2756 1625.0312 L1616.0173 1618.5312 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M1616.0173 1631.5312 L1627.2756 1625.0312 L1616.0173 1618.5312 Z" clip-path="url(#clipPath2)"
+      /><text x="1145" xml:space="preserve" y="1621.5312" clip-path="url(#clipPath2)" stroke="none"
+      >narrate(results)</text
+      ><path fill="none" d="M1647.2756 1657.125 L1667.2756 1657.125 L1667.2756 1683.125 L1647.2756 1683.125" clip-path="url(#clipPath2)"
+      /><path d="M1658.5339 1676.625 L1647.2756 1683.125 L1658.5339 1689.625 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M1658.5339 1676.625 L1647.2756 1683.125 L1658.5339 1689.625 Z" clip-path="url(#clipPath2)"
+      /><text x="1671.7756" xml:space="preserve" y="1674.6719" clip-path="url(#clipPath2)" stroke="none"
+      >run(results)</text
+    ></g
+    ><g font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke="rgb(255,255,255)" stroke-opacity="0"
+    ><rect x="1216.9487" width="840.6538" height="58.2812" y="1699.125" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="1216.9487" width="840.6538" height="58.2812" y="1699.125" clip-path="url(#clipPath2)"
+      /><text x="1221.4487" xml:space="preserve" y="1714.7188" clip-path="url(#clipPath2)" stroke="none"
+      >ref</text
+      ><path fill="none" d="M1216.9487 1721.2188 L1253.8345 1721.2188 L1273.8345 1712.3812 L1273.8345 1699.125" clip-path="url(#clipPath2)"
+      /><text x="1550" xml:space="preserve" y="1716.7188" clip-path="url(#clipPath2)" stroke="none"
+      >SD00 — Run an LLM Task</text
+      ><text x="1489" xml:space="preserve" y="1732.8125" clip-path="url(#clipPath2)" stroke="none"
+      >(isValid: narration only describes the results;</text
+      ><text x="1490" xml:space="preserve" y="1748.9062" clip-path="url(#clipPath2)" stroke="none"
+      >fallback: template text built from the results)</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1647.2756 1773.4062 L1667.2756 1773.4062 L1667.2756 1805.5 L1647.2756 1805.5" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M1658.5339 1799 L1647.2756 1805.5 L1658.5339 1812" clip-path="url(#clipPath2)"
+      /><text x="1671.7756" xml:space="preserve" y="1794" clip-path="url(#clipPath2)" stroke="none"
+      >narration</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1627.2756 1805.5 L766.6219 1805.5" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M777.8802 1799 L766.6219 1805.5 L777.8802 1812" clip-path="url(#clipPath2)"
+      /><text x="1166" xml:space="preserve" y="1802" clip-path="url(#clipPath2)" stroke="none"
+      >narration</text
+      ><path fill="none" d="M766.6219 1843.6875 L2507.9294 1843.6875" clip-path="url(#clipPath2)"
+      /><path d="M2496.6711 1850.1875 L2507.9294 1843.6875 L2496.6711 1837.1875 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M2496.6711 1850.1875 L2507.9294 1843.6875 L2496.6711 1837.1875 Z" clip-path="url(#clipPath2)"
+      /><text x="1590" xml:space="preserve" y="1840.1875" clip-path="url(#clipPath2)" stroke="none"
+      >isGameOver()</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M2507.9294 1881.875 L766.6219 1881.875" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M777.8802 1875.375 L766.6219 1881.875 L777.8802 1888.375" clip-path="url(#clipPath2)"
+      /><text x="1602" xml:space="preserve" y="1878.375" clip-path="url(#clipPath2)" stroke="none"
+      >gameOver</text
+      ><path fill="none" d="M746.6219 1920.0625 L473.0706 1920.0625" clip-path="url(#clipPath2)"
+      /><path d="M484.3289 1913.5625 L473.0706 1920.0625 L484.3289 1926.5625 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M484.3289 1913.5625 L473.0706 1920.0625 L484.3289 1926.5625 Z" clip-path="url(#clipPath2)"
+      /><text x="526" xml:space="preserve" y="1916.5625" clip-path="url(#clipPath2)" stroke="none"
+      >showNarration(narration)</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M473.0706 1952.1562 L746.6219 1952.1562" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M735.3635 1958.6562 L746.6219 1952.1562 L735.3635 1945.6562" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M766.6219 2037.1562 L786.6219 2037.1562 L786.6219 2063.1562 L766.6219 2063.1562" clip-path="url(#clipPath2)"
+      /><path d="M777.8802 2056.6562 L766.6219 2063.1562 L777.8802 2069.6562 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M777.8802 2056.6562 L766.6219 2063.1562 L777.8802 2069.6562 Z" clip-path="url(#clipPath2)"
+      /><text x="791.1219" xml:space="preserve" y="2054.7031" clip-path="url(#clipPath2)" stroke="none"
+      >endGame()</text
+    ></g
+    ><g font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke="rgb(255,255,255)" stroke-opacity="0"
+    ><rect x="636.8462" width="239.5512" height="42.1875" y="2079.1562" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="636.8462" width="239.5512" height="42.1875" y="2079.1562" clip-path="url(#clipPath2)"
+      /><text x="641.3463" xml:space="preserve" y="2094.75" clip-path="url(#clipPath2)" stroke="none"
+      >ref</text
+      ><path fill="none" d="M636.8463 2101.25 L673.732 2101.25 L693.732 2092.4126 L693.732 2079.1562" clip-path="url(#clipPath2)"
+      /><text x="706" xml:space="preserve" y="2096.75" clip-path="url(#clipPath2)" stroke="none"
+      >SD09 — Reach</text
+      ><text x="733" xml:space="preserve" y="2112.8438" clip-path="url(#clipPath2)" stroke="none"
+      >Ending</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M766.6219 2137.3438 L786.6219 2137.3438 L786.6219 2163.3438 L766.6219 2163.3438" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M777.8802 2156.8438 L766.6219 2163.3438 L777.8802 2169.8438" clip-path="url(#clipPath2)"
+      /><text x="791.1219" xml:space="preserve" y="2154.8906" clip-path="url(#clipPath2)" stroke="none"
+      >ending</text
+    ></g
+    ><g font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke="rgb(255,255,255)" stroke-opacity="0"
+    ><path d="M629.8463 1968.1562 L883.3975 1968.1562 L883.3975 2180.3438 L629.8463 2180.3438 Z" stroke="none" clip-path="url(#clipPath2)"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><path fill="none" d="M629.8463 1968.1562 L883.3975 1968.1562 L883.3975 2180.3438 L629.8463 2180.3438 Z" clip-path="url(#clipPath2)"
+      /><text x="634.3463" xml:space="preserve" y="1983.75" clip-path="url(#clipPath2)" stroke="none"
+      >opt</text
+      ><path fill="none" d="M629.8463 1990.25 L669.6646 1990.25 L689.6646 1981.4125 L689.6646 1968.1562" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M336.295 1200.5312 L2644.7051 1200.5312" clip-path="url(#clipPath2)" stroke-linecap="butt"
+    /></g
+    ><g stroke-linecap="butt" font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke-dasharray="8,5" stroke="rgb(255,255,255)" stroke-opacity="0" stroke-miterlimit="5"
+    ><path d="M336.295 951.7812 L2644.7051 951.7812 L2644.7051 2213.3438 L336.295 2213.3438 Z" stroke="none" clip-path="url(#clipPath2)"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><path fill="none" d="M336.295 951.7812 L2644.7051 951.7812 L2644.7051 2213.3438 L336.295 2213.3438 Z" clip-path="url(#clipPath2)"
+      /><text x="340.795" xml:space="preserve" y="967.375" clip-path="url(#clipPath2)" stroke="none"
+      >alt</text
+      ><path fill="none" d="M336.295 973.875 L370.3985 973.875 L390.3985 965.0375 L390.3985 951.7812" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M766.6219 2267.625 L2684.7051 2267.625" clip-path="url(#clipPath2)"
+      /><path d="M2673.4468 2274.125 L2684.7051 2267.625 L2673.4468 2261.125 Z" clip-path="url(#clipPath2)" stroke="none"
+      /><path fill="none" d="M2673.4468 2274.125 L2684.7051 2267.625 L2673.4468 2261.125 Z" clip-path="url(#clipPath2)"
+      /><text x="1695" xml:space="preserve" y="2231.9375" clip-path="url(#clipPath2)" stroke="none"
+      >«create»</text
+      ><text x="1655" xml:space="preserve" y="2248.0312" clip-path="url(#clipPath2)" stroke="none"
+      >TurnResult(narration,</text
+      ><text x="1661" xml:space="preserve" y="2264.125" clip-path="url(#clipPath2)" stroke="none"
+      >results, gameOver)</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M746.6219 2364 L473.0706 2364" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M484.3289 2357.5 L473.0706 2364 L484.3289 2370.5" clip-path="url(#clipPath2)"
+      /><text x="575" xml:space="preserve" y="2360.5" clip-path="url(#clipPath2)" stroke="none"
+      >turnResult</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M453.0706 2396.0938 L169.5194 2396.0938" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M180.7777 2389.5938 L169.5194 2396.0938 L180.7777 2402.5938" clip-path="url(#clipPath2)"
+    /></g
+    ><g font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke="rgb(255,255,255)" stroke-opacity="0"
+    ><circle r="5" clip-path="url(#clipPath2)" cx="169.5" cy="131.5" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><circle fill="none" r="5" clip-path="url(#clipPath2)" cx="169.5" cy="131.5"
+      /><path fill="none" d="M154.5 141.5 L184.5 141.5" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M169.5 136.5 L169.5 156.5" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M169.5 156.5 L159.5 176.5" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M169.5 156.5 L179.5 176.5" clip-path="url(#clipPath2)"
+      /><text x="148" xml:space="preserve" y="189.5625" clip-path="url(#clipPath2)" stroke="none"
+      >Player</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M169.5194 193.0625 L169.5194 2432.0938" clip-path="url(#clipPath2)" stroke-linecap="butt"
+    /></g
+    ><g stroke-linecap="butt" font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke-dasharray="8,5" stroke="rgb(255,255,255)" stroke-opacity="0" stroke-miterlimit="5"
+    ><rect x="336.295" width="253.5512" height="66.0938" y="126.9688" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="336.295" width="253.5512" height="66.0938" y="126.9688" clip-path="url(#clipPath2)"
+      /><text x="422" xml:space="preserve" y="156.5156" clip-path="url(#clipPath2)" stroke="none"
+      >«boundary»</text
+      ><text x="404" xml:space="preserve" y="172.6094" clip-path="url(#clipPath2)" text-decoration="underline" stroke="none"
+      >:SwingGameView</text
+      ><text x="450" xml:space="preserve" y="213.6094" clip-path="url(#clipPath2)" stroke="none"
+      >(n1)</text
+      ><text x="398" xml:space="preserve" y="722.5312" clip-path="url(#clipPath2)" stroke="none"
+      >[offline (UC14: LLM</text
+      ><text x="382" xml:space="preserve" y="738.625" clip-path="url(#clipPath2)" stroke="none"
+      >unavailable, or unusable</text
+      ><text x="409" xml:space="preserve" y="754.7188" clip-path="url(#clipPath2)" stroke="none"
+      >answers twice)]</text
+      ><text x="382" xml:space="preserve" y="997.375" clip-path="url(#clipPath2)" stroke="none"
+      >[proposals is empty (not</text
+      ><text x="372" xml:space="preserve" y="1013.4688" clip-path="url(#clipPath2)" stroke="none"
+      >understood or ambiguous)]</text
+      ><text x="384" xml:space="preserve" y="1244.0781" clip-path="url(#clipPath2)" stroke="none"
+      >[proposals understood]</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M463.0706 193.0625 L463.0706 201.0156" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M463.0706 217.1094 L463.0706 257.25" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M453.0706 257.25 L453.0706 709.9375" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M473.0706 257.25 L473.0706 709.9375" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M453.0706 257.25 L473.0706 257.25" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M453.0706 758.2188 L453.0706 984.7812" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M473.0706 758.2188 L473.0706 984.7812" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M453.0706 1016.9688 L453.0706 1231.4844" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M473.0706 1016.9688 L473.0706 1231.4844" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M453.0706 1247.5781 L453.0706 2396.0938" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M473.0706 1247.5781 L473.0706 2396.0938" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M453.0706 2396.0938 L473.0706 2396.0938" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M463.0706 2396.0938 L463.0706 2432.0938" clip-path="url(#clipPath2)" stroke-linecap="butt"
+    /></g
+    ><g stroke-linecap="butt" font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke-dasharray="8,5" stroke="rgb(255,255,255)" stroke-opacity="0" stroke-miterlimit="5"
+    ><rect x="629.8462" width="253.5512" height="66.0938" y="126.9688" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="629.8462" width="253.5512" height="66.0938" y="126.9688" clip-path="url(#clipPath2)"
+      /><text x="724" xml:space="preserve" y="156.5156" clip-path="url(#clipPath2)" stroke="none"
+      >«control»</text
+      ><text x="702" xml:space="preserve" y="172.6094" clip-path="url(#clipPath2)" text-decoration="underline" stroke="none"
+      >:GameController</text
+      ><text x="742" xml:space="preserve" y="1192.0781" clip-path="url(#clipPath2)" stroke="none"
+      >(n2)</text
+      ><text x="687" xml:space="preserve" y="1301.125" clip-path="url(#clipPath2)" stroke="none"
+      >[for each proposal in</text
+      ><text x="720" xml:space="preserve" y="1317.2188" clip-path="url(#clipPath2)" stroke="none"
+      >proposals]</text
+      ><text x="716" xml:space="preserve" y="2015.7031" clip-path="url(#clipPath2)" stroke="none"
+      >[gameOver]</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M756.6219 193.0625 L756.6219 311.5312" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M746.6219 311.5312 L746.6219 1179.4844" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M766.6219 311.5312 L766.6219 1179.4844" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M746.6219 311.5312 L766.6219 311.5312" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M746.6219 1195.5781 L746.6219 1288.5312" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M766.6219 1195.5781 L766.6219 1288.5312" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M746.6219 1320.7188 L746.6219 2003.1094" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M766.6219 1320.7188 L766.6219 2003.1094" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M746.6219 2019.2031 L746.6219 2079.1562" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M766.6219 2019.2031 L766.6219 2079.1562" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M746.6219 2121.3438 L746.6219 2364" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M766.6219 2121.3438 L766.6219 2364" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M746.6219 2364 L766.6219 2364" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M756.6219 2364 L756.6219 2432.0938" clip-path="url(#clipPath2)" stroke-linecap="butt"
+    /></g
+    ><g stroke-linecap="butt" font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke-dasharray="8,5" stroke="rgb(255,255,255)" stroke-opacity="0" stroke-miterlimit="5"
+    ><rect x="923.3975" width="253.5512" height="66.0938" y="126.9688" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="923.3975" width="253.5512" height="66.0938" y="126.9688" clip-path="url(#clipPath2)"
+      /><text x="991" xml:space="preserve" y="164.5625" clip-path="url(#clipPath2)" text-decoration="underline" stroke="none"
+      >:ActionInterpreter</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1050.1731 193.0625 L1050.1731 349.7188" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M1040.1731 349.7188 L1040.1731 423.8125" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1060.1731 349.7188 L1060.1731 423.8125" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1040.1731 349.7188 L1060.1731 349.7188" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1040.1731 498.1875 L1040.1731 562.375" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1060.1731 498.1875 L1060.1731 562.375" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1040.1731 562.375 L1060.1731 562.375" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1050.1731 562.375 L1050.1731 616.6562" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M1040.1731 616.6562 L1040.1731 654.8438" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1060.1731 616.6562 L1060.1731 654.8438" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1040.1731 616.6562 L1060.1731 616.6562" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1040.1731 654.8438 L1060.1731 654.8438" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1050.1731 654.8438 L1050.1731 2432.0938" clip-path="url(#clipPath2)" stroke-linecap="butt"
+    /></g
+    ><g stroke-linecap="butt" font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke-dasharray="8,5" stroke="rgb(255,255,255)" stroke-opacity="0" stroke-miterlimit="5"
+    ><rect x="1216.9487" width="253.5512" height="66.0938" y="126.9688" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="1216.9487" width="253.5512" height="66.0938" y="126.9688" clip-path="url(#clipPath2)"
+      /><text x="1294" xml:space="preserve" y="164.5625" clip-path="url(#clipPath2)" text-decoration="underline" stroke="none"
+      >llm : LLMClient</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1343.7244 193.0625 L1343.7244 423.8125" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1343.7244 498.1875 L1343.7244 1699.125" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1343.7244 1757.4062 L1343.7244 2432.0938" clip-path="url(#clipPath2)" stroke-linecap="butt"
+    /></g
+    ><g stroke-linecap="butt" font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke-dasharray="8,5" stroke="rgb(255,255,255)" stroke-opacity="0" stroke-miterlimit="5"
+    ><rect x="1510.5" width="253.5512" height="66.0938" y="126.9688" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="1510.5" width="253.5512" height="66.0938" y="126.9688" clip-path="url(#clipPath2)"
+      /><text x="1607" xml:space="preserve" y="164.5625" clip-path="url(#clipPath2)" text-decoration="underline" stroke="none"
+      >:Narrator</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1637.2756 193.0625 L1637.2756 423.8125" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1637.2756 498.1875 L1637.2756 1625.0312" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M1627.2756 1625.0312 L1627.2756 1699.125" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1647.2756 1625.0312 L1647.2756 1699.125" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1627.2756 1625.0312 L1647.2756 1625.0312" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1627.2756 1757.4062 L1627.2756 1805.5" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1647.2756 1757.4062 L1647.2756 1805.5" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1627.2756 1805.5 L1647.2756 1805.5" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1637.2756 1805.5 L1637.2756 2432.0938" clip-path="url(#clipPath2)" stroke-linecap="butt"
+    /></g
+    ><g stroke-linecap="butt" font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke-dasharray="8,5" stroke="rgb(255,255,255)" stroke-opacity="0" stroke-miterlimit="5"
+    ><rect x="1804.0512" width="253.5513" height="66.0938" y="126.9688" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="1804.0512" width="253.5513" height="66.0938" y="126.9688" clip-path="url(#clipPath2)"
+      /><text x="1869" xml:space="preserve" y="164.5625" clip-path="url(#clipPath2)" text-decoration="underline" stroke="none"
+      >:CommandFactory</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1930.8269 193.0625 L1930.8269 1342.8125" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M1920.8269 1342.8125 L1920.8269 1381" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1940.8269 1342.8125 L1940.8269 1381" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1920.8269 1342.8125 L1940.8269 1342.8125" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M1920.8269 1381 L1940.8269 1381" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1930.8269 1381 L1930.8269 1699.125" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M1930.8269 1757.4062 L1930.8269 2432.0938" clip-path="url(#clipPath2)" stroke-linecap="butt"
+    /></g
+    ><g stroke-linecap="butt" font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke-dasharray="8,5" stroke="rgb(255,255,255)" stroke-opacity="0" stroke-miterlimit="5"
+    ><rect x="2097.6025" width="253.5512" height="66.0938" y="126.9688" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="2097.6025" width="253.5512" height="66.0938" y="126.9688" clip-path="url(#clipPath2)"
+      /><text x="2181" xml:space="preserve" y="164.5625" clip-path="url(#clipPath2)" text-decoration="underline" stroke="none"
+      >:RulesEngine</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M2224.3782 193.0625 L2224.3782 1468.2812" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M2214.3782 1468.2812 L2214.3782 1506.4688" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M2234.3782 1468.2812 L2234.3782 1506.4688" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M2214.3782 1468.2812 L2234.3782 1468.2812" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M2214.3782 1532.5625 L2214.3782 1570.75" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M2234.3782 1532.5625 L2234.3782 1570.75" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M2214.3782 1570.75 L2234.3782 1570.75" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M2224.3782 1570.75 L2224.3782 2432.0938" clip-path="url(#clipPath2)" stroke-linecap="butt"
+    /></g
+    ><g stroke-linecap="butt" font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke-dasharray="8,5" stroke="rgb(255,255,255)" stroke-opacity="0" stroke-miterlimit="5"
+    ><rect x="2391.1537" width="253.5512" height="66.0938" y="126.9688" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="2391.1537" width="253.5512" height="66.0938" y="126.9688" clip-path="url(#clipPath2)"
+      /><text x="2478" xml:space="preserve" y="164.5625" clip-path="url(#clipPath2)" text-decoration="underline" stroke="none"
+      >:GameState</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M2517.9294 193.0625 L2517.9294 1506.4688" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M2517.9294 1532.5625 L2517.9294 1843.6875" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M2507.9294 1843.6875 L2507.9294 1881.875" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M2527.9294 1843.6875 L2527.9294 1881.875" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M2507.9294 1843.6875 L2527.9294 1843.6875" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M2507.9294 1881.875 L2527.9294 1881.875" clip-path="url(#clipPath2)"
+      /><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M2517.9294 1881.875 L2517.9294 2432.0938" clip-path="url(#clipPath2)" stroke-linecap="butt"
+    /></g
+    ><g stroke-linecap="butt" font-size="14px" transform="translate(10,10)" fill-opacity="0" fill="rgb(255,255,255)" font-family="sans-serif" stroke-dasharray="8,5" stroke="rgb(255,255,255)" stroke-opacity="0" stroke-miterlimit="5"
+    ><rect x="2684.705" width="253.5512" height="96.5625" y="2219.3438" clip-path="url(#clipPath2)" stroke="none"
+    /></g
+    ><g font-family="sans-serif" font-size="14px" transform="translate(10,10)"
+    ><rect fill="none" x="2684.705" width="253.5512" height="96.5625" y="2219.3438" clip-path="url(#clipPath2)"
+      /><text x="2773" xml:space="preserve" y="2272.1719" clip-path="url(#clipPath2)" text-decoration="underline" stroke="none"
+      >:TurnResult</text
+      ><path fill="none" stroke-miterlimit="5" stroke-dasharray="8,5" d="M2811.4807 2315.9062 L2811.4807 2432.0938" clip-path="url(#clipPath2)" stroke-linecap="butt"
+      /><path fill="none" d="M0.5 2459 L2979 2459" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M0.5 0.5 L0.5 2459" clip-path="url(#clipPath2)"
+      /><path fill="none" d="M2979 0.5 L2979 2459" clip-path="url(#clipPath2)"
+    /></g
+  ></g
+></svg
+>

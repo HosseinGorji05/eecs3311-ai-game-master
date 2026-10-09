@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLSequenceAllInOne</id>
+    <coordinates>
+      <x>10</x>
+      <y>10</y>
+      <w>3630</w>
+      <h>2200</h>
+    </coordinates>
+    <panel_attributes>title=SD05 — Propagate Game Events and Track Quests (UC08, F08, F11; Observer)\nreferenced by SD03, SD04, SD07 and SD10–SD12
+desc=Notes\n(n1) notifies every subscribed GameEventListener in turn\n(n2) e.g. the potion a FETCH objective asks for was used up\n(n3) QUEST event, alignment delta −1 (side quests only)\n(n4) QUEST event; alignment delta +2 for a side quest (the player helped its giver), 0 for the main quest; delivered to all listeners the same way\n(n5) redraws the map, inventory, quest log and event log panels
+obj=_:GameEventBus_~BUS
+obj=_:EventLog_~EL
+obj=_:QuestTracker_~QT
+obj=_:GameState_~GS
+obj=_:QuestLog_~QL
+obj=_quest : Quest_~Q
+obj=_objective : Objective_~O
+obj=_player : Player_~PL
+obj=_:MemoryManager_~MM
+obj=«boundary»\n_:SwingGameView_~V
+
+gate-&gt;&gt;&gt;BUS :publish(event); on=BUS
+BUS:(n1)
+BUS-&gt;&gt;&gt;EL :onEvent(event); on=EL
+EL-&gt;&gt;&gt;EL + :append(event)
+EL.&gt;EL +
+EL.&gt;BUS; off=EL
+BUS-&gt;&gt;&gt;QT :onEvent(event); on=QT
+QT-&gt;&gt;&gt;GS :getQuestLog(); on=GS
+GS.&gt;QT :questLog; off=GS
+QT-&gt;&gt;&gt;QL :activeQuests(); on=QL
+QL.&gt;QT :quests; off=QL
+combinedFragment=loop~cf1 BUS PL
+BUS:[for each quest in quests]
+QT-&gt;&gt;&gt;Q :getObjectives(); on=Q
+Q.&gt;QT :objectives; off=Q
+combinedFragment=loop~cf2 QT O
+QT:[for each objective in\nobjectives]
+QT-&gt;&gt;&gt;O :matches(event); on=O
+O.&gt;QT :matched; off=O
+combinedFragment=opt~cf3 QT O
+QT:[matched]
+QT-&gt;&gt;&gt;O :advance(); on=O
+O.&gt;QT; off=O
+--=cf3
+QT-&gt;&gt;&gt;O :isBlockedBy(event); on=O
+O.&gt;QT :blocked (n2); off=O
+--=cf2
+QT-&gt;&gt;&gt;Q :isComplete(); on=Q
+Q.&gt;QT :complete; off=Q
+combinedFragment=alt~cf4 BUS PL
+BUS:[an objective is blocked]
+QT-&gt;&gt;&gt;Q :fail(); on=Q
+Q.&gt;QT; off=Q
+QT-&gt;&gt;&gt;BUS :publish(questFailed) (n3)
+BUS.&gt;QT
+..=cf4
+BUS:[complete]
+QT-&gt;&gt;&gt;Q :complete(); on=Q
+Q.&gt;QT; off=Q
+QT-&gt;&gt;&gt;Q :getReward(); on=Q
+Q.&gt;QT :reward; off=Q
+QT-&gt;&gt;&gt;GS :getPlayer(); on=GS
+GS.&gt;QT :player; off=GS
+QT-&gt;&gt;&gt;PL :addReward(reward); on=PL
+PL.&gt;QT; off=PL
+QT-&gt;&gt;&gt;BUS :publish(questCompleted) (n4)
+BUS.&gt;QT
+--=cf4
+--=cf1
+QT.&gt;BUS; off=QT
+BUS-&gt;&gt;&gt;MM :onEvent(event); on=MM
+ref=MM MM :SD06 — update\nstory memory
+MM.&gt;BUS; off=MM
+BUS-&gt;&gt;&gt;V :onEvent(event); on=V
+V-&gt;&gt;&gt;V + :refresh() (n5)
+V.&gt;V +
+V.&gt;BUS; off=V
+BUS.&gt;gate; off=BUS</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

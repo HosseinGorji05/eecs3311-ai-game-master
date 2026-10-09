@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLSequenceAllInOne</id>
+    <coordinates>
+      <x>10</x>
+      <y>10</y>
+      <w>2820</w>
+      <h>2310</h>
+    </coordinates>
+    <panel_attributes>title=SD00 — Run an LLM Task (Template Method, Strategy, Adapter)\nreferenced by SD01, SD02, SD06, SD07, SD09
+desc=Notes\n(n1) task is any LlmTask subclass, e.g. ActionInterpreter. It is entered from the subclass's public method (interpret(),\n      narrate(), reply(), generate(), write(), summarize()), which calls run(input). run() is the template method;\n      buildPrompt, parse, isValid and fallback are supplied by the subclass.\n(n2) llm is the LLMClient strategy, here bound to DeepSeekClient (GroqClient works the same way)\n(n3) focus = what the prompt is about (the NPC's id, the current location's id, ...): fixed facts and summaries that mention\n      it are picked first\n(n4) deterministic fallback, e.g. OfflineFallbackParser, template text or a pre-written NPC line; run() sets fallbackUsed =\n      true
+obj=_task : LlmTask_~T
+obj=_:PromptBuilder_~PB
+obj=_:MemoryManager_~MM
+obj=_llm : DeepSeekClient_~LLM
+obj=_:HttpClient_~HTTP
+obj=«external system»\nDeepSeek API\n(LLM Service)~SVC
+obj=_:ResponseParser_~RP
+
+T:(n1)
+LLM:(n2)
+gate-&gt;&gt;&gt;T :run(input); on=T
+T-&gt;&gt;&gt;T + :buildPrompt(\ninput)
+T-&gt;&gt;&gt;PB :stateSummary(state); on=PB
+PB.&gt;T :summary; off=PB
+T-&gt;&gt;&gt;PB :memoryContext(focus,\nmaxChars) (n3); on=PB
+PB-&gt;&gt;&gt;MM :buildContext(focus,\nmaxChars); on=MM
+MM.&gt;PB :context; off=MM
+PB.&gt;T :context; off=PB
+T-&gt;&gt;&gt;PB :fromTemplate(name, vars); on=PB
+PB.&gt;T :promptText; off=PB
+T.&gt;T + :request
+combinedFragment=loop~cf1 T RP
+T:[attempt ≤ MAX_ATTEMPTS and\nno valid output yet]
+T-&gt;&gt;&gt;LLM :isAvailable(); on=LLM
+LLM.&gt;T :available; off=LLM
+combinedFragment=opt~cf2 T RP
+T:[available]
+T-&gt;&gt;&gt;LLM :complete(request); on=LLM
+LLM-&gt;&gt;&gt;LLM + :toHttpRequest(\nrequest)
+LLM.&gt;LLM + :httpRequest
+LLM-&gt;&gt;&gt;HTTP :send(httpRequest,\nhandler); on=HTTP
+HTTP-&gt;&gt;&gt;SVC :POST /chat/completions; on=SVC
+SVC.&gt;HTTP :JSON body; off=SVC
+HTTP.&gt;LLM :httpResponse; off=HTTP
+LLM-&gt;&gt;&gt;LLM + :toLlmResponse(\nhttpResponse)
+LLM.&gt;LLM + :response
+LLM.&gt;T :response; off=LLM
+combinedFragment=opt~cf3 T RP
+T:[response.isOk() (no\nnetwork error or timeout)]
+T-&gt;&gt;&gt;T + :parse(\nresponse)
+T-&gt;&gt;&gt;RP :parseJson(response.\ngetText(), type); on=RP
+RP.&gt;T :output; off=RP
+T.&gt;T + :output
+combinedFragment=opt~cf4 T T
+T:[output is not null\n(well-formed JSON)]
+T-&gt;&gt;&gt;T + :isValid(\noutput,\ninput)
+tick=1
+T.&gt;T + :valid
+--=cf4
+--=cf3
+--=cf2
+--=cf1
+combinedFragment=opt~cf5 T T
+T:[no valid output: LLM\nunavailable, timeout,\nmalformed JSON or invalid\ntwice]
+T-&gt;&gt;&gt;T + :fallback(\ninput) (n4)
+T.&gt;T + :output
+--=cf5
+T.&gt;gate :output; off=T</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

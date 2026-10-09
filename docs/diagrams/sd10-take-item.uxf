@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLSequenceAllInOne</id>
+    <coordinates>
+      <x>10</x>
+      <y>10</y>
+      <w>4610</w>
+      <h>2750</h>
+    </coordinates>
+    <panel_attributes>title=SD10 — Take an Item with an Inventory Button (UC05, F05; Command, Composite)
+desc=Notes\n(n1) proposal = new ActionProposal(TAKE, "iron key", null); buttons skip the LLM (no interpret(), no narrate())\n(n2) Composite: a Container adds its own weight to getWeight() of everything inside it, at any depth; a leaf (Weapon, Consumable, KeyItem) returns its own weight\n(n3) invalid if the item is not in the location or too heavy ("You carry 9.5 of 10 kg.")\n(n4) ownerId = null here; if the item belongs to an NPC who is not handing it over in a conversation, the ITEM event records a theft (alignment delta −2)\n(n5) text = the results' messages (getMessage()), so a button turn needs no LLM
+obj=Player~P ACTOR
+obj=«boundary»\n_:SwingGameView_~V
+obj=«control»\n_:GameController_~GC
+obj=_:CommandFactory_~CF
+obj=_:RulesEngine_~RE
+obj=_take : TakeCommand_~C
+obj=_:GameState_~GS
+obj=_location : Location_~L
+obj=_player : Player_~PL
+obj=_inventory : Inventory_~INV
+obj=_root : Container_~ROOT
+obj=_pouch : Container_~POUCH
+obj=_potion : Consumable_~POT
+obj=_ironKey : KeyItem_~KEY
+
+P-&gt;&gt;&gt;V :select "iron key" in the\nlocation panel,\nclick "Take"; on=V
+tick=1
+V-&gt;&gt;&gt;GC :performAction(proposal); on=GC
+V:(n1)
+GC-&gt;&gt;&gt;CF :create(proposal); on=CF
+CF.&gt;GC :take; off=CF
+GC-&gt;&gt;&gt;RE :executeAll([take],\nstate); on=RE
+ref=RE GS :SD03 — mode check: allows(TAKE) is false in combat
+RE-&gt;&gt;&gt;C :validate(state); on=C
+C-&gt;&gt;&gt;GS :currentLocation(); on=GS
+GS.&gt;C :location; off=GS
+C-&gt;&gt;&gt;L :findItem("iron key"); on=L
+L.&gt;C :ironKey; off=L
+C-&gt;&gt;&gt;GS :getPlayer(); on=GS
+GS.&gt;C :player; off=GS
+C-&gt;&gt;&gt;PL :getInventory(); on=PL
+PL.&gt;C :inventory; off=PL
+C-&gt;&gt;&gt;INV :canCarry(ironKey); on=INV
+INV-&gt;&gt;&gt;INV + :totalWeight()
+INV-&gt;&gt;&gt;ROOT :getWeight(); on=ROOT
+combinedFragment=loop~cf1 ROOT POT
+ROOT:[for each item in root's\ncontents]
+ROOT-&gt;&gt;&gt;POUCH :getWeight() (n2); on=POUCH
+combinedFragment=loop~cf2 POUCH POT
+POUCH:[for each item in pouch's\ncontents]
+POUCH-&gt;&gt;&gt;POT :getWeight(); on=POT
+POT.&gt;POUCH :weight; off=POT
+--=cf2
+POUCH.&gt;ROOT :weight; off=POUCH
+--=cf1
+ROOT.&gt;INV :total; off=ROOT
+INV.&gt;INV + :total
+INV-&gt;&gt;&gt;KEY :getWeight(); on=KEY
+KEY.&gt;INV :keyWeight; off=KEY
+INV.&gt;C :total + keyWeight ≤\nmaxWeight; off=INV
+C.&gt;RE :validation; off=C
+RE:(n3)
+combinedFragment=alt~cf3 RE KEY
+RE:[validation.isValid()]
+RE-&gt;&gt;&gt;C :execute(state, rules); on=C
+C-&gt;&gt;&gt;L :removeItem("iron key"); on=L
+L.&gt;C :ironKey; off=L
+C-&gt;&gt;&gt;INV :add(ironKey); on=INV
+INV-&gt;&gt;&gt;ROOT :add(ironKey); on=ROOT
+ROOT.&gt;INV :added; off=ROOT
+INV.&gt;C :added; off=INV
+C-&gt;&gt;&gt;KEY :getOwnerId(); on=KEY
+KEY.&gt;C :ownerId; off=KEY
+C:(n4)
+C.&gt;RE :result : ActionResult\n(ITEM event "took the\niron key"); off=C
+tick=1
+ref=CF C :SD03 — the ITEM event is published (SD05):\nquests advance and the inventory panel refreshes
+..=cf3
+RE:[invalid]
+RE-&gt;&gt;&gt;RE + :reject(take,\nvalidation.\ngetReason())
+tick=1
+RE.&gt;RE + :result
+--=cf3
+RE.&gt;GC :results; off=RE
+GC-&gt;&gt;&gt;V :showNarration(text)
+GC:(n5)
+V.&gt;GC
+GC.&gt;V :turnResult; off=GC
+V.&gt;P; off=V</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>

@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1">
+  <zoom_level>10</zoom_level>
+  <element>
+    <id>UMLSequenceAllInOne</id>
+    <coordinates>
+      <x>10</x>
+      <y>10</y>
+      <w>2020</w>
+      <h>2240</h>
+    </coordinates>
+    <panel_attributes>title=SD08 — Save and Load Game (UC10, UC11; F10; Memento)\nSave (UC10)
+desc=Notes\n(n1) one SaveSlotInfo per file: slot, character name, location and time (GameSnapshot.toSlotInfo())\n(n2) the game continues unchanged\n(n3) nothing is saved
+obj=Player~P ACTOR
+obj=«boundary»\n_:SwingGameView_~V
+obj=«control»\n_:GameController_~GC
+obj=_:GameState_~GS
+obj=_mode : GameMode_~M
+obj=_snapshot : GameSnapshot_~SN CREATED_LATER
+obj=_:SaveManager_~SM
+obj=«external system»\nFile System~FS
+
+P-&gt;&gt;&gt;V :click "Save", enter a\nslot name; on=V
+V-&gt;&gt;&gt;GC :listSaves(); on=GC
+GC-&gt;&gt;&gt;SM :listSlots(); on=SM
+SM.&gt;GC :slots; off=SM
+SM:(n1)
+GC.&gt;V :slots; off=GC
+combinedFragment=opt~cf1 P V
+P:[slot name already exists]
+V-&gt;&gt;&gt;P :ask to confirm overwrite; on=P
+P.&gt;V :confirm or cancel; off=P
+--=cf1
+combinedFragment=alt~cf2 V FS
+V:[new slot name, or\noverwrite confirmed]
+V-&gt;&gt;&gt;GC :saveGame(slot); on=GC
+GC-&gt;&gt;&gt;GS :canSave(); on=GS
+GS-&gt;&gt;&gt;M :canSave(); on=M
+M.&gt;GS :canSave; off=M
+GS.&gt;GC :canSave; off=GS
+combinedFragment=alt~cf3 V FS
+V:[canSave is false (in\ncombat)]
+GC-&gt;&gt;&gt;V :showError("You can't\nsave during combat.")
+V.&gt;GC
+..=cf3
+V:[canSave]
+GC-&gt;&gt;&gt;GS :createSnapshot(); on=GS
+GS-&gt;&gt;&gt;SN :«create»\nGameSnapshot(stateJson,\ncharacterName,\nlocationName)
+tick=2
+GS.&gt;GC :snapshot; off=GS
+GC-&gt;&gt;&gt;SM :save(slot, snapshot); on=SM
+SM-&gt;&gt;&gt;SN :toJson(); on=SN
+SN.&gt;SM :json; off=SN
+SM-&gt;&gt;&gt;FS :Files.writeString(path,\njson); on=FS
+FS.&gt;SM; off=FS
+SM.&gt;GC :(or throws IOException); off=SM
+combinedFragment=alt~cf4 V GC
+V:[write failed (IOException,\nUC10 4a)]
+GC-&gt;&gt;&gt;V :showError("Could not\nsave: " + message) (n2)
+V.&gt;GC
+..=cf4
+V:[saved]
+GC-&gt;&gt;&gt;V :showNotice("Game\nsaved.")
+V.&gt;GC
+--=cf4
+--=cf3
+GC.&gt;V; off=GC
+..=cf2
+V:[player cancels the\noverwrite]
+V:(n3)
+--=cf2
+V.&gt;P; off=V</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLSequenceAllInOne</id>
+    <coordinates>
+      <x>10</x>
+      <y>2290</y>
+      <w>3550</w>
+      <h>1560</h>
+    </coordinates>
+    <panel_attributes>title=SD08 — Save and Load Game (UC10, UC11; F10; Memento)\nLoad (UC11)
+desc=Notes\n(n1) static factory: reads version, createdAt, characterName, locationName and stateJson; invalid JSON is reported as an IOException\n(n2) the current game is left untouched\n(n3) reloads player, world, quests, event log and story memory into the existing objects, so observers and agents keep valid references
+obj=Player~P ACTOR
+obj=«boundary»\n_:SwingGameView_~V
+obj=«control»\n_:GameController_~GC
+obj=_:GameState_~GS
+obj=_:SaveManager_~SM
+obj=«static»\nGameSnapshot~GSC
+obj=_loaded : GameSnapshot_~SN2 CREATED_LATER
+obj=«external system»\nFile System~FS
+
+P-&gt;&gt;&gt;V :choose a slot, click\n"Load"; on=V
+V-&gt;&gt;&gt;GC :loadGame(slot); on=GC
+GC-&gt;&gt;&gt;SM :load(slot); on=SM
+SM-&gt;&gt;&gt;FS :Files.readString(path); on=FS
+FS.&gt;SM :json; off=FS
+SM-&gt;&gt;&gt;GSC :fromJson(json); on=GSC
+GSC:(n1)
+GSC-&gt;&gt;&gt;SN2 :«create»\nGameSnapshot(stateJson,\ncharacterName,\nlocationName)
+tick=2
+GSC.&gt;SM :loaded; off=GSC
+SM.&gt;GC :loaded (or throws\nIOException); off=SM
+combinedFragment=alt~cf1 V SN2
+V:[file missing, unreadable\nor not valid JSON\n(IOException)]
+GC-&gt;&gt;&gt;V :showError(message) (n2)
+V.&gt;GC
+..=cf1
+V:[file read]
+GC-&gt;&gt;&gt;SN2 :isCompatible(); on=SN2
+SN2.&gt;GC :compatible; off=SN2
+combinedFragment=alt~cf2 V GS
+V:[not compatible (other\nversion)]
+GC-&gt;&gt;&gt;V :showError(message)
+V.&gt;GC
+..=cf2
+V:[compatible]
+GC-&gt;&gt;&gt;GS :restore(loaded) (n3); on=GS
+GS.&gt;GC; off=GS
+GC-&gt;&gt;&gt;V :render(state)
+V.&gt;GC
+--=cf2
+--=cf1
+GC.&gt;V; off=GC
+V.&gt;P; off=V</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
