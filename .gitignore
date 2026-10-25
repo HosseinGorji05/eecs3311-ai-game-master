@@ -26,3 +26,13 @@ replay_pid*
 .env
 
 .history
+
+# Maven / IDE
+target/
+.idea/
+*.iml
+
+# Local secrets and config (never commit real keys)
+.env.*
+!.env.example
+config.local.json

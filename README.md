@@ -23,6 +23,15 @@ A text adventure for EECS 3311 (York University) in which an LLM acts as the gam
 - **LLM access:** DeepSeek as the primary provider, Groq (llama-3.3-70b-versatile) as an alternative, both behind one client interface.
 - **Design patterns (11):** MVC, Command, State, Observer, Template Method, Strategy, Facade, Factory Method, Composite, Memento, Adapter.
 
+## Build and test
+
+Prerequisite: JDK 17 or newer (`java -version`). Maven does not need to be installed; the Maven Wrapper downloads Maven 3.9.16 on first use.
+
+```bash
+./mvnw -q test        # macOS / Linux
+mvnw.cmd -q test      # Windows
+```
+
 ## API keys
 
 API keys go in a local `.env` file, which is git-ignored. Never commit keys.
