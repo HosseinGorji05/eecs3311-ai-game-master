@@ -69,6 +69,11 @@ public class Inventory {
         return root.getWeight();
     }
 
+    /** The carrying limit in kg, shown when an item is too heavy. */
+    public double getMaxWeight() {
+        return maxWeight;
+    }
+
     private static Item findIn(Container container, String name) {
         for (Item item : container.getContents()) {
             if (item.getName().equalsIgnoreCase(name)) {
