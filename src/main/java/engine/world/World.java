@@ -1,5 +1,6 @@
 package engine.world;
 
+import engine.character.Enemy;
 import engine.items.Consumable;
 import engine.items.Container;
 import engine.items.Item;
@@ -26,6 +27,14 @@ public class World {
 
     /** Name of the key that opens the locked door to the Tool Shed. */
     static final String SHED_KEY = "shed key";
+
+    // Enemy tuning numbers (not given by the report): HP, attack (= attack bonus and damage), defense.
+    static final int WOLF_HP = 8;
+    static final int WOLF_ATTACK = 3;
+    static final int WOLF_DEFENSE = 11;
+    static final int BANDIT_LEADER_HP = 12;
+    static final int BANDIT_LEADER_ATTACK = 4;
+    static final int BANDIT_LEADER_DEFENSE = 12;
 
     private final List<Region> regions;
     private final Location startLocation;
@@ -54,7 +63,7 @@ public class World {
     /**
      * Builds the starter world (Stage 1 decision "World size"): the Village and the Forest with
      * eight locations in total. The Tool Shed, east of the Village Square, is locked; its shed key
-     * lies in the Tavern.
+     * lies in the Tavern. A wolf lives in the Wolf Den and the bandit leader in the Bandit Camp.
      *
      * <pre>
      *                  Tavern
@@ -100,6 +109,9 @@ public class World {
         shed.addItem(new Container("backpack", 1.0, 8));
         oldMill.addItem(new Consumable("healing herbs", 0.2, 5));
 
+        wolfDen.addEnemy(new Enemy("wolf", WOLF_HP, WOLF_ATTACK, WOLF_DEFENSE));
+        banditCamp.addEnemy(new Enemy("bandit leader", BANDIT_LEADER_HP, BANDIT_LEADER_ATTACK, BANDIT_LEADER_DEFENSE));
+
         Region village = new Region("Village", List.of(square, tavern, forge, shed));
         Region forest = new Region("Forest", List.of(forestEdge, wolfDen, oldMill, banditCamp));
         return new World(List.of(village, forest), square);
@@ -138,8 +150,9 @@ public class World {
                 String items = location.getItems().isEmpty()
                         ? "none"
                         : location.getItems().stream().map(Item::getName).collect(Collectors.joining(", "));
-                text.append(String.format(Locale.ROOT, "- %s [%s]; items: %s; exits: %s\n",
-                        location.getName(), location.getId(), items, location.describeExits()));
+                String enemies = location.getEnemies().isEmpty() ? "" : "; enemies: " + location.describeEnemies();
+                text.append(String.format(Locale.ROOT, "- %s [%s]; items: %s%s; exits: %s\n",
+                        location.getName(), location.getId(), items, enemies, location.describeExits()));
             }
         }
         return text.toString();

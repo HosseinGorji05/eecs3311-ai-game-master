@@ -13,6 +13,10 @@ public enum EventVerb {
     MOVED,
     /** An enemy was defeated. */
     DEFEATED,
+    /** The player died. */
+    DIED,
+    /** The player escaped from a fight. */
+    FLED,
     /** A quest was completed. */
     COMPLETED,
     /** A quest failed. */

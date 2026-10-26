@@ -3,6 +3,7 @@ package engine.commands;
 import engine.character.CharacterClass;
 import engine.character.CharacterFactory;
 import engine.character.Stats;
+import engine.core.DiceRoller;
 import engine.core.GameState;
 import engine.core.RulesEngine;
 import engine.events.GameEventBus;
@@ -33,7 +34,7 @@ class TakeCommandTest {
     }
 
     private static ActionResult run(GameCommand command, GameState state) {
-        List<ActionResult> results = new RulesEngine(new GameEventBus()).executeAll(List.of(command), state);
+        List<ActionResult> results = new RulesEngine(new DiceRoller(0), new GameEventBus()).executeAll(List.of(command), state);
         assertEquals(1, results.size());
         return results.get(0);
     }
@@ -128,7 +129,7 @@ class TakeCommandTest {
         GameState state = startGame(CharacterClass.WARRIOR, "village-square");
         String before = StateFingerprint.of(state);
 
-        assertThrows(IllegalStateException.class, () -> new TakeCommand("shed key").execute(state, new RulesEngine(new GameEventBus())));
+        assertThrows(IllegalStateException.class, () -> new TakeCommand("shed key").execute(state, new RulesEngine(new DiceRoller(0), new GameEventBus())));
         assertEquals(before, StateFingerprint.of(state));
     }
 

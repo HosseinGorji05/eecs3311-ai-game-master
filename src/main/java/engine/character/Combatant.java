@@ -3,10 +3,10 @@ package engine.character;
 import java.util.Objects;
 
 /**
- * Common base of every character that has hit points.
+ * Common base of every character that has hit points and can fight.
  *
- * <p>The combat operations of the design ({@code attackBonus()}, {@code defense()},
- * {@code damage()}) are added together with the combat rules.
+ * <p>An attack hits when {@code d20 + attacker.attackBonus() >= target.defense()} and then deals
+ * {@code attacker.damage()} (see {@code RulesEngine.resolveAttack()}).
  */
 public abstract class Combatant {
 
@@ -37,5 +37,26 @@ public abstract class Combatant {
 
     public boolean isAlive() {
         return hp > 0;
+    }
+
+    /** Added to the attacker's d20 roll. */
+    public abstract int attackBonus();
+
+    /** The total an attack roll must reach to hit this combatant. */
+    public abstract int defense();
+
+    /** The HP a hit by this combatant takes away. */
+    public abstract int damage();
+
+    public String getName() {
+        return name;
+    }
+
+    public int getHp() {
+        return hp;
+    }
+
+    public int getMaxHp() {
+        return maxHp;
     }
 }

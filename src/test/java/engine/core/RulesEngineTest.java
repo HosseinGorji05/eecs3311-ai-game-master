@@ -58,7 +58,7 @@ class RulesEngineTest {
         }
     }
 
-    private final RulesEngine rules = new RulesEngine(new GameEventBus());
+    private final RulesEngine rules = new RulesEngine(new DiceRoller(0), new GameEventBus());
     private GameState state;
 
     @BeforeEach

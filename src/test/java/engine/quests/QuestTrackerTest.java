@@ -8,6 +8,7 @@ import engine.commands.ActionResult;
 import engine.commands.GameCommand;
 import engine.commands.MoveCommand;
 import engine.commands.TakeCommand;
+import engine.core.DiceRoller;
 import engine.core.GameState;
 import engine.core.RulesEngine;
 import engine.events.EventType;
@@ -42,7 +43,7 @@ class QuestTrackerTest {
         bus = new GameEventBus();
         bus.subscribe(state.getEventLog());
         bus.subscribe(new QuestTracker(state, bus));
-        rules = new RulesEngine(bus);
+        rules = new RulesEngine(new DiceRoller(0), bus);
     }
 
     private ActionResult run(GameCommand command) {

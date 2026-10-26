@@ -14,8 +14,17 @@ import java.util.Objects;
  * <p>Pattern role: the object built by the Factory Method pattern ({@link CharacterFactory}
  * creates it with class-specific HP and starting kit). Its {@link Inventory} is the client of the
  * item Composite.
+ *
+ * <p>Combat values (the report gives no formulas; tuning numbers may change): attack bonus =
+ * strength, defense = {@value #BASE_DEFENSE} + agility, damage = the equipped weapon's damage or
+ * {@value #UNARMED_DAMAGE} without one.
  */
 public class Player extends Combatant {
+
+    /** Defense of a player with no agility; agility is added to it. */
+    public static final int BASE_DEFENSE = 10;
+    /** Damage of a hit without an equipped weapon. */
+    public static final int UNARMED_DAMAGE = 2;
 
     private final CharacterClass characterClass;
     private final Stats stats;
@@ -55,6 +64,24 @@ public class Player extends Combatant {
 
     public Inventory getInventory() {
         return inventory;
+    }
+
+    /** Strength. */
+    @Override
+    public int attackBonus() {
+        return stats.modifier(StatType.STRENGTH);
+    }
+
+    /** {@code BASE_DEFENSE} + agility. */
+    @Override
+    public int defense() {
+        return BASE_DEFENSE + stats.modifier(StatType.AGILITY);
+    }
+
+    /** The equipped weapon's damage, or {@code UNARMED_DAMAGE} without one. */
+    @Override
+    public int damage() {
+        return equippedWeapon != null ? equippedWeapon.getDamage() : UNARMED_DAMAGE;
     }
 
     /** Restores HP by {@code amount}, never above the maximum. */

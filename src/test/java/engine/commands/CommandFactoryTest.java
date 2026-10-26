@@ -3,6 +3,7 @@ package engine.commands;
 import engine.character.CharacterClass;
 import engine.character.CharacterFactory;
 import engine.character.Stats;
+import engine.core.DiceRoller;
 import engine.core.GameState;
 import engine.core.RulesEngine;
 import engine.events.GameEventBus;
@@ -34,7 +35,7 @@ class CommandFactoryTest {
     }
 
     private String runAndReportLocation(GameCommand command) {
-        ActionResult result = new RulesEngine(new GameEventBus()).executeAll(List.of(command), state).get(0);
+        ActionResult result = new RulesEngine(new DiceRoller(0), new GameEventBus()).executeAll(List.of(command), state).get(0);
         assertTrue(result.isSuccess(), result.getMessage());
         return state.currentLocation().getId();
     }
@@ -89,14 +90,14 @@ class CommandFactoryTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = ActionType.class, names = {"MOVE", "TAKE"}, mode = EnumSource.Mode.EXCLUDE)
+    @EnumSource(value = ActionType.class, names = {"MOVE", "TAKE", "ATTACK", "FLEE"}, mode = EnumSource.Mode.EXCLUDE)
     void typesWithoutACommandYetAreRejected(ActionType type) {
         ActionProposal proposal = new ActionProposal(type, "something", null);
         assertThrows(IllegalArgumentException.class, () -> factory.create(proposal));
     }
 
     @ParameterizedTest
-    @EnumSource(value = ActionType.class, names = {"MOVE", "TAKE"})
+    @EnumSource(value = ActionType.class, names = {"MOVE", "TAKE", "ATTACK"})
     void missingOrBlankTargetIsRejected(ActionType type) {
         assertThrows(IllegalArgumentException.class, () -> factory.create(new ActionProposal(type, null, null)));
         assertThrows(IllegalArgumentException.class, () -> factory.create(new ActionProposal(type, "  ", null)));

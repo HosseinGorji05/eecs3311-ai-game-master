@@ -3,6 +3,7 @@ package engine.commands;
 import engine.character.CharacterClass;
 import engine.character.CharacterFactory;
 import engine.character.Stats;
+import engine.core.DiceRoller;
 import engine.core.GameState;
 import engine.core.RulesEngine;
 import engine.events.EventType;
@@ -37,7 +38,7 @@ class CommandEventsTest {
                 World.createDefault());
         GameEventBus bus = new GameEventBus();
         bus.subscribe(published::add);
-        rules = new RulesEngine(bus);
+        rules = new RulesEngine(new DiceRoller(0), bus);
     }
 
     private ActionResult run(GameCommand command) {

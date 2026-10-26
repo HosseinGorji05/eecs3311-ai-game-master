@@ -1,5 +1,6 @@
 package engine.world;
 
+import engine.character.Enemy;
 import engine.items.Item;
 
 import java.util.ArrayList;
@@ -14,8 +15,7 @@ import java.util.stream.Collectors;
  *
  * <p>Constraint: at most one exit per {@link Direction}, so a location has 0..4 exits.
  *
- * <p>The NPCs and enemies of the design ({@code npcs}, {@code enemies}, {@code findNpc()},
- * {@code findEnemy()}, {@code removeEnemy()}) are added together with dialogue and combat.
+ * <p>The NPCs of the design ({@code npcs}, {@code findNpc()}) are added together with dialogue.
  */
 public class Location {
 
@@ -25,6 +25,7 @@ public class Location {
     private boolean visited;
     private final List<Exit> exits = new ArrayList<>();
     private final List<Item> items = new ArrayList<>();
+    private final List<Enemy> enemies = new ArrayList<>();
 
     public Location(String id, String name, String description) {
         this.id = requireText(id, "id");
@@ -136,6 +137,47 @@ public class Location {
         return Collections.unmodifiableList(items);
     }
 
+    public void addEnemy(Enemy enemy) {
+        enemies.add(Objects.requireNonNull(enemy, "enemy"));
+    }
+
+    /**
+     * Finds an enemy here by name (ignoring case).
+     *
+     * @return the enemy, or {@code null} if there is no such enemy
+     */
+    public Enemy findEnemy(String name) {
+        if (name == null) {
+            return null;
+        }
+        for (Enemy enemy : enemies) {
+            if (enemy.getName().equalsIgnoreCase(name.trim())) {
+                return enemy;
+            }
+        }
+        return null;
+    }
+
+    /** Removes a defeated enemy from this location. */
+    public void removeEnemy(Enemy enemy) {
+        enemies.remove(enemy);
+    }
+
+    /** The enemies here, as a read-only view. */
+    public List<Enemy> getEnemies() {
+        return Collections.unmodifiableList(enemies);
+    }
+
+    /** The enemies as text, e.g. {@code "wolf (8/8 HP)"}, or {@code "none"}. */
+    public String describeEnemies() {
+        if (enemies.isEmpty()) {
+            return "none";
+        }
+        return enemies.stream()
+                .map(enemy -> enemy.getName() + " (" + enemy.getHp() + "/" + enemy.getMaxHp() + " HP)")
+                .collect(Collectors.joining(", "));
+    }
+
     /** The exits as text, e.g. {@code "north (Tavern), east (Tool Shed, locked)"}. */
     public String describeExits() {
         if (exits.isEmpty()) {
@@ -147,12 +189,16 @@ public class Location {
                 .collect(Collectors.joining(", "));
     }
 
-    /** The name, description, items and exits, as shown when the player arrives. */
+    /**
+     * The name, description, items, enemies (only when there are any) and exits, as shown when the
+     * player arrives.
+     */
     public String describe() {
         String itemText = items.isEmpty()
                 ? "none"
                 : items.stream().map(Item::describe).collect(Collectors.joining(", "));
-        return name + "\n" + description + "\nItems: " + itemText + "\nExits: " + describeExits();
+        String enemyText = enemies.isEmpty() ? "" : "\nEnemies: " + describeEnemies();
+        return name + "\n" + description + "\nItems: " + itemText + enemyText + "\nExits: " + describeExits();
     }
 
     static String directionName(Direction direction) {

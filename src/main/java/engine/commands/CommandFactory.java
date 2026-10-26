@@ -17,6 +17,7 @@ public class CommandFactory {
     /**
      * Creates the command for a proposal. For MOVE, a target that names a direction ("east")
      * gives a move in that direction; any other target is the name of an adjacent location.
+     * TAKE and ATTACK need a target; FLEE ignores it.
      *
      * @throws IllegalArgumentException if the target is missing, or there is no command for the
      *                                  proposal's type yet
@@ -26,6 +27,8 @@ public class CommandFactory {
         return switch (proposal.getType()) {
             case MOVE -> createMove(requireTarget(proposal));
             case TAKE -> new TakeCommand(requireTarget(proposal));
+            case ATTACK -> new AttackCommand(requireTarget(proposal));
+            case FLEE -> new FleeCommand();
             default -> throw new IllegalArgumentException("Unsupported action type: " + proposal.getType());
         };
     }
