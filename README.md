@@ -32,6 +32,15 @@ Prerequisite: JDK 17 or newer (`java -version`). Maven does not need to be insta
 mvnw.cmd -q test      # Windows
 ```
 
+## Play (offline CLI)
+
+```bash
+./mvnw -q compile exec:java        # macOS / Linux
+mvnw.cmd -q compile exec:java      # Windows
+```
+
+Type commands such as `go north`, `take shed key`, `attack wolf` or `flee`; `help` lists the rest and `quit` ends the game. No LLM provider is connected yet, so the game runs in basic-command mode.
+
 ## API keys
 
 API keys go in a local `.env` file, which is git-ignored. Never commit keys.
