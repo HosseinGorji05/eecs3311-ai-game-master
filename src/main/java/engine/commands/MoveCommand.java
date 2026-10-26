@@ -2,6 +2,9 @@ package engine.commands;
 
 import engine.core.GameState;
 import engine.core.RulesEngine;
+import engine.events.EventType;
+import engine.events.EventVerb;
+import engine.events.GameEvent;
 import engine.items.Item;
 import engine.items.KeyItem;
 import engine.world.Direction;
@@ -18,7 +21,8 @@ import java.util.Objects;
  * <p>Pattern role: <b>ConcreteCommand</b>. {@link #validate} resolves the exit and, for a locked
  * exit, the key the player carries, and keeps both for {@link #execute} (SD11).
  *
- * <p>The MOVEMENT event of SD11 is published once the event bus exists.
+ * <p>A successful move adds a MOVEMENT event (verb MOVED, subject = the destination's id) to its
+ * result, which {@code RulesEngine} publishes.
  */
 public class MoveCommand implements GameCommand {
 
@@ -94,6 +98,9 @@ public class MoveCommand implements GameCommand {
         Location destination = exit.getDestination();
         state.setCurrentLocation(destination);
         destination.markVisited();
-        return new ActionResult(true, unlocked + destination.describe());
+        ActionResult result = new ActionResult(true, unlocked + destination.describe());
+        result.addEvent(new GameEvent(EventType.MOVEMENT, state.getTurn(), "moved to " + destination.getName(),
+                destination.getId(), 0, EventVerb.MOVED));
+        return result;
     }
 }

@@ -3,12 +3,13 @@ package engine.character;
 import engine.items.Inventory;
 import engine.items.Item;
 import engine.items.Weapon;
+import engine.quests.Reward;
 
 import java.util.List;
 import java.util.Objects;
 
 /**
- * The player's character: class, stats, inventory, equipped weapon and backstory.
+ * The player's character: class, stats, inventory, equipped weapon, gold, experience and backstory.
  *
  * <p>Pattern role: the object built by the Factory Method pattern ({@link CharacterFactory}
  * creates it with class-specific HP and starting kit). Its {@link Inventory} is the client of the
@@ -20,6 +21,8 @@ public class Player extends Combatant {
     private final Stats stats;
     private final Inventory inventory;
     private Weapon equippedWeapon;
+    private int gold;
+    private int xp;
     private String backstory;
 
     /**
@@ -69,6 +72,24 @@ public class Player extends Combatant {
     /** The equipped weapon, or {@code null} if none is equipped. */
     public Weapon getEquippedWeapon() {
         return equippedWeapon;
+    }
+
+    /**
+     * Adds a quest reward's gold and XP. The reward item is handed over by the quest giver once
+     * NPCs exist, so it is not added here.
+     */
+    public void addReward(Reward reward) {
+        Objects.requireNonNull(reward, "reward");
+        gold += reward.getGold();
+        xp += reward.getXp();
+    }
+
+    public int getGold() {
+        return gold;
+    }
+
+    public int getXp() {
+        return xp;
     }
 
     public void setBackstory(String text) {

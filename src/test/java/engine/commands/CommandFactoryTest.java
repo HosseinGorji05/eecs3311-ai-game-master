@@ -5,6 +5,7 @@ import engine.character.CharacterFactory;
 import engine.character.Stats;
 import engine.core.GameState;
 import engine.core.RulesEngine;
+import engine.events.GameEventBus;
 import engine.world.World;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -33,7 +34,7 @@ class CommandFactoryTest {
     }
 
     private String runAndReportLocation(GameCommand command) {
-        ActionResult result = new RulesEngine().executeAll(List.of(command), state).get(0);
+        ActionResult result = new RulesEngine(new GameEventBus()).executeAll(List.of(command), state).get(0);
         assertTrue(result.isSuccess(), result.getMessage());
         return state.currentLocation().getId();
     }

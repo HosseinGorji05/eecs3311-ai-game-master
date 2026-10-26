@@ -9,6 +9,7 @@ import engine.commands.ActionType;
 import engine.commands.CommandFactory;
 import engine.commands.GameCommand;
 import engine.commands.ValidationResult;
+import engine.events.GameEventBus;
 import engine.world.Direction;
 import engine.world.World;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,7 +58,7 @@ class RulesEngineTest {
         }
     }
 
-    private final RulesEngine rules = new RulesEngine();
+    private final RulesEngine rules = new RulesEngine(new GameEventBus());
     private GameState state;
 
     @BeforeEach

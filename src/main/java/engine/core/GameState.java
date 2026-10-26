@@ -2,6 +2,8 @@ package engine.core;
 
 import engine.character.Player;
 import engine.commands.ActionType;
+import engine.events.EventLog;
+import engine.quests.QuestLog;
 import engine.world.Location;
 import engine.world.World;
 
@@ -9,14 +11,17 @@ import java.util.Objects;
 
 /**
  * The single source of truth of a running game: the player, the world, the current location,
- * the current mode and the turn number.
+ * the current mode, the turn number, the quest log and the event log.
  *
  * <p>Pattern role: <b>Context</b> of the State pattern; {@link #allows} and {@link #canSave}
  * delegate to the current {@link GameMode}.
  *
- * <p>The quest log, event log and story memory of the design, {@code isGameOver()} and the
- * Memento operations {@code createSnapshot()} / {@code restore()} are added together with quests,
- * events and saving.
+ * <p>The state owns its {@link EventLog} and {@link QuestLog}; whoever owns the
+ * {@code GameEventBus} subscribes the event log (and a {@code QuestTracker}) to it.
+ *
+ * <p>The story memory of the design, {@code isGameOver()} and the Memento operations
+ * {@code createSnapshot()} / {@code restore()} are added together with story memory, the ending
+ * and saving.
  */
 public class GameState {
 
@@ -25,6 +30,8 @@ public class GameState {
     private World world;
     private Location currentLocation;
     private GameMode mode;
+    private final QuestLog questLog = new QuestLog();
+    private final EventLog eventLog = new EventLog();
 
     /**
      * Starts a new game: the player is placed in the world's start location (marked visited),
@@ -76,6 +83,14 @@ public class GameState {
     /** Whether the current mode allows saving. */
     public boolean canSave() {
         return requireMode().canSave();
+    }
+
+    public QuestLog getQuestLog() {
+        return questLog;
+    }
+
+    public EventLog getEventLog() {
+        return eventLog;
     }
 
     public void nextTurn() {

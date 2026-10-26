@@ -5,6 +5,7 @@ import engine.character.CharacterFactory;
 import engine.character.Stats;
 import engine.core.GameState;
 import engine.core.RulesEngine;
+import engine.events.GameEventBus;
 import engine.items.Container;
 import engine.items.KeyItem;
 import engine.world.Direction;
@@ -38,7 +39,7 @@ class MoveCommandTest {
     }
 
     private ActionResult run(GameCommand command) {
-        List<ActionResult> results = new RulesEngine().executeAll(List.of(command), state);
+        List<ActionResult> results = new RulesEngine(new GameEventBus()).executeAll(List.of(command), state);
         assertEquals(1, results.size());
         return results.get(0);
     }
@@ -179,11 +180,11 @@ class MoveCommandTest {
     @Test
     void executeWithoutASuccessfulValidateIsRefused() {
         MoveCommand neverValidated = new MoveCommand(Direction.SOUTH);
-        assertThrows(IllegalStateException.class, () -> neverValidated.execute(state, new RulesEngine()));
+        assertThrows(IllegalStateException.class, () -> neverValidated.execute(state, new RulesEngine(new GameEventBus())));
 
         MoveCommand invalid = new MoveCommand(Direction.EAST);
         assertFalse(invalid.validate(state).isValid());
-        assertThrows(IllegalStateException.class, () -> invalid.execute(state, new RulesEngine()));
+        assertThrows(IllegalStateException.class, () -> invalid.execute(state, new RulesEngine(new GameEventBus())));
         assertSame(square, state.currentLocation());
     }
 
