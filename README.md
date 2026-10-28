@@ -32,18 +32,33 @@ Prerequisite: JDK 17 or newer (`java -version`). Maven does not need to be insta
 mvnw.cmd -q test      # Windows
 ```
 
-## Play (offline CLI)
+## Configuration
+
+The game uses DeepSeek (`deepseek-flash`) by default, or Groq (`llama-3.3-70b-versatile`). To connect one:
+
+1. Copy the template: `cp .env.example .env` (Windows: `copy .env.example .env`).
+2. Enter your own key in `.env` on your machine: `DEEPSEEK_API_KEY` for DeepSeek, or `GROQ_API_KEY` together with `LLM_PROVIDER=groq` for Groq. `LLM_API_KEY` is used for either provider when its own key is empty.
+3. Run the game:
 
 ```bash
 ./mvnw -q compile exec:java        # macOS / Linux
 mvnw.cmd -q compile exec:java      # Windows
 ```
 
-Type commands such as `go north`, `take shed key`, `attack wolf` or `flee`; `help` lists the rest and `quit` ends the game. No LLM provider is connected yet, so the game runs in basic-command mode.
+Environment variables with the same names override `.env`. To pick a provider for one run, pass it as an argument, for example `./mvnw -q compile exec:java -Dexec.args=groq` (`deepseek`, `groq` or `offline`). Without a key, the game prints which key is missing and plays offline.
 
-## API keys
+`.env` is git-ignored. Never commit it, and never put a key in `.env.example` or any other tracked file.
 
-API keys go in a local `.env` file, which is git-ignored. Never commit keys.
+## Play (offline CLI)
+
+No key is needed to play. Without one (or with `-Dexec.args=offline`) the game runs in basic-command mode, where a keyword parser reads simple commands:
+
+```bash
+./mvnw -q compile exec:java        # macOS / Linux
+mvnw.cmd -q compile exec:java      # Windows
+```
+
+Type commands such as `go north`, `take shed key`, `attack wolf` or `flee`. `help` lists the rest and `quit` ends the game. With a provider connected, you can also type freer sentences such as `pick up the shed key and head north`. If the provider fails or times out, that turn falls back to basic-command mode.
 
 ## Course
 
