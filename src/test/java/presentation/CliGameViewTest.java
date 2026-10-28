@@ -59,7 +59,7 @@ class CliGameViewTest {
         assertContains(output, "Ari: 30/30 HP | Gold 0 | XP 0 | Carrying 3.5 of 10.0 kg");
         assertContains(output, "> Tavern\n");
         assertContains(output, "You take the shed key.");
-        assertContains(output, "(Basic-command mode: simple commands only.)");
+        assertContains(output, "(Basic-command mode: simple commands only. Reason: LLM unavailable.)");
         assertContains(output, "Wolf Den\n");
         assertContains(output, "Enemies: wolf (8/8 HP)");
         assertContains(output, "Ari attacks wolf: rolls 10 + 5 = 15 against defense 11. Hit for 2 damage (wolf: 6/8 HP).");

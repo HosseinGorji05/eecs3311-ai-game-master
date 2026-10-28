@@ -22,6 +22,7 @@ import engine.quests.QuestTracker;
 import engine.world.World;
 import llm.LLMClient;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -68,6 +69,14 @@ public class GameController {
         eventBus.subscribe(new QuestTracker(state, eventBus));
     }
 
+    /**
+     * Where the interpreter describes failed model attempts (its reason and the raw reply), e.g.
+     * {@code System.err}; {@code null} turns this off.
+     */
+    public void setLlmDebugOutput(PrintStream debug) {
+        interpreter.setDebugOutput(debug);
+    }
+
     /** Adds a view; a view that listens to events is also subscribed to the bus. */
     public void addView(GameView view) {
         views.add(Objects.requireNonNull(view, "view"));
@@ -105,8 +114,8 @@ public class GameController {
 
     /**
      * Plays one turn from the player's typed text (SD02): the interpreter turns it into proposals
-     * (with a basic-command notice if it had to fall back), then the commands run through the
-     * rules engine.
+     * (with a basic-command notice naming the reason if it had to fall back), then the commands run
+     * through the rules engine.
      */
     public TurnResult submitCommand(String text) {
         requireStarted();
@@ -115,7 +124,8 @@ public class GameController {
         }
         List<ActionProposal> proposals = interpreter.interpret(text);
         if (interpreter.isFallbackUsed()) {
-            views.forEach(view -> view.showNotice(BASIC_MODE_NOTICE));
+            String notice = BASIC_MODE_NOTICE + " Reason: " + interpreter.getFallbackReason() + ".";
+            views.forEach(view -> view.showNotice(notice));
         }
         if (proposals.isEmpty()) {
             return error(interpreter.isFallbackUsed() ? NOT_UNDERSTOOD + " " + EXAMPLES : NOT_UNDERSTOOD, false);

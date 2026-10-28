@@ -98,7 +98,7 @@ class GameControllerTest {
 
         TurnResult turn = controller.submitCommand("go north");
 
-        assertEquals("notice: " + GameController.BASIC_MODE_NOTICE, view.shown.get(0));
+        assertEquals("notice: " + GameController.BASIC_MODE_NOTICE + " Reason: LLM unavailable.", view.shown.get(0));
         assertEquals("narration: " + turn.getNarration(), view.shown.get(1));
         assertTrue(turn.getNarration().startsWith("Tavern\n"), turn.getNarration());
         assertEquals(1, turn.getResults().size());

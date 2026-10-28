@@ -25,8 +25,13 @@ import java.util.Objects;
  * <p>Pattern role: <b>Adapter</b> (Target {@link LLMClient}, Adaptee {@link HttpClient}). Every
  * failure (no API key, connection error, timeout, an HTTP error status, an empty or malformed body)
  * becomes a failed {@link LlmResponse} instead of an exception, so the calling task retries and then
- * falls back. The API key is only ever put in the Authorization header; it is removed from every
- * error message.
+ * falls back. Its error is a short category such as {@code "HTTP 401 (API key rejected)"} or
+ * {@code "HTTP 404 (model <model> not found; set GROQ_MODEL)"}, never a response body. The API key
+ * is only ever put in the Authorization header; it is removed from every error message.
+ *
+ * <p>If the provider answers a JSON-mode request with HTTP 400, the request is sent once more
+ * without {@code response_format} (not every model supports it); if that works, later requests
+ * leave it out, and the prompt alone asks for JSON.
  */
 public abstract class OpenAiCompatibleClient implements LLMClient {
 
@@ -42,6 +47,7 @@ public abstract class OpenAiCompatibleClient implements LLMClient {
     private final String apiKey;
     private final HttpClient http;
     private final Duration requestTimeout;
+    private volatile boolean responseFormatSupported = true;
 
     /**
      * @param apiKey the provider's key; {@code null} or blank makes the client unavailable
@@ -68,26 +74,34 @@ public abstract class OpenAiCompatibleClient implements LLMClient {
         this.http = HttpClient.newBuilder().connectTimeout(CONNECT_TIMEOUT).build();
     }
 
-    /** Asks the model once; never throws, and answers with an error response on any failure. */
+    /**
+     * Asks the model (a second time only without {@code response_format}, see above); never throws,
+     * and answers with an error response on any failure.
+     */
     @Override
     public LlmResponse complete(LlmRequest request) {
         Objects.requireNonNull(request, "request");
         if (!isAvailable()) {
-            return failure("no API key is set");
+            return failure("no API key");
         }
         try {
-            HttpResponse<String> response = http.send(toHttpRequest(request),
-                    HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+            HttpResponse<String> response = send(request);
+            if (response.statusCode() == 400 && request.isJsonMode() && responseFormatSupported) {
+                responseFormatSupported = false;
+                response = send(request);
+                // Keep leaving it out only if that was the problem.
+                responseFormatSupported = response.statusCode() < 200 || response.statusCode() >= 300;
+            }
             return toLlmResponse(response);
         } catch (HttpTimeoutException timeout) {
-            return failure("the request timed out");
+            return failure("timeout");
         } catch (IOException connection) {
-            return failure("connection failed (" + describe(connection) + ")");
+            return failure("connection failed (" + connection.getClass().getSimpleName() + ")");
         } catch (InterruptedException interrupted) {
             Thread.currentThread().interrupt();
-            return failure("the request was interrupted");
+            return failure("interrupted");
         } catch (RuntimeException unexpected) {
-            return failure("the request failed (" + describe(unexpected) + ")");
+            return failure("client error (" + unexpected.getClass().getSimpleName() + ")");
         }
     }
 
@@ -100,9 +114,23 @@ public abstract class OpenAiCompatibleClient implements LLMClient {
     @Override
     public abstract String providerName();
 
+    /** The model ID sent with every request. */
+    public String getModel() {
+        return model;
+    }
+
+    /**
+     * The configuration setting that chooses this provider's model, named in the HTTP 404 error;
+     * {@code null} (the default) if there is none.
+     */
+    protected String modelSetting() {
+        return null;
+    }
+
     /**
      * The chat-completions request: the system and user prompts as two messages, the model, the
-     * answer length limit, the temperature and, for JSON mode, {@code response_format json_object}.
+     * answer length limit, the temperature and, for JSON mode, {@code response_format json_object}
+     * (unless the provider rejected it before).
      */
     protected HttpRequest toHttpRequest(LlmRequest request) {
         JsonObject body = new JsonObject();
@@ -114,7 +142,7 @@ public abstract class OpenAiCompatibleClient implements LLMClient {
         body.addProperty("max_tokens", request.getMaxTokens());
         body.addProperty("temperature", TEMPERATURE);
         body.addProperty("stream", false);
-        if (request.isJsonMode()) {
+        if (request.isJsonMode() && responseFormatSupported) {
             JsonObject format = new JsonObject();
             format.addProperty("type", "json_object");
             body.add("response_format", format);
@@ -136,24 +164,32 @@ public abstract class OpenAiCompatibleClient implements LLMClient {
     protected LlmResponse toLlmResponse(HttpResponse<String> response) {
         int status = response.statusCode();
         if (status == 401 || status == 403) {
-            return failure("HTTP " + status + ", the API key was rejected");
+            return failure("HTTP " + status + " (API key rejected)");
+        }
+        if (status == 404) {
+            // A retired or unknown model; the URLs are fixed, so the path is not the cause.
+            String setting = modelSetting();
+            return failure("HTTP 404 (model " + model + " not found" + (setting == null ? "" : "; set " + setting) + ")");
         }
         if (status == 429) {
-            return failure("HTTP 429, rate limit or quota reached");
+            return failure("HTTP 429 (rate limit or quota)");
         }
         if (status >= 500) {
-            return failure("HTTP " + status + ", server error");
+            return failure("HTTP " + status + " (server error)");
         }
         if (status < 200 || status >= 300) {
             return failure("HTTP " + status);
         }
         String content = content(response.body());
         return content == null || content.isBlank()
-                ? failure("the answer was empty or malformed")
+                ? failure("empty or malformed reply")
                 : new LlmResponse(content, true, null);
     }
 
-    /** {@code choices[0].message.content}, or {@code null} if the body does not have it. */
+    /**
+     * {@code choices[0].message.content}, or {@code null} if the body does not have it. A reasoning
+     * model's separate {@code message.reasoning} field is ignored.
+     */
     private static String content(String body) {
         if (body == null || body.isBlank()) {
             return null;
@@ -183,13 +219,12 @@ public abstract class OpenAiCompatibleClient implements LLMClient {
         return message;
     }
 
-    private LlmResponse failure(String reason) {
-        return new LlmResponse(null, false, redact(providerName() + ": " + reason));
+    private HttpResponse<String> send(LlmRequest request) throws IOException, InterruptedException {
+        return http.send(toHttpRequest(request), HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
     }
 
-    private String describe(Exception exception) {
-        String message = exception.getMessage();
-        return exception.getClass().getSimpleName() + (message == null ? "" : ": " + message);
+    private LlmResponse failure(String category) {
+        return new LlmResponse(null, false, redact(category));
     }
 
     /** The text with every occurrence of the API key replaced. */

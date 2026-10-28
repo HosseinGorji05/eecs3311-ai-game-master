@@ -45,7 +45,7 @@ class OpenAiCompatibleClientTest {
     private static final LlmRequest TEXT_REQUEST = new LlmRequest("You narrate.", "The door opens.", false, 50);
 
     /** A client for the local server, with a short timeout. */
-    private static final class LocalClient extends OpenAiCompatibleClient {
+    private static class LocalClient extends OpenAiCompatibleClient {
         LocalClient(String baseUrl, String apiKey, Duration timeout) {
             super(baseUrl, "test-model", apiKey, timeout);
         }
@@ -67,6 +67,7 @@ class OpenAiCompatibleClientTest {
     private volatile int status = 200;
     private volatile String responseBody = answer("{\"actions\":[]}");
     private volatile boolean hang;
+    private volatile boolean rejectResponseFormat;
 
     @BeforeEach
     void startServer() throws IOException {
@@ -87,9 +88,11 @@ class OpenAiCompatibleClientTest {
                     Thread.currentThread().interrupt();
                 }
             }
-            byte[] bytes = responseBody.getBytes(StandardCharsets.UTF_8);
+            boolean rejected = rejectResponseFormat && body.contains("response_format");
+            byte[] bytes = (rejected ? "{\"error\":\"response_format is not supported\"}" : responseBody)
+                    .getBytes(StandardCharsets.UTF_8);
             exchange.getResponseHeaders().set("Content-Type", "application/json");
-            exchange.sendResponseHeaders(status, bytes.length == 0 ? -1 : bytes.length);
+            exchange.sendResponseHeaders(rejected ? 400 : status, bytes.length == 0 ? -1 : bytes.length);
             try (OutputStream out = exchange.getResponseBody()) {
                 out.write(bytes);
             }
@@ -208,17 +211,62 @@ class OpenAiCompatibleClientTest {
 
         assertFalse(response.isOk());
         assertNull(response.getText());
-        assertTrue(response.getError().startsWith("local: HTTP " + errorStatus), response.getError());
+        assertTrue(response.getError().startsWith("HTTP " + errorStatus), response.getError());
     }
 
     @Test
     void theErrorSaysWhatTheStatusMeans() {
         respond(401, "{}");
-        assertEquals("local: HTTP 401, the API key was rejected", client().complete(JSON_REQUEST).getError());
+        assertEquals("HTTP 401 (API key rejected)", client().complete(JSON_REQUEST).getError());
         respond(429, "{}");
-        assertEquals("local: HTTP 429, rate limit or quota reached", client().complete(JSON_REQUEST).getError());
+        assertEquals("HTTP 429 (rate limit or quota)", client().complete(JSON_REQUEST).getError());
         respond(500, "{}");
-        assertEquals("local: HTTP 500, server error", client().complete(JSON_REQUEST).getError());
+        assertEquals("HTTP 500 (server error)", client().complete(JSON_REQUEST).getError());
+        respond(404, "{}");
+        assertEquals("HTTP 404 (model test-model not found)", client().complete(JSON_REQUEST).getError());
+    }
+
+    @Test
+    void aMissingModelNamesTheSettingThatChoosesIt() {
+        respond(404, "{\"error\":{\"message\":\"The model does not exist. Key: " + KEY + "\",\"code\":\"model_not_found\"}}");
+        LocalClient client = new LocalClient(baseUrl(), KEY, Duration.ofSeconds(5)) {
+            @Override
+            protected String modelSetting() {
+                return "LOCAL_MODEL";
+            }
+        };
+
+        LlmResponse response = completeAndCheckNoKeyLeaks(() -> client.complete(JSON_REQUEST));
+
+        assertFalse(response.isOk());
+        assertEquals("HTTP 404 (model test-model not found; set LOCAL_MODEL)", response.getError());
+        assertEquals("GROQ_MODEL", new GroqClient(KEY).modelSetting());
+        assertEquals("DEEPSEEK_MODEL", new DeepSeekClient(KEY).modelSetting());
+    }
+
+    @Test
+    void aReasoningModelsSeparateReasoningIsNotPartOfTheAnswer() {
+        // Groq's gpt-oss models return their reasoning next to the content, in message.reasoning.
+        respond(200, "{\"choices\":[{\"index\":0,\"message\":{\"role\":\"assistant\","
+                + "\"reasoning\":\"The player wants to go north, so {\\\"type\\\":\\\"move\\\"}.\","
+                + "\"content\":\"{\\\"actions\\\":[]}\"},\"finish_reason\":\"stop\"}]}");
+
+        LlmResponse response = client().complete(JSON_REQUEST);
+
+        assertTrue(response.isOk(), response.getError());
+        assertEquals("{\"actions\":[]}", response.getText());
+    }
+
+    @Test
+    void reasoningWithoutContentIsAnEmptyReply() {
+        // A reasoning model that used the whole token limit on reasoning leaves no answer.
+        respond(200, "{\"choices\":[{\"message\":{\"role\":\"assistant\",\"reasoning\":\"Thinking...\","
+                + "\"content\":\"\"},\"finish_reason\":\"length\"}]}");
+
+        LlmResponse response = client().complete(JSON_REQUEST);
+
+        assertFalse(response.isOk());
+        assertEquals("empty or malformed reply", response.getError());
     }
 
     @ParameterizedTest
@@ -239,7 +287,45 @@ class OpenAiCompatibleClientTest {
         LlmResponse response = completeAndCheckNoKeyLeaks(() -> client().complete(JSON_REQUEST));
 
         assertFalse(response.isOk());
-        assertEquals("local: the answer was empty or malformed", response.getError());
+        assertEquals("empty or malformed reply", response.getError());
+    }
+
+    @Test
+    void aRejectedResponseFormatIsRetriedWithoutItAndThenLeftOut() {
+        rejectResponseFormat = true;
+        LocalClient client = client();
+
+        LlmResponse first = client.complete(JSON_REQUEST);
+        LlmResponse second = client.complete(JSON_REQUEST);
+
+        assertTrue(first.isOk(), first.getError());
+        assertTrue(second.isOk(), second.getError());
+        assertEquals(3, received.size(), "rejected, retried, then sent without it straight away");
+        assertTrue(received.get(0).body().contains("response_format"));
+        assertFalse(received.get(1).body().contains("response_format"));
+        assertFalse(received.get(2).body().contains("response_format"));
+    }
+
+    @Test
+    void aBadRequestForAnotherReasonKeepsTheResponseFormat() {
+        respond(400, "{\"error\":\"bad request\"}");
+        LocalClient client = client();
+
+        LlmResponse response = client.complete(JSON_REQUEST);
+        client.complete(JSON_REQUEST);
+
+        assertEquals("HTTP 400", response.getError());
+        assertEquals(4, received.size());
+        assertTrue(received.get(2).body().contains("response_format"), "still asked for after a failed retry");
+    }
+
+    @Test
+    void aTextRequestWithABadRequestIsNotRetried() {
+        respond(400, "{}");
+
+        client().complete(TEXT_REQUEST);
+
+        assertEquals(1, received.size());
     }
 
     @Test
@@ -250,7 +336,7 @@ class OpenAiCompatibleClientTest {
         LlmResponse response = completeAndCheckNoKeyLeaks(() -> impatient.complete(JSON_REQUEST));
 
         assertFalse(response.isOk());
-        assertEquals("local: the request timed out", response.getError());
+        assertEquals("timeout", response.getError());
     }
 
     @Test
@@ -262,7 +348,7 @@ class OpenAiCompatibleClientTest {
                 () -> new LocalClient(closedUrl, KEY, Duration.ofSeconds(2)).complete(JSON_REQUEST));
 
         assertFalse(response.isOk());
-        assertTrue(response.getError().startsWith("local: connection failed"), response.getError());
+        assertEquals("connection failed (ConnectException)", response.getError());
     }
 
     @Test
@@ -273,7 +359,7 @@ class OpenAiCompatibleClientTest {
             assertFalse(keyless.isAvailable());
             LlmResponse response = keyless.complete(JSON_REQUEST);
             assertFalse(response.isOk());
-            assertEquals("local: no API key is set", response.getError());
+            assertEquals("no API key", response.getError());
         }
         assertTrue(received.isEmpty());
         assertTrue(client().isAvailable());
@@ -317,7 +403,10 @@ class OpenAiCompatibleClientTest {
 
         HttpRequest groqRequest = groq.toHttpRequest(JSON_REQUEST);
         assertEquals("https://api.groq.com/openai/v1/chat/completions", groqRequest.uri().toString());
-        assertEquals("llama-3.3-70b-versatile", modelIn(groqRequest));
+        assertEquals("openai/gpt-oss-20b", modelIn(groqRequest));
+        assertEquals("openai/gpt-oss-120b", modelIn(new GroqClient(KEY, "openai/gpt-oss-120b").toHttpRequest(JSON_REQUEST)));
+        assertEquals("deepseek-other", new DeepSeekClient(KEY, "deepseek-other").getModel());
+        assertThrows(IllegalArgumentException.class, () -> new GroqClient(KEY, " "));
         // Only built, never sent: no network.
         assertFalse(deepSeekRequest.toString().contains(KEY));
     }

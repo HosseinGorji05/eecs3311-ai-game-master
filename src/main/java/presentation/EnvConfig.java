@@ -16,7 +16,7 @@ import java.util.Optional;
  * {@code .env.example}, counts as not set.
  *
  * <p>The {@code .env} format is one {@code KEY=VALUE} per line. Blank lines and lines starting with
- * {@code #} are ignored, as are lines without {@code =}; an {@code export } prefix is allowed; a value
+ * {@code #} are ignored, as are lines without {@code =} and a byte order mark; an {@code export } prefix is allowed; a value
  * in matching single or double quotes is taken as is, otherwise it is trimmed and a {@code " #"} starts
  * a comment. Values are never printed, since they include API keys.
  */
@@ -26,6 +26,10 @@ public final class EnvConfig {
     public static final String DEEPSEEK_API_KEY = "DEEPSEEK_API_KEY";
     public static final String GROQ_API_KEY = "GROQ_API_KEY";
     public static final String LLM_API_KEY = "LLM_API_KEY";
+    /** Optional model overrides; when unset, each client uses its default model. */
+    public static final String DEEPSEEK_MODEL = "DEEPSEEK_MODEL";
+    public static final String GROQ_MODEL = "GROQ_MODEL";
+    public static final String LLM_DEBUG = "LLM_DEBUG";
     /** The value {@code .env.example} ships with; a copy left unchanged plays offline. */
     public static final String PLACEHOLDER = "YOUR_LOCAL_API_KEY_HERE";
 
@@ -59,7 +63,7 @@ public final class EnvConfig {
     static Map<String, String> parse(List<String> lines) {
         Map<String, String> values = new HashMap<>();
         for (String raw : lines) {
-            String line = raw.strip();
+            String line = raw.replace("\uFEFF", "").strip();
             if (line.isEmpty() || line.startsWith("#")) {
                 continue;
             }

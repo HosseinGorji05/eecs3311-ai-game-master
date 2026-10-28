@@ -57,6 +57,13 @@ class EnvConfigTest {
     }
 
     @Test
+    void aByteOrderMarkAndWindowsLineEndingsAreIgnored() {
+        Map<String, String> values = EnvConfig.parse(List.of("\uFEFFLLM_PROVIDER=groq\r", "GROQ_API_KEY=gsk-abc\r"));
+
+        assertEquals(Map.of("LLM_PROVIDER", "groq", "GROQ_API_KEY", "gsk-abc"), values);
+    }
+
+    @Test
     void aLaterLineWins() {
         assertEquals(Map.of("K", "second"), EnvConfig.parse(List.of("K=first", "K=second")));
     }
@@ -97,6 +104,8 @@ class EnvConfigTest {
         assertEquals(Optional.empty(), config.get("DEEPSEEK_API_KEY"));
         assertEquals(Optional.empty(), config.get("GROQ_API_KEY"));
         assertEquals(Optional.empty(), config.get("LLM_API_KEY"));
+        assertEquals(Optional.empty(), config.get("DEEPSEEK_MODEL"));
+        assertEquals(Optional.empty(), config.get("GROQ_MODEL"));
     }
 
     @Test

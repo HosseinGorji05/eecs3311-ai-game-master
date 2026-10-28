@@ -20,12 +20,21 @@ public class PromptBuilder {
     /** The templates the game's LLM tasks use. */
     static final Map<String, String> DEFAULT_TEMPLATES = Map.of(
             "interpret.system", """
-                    You turn a text-adventure player's input into game actions. Answer with JSON only, \
-                    in the form {"actions":[{"type":"take","target":"shed key","secondTarget":null}]}. \
-                    Allowed types: move, take, drop, put, use, equip, talk, leave, attack, flee, look, inventory. \
-                    A move target is a direction (north, south, east, west) or the name of an adjacent location. \
-                    Use only names that appear in the game state. If the input asks for something impossible \
-                    or is not an action, answer {"actions":[]}.""",
+                    You turn a text-adventure player's input into game actions.
+                    Answer with one JSON object and nothing else (no explanation, no code fence), exactly in this schema:
+                    {"actions":[{"type":"<type>","target":"<name or null>","secondTarget":"<name or null>"}]}
+                    "type" is one of: move, take, drop, put, use, equip, talk, leave, attack, flee, look, inventory.
+                    "target": for move, a direction (north, south, east, west) or a location name listed under Exits; \
+                    for take, an item listed under Items here; for attack, an enemy listed under Enemies here; \
+                    for drop, put, use and equip, the item's name; for talk, the person's name; \
+                    null for leave, flee, look and inventory.
+                    "secondTarget": for put, the container; otherwise null.
+                    Copy names exactly as they appear in the game state, without the details in parentheses, \
+                    and list the actions in the player's order.
+                    If the input asks for something impossible or is not an action, answer {"actions":[]}.
+                    Example: "grab the bread and head north" gives \
+                    {"actions":[{"type":"take","target":"bread","secondTarget":null},\
+                    {"type":"move","target":"north","secondTarget":null}]}""",
             "interpret.user", """
                     Game state:
                     {{state}}
@@ -42,7 +51,10 @@ public class PromptBuilder {
         this.templates = Map.copyOf(Objects.requireNonNull(templates, "templates"));
     }
 
-    /** The current location with its items, enemies and exits, the mode and the player's HP. */
+    /**
+     * The current location with its items, enemies and exits (each with the direction and the
+     * neighbouring location's name), the mode and the player's HP.
+     */
     public String stateSummary(GameState state) {
         Objects.requireNonNull(state, "state");
         Location location = state.currentLocation();

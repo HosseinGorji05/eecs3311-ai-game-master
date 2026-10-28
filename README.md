@@ -20,7 +20,7 @@ A text adventure for EECS 3311 (York University) in which an LLM acts as the gam
 ## Design at a glance
 
 - **Language and UI:** Java 17, Swing GUI plus a command-line interface, structured as MVC.
-- **LLM access:** DeepSeek as the primary provider, Groq (llama-3.3-70b-versatile) as an alternative, both behind one client interface.
+- **LLM access:** DeepSeek as the primary provider, Groq (openai/gpt-oss-20b) as an alternative, both behind one client interface.
 - **Design patterns (11):** MVC, Command, State, Observer, Template Method, Strategy, Facade, Factory Method, Composite, Memento, Adapter.
 
 ## Build and test
@@ -34,7 +34,7 @@ mvnw.cmd -q test      # Windows
 
 ## Configuration
 
-The game uses DeepSeek (`deepseek-flash`) by default, or Groq (`llama-3.3-70b-versatile`). To connect one:
+The game uses DeepSeek (`deepseek-flash`) by default, or Groq (`openai/gpt-oss-20b`). To connect one:
 
 1. Copy the template: `cp .env.example .env` (Windows: `copy .env.example .env`).
 2. Enter your own key in `.env` on your machine: `DEEPSEEK_API_KEY` for DeepSeek, or `GROQ_API_KEY` together with `LLM_PROVIDER=groq` for Groq. `LLM_API_KEY` is used for either provider when its own key is empty.
@@ -45,7 +45,9 @@ The game uses DeepSeek (`deepseek-flash`) by default, or Groq (`llama-3.3-70b-ve
 mvnw.cmd -q compile exec:java      # Windows
 ```
 
-Environment variables with the same names override `.env`. To pick a provider for one run, pass it as an argument, for example `./mvnw -q compile exec:java -Dexec.args=groq` (`deepseek`, `groq` or `offline`). Without a key, the game prints which key is missing and plays offline.
+To use another model, set `DEEPSEEK_MODEL` or `GROQ_MODEL` to its model ID (for example `GROQ_MODEL=openai/gpt-oss-120b`); left blank or unset, the default above is used. Change it when a provider retires a model or your account cannot use it: an unknown model makes every turn fall back with `LLM unavailable: HTTP 404 (model <model> not found; set GROQ_MODEL)`.
+
+Environment variables with the same names override `.env`. To pick a provider for one run, pass it as an argument, for example `./mvnw -q compile exec:java -Dexec.args=groq` (`deepseek`, `groq` or `offline`). Without a key, the game prints which key is missing and plays offline. When a turn falls back to basic-command mode, the notice gives the reason (for example `LLM unavailable: HTTP 401 (API key rejected)`, `LLM unavailable: timeout` or `invalid output`). Set `LLM_DEBUG=true` to print each failed attempt's reason and the model's raw reply to standard error; requests, headers and keys are never printed.
 
 `.env` is git-ignored. Never commit it, and never put a key in `.env.example` or any other tracked file.
 
