@@ -42,6 +42,11 @@ public abstract class Item {
         return ownerId;
     }
 
+    /** Makes the item nobody's, after its owner handed it over to the player. */
+    public void clearOwner() {
+        this.ownerId = null;
+    }
+
     /** The weight in kg; for a {@link Container} this includes everything inside it. */
     public abstract double getWeight();
 

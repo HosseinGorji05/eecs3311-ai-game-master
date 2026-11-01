@@ -90,15 +90,8 @@ class CommandFactoryTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = ActionType.class, names = {"TALK", "LEAVE"})
-    void onlyTheDialogueTypesHaveNoCommandYet(ActionType type) {
-        ActionProposal proposal = new ActionProposal(type, "something", null);
-        assertThrows(IllegalArgumentException.class, () -> factory.create(proposal));
-    }
-
-    @ParameterizedTest
-    @EnumSource(value = ActionType.class, names = {"TALK", "LEAVE"}, mode = EnumSource.Mode.EXCLUDE)
-    void everyOtherTypeCreatesACommandOfThatType(ActionType type) {
+    @EnumSource(ActionType.class)
+    void everyTypeCreatesACommandOfThatType(ActionType type) {
         GameCommand command = factory.create(new ActionProposal(type, "north", "pouch"));
 
         assertEquals(type, command.getType());
@@ -114,8 +107,14 @@ class CommandFactoryTest {
         assertInstanceOf(InventoryCommand.class, factory.create(new ActionProposal(ActionType.INVENTORY, "ignored", null)));
     }
 
+    @Test
+    void theDialogueTypesCreateTheirCommands() {
+        assertInstanceOf(TalkCommand.class, factory.create(new ActionProposal(ActionType.TALK, "the blacksmith", null)));
+        assertInstanceOf(LeaveCommand.class, factory.create(new ActionProposal(ActionType.LEAVE, null, null)));
+    }
+
     @ParameterizedTest
-    @EnumSource(value = ActionType.class, names = {"MOVE", "TAKE", "DROP", "PUT", "USE", "EQUIP", "ATTACK"})
+    @EnumSource(value = ActionType.class, names = {"MOVE", "TAKE", "DROP", "PUT", "USE", "EQUIP", "TALK", "ATTACK"})
     void missingOrBlankTargetIsRejected(ActionType type) {
         assertThrows(IllegalArgumentException.class, () -> factory.create(new ActionProposal(type, null, "pouch")));
         assertThrows(IllegalArgumentException.class, () -> factory.create(new ActionProposal(type, "  ", "pouch")));

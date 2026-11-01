@@ -27,6 +27,8 @@ public class World {
 
     /** Name of the key that opens the locked door to the Tool Shed. */
     static final String SHED_KEY = "shed key";
+    /** Id of the blacksmith, who owns the iron key and the warhammer in the Forge. */
+    static final String BLACKSMITH_ID = "blacksmith";
 
     // Enemy tuning numbers (not given by the report): HP, attack (= attack bonus and damage), defense.
     static final int WOLF_HP = 8;
@@ -63,7 +65,9 @@ public class World {
     /**
      * Builds the starter world (Stage 1 decision "World size"): the Village and the Forest with
      * eight locations in total. The Tool Shed, east of the Village Square, is locked; its shed key
-     * lies in the Tavern. A wolf lives in the Wolf Den and the bandit leader in the Bandit Camp.
+     * lies in the Tavern. Brann the blacksmith (a quest giver, owner of the iron key and the
+     * warhammer) works in the Forge and Marta keeps the Tavern. A wolf lives in the Wolf Den and the
+     * bandit leader in the Bandit Camp.
      *
      * <pre>
      *                  Tavern
@@ -103,11 +107,26 @@ public class World {
 
         tavern.addItem(new KeyItem(SHED_KEY, 0.1));
         tavern.addItem(new Consumable("bread", 0.3, 2));
-        forge.addItem(new KeyItem("iron key", 0.2));
-        forge.addItem(new Weapon("warhammer", 8.0, 8));
+        forge.addItem(new KeyItem("iron key", 0.2, BLACKSMITH_ID));
+        forge.addItem(new Weapon("warhammer", 8.0, 8, BLACKSMITH_ID));
         shed.addItem(new Weapon("hand axe", 2.0, 5));
         shed.addItem(new Container("backpack", 1.0, 8));
         oldMill.addItem(new Consumable("healing herbs", 0.2, 5));
+
+        forge.addNpc(new NPC(BLACKSMITH_ID, "Brann", "blacksmith",
+                "gruff and blunt, proud of her work, angry about the bandits",
+                List.of("The bandits took the village relic to their camp, south of the Forest Edge.",
+                        "A wolf has made its den west of the Forest Edge.",
+                        "The warhammer on her wall is the best weapon in the village, but it is heavy (8 kg)."),
+                List.of("She once forged blades for the bandit leader."),
+                true));
+        tavern.addNpc(new NPC("tavern-keeper", "Marta", "tavern keeper",
+                "warm and talkative, hears every rumour, nervous since the theft",
+                List.of("The key to the Tool Shed was left here in the tavern.",
+                        "Healing herbs grow by the stream at the Old Mill.",
+                        "The blacksmith Brann is angry about the stolen relic."),
+                List.of("She owes the bandit leader money."),
+                false));
 
         wolfDen.addEnemy(new Enemy("wolf", WOLF_HP, WOLF_ATTACK, WOLF_DEFENSE));
         banditCamp.addEnemy(new Enemy("bandit leader", BANDIT_LEADER_HP, BANDIT_LEADER_ATTACK, BANDIT_LEADER_DEFENSE));

@@ -3,7 +3,7 @@ package engine.quests;
 /**
  * What the player receives for completing a quest: gold, experience and optionally an item.
  *
- * <p>The item is only named here; it is handed over by the quest giver once NPCs exist, so
+ * <p>The item is only named here; the quest giver hands it over once quest offers exist, so
  * {@code Player.addReward()} currently grants the gold and XP only.
  */
 public class Reward {

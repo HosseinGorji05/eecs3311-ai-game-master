@@ -163,24 +163,15 @@ class GameControllerTest {
     }
 
     @Test
-    void anActionWithoutACommandYetGivesAFriendlyMessageAndChangesNothing() {
+    void aProposalWithoutItsTargetIsRefusedBeforeAnythingRuns() {
         GameController controller = start();
 
-        TurnResult turn = controller.submitCommand("talk to the blacksmith");
+        TurnResult turn = controller.performAction(new ActionProposal(ActionType.TAKE, null, null));
 
-        assertEquals("You can't talk yet: that action is not available in this version.", turn.getNarration());
+        assertEquals("Say what to take.", turn.getNarration());
         assertTrue(turn.getResults().isEmpty());
+        assertTrue(view.shown.contains("error: Say what to take."));
         assertNotNull(controller.getState().getPlayer().getInventory().find("sword"));
-        assertEquals(1, controller.getState().getTurn());
-    }
-
-    @Test
-    void aTurnWithOneUnavailableActionRunsNoneOfItsActions() {
-        GameController controller = start();
-
-        controller.submitCommand("go north and talk to the barkeeper");
-
-        assertEquals("village-square", controller.getState().currentLocation().getId());
         assertEquals(1, controller.getState().getTurn());
     }
 

@@ -1,7 +1,9 @@
 package presentation;
 
+import engine.core.ExplorationMode;
 import engine.core.FixedDiceRoller;
 import engine.core.GameState;
+import engine.events.GameEvent;
 import engine.world.Direction;
 import llm.ScriptedLLMClient;
 import org.junit.jupiter.api.Test;
@@ -14,7 +16,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CliGameViewTest {
@@ -65,18 +69,18 @@ class CliGameViewTest {
         assertContains(output, "Enemies: wolf (8/8 HP)");
         assertContains(output, "Ari attacks wolf: rolls 10 + 5 = 15 against defense 11. Hit for 2 damage (wolf: 6/8 HP).");
         assertContains(output, "wolf attacks Ari: rolls 5 + 3 = 8 against defense 13. Miss.");
-        assertContains(output, "! You can't talk yet: that action is not available in this version.");
+        assertContains(output, "That is not possible right now.");   // no talking in combat
         assertContains(output, "! \"save\" is not available yet.");
         assertContains(output, "[turn 5] combat: Ari attacks wolf");
         assertTrue(output.endsWith("> Goodbye.\n"), output);
-        assertTrue(controller.getRecentHistory(1).get(0).getDescription().startsWith("wolf attacks Ari"),
+        assertTrue(controller.getRecentHistory(1).get(0).getDescription().startsWith("Rejected TALK"),
                 "the line after quit is never played");
 
         GameState state = controller.getState();
         assertEquals("wolf-den", state.currentLocation().getId());
         assertNotNull(state.getPlayer().getInventory().find("shed key"));
         assertEquals(6, state.currentLocation().findEnemy("wolf").getHp());
-        assertEquals(6, state.getTurn(), "five played turns; the unavailable talk did not use a turn");
+        assertEquals(7, state.getTurn(), "six played turns, the rejected talk included");
     }
 
     @Test
@@ -115,6 +119,65 @@ class CliGameViewTest {
         assertTrue(state.currentLocation().getEnemies().isEmpty());
         assertFalse(state.getWorld().findLocation("village-square").getExit(Direction.EAST).isLocked());
         assertEquals(13, state.getTurn(), "twelve played turns, look and inventory included");
+    }
+
+    @Test
+    void anOfflineConversationWithTheTavernKeeperThenPlayGoesOn() {
+        String output = play(List.of(), new FixedDiceRoller(),
+                "Ari", "warrior",
+                "go north",
+                "talk to the tavern keeper",
+                "Hello! Any news?",
+                "go south",                    // said to Marta, not a move
+                "map",
+                "history dialogue",
+                "leave",
+                "take the shed key and go south",
+                "quit");
+
+        assertContains(output, "You start talking to Marta, the tavern keeper.\n"
+                + "(You are talking to Marta. Say something, or type leave to end the conversation.)\n(to Marta) > ");
+        assertContains(output, "(Marta answers with a pre-written line. Reason: LLM unavailable.)\n"
+                + "Marta: \"Busy night. Ask what you need, I'm listening.\"");
+        assertContains(output, "Marta: \"Folk say healing herbs still grow by the stream at the Old Mill.\"");
+        assertContains(output, "Talking to Marta (tavern keeper).");
+        assertContains(output, "[turn 2] dialogue: started talking to Marta\n"
+                + "[turn 3] dialogue: Ari said \"Hello! Any news?\" to Marta; Marta replied \"Busy night.");
+        assertContains(output, "You leave the conversation with Marta.\n> ");
+        assertContains(output, "You take the shed key.\nVillage Square");
+        assertTrue(output.endsWith("> Goodbye.\n"), output);
+
+        GameState state = controller.getState();
+        assertInstanceOf(ExplorationMode.class, state.getMode());
+        assertEquals("village-square", state.currentLocation().getId());
+        assertEquals(5, state.getTurn(), "move, talk, leave and the last line's turn; the dialogue lines are not turns");
+    }
+
+    @Test
+    void aConversationWithAScriptedModelHandsOverTheIronKeyAndByeEndsIt() {
+        String output = play(List.of(
+                        "{\"actions\":[{\"type\":\"move\",\"target\":\"west\"}]}",
+                        "{\"actions\":[{\"type\":\"talk\",\"target\":\"the blacksmith\"}]}",
+                        "{\"text\":\"For the relic? Take it, and bring it back.\","
+                                + "\"sideEffect\":{\"type\":\"take\",\"target\":\"iron key\"}}"),
+                new FixedDiceRoller(),
+                "Ari", "rogue",
+                "head over to the forge",
+                "I'd like a word with the blacksmith",
+                "Could you lend me the iron key?",
+                "bye",
+                "inventory",
+                "quit");
+
+        assertContains(output, "You start talking to Brann, the blacksmith.");
+        assertContains(output, "Brann: \"For the relic? Take it, and bring it back.\"\nBrann hands you the iron key.\n");
+        assertFalse(output.contains("pre-written line"), output);
+        assertContains(output, "You leave the conversation with Brann.");
+        assertContains(output, "Items: dagger (1 kg), pouch (0.7 kg: healing potion (0.5 kg)), iron key (0.2 kg)");
+
+        GameState state = controller.getState();
+        assertNull(state.getPlayer().getInventory().find("iron key").getOwnerId());
+        assertEquals(0, state.getEventLog().recent(100).stream().mapToInt(GameEvent::getAlignmentDelta).sum());
     }
 
     @Test

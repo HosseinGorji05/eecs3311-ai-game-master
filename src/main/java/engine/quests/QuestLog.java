@@ -10,7 +10,7 @@ import java.util.Objects;
  * <p>Invariant: {@code activeSideQuestCount() <= MAX_SIDE_QUESTS}; the main quest does not count.
  *
  * <p>{@code hasQuestFrom(NPC)} and {@code canOfferFrom(NPC)} of the design are added together with
- * NPCs.
+ * quest offers.
  */
 public class QuestLog {
 

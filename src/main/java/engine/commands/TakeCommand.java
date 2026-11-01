@@ -1,5 +1,6 @@
 package engine.commands;
 
+import engine.core.DialogueMode;
 import engine.core.GameState;
 import engine.core.RulesEngine;
 import engine.events.EventType;
@@ -8,6 +9,7 @@ import engine.events.GameEvent;
 import engine.items.Inventory;
 import engine.items.Item;
 import engine.world.Location;
+import engine.world.NPC;
 
 import java.util.Locale;
 import java.util.Objects;
@@ -21,12 +23,11 @@ import java.util.Objects;
  * <p>A successful take adds an ITEM event (verb TOOK, subject = the item's name) to its result,
  * which {@code RulesEngine} publishes.
  *
- * <p><b>Theft (SD10 n4).</b> The design records a take as a theft, with alignment delta
- * {@value #THEFT_ALIGNMENT_DELTA}, when the item belongs to an NPC ({@link Item#getOwnerId()} is
- * set) who is not handing it over in a conversation. <b>Temporary rule:</b> NPCs and dialogue mode
- * do not exist yet, so nobody can hand an item over, and taking <em>any</em> item with an
- * {@code ownerId} is a theft. Once dialogue mode exists, a take while talking to the owner will
- * not be a theft.
+ * <p><b>Theft and handover (SD10 n4, F03).</b> Outside a conversation, taking an item that belongs
+ * to an NPC ({@link Item#getOwnerId()} is set) is a theft, with alignment delta
+ * {@value #THEFT_ALIGNMENT_DELTA}. In {@link DialogueMode} a take is the NPC handing an item over (the
+ * reply's side effect, SD07): it is valid only for an item that NPC owns, is not a theft, and the
+ * item stops belonging to the NPC.
  */
 public class TakeCommand implements GameCommand {
 
@@ -48,12 +49,19 @@ public class TakeCommand implements GameCommand {
         return ActionType.TAKE;
     }
 
-    /** Invalid if the item is not in the current location or is too heavy to carry. */
+    /**
+     * Invalid if the item is not in the current location or is too heavy to carry, and in a
+     * conversation also if the NPC does not own it.
+     */
     @Override
     public ValidationResult validate(GameState state) {
         Item item = state.currentLocation().findItem(itemName);
         if (item == null) {
             return new ValidationResult(false, "There is no " + itemName + " here.");
+        }
+        if (state.getMode() instanceof DialogueMode dialogue && !ownedBy(item, dialogue.getNpc())) {
+            return new ValidationResult(false, "The " + item.getName() + " is not "
+                    + dialogue.getNpc().getName() + "'s to give.");
         }
         Inventory inventory = state.getPlayer().getInventory();
         if (!inventory.canCarry(item)) {
@@ -75,7 +83,15 @@ public class TakeCommand implements GameCommand {
             location.addItem(item);
             return new ActionResult(false, "You can't carry the " + item.getName() + ".");
         }
-        String owner = item.getOwnerId();
+        if (state.getMode() instanceof DialogueMode dialogue) {
+            item.clearOwner();
+            String giver = dialogue.getNpc().getName();
+            ActionResult result = new ActionResult(true, giver + " hands you the " + item.getName() + ".");
+            result.addEvent(new GameEvent(EventType.ITEM, state.getTurn(),
+                    "received the " + item.getName() + " from " + giver, item.getName(), 0, EventVerb.TOOK));
+            return result;
+        }
+        String owner = ownerName(location, item.getOwnerId());
         boolean theft = owner != null;
         ActionResult result = new ActionResult(true, theft
                 ? "You take the " + item.getName() + ". It belongs to " + owner + "."
@@ -84,6 +100,19 @@ public class TakeCommand implements GameCommand {
                 theft ? "stole the " + item.getName() + " from " + owner : "took the " + item.getName(),
                 item.getName(), theft ? THEFT_ALIGNMENT_DELTA : 0, EventVerb.TOOK));
         return result;
+    }
+
+    private static boolean ownedBy(Item item, NPC npc) {
+        return npc.getId().equals(item.getOwnerId());
+    }
+
+    /** The owner's name if the owner is here, else the owner id; {@code null} for an item nobody owns. */
+    private static String ownerName(Location location, String ownerId) {
+        if (ownerId == null) {
+            return null;
+        }
+        NPC owner = location.findNpc(ownerId);
+        return owner != null ? owner.getName() : ownerId;
     }
 
     /** Formats a weight with one decimal, dropping ".0" ("9.5", "10"); shared by the item commands. */

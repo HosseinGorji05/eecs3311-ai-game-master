@@ -1,6 +1,7 @@
 package engine.commands;
 
 import engine.core.CombatMode;
+import engine.core.DialogueMode;
 import engine.core.GameState;
 import engine.items.Container;
 import engine.items.Item;
@@ -15,8 +16,9 @@ import java.util.stream.Collectors;
 
 /**
  * Test helper: everything a command could change, as one comparable string (current location,
- * mode, player HP, the equipped weapon, every location's visited flag, items and enemies with their
- * HP, every exit's lock, and the inventory's weight and item tree). The turn number is left out
+ * mode (with the enemy or NPC), player HP, the equipped weapon, every location's visited flag, items
+ * (with their owners) and enemies with their HP, every exit's lock, and the inventory's weight and
+ * item tree). The turn number is left out
  * because {@code RulesEngine.executeAll()} advances it on every turn.
  */
 final class StateFingerprint {
@@ -30,6 +32,8 @@ final class StateFingerprint {
         text.append("mode=").append(state.getMode().getClass().getSimpleName());
         if (state.getMode() instanceof CombatMode combat) {
             text.append(" vs ").append(combat.getEnemy().getName());
+        } else if (state.getMode() instanceof DialogueMode dialogue) {
+            text.append(" with ").append(dialogue.getNpc().getId());
         }
         text.append('\n');
         text.append("hp=").append(state.getPlayer().getHp()).append('\n');
@@ -43,7 +47,8 @@ final class StateFingerprint {
                 text.append(location.getId())
                         .append(location.isVisited() ? " visited" : " unvisited")
                         .append(" items=")
-                        .append(location.getItems().stream().map(Item::getName).collect(Collectors.joining(",")))
+                        .append(location.getItems().stream().map(item -> item.getName() + owner(item))
+                                .collect(Collectors.joining(",")))
                         .append(" enemies=")
                         .append(location.describeEnemies());
                 for (Exit exit : location.getExits()) {
@@ -55,10 +60,14 @@ final class StateFingerprint {
         return text.toString();
     }
 
+    private static String owner(Item item) {
+        return item.getOwnerId() == null ? "" : "(" + item.getOwnerId() + ")";
+    }
+
     /** The items with identities, each container followed by its contents in brackets. */
     private static String tree(List<Item> items) {
         return items.stream()
-                .map(item -> item.getName() + "@" + System.identityHashCode(item)
+                .map(item -> item.getName() + owner(item) + "@" + System.identityHashCode(item)
                         + (item instanceof Container container ? "[" + tree(container.getContents()) + "]" : ""))
                 .collect(Collectors.joining(","));
     }

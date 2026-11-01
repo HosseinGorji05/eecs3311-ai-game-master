@@ -34,7 +34,7 @@ public class ActionInterpreter extends LlmTask<String, List<ActionProposal>> {
     private static final int MAX_TOKENS = 300;
     private static final int MAX_ACTIONS = 5;
     private static final int MAX_TARGET_LENGTH = 60;
-    private static final Set<String> TYPE_FIELDS = Set.of("type", "action", "actiontype");
+    static final Set<String> TYPE_FIELDS = Set.of("type", "action", "actiontype");
     private static final Set<String> TARGET_FIELDS = Set.of("target", "object");
     private static final Set<String> SECOND_TARGET_FIELDS = Set.of("secondtarget", "container");
     private static final Set<ActionType> NEED_TARGET = EnumSet.of(ActionType.MOVE, ActionType.TAKE,
@@ -73,18 +73,25 @@ public class ActionInterpreter extends LlmTask<String, List<ActionProposal>> {
         }
         List<ActionProposal> proposals = new ArrayList<>();
         for (JsonElement element : actions) {
-            if (!element.isJsonObject()) {
+            ActionProposal proposal = element.isJsonObject() ? proposal(element.getAsJsonObject()) : null;
+            if (proposal == null) {
                 return null;
             }
-            JsonObject action = element.getAsJsonObject();
-            ActionType type = actionType(field(action, TYPE_FIELDS));
-            if (type == null) {
-                return null;
-            }
-            proposals.add(new ActionProposal(type, clean(field(action, TARGET_FIELDS)),
-                    clean(field(action, SECOND_TARGET_FIELDS))));
+            proposals.add(proposal);
         }
         return List.copyOf(proposals);
+    }
+
+    /**
+     * One action object as a proposal, with the same field aliases as {@link #parse}; {@code null} if
+     * its type is missing or not an action type of the game. Also used for an NPC reply's side effect.
+     */
+    static ActionProposal proposal(JsonObject action) {
+        ActionType type = actionType(field(action, TYPE_FIELDS));
+        if (type == null) {
+            return null;
+        }
+        return new ActionProposal(type, clean(field(action, TARGET_FIELDS)), clean(field(action, SECOND_TARGET_FIELDS)));
     }
 
     /**
@@ -173,7 +180,7 @@ public class ActionInterpreter extends LlmTask<String, List<ActionProposal>> {
     }
 
     /** The text of the first field whose normalized name is one of {@code names}; {@code null} if absent, null or not text. */
-    private static String field(JsonObject object, Set<String> names) {
+    static String field(JsonObject object, Set<String> names) {
         for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
             if (names.contains(normalize(entry.getKey()))) {
                 JsonElement value = entry.getValue();
@@ -183,7 +190,8 @@ public class ActionInterpreter extends LlmTask<String, List<ActionProposal>> {
         return null;
     }
 
-    private static String normalize(String fieldName) {
+    /** A field name in lower case without underscores and dashes, so "second_target" matches "secondTarget". */
+    static String normalize(String fieldName) {
         return fieldName.replace("_", "").replace("-", "").trim().toLowerCase(Locale.ROOT);
     }
 }

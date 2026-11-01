@@ -11,11 +11,9 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 
 /**
- * A place in the world, with its exits and the items lying in it.
+ * A place in the world, with its exits, the items lying in it, its NPCs and its enemies.
  *
  * <p>Constraint: at most one exit per {@link Direction}, so a location has 0..4 exits.
- *
- * <p>The NPCs of the design ({@code npcs}, {@code findNpc()}) are added together with dialogue.
  */
 public class Location {
 
@@ -25,6 +23,7 @@ public class Location {
     private boolean visited;
     private final List<Exit> exits = new ArrayList<>();
     private final List<Item> items = new ArrayList<>();
+    private final List<NPC> npcs = new ArrayList<>();
     private final List<Enemy> enemies = new ArrayList<>();
 
     public Location(String id, String name, String description) {
@@ -137,6 +136,29 @@ public class Location {
         return Collections.unmodifiableList(items);
     }
 
+    public void addNpc(NPC npc) {
+        npcs.add(Objects.requireNonNull(npc, "npc"));
+    }
+
+    /**
+     * Finds an NPC here by name, role or id (ignoring case), so "the blacksmith" finds Brann.
+     *
+     * @return the NPC, or {@code null} if there is no such NPC here
+     */
+    public NPC findNpc(String name) {
+        for (NPC npc : npcs) {
+            if (npc.isCalled(name)) {
+                return npc;
+            }
+        }
+        return null;
+    }
+
+    /** The NPCs here, as a read-only view. */
+    public List<NPC> getNpcs() {
+        return Collections.unmodifiableList(npcs);
+    }
+
     public void addEnemy(Enemy enemy) {
         enemies.add(Objects.requireNonNull(enemy, "enemy"));
     }
@@ -189,16 +211,22 @@ public class Location {
                 .collect(Collectors.joining(", "));
     }
 
+    /** The NPCs as text, e.g. {@code "Brann (blacksmith)"}, or {@code "none"}. */
+    public String describeNpcs() {
+        return npcs.isEmpty() ? "none" : npcs.stream().map(NPC::describe).collect(Collectors.joining(", "));
+    }
+
     /**
-     * The name, description, items, enemies (only when there are any) and exits, as shown when the
-     * player arrives.
+     * The name, description, items, people and enemies (each only when there are any) and exits, as
+     * shown when the player arrives.
      */
     public String describe() {
         String itemText = items.isEmpty()
                 ? "none"
                 : items.stream().map(Item::describe).collect(Collectors.joining(", "));
+        String npcText = npcs.isEmpty() ? "" : "\nPeople: " + describeNpcs();
         String enemyText = enemies.isEmpty() ? "" : "\nEnemies: " + describeEnemies();
-        return name + "\n" + description + "\nItems: " + itemText + enemyText + "\nExits: " + describeExits();
+        return name + "\n" + description + "\nItems: " + itemText + npcText + enemyText + "\nExits: " + describeExits();
     }
 
     static String directionName(Direction direction) {

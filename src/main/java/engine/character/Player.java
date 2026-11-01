@@ -108,7 +108,7 @@ public class Player extends Combatant {
 
     /**
      * Adds a quest reward's gold and XP. The reward item is handed over by the quest giver once
-     * NPCs exist, so it is not added here.
+     * quest offers exist, so it is not added here.
      */
     public void addReward(Reward reward) {
         Objects.requireNonNull(reward, "reward");

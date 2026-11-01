@@ -1,6 +1,8 @@
 package presentation;
 
 import agent.ActionInterpreter;
+import agent.NpcDialogueAgent;
+import agent.NpcReply;
 import agent.PromptBuilder;
 import agent.ResponseParser;
 import engine.character.CharacterClass;
@@ -12,6 +14,7 @@ import engine.commands.ActionResult;
 import engine.commands.CommandFactory;
 import engine.commands.GameCommand;
 import engine.core.DiceRoller;
+import engine.core.DialogueMode;
 import engine.core.GameState;
 import engine.core.RulesEngine;
 import engine.events.EventType;
@@ -19,6 +22,7 @@ import engine.events.GameEvent;
 import engine.events.GameEventBus;
 import engine.events.GameEventListener;
 import engine.quests.QuestTracker;
+import engine.world.NPC;
 import engine.world.World;
 import llm.LLMClient;
 
@@ -37,15 +41,21 @@ import java.util.stream.Collectors;
  * The event log and the quest tracker are subscribed to the bus when the controller is created;
  * views that are {@link GameEventListener}s are subscribed when added.
  *
+ * <p>Dialogue (SD07): while the player talks to an NPC, the view sends each line to
+ * {@link #sendDialogue}; the NPC's reply is shown as speech, its side effect (if any) runs through
+ * the rules engine like any command, and the exchange is published as a DIALOGUE event. LEAVE ends
+ * the conversation through {@link #performAction}.
+ *
  * <p>Not yet included (they come with their features): narration by the LLM (the narration is the
- * results' messages), dialogue, quest offers, the backstory, saving and loading, the journal and the
- * ending. Until the ending exists, a turn is "game over" when the player has died.
+ * results' messages), quest offers, the backstory, saving and loading, the journal and the ending.
+ * Until the ending exists, a turn is "game over" when the player has died.
  */
 public class GameController {
 
     static final String BASIC_MODE_NOTICE = "Basic-command mode: simple commands only.";
     static final String NOT_UNDERSTOOD = "I didn't understand. Please rephrase.";
-    static final String EXAMPLES = "Try: go north, take shed key, equip sword, inventory, attack wolf, flee.";
+    static final String EXAMPLES = "Try: go north, take shed key, equip sword, inventory, talk to Marta, attack wolf, flee.";
+    static final String NOT_TALKING = "You are not talking to anyone.";
     static final String GAME_OVER = "The game is over.";
 
     private final GameState state = new GameState();
@@ -54,6 +64,7 @@ public class GameController {
     private final CommandFactory commandFactory = new CommandFactory();
     private final GameEventBus eventBus = new GameEventBus();
     private final ActionInterpreter interpreter;
+    private final NpcDialogueAgent dialogueAgent;
     private Player newPlayer;
 
     public GameController(LLMClient llm) {
@@ -65,16 +76,18 @@ public class GameController {
         Objects.requireNonNull(llm, "llm");
         this.rules = new RulesEngine(Objects.requireNonNull(dice, "dice"), eventBus);
         this.interpreter = new ActionInterpreter(llm, new PromptBuilder(), new ResponseParser(), state);
+        this.dialogueAgent = new NpcDialogueAgent(llm, new PromptBuilder(), new ResponseParser(), state);
         eventBus.subscribe(state.getEventLog());
         eventBus.subscribe(new QuestTracker(state, eventBus));
     }
 
     /**
-     * Where the interpreter describes failed model attempts (its reason and the raw reply), e.g.
-     * {@code System.err}; {@code null} turns this off.
+     * Where the interpreter and the dialogue agent describe failed model attempts (the reason and the
+     * raw reply), e.g. {@code System.err}; {@code null} turns this off.
      */
     public void setLlmDebugOutput(PrintStream debug) {
         interpreter.setDebugOutput(debug);
+        dialogueAgent.setDebugOutput(debug);
     }
 
     /** Adds a view; a view that listens to events is also subscribed to the bus. */
@@ -143,6 +156,51 @@ public class GameController {
         return execute(List.of(proposal));
     }
 
+    /**
+     * Says something to the NPC the player is talking to (SD07). The reply is shown as
+     * {@code Name: "text"} (with a notice when it is a pre-written line); a side effect runs through
+     * the rules engine, which may refuse it, and only an accepted one's message is shown (F03). The
+     * exchange is published as a DIALOGUE event with the NPC's id as subject. Only a side effect uses
+     * up a turn.
+     *
+     * @return the reply, or {@code null} if the player is not in a conversation (an error is shown)
+     *         or the game is over
+     */
+    public NpcReply sendDialogue(String message) {
+        requireStarted();
+        if (isPlayerDead()) {
+            error(GAME_OVER, true);
+            return null;
+        }
+        if (!(state.getMode() instanceof DialogueMode dialogue)) {
+            error(NOT_TALKING, false);
+            return null;
+        }
+        NPC npc = dialogue.getNpc();
+        int turn = state.getTurn();
+        NpcReply reply = dialogueAgent.reply(message);
+        if (dialogueAgent.isFallbackUsed()) {
+            String notice = npc.getName() + " answers with a pre-written line. Reason: "
+                    + dialogueAgent.getFallbackReason() + ".";
+            views.forEach(view -> view.showNotice(notice));
+        }
+        List<ActionResult> effects = List.of();
+        if (reply.getSideEffect() != null) {
+            effects = rules.executeAll(List.of(commandFactory.create(reply.getSideEffect())), state);
+        }
+        String speech = npc.getName() + ": \"" + reply.getText() + "\"";
+        views.forEach(view -> view.showNarration(speech));
+        eventBus.publish(new GameEvent(EventType.DIALOGUE, turn, state.getPlayer().getName() + " said \""
+                + NpcDialogueAgent.capMessage(message == null ? "" : message) + "\" to " + npc.getName() + "; "
+                + npc.getName() + " replied \"" + reply.getText() + "\"", npc.getId(), 0));
+        for (ActionResult effect : effects) {
+            if (effect.isSuccess()) {
+                views.forEach(view -> view.showNarration(effect.getMessage()));
+            }
+        }
+        return reply;
+    }
+
     /** The recorded events of this type, oldest first. */
     public List<GameEvent> getHistory(EventType filter) {
         return state.getEventLog().filter(filter);
@@ -154,18 +212,17 @@ public class GameController {
     }
 
     /**
-     * Builds every command first, so an action type without a command yet (talk and leave, which
-     * come with dialogue) stops the whole turn with a friendly message before anything happens; then
-     * runs them all.
+     * Builds every command first, so a proposal the factory cannot build (a missing target) stops the
+     * whole turn with a message before anything happens; then runs them all.
      */
     private TurnResult execute(List<ActionProposal> proposals) {
         List<GameCommand> commands = new ArrayList<>();
         for (ActionProposal proposal : proposals) {
             try {
                 commands.add(commandFactory.create(proposal));
-            } catch (IllegalArgumentException notAvailable) {
+            } catch (IllegalArgumentException incomplete) {
                 String action = proposal.getType().name().toLowerCase(Locale.ROOT);
-                return error("You can't " + action + " yet: that action is not available in this version.", false);
+                return error("Say what to " + action + ".", false);
             }
         }
         List<ActionResult> results = rules.executeAll(commands, state);

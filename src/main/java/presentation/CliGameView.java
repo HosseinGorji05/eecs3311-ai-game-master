@@ -6,6 +6,7 @@ import engine.character.Stats;
 import engine.commands.ActionProposal;
 import engine.commands.ActionType;
 import engine.core.CombatMode;
+import engine.core.DialogueMode;
 import engine.core.GameState;
 import engine.events.EventType;
 import engine.events.GameEvent;
@@ -34,9 +35,10 @@ import java.util.stream.Collectors;
  *
  * <p>Command table ({@link #dispatch}): {@code map} and {@code quests} show the situation,
  * {@code history [type]} the event history, {@code flee} and {@code leave} are sent as fixed
- * actions, {@code help} lists the commands and {@code quit} ends the game; any other line is played
- * as a natural-language command. The journal, saving, loading and quest offers are not available
- * yet.
+ * actions, {@code help} lists the commands and {@code quit} ends the game; any other line is said to
+ * the NPC in a conversation, and otherwise played as a natural-language command. In a conversation
+ * {@code bye} and {@code goodbye} also leave, and the prompt names the NPC. The journal, saving,
+ * loading and quest offers are not available yet.
  */
 public class CliGameView implements GameView, GameEventListener {
 
@@ -51,8 +53,10 @@ public class CliGameView implements GameView, GameEventListener {
     private static final String HELP = """
             Commands: type what you want to do, e.g. "go north", "go to the tavern", "take shed key",
             "equip sword", "use healing potion", "drop bread", "put bread in pouch", "look", "inventory",
-            "attack wolf", "flee", or several at once: "take shed key and go south".
+            "talk to Marta", "attack wolf", "flee", or several at once: "take shed key and go south".
+            In a conversation, everything you type is said to the person; leave (or bye) ends it.
             Also: map, quests, history, history <type>, help, quit.""";
+    private static final Set<String> LEAVE_WORDS = Set.of("leave", "bye", "goodbye");
 
     private final GameController controller;
     private final Scanner in;
@@ -77,7 +81,8 @@ public class CliGameView implements GameView, GameEventListener {
         out.println(HELP);
         running = true;
         while (running) {
-            out.print("> ");
+            out.print(controller.getState().getMode() instanceof DialogueMode dialogue
+                    ? "(to " + dialogue.getNpc().getName() + ") > " : "> ");
             if (!in.hasNextLine()) {
                 break;
             }
@@ -97,6 +102,7 @@ public class CliGameView implements GameView, GameEventListener {
     private void dispatch(String line) {
         String[] words = line.toLowerCase(Locale.ROOT).split("\\s+");
         String first = words[0];
+        boolean talking = controller.getState().getMode() instanceof DialogueMode;
         TurnResult result = null;
         if (words.length == 1 && (first.equals("quit") || first.equals("exit"))) {
             running = false;
@@ -106,13 +112,19 @@ public class CliGameView implements GameView, GameEventListener {
             render(controller.getState());
         } else if (first.equals("history") && words.length <= 2) {
             showHistory(words.length == 1 ? null : words[1]);
-        } else if (words.length == 1 && (first.equals("flee") || first.equals("leave"))) {
+        } else if (words.length == 1 && (first.equals("flee") || first.equals("leave")
+                || talking && LEAVE_WORDS.contains(first))) {
             ActionType type = first.equals("flee") ? ActionType.FLEE : ActionType.LEAVE;
             result = controller.performAction(new ActionProposal(type, null, null));
         } else if (NOT_AVAILABLE_YET.contains(first)) {
             showError("\"" + first + "\" is not available yet.");
+        } else if (talking) {
+            controller.sendDialogue(line);
         } else {
             result = controller.submitCommand(line);
+        }
+        if (!talking && controller.getState().getMode() instanceof DialogueMode dialogue) {
+            showNotice("You are talking to " + dialogue.getNpc().getName() + ". Say something, or type leave to end the conversation.");
         }
         if (result != null && result.isGameOver()) {
             flushNotices();
@@ -130,6 +142,8 @@ public class CliGameView implements GameView, GameEventListener {
                 player.getInventory().totalWeight(), player.getInventory().getMaxWeight());
         if (state.getMode() instanceof CombatMode combat) {
             out.println("In combat with the " + combat.getEnemy().getName() + ".");
+        } else if (state.getMode() instanceof DialogueMode dialogue) {
+            out.println("Talking to " + dialogue.getNpc().describe() + ".");
         }
         List<Quest> quests = state.getQuestLog().activeQuests();
         out.println("Quests: " + (quests.isEmpty() ? "none" : quests.stream()

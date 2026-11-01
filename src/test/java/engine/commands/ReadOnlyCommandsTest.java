@@ -37,13 +37,14 @@ class ReadOnlyCommandsTest {
     }
 
     @Test
-    void lookDescribesTheLocationItsItemsAndExits() {
+    void lookDescribesTheLocationItsItemsPeopleAndExits() {
         CommandTestGame game = new CommandTestGame(CharacterClass.WARRIOR, "tavern");
 
         String message = runReadOnly(game, new LookCommand());
 
         assertEquals("Tavern\nA smoky room with a low ceiling. A few villagers whisper over their mugs.\n"
-                + "Items: shed key (0.1 kg), bread (0.3 kg)\nExits: south (Village Square)", message);
+                + "Items: shed key (0.1 kg), bread (0.3 kg)\nPeople: Marta (tavern keeper)\nExits: south (Village Square)",
+                message);
     }
 
     @Test

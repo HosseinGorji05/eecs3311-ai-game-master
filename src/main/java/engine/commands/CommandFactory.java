@@ -18,10 +18,9 @@ public class CommandFactory {
      * Creates the command for a proposal. For MOVE, a target that names a direction ("east")
      * gives a move in that direction; any other target is the name of an adjacent location.
      * TAKE, DROP, USE, EQUIP and ATTACK need a target, PUT also a second target (the container);
-     * FLEE, LOOK and INVENTORY ignore them. TALK and LEAVE come with dialogue.
+     * TALK needs the NPC's name; FLEE, LEAVE, LOOK and INVENTORY ignore the targets.
      *
-     * @throws IllegalArgumentException if a target is missing, or there is no command for the
-     *                                  proposal's type yet
+     * @throws IllegalArgumentException if a target is missing
      */
     public GameCommand create(ActionProposal proposal) {
         Objects.requireNonNull(proposal, "proposal");
@@ -32,11 +31,12 @@ public class CommandFactory {
             case PUT -> new PutCommand(requireTarget(proposal), requireSecondTarget(proposal));
             case USE -> new UseItemCommand(requireTarget(proposal));
             case EQUIP -> new EquipCommand(requireTarget(proposal));
+            case TALK -> new TalkCommand(requireTarget(proposal));
+            case LEAVE -> new LeaveCommand();
             case ATTACK -> new AttackCommand(requireTarget(proposal));
             case FLEE -> new FleeCommand();
             case LOOK -> new LookCommand();
             case INVENTORY -> new InventoryCommand();
-            default -> throw new IllegalArgumentException("Unsupported action type: " + proposal.getType());
         };
     }
 
