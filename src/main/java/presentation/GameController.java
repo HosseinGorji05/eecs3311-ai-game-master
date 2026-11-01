@@ -45,7 +45,7 @@ public class GameController {
 
     static final String BASIC_MODE_NOTICE = "Basic-command mode: simple commands only.";
     static final String NOT_UNDERSTOOD = "I didn't understand. Please rephrase.";
-    static final String EXAMPLES = "Try: go north, take shed key, attack wolf, flee.";
+    static final String EXAMPLES = "Try: go north, take shed key, equip sword, inventory, attack wolf, flee.";
     static final String GAME_OVER = "The game is over.";
 
     private final GameState state = new GameState();
@@ -154,8 +154,9 @@ public class GameController {
     }
 
     /**
-     * Builds every command first, so an action type without a command yet stops the whole turn
-     * with a friendly message before anything happens; then runs them all.
+     * Builds every command first, so an action type without a command yet (talk and leave, which
+     * come with dialogue) stops the whole turn with a friendly message before anything happens; then
+     * runs them all.
      */
     private TurnResult execute(List<ActionProposal> proposals) {
         List<GameCommand> commands = new ArrayList<>();

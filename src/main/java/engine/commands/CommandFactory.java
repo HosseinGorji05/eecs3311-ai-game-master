@@ -17,9 +17,10 @@ public class CommandFactory {
     /**
      * Creates the command for a proposal. For MOVE, a target that names a direction ("east")
      * gives a move in that direction; any other target is the name of an adjacent location.
-     * TAKE and ATTACK need a target; FLEE ignores it.
+     * TAKE, DROP, USE, EQUIP and ATTACK need a target, PUT also a second target (the container);
+     * FLEE, LOOK and INVENTORY ignore them. TALK and LEAVE come with dialogue.
      *
-     * @throws IllegalArgumentException if the target is missing, or there is no command for the
+     * @throws IllegalArgumentException if a target is missing, or there is no command for the
      *                                  proposal's type yet
      */
     public GameCommand create(ActionProposal proposal) {
@@ -27,8 +28,14 @@ public class CommandFactory {
         return switch (proposal.getType()) {
             case MOVE -> createMove(requireTarget(proposal));
             case TAKE -> new TakeCommand(requireTarget(proposal));
+            case DROP -> new DropCommand(requireTarget(proposal));
+            case PUT -> new PutCommand(requireTarget(proposal), requireSecondTarget(proposal));
+            case USE -> new UseItemCommand(requireTarget(proposal));
+            case EQUIP -> new EquipCommand(requireTarget(proposal));
             case ATTACK -> new AttackCommand(requireTarget(proposal));
             case FLEE -> new FleeCommand();
+            case LOOK -> new LookCommand();
+            case INVENTORY -> new InventoryCommand();
             default -> throw new IllegalArgumentException("Unsupported action type: " + proposal.getType());
         };
     }
@@ -52,5 +59,13 @@ public class CommandFactory {
             throw new IllegalArgumentException(proposal.getType() + " needs a target");
         }
         return target;
+    }
+
+    private static String requireSecondTarget(ActionProposal proposal) {
+        String container = proposal.getSecondTarget();
+        if (container == null || container.isBlank()) {
+            throw new IllegalArgumentException(proposal.getType() + " needs a second target");
+        }
+        return container;
     }
 }

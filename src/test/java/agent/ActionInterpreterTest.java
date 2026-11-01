@@ -6,6 +6,9 @@ import engine.character.Stats;
 import engine.commands.ActionProposal;
 import engine.commands.ActionType;
 import engine.core.GameState;
+import engine.items.Consumable;
+import engine.items.Container;
+import engine.items.Weapon;
 import engine.world.World;
 import llm.LLMClient;
 import llm.LlmRequest;
@@ -117,6 +120,54 @@ class ActionInterpreterTest {
         assertEquals(List.of(ActionType.ATTACK), types(interpreter.interpret("attack the wolf")));
         assertTrue(interpreter.isFallbackUsed());
         assertTrue(interpreter.interpret("sing a song").isEmpty());
+    }
+
+    @Test
+    void aReplyMixingTheItemAndReadOnlyTypesBecomesProposals() {
+        ActionInterpreter interpreter = interpreter("""
+                {"actions":[{"type":"equip","target":"sword"},{"type":"use","target":"healing potion"},\
+                {"type":"put","target":"bread","secondTarget":"pouch"},{"type":"drop","target":"shed key"},\
+                {"type":"inventory","target":null}]}""");
+
+        List<ActionProposal> proposals = interpreter.interpret(
+                "ready my sword, drink a potion, pack the bread, drop the key and check my bag");
+
+        assertFalse(interpreter.isFallbackUsed());
+        assertEquals(List.of(ActionType.EQUIP, ActionType.USE, ActionType.PUT, ActionType.DROP, ActionType.INVENTORY),
+                types(proposals));
+        assertEquals(List.of("sword", "healing potion", "bread", "shed key"),
+                proposals.subList(0, 4).stream().map(ActionProposal::getTarget).toList());
+        assertEquals("pouch", proposals.get(2).getSecondTarget());
+        assertNull(proposals.get(4).getTarget());
+    }
+
+    @Test
+    void aPutWithoutAContainerIsRetriedAndThenLeftToTheOfflineParser() {
+        ActionInterpreter interpreter = interpreter(
+                "{\"actions\":[{\"type\":\"put\",\"target\":\"bread\"}]}",
+                "{\"actions\":[{\"type\":\"look\"},{\"type\":\"put\",\"target\":\"bread\"}]}");
+
+        List<ActionProposal> proposals = interpreter.interpret("put bread in pouch");
+
+        assertTrue(interpreter.isFallbackUsed());
+        assertEquals("invalid output", interpreter.getFallbackReason());
+        assertEquals(List.of(ActionType.PUT), types(proposals));
+        assertEquals("pouch", proposals.get(0).getSecondTarget());
+    }
+
+    @Test
+    void thePromptListsWhatThePlayerCarriesAndWields() {
+        assertTrue(new PromptBuilder().stateSummary(state).endsWith(
+                "\nCarrying: sword, healing potion\nEquipped weapon: none"));
+        assertTrue(PromptBuilder.DEFAULT_TEMPLATES.get("interpret.system").contains("an item listed under Carrying"));
+
+        state.getPlayer().equip((Weapon) state.getPlayer().getInventory().find("sword"));
+        Container pouch = new Container("pouch", 0.2, 4);
+        pouch.add(new Consumable("bread", 0.3, 2));
+        state.getPlayer().getInventory().add(pouch);
+
+        assertTrue(new PromptBuilder().stateSummary(state).endsWith(
+                "\nCarrying: sword, healing potion, pouch (holding bread)\nEquipped weapon: sword"));
     }
 
     @Test

@@ -86,8 +86,8 @@ public class TakeCommand implements GameCommand {
         return result;
     }
 
-    /** Formats a weight with one decimal, dropping ".0" ("9.5", "10"). */
-    private static String kg(double weight) {
+    /** Formats a weight with one decimal, dropping ".0" ("9.5", "10"); shared by the item commands. */
+    static String kg(double weight) {
         String text = String.format(Locale.ROOT, "%.1f", weight);
         return text.endsWith(".0") ? text.substring(0, text.length() - 2) : text;
     }

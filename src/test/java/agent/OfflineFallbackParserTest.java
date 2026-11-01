@@ -81,6 +81,67 @@ class OfflineFallbackParserTest {
         assertNull(flee.getTarget());
     }
 
+    @ParameterizedTest(name = "\"{0}\" is {1} {2}")
+    @CsvSource({
+            "equip sword, EQUIP, sword",
+            "wield the hand axe, EQUIP, hand axe",
+            "use healing potion, USE, healing potion",
+            "drink the healing potion, USE, healing potion",
+            "eat bread, USE, bread",
+            "drop bread, DROP, bread",
+            "drop the shed key, DROP, shed key",
+            "put down the bread, DROP, bread"
+    })
+    void itemCommandsInPlainForm(String text, ActionType type, String target) {
+        ActionProposal proposal = single(text);
+        assertEquals(type, proposal.getType());
+        assertEquals(target, proposal.getTarget());
+        assertNull(proposal.getSecondTarget());
+    }
+
+    @ParameterizedTest(name = "\"{0}\" puts {1} into {2}")
+    @CsvSource({
+            "put bread in pouch, bread, pouch",
+            "put the dagger into the backpack, dagger, backpack",
+            "put healing potion in the pouch, healing potion, pouch"
+    })
+    void putNamesTheItemAndTheContainer(String text, String item, String container) {
+        ActionProposal put = single(text);
+        assertEquals(ActionType.PUT, put.getType());
+        assertEquals(item, put.getTarget());
+        assertEquals(container, put.getSecondTarget());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"look", "look around", "l", "Look!"})
+    void looksWithoutATarget(String text) {
+        ActionProposal look = single(text);
+        assertEquals(ActionType.LOOK, look.getType());
+        assertNull(look.getTarget());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"inventory", "inv", "i"})
+    void listsTheInventoryWithoutATarget(String text) {
+        ActionProposal inventory = single(text);
+        assertEquals(ActionType.INVENTORY, inventory.getType());
+        assertNull(inventory.getTarget());
+    }
+
+    @Test
+    void itemCommandsCombineWithOthers() {
+        List<ActionProposal> proposals = parser.parse("equip sword, drink healing potion then attack wolf and look");
+
+        assertEquals(List.of(ActionType.EQUIP, ActionType.USE, ActionType.ATTACK, ActionType.LOOK),
+                proposals.stream().map(ActionProposal::getType).toList());
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"equip it", "drop them", "put it in the pouch", "put the bread in it", "use", "put bread"})
+    void itemCommandsWithoutAClearTargetGiveNoActions(String text) {
+        assertTrue(parser.parse(text).isEmpty(), text);
+    }
+
     @Test
     void recognisesTheOtherActionTypesToo() {
         assertEquals(ActionType.LOOK, single("look").getType());

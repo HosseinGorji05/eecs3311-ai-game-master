@@ -90,17 +90,41 @@ class CommandFactoryTest {
     }
 
     @ParameterizedTest
-    @EnumSource(value = ActionType.class, names = {"MOVE", "TAKE", "ATTACK", "FLEE"}, mode = EnumSource.Mode.EXCLUDE)
-    void typesWithoutACommandYetAreRejected(ActionType type) {
+    @EnumSource(value = ActionType.class, names = {"TALK", "LEAVE"})
+    void onlyTheDialogueTypesHaveNoCommandYet(ActionType type) {
         ActionProposal proposal = new ActionProposal(type, "something", null);
         assertThrows(IllegalArgumentException.class, () -> factory.create(proposal));
     }
 
     @ParameterizedTest
-    @EnumSource(value = ActionType.class, names = {"MOVE", "TAKE", "ATTACK"})
+    @EnumSource(value = ActionType.class, names = {"TALK", "LEAVE"}, mode = EnumSource.Mode.EXCLUDE)
+    void everyOtherTypeCreatesACommandOfThatType(ActionType type) {
+        GameCommand command = factory.create(new ActionProposal(type, "north", "pouch"));
+
+        assertEquals(type, command.getType());
+    }
+
+    @Test
+    void theItemTypesCreateTheirCommands() {
+        assertInstanceOf(DropCommand.class, factory.create(new ActionProposal(ActionType.DROP, "bread", null)));
+        assertInstanceOf(PutCommand.class, factory.create(new ActionProposal(ActionType.PUT, "bread", "pouch")));
+        assertInstanceOf(UseItemCommand.class, factory.create(new ActionProposal(ActionType.USE, "healing potion", null)));
+        assertInstanceOf(EquipCommand.class, factory.create(new ActionProposal(ActionType.EQUIP, "staff", null)));
+        assertInstanceOf(LookCommand.class, factory.create(new ActionProposal(ActionType.LOOK, null, null)));
+        assertInstanceOf(InventoryCommand.class, factory.create(new ActionProposal(ActionType.INVENTORY, "ignored", null)));
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = ActionType.class, names = {"MOVE", "TAKE", "DROP", "PUT", "USE", "EQUIP", "ATTACK"})
     void missingOrBlankTargetIsRejected(ActionType type) {
-        assertThrows(IllegalArgumentException.class, () -> factory.create(new ActionProposal(type, null, null)));
-        assertThrows(IllegalArgumentException.class, () -> factory.create(new ActionProposal(type, "  ", null)));
+        assertThrows(IllegalArgumentException.class, () -> factory.create(new ActionProposal(type, null, "pouch")));
+        assertThrows(IllegalArgumentException.class, () -> factory.create(new ActionProposal(type, "  ", "pouch")));
+    }
+
+    @Test
+    void putNeedsAContainer() {
+        assertThrows(IllegalArgumentException.class, () -> factory.create(new ActionProposal(ActionType.PUT, "bread", null)));
+        assertThrows(IllegalArgumentException.class, () -> factory.create(new ActionProposal(ActionType.PUT, "bread", " ")));
     }
 
     @Test

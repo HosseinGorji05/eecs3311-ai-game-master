@@ -50,6 +50,7 @@ public class CliGameView implements GameView, GameEventListener {
     private static final Set<String> NOT_AVAILABLE_YET = Set.of("journal", "save", "load", "saves", "accept", "decline");
     private static final String HELP = """
             Commands: type what you want to do, e.g. "go north", "go to the tavern", "take shed key",
+            "equip sword", "use healing potion", "drop bread", "put bread in pouch", "look", "inventory",
             "attack wolf", "flee", or several at once: "take shed key and go south".
             Also: map, quests, history, history <type>, help, quit.""";
 

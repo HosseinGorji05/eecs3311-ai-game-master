@@ -2,6 +2,7 @@ package presentation;
 
 import engine.core.FixedDiceRoller;
 import engine.core.GameState;
+import engine.world.Direction;
 import llm.ScriptedLLMClient;
 import org.junit.jupiter.api.Test;
 
@@ -48,7 +49,7 @@ class CliGameViewTest {
                 "go south and go south",
                 "w",
                 "attack wolf",
-                "drop shed key",
+                "talk to the wolf",
                 "save mygame",
                 "history combat",
                 "quit",
@@ -64,7 +65,7 @@ class CliGameViewTest {
         assertContains(output, "Enemies: wolf (8/8 HP)");
         assertContains(output, "Ari attacks wolf: rolls 10 + 5 = 15 against defense 11. Hit for 2 damage (wolf: 6/8 HP).");
         assertContains(output, "wolf attacks Ari: rolls 5 + 3 = 8 against defense 13. Miss.");
-        assertContains(output, "! You can't drop yet: that action is not available in this version.");
+        assertContains(output, "! You can't talk yet: that action is not available in this version.");
         assertContains(output, "! \"save\" is not available yet.");
         assertContains(output, "[turn 5] combat: Ari attacks wolf");
         assertTrue(output.endsWith("> Goodbye.\n"), output);
@@ -75,7 +76,45 @@ class CliGameViewTest {
         assertEquals("wolf-den", state.currentLocation().getId());
         assertNotNull(state.getPlayer().getInventory().find("shed key"));
         assertEquals(6, state.currentLocation().findEnemy("wolf").getHp());
-        assertEquals(6, state.getTurn(), "five played turns; the rejected drop did not use a turn");
+        assertEquals(6, state.getTurn(), "five played turns; the unavailable talk did not use a turn");
+    }
+
+    @Test
+    void aSessionEquipsTheSwordOpensTheShedAndKillsTheWolfWithIt() {
+        String output = play(List.of(),
+                // hit (10 + 5 = 15 vs 11) for 6; the wolf misses (5 + 3 vs 13); hit (12 + 5 = 17) for 6 more
+                new FixedDiceRoller(10, 5, 12),
+                "Ari", "warrior",
+                "equip sword",
+                "go north", "take the shed key", "go south",
+                "go east",                     // the shed key opens the locked door
+                "go west", "go south", "go west",
+                "attack wolf",
+                "inventory",                   // allowed in combat; the wolf gets no turn
+                "attack wolf",
+                "look",
+                "quit");
+
+        assertContains(output, "You equip the sword (damage 6).");
+        assertContains(output, "You take the shed key.");
+        assertContains(output, "You unlock the way with the shed key.\nTool Shed\n");
+        assertContains(output, "Ari attacks wolf: rolls 10 + 5 = 15 against defense 11. Hit for 6 damage (wolf: 2/8 HP).");
+        assertContains(output, "wolf attacks Ari: rolls 5 + 3 = 8 against defense 13. Miss.");
+        assertContains(output, "Items: sword (3 kg), healing potion (0.5 kg), shed key (0.1 kg)\n"
+                + "Weapon: sword (damage 6)\nYou carry 3.6 of 10 kg.");
+        assertContains(output, "Ari attacks wolf: rolls 12 + 5 = 17 against defense 11. Hit for 6 damage (wolf: 0/8 HP).\n"
+                + "The wolf is defeated.");
+        assertContains(output, "\nWolf Den\nA rocky hollow littered with bones. Something growls in the dark.\n"
+                + "Items: none\nExits: east (Forest Edge)\n");
+        assertFalse(output.contains("! "), "no command was refused: " + output);
+        assertTrue(output.endsWith("> Goodbye.\n"), output);
+
+        GameState state = controller.getState();
+        assertEquals("sword", state.getPlayer().getEquippedWeapon().getName());
+        assertEquals(30, state.getPlayer().getHp());
+        assertTrue(state.currentLocation().getEnemies().isEmpty());
+        assertFalse(state.getWorld().findLocation("village-square").getExit(Direction.EAST).isLocked());
+        assertEquals(13, state.getTurn(), "twelve played turns, look and inventory included");
     }
 
     @Test

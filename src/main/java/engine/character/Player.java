@@ -96,6 +96,11 @@ public class Player extends Combatant {
         this.equippedWeapon = Objects.requireNonNull(weapon, "weapon");
     }
 
+    /** Puts the equipped weapon away (when it is dropped or packed into a container); damage is unarmed again. */
+    public void unequip() {
+        this.equippedWeapon = null;
+    }
+
     /** The equipped weapon, or {@code null} if none is equipped. */
     public Weapon getEquippedWeapon() {
         return equippedWeapon;

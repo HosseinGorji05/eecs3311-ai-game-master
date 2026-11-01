@@ -6,11 +6,11 @@ A text adventure for EECS 3311 (York University) in which an LLM acts as the gam
 
 ## Status
 
-| Stage | Description | Status |
-|-------|-------------|--------|
-| 1 | Design (UML, patterns, traceability) | Done |
-| 2 | Implementation | Planned |
-| 3 | Testing and validation | Planned |
+| Stage | Description                          | Status  |
+| ----- | ------------------------------------ | ------- |
+| 1     | Design (UML, patterns, traceability) | Done    |
+| 2     | Implementation                       | Planned |
+| 3     | Testing and validation               | Planned |
 
 ## Stage 1 deliverables
 
@@ -20,7 +20,7 @@ A text adventure for EECS 3311 (York University) in which an LLM acts as the gam
 ## Design at a glance
 
 - **Language and UI:** Java 17, Swing GUI plus a command-line interface, structured as MVC.
-- **LLM access:** DeepSeek as the primary provider, Groq (openai/gpt-oss-20b) as an alternative, both behind one client interface.
+- **LLM access:** DeepSeek as the primary provider, Groq (openai/gpt-oss-120b) as an alternative, both behind one client interface.
 - **Design patterns (11):** MVC, Command, State, Observer, Template Method, Strategy, Facade, Factory Method, Composite, Memento, Adapter.
 
 ## Build and test

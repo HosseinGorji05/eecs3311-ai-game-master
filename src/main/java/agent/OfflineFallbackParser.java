@@ -13,7 +13,8 @@ import java.util.regex.Pattern;
 
 /**
  * A keyword parser for plain commands, used when the language model cannot help (UC14): "go east",
- * "e", "go to the tavern", "take the shed key", "pick up iron key", "attack wolf", "flee", and
+ * "e", "go to the tavern", "take the shed key", "pick up iron key", "drop bread", "put bread in
+ * pouch", "use healing potion", "equip sword", "look", "inventory", "attack wolf", "flee", and
  * several of them joined with "and", "then" or commas.
  *
  * <p>All or nothing: if any part of the input matches no known pattern, or names "it" / "them"
@@ -36,7 +37,7 @@ public class OfflineFallbackParser {
     private static final List<Rule> TARGET_RULES = List.of(
             new Rule(Pattern.compile("(?:take|get|grab|pick up|pick) (.+?)(?: up)?"), ActionType.TAKE),
             new Rule(Pattern.compile("(?:attack|fight|kill|hit|strike) (.+)"), ActionType.ATTACK),
-            new Rule(Pattern.compile("drop (.+)"), ActionType.DROP),
+            new Rule(Pattern.compile("(?:drop|put down) (.+)"), ActionType.DROP),
             new Rule(Pattern.compile("(?:use|drink|eat) (.+)"), ActionType.USE),
             new Rule(Pattern.compile("(?:equip|wield) (.+)"), ActionType.EQUIP),
             new Rule(Pattern.compile("(?:talk|speak)(?: to| with)? (.+)"), ActionType.TALK));

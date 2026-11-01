@@ -65,6 +65,11 @@ public class Inventory {
         return item != null && totalWeight() + item.getWeight() <= maxWeight + WEIGHT_EPSILON;
     }
 
+    /** The items at the top level of the inventory (containers hold the rest), as a read-only view. */
+    public List<Item> getItems() {
+        return root.getContents();
+    }
+
     public double totalWeight() {
         return root.getWeight();
     }

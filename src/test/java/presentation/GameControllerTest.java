@@ -144,12 +144,31 @@ class GameControllerTest {
     }
 
     @Test
+    void aModelReplyMixingTheNewActionsRunsThemAllInOneTurn() {
+        GameController controller = start("""
+                {"actions":[{"type":"equip","target":"sword"},{"type":"drop","target":"healing potion"},\
+                {"type":"inventory"},{"type":"look"}]}""");
+
+        TurnResult turn = controller.submitCommand("draw my sword, leave the potion, then check my bag and look around");
+
+        assertEquals(4, turn.getResults().size());
+        assertTrue(turn.getResults().stream().allMatch(result -> result.isSuccess()), turn.getNarration());
+        assertTrue(turn.getNarration().startsWith("You equip the sword (damage 6).\nYou drop the healing potion.\n"
+                + "Items: sword (3 kg)\nWeapon: sword (damage 6)\nYou carry 3 of 10 kg.\nVillage Square\n"),
+                turn.getNarration());
+        assertTrue(turn.getNarration().contains("Items: healing potion (0.5 kg)"), turn.getNarration());
+        assertEquals(6, controller.getState().getPlayer().damage());
+        assertEquals(2, controller.getState().getTurn());
+        assertEquals(List.of(EventType.ITEM, EventType.ITEM), view.events.stream().map(GameEvent::getType).toList());
+    }
+
+    @Test
     void anActionWithoutACommandYetGivesAFriendlyMessageAndChangesNothing() {
         GameController controller = start();
 
-        TurnResult turn = controller.submitCommand("drop sword");
+        TurnResult turn = controller.submitCommand("talk to the blacksmith");
 
-        assertEquals("You can't drop yet: that action is not available in this version.", turn.getNarration());
+        assertEquals("You can't talk yet: that action is not available in this version.", turn.getNarration());
         assertTrue(turn.getResults().isEmpty());
         assertNotNull(controller.getState().getPlayer().getInventory().find("sword"));
         assertEquals(1, controller.getState().getTurn());
@@ -159,7 +178,7 @@ class GameControllerTest {
     void aTurnWithOneUnavailableActionRunsNoneOfItsActions() {
         GameController controller = start();
 
-        controller.submitCommand("go north and look");
+        controller.submitCommand("go north and talk to the barkeeper");
 
         assertEquals("village-square", controller.getState().currentLocation().getId());
         assertEquals(1, controller.getState().getTurn());

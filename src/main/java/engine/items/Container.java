@@ -56,6 +56,16 @@ public class Container extends Item {
         return Collections.unmodifiableList(contents);
     }
 
+    /** How many items this container can hold directly. */
+    public int getCapacity() {
+        return capacity;
+    }
+
+    /** Whether the item is inside this container, directly or in a nested container. */
+    public boolean contains(Item item) {
+        return containsDeep(item);
+    }
+
     @Override
     public double getWeight() {
         double total = weight;

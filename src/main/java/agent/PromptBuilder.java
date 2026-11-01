@@ -3,10 +3,15 @@ package agent;
 import engine.character.Player;
 import engine.core.CombatMode;
 import engine.core.GameState;
+import engine.items.Container;
+import engine.items.Item;
+import engine.items.Weapon;
 import engine.world.Location;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.stream.Collectors;
 
 /**
  * Builds prompt text from named templates and a summary of the real game state, so the model only
@@ -26,9 +31,9 @@ public class PromptBuilder {
                     "type" is one of: move, take, drop, put, use, equip, talk, leave, attack, flee, look, inventory.
                     "target": for move, a direction (north, south, east, west) or a location name listed under Exits; \
                     for take, an item listed under Items here; for attack, an enemy listed under Enemies here; \
-                    for drop, put, use and equip, the item's name; for talk, the person's name; \
-                    null for leave, flee, look and inventory.
-                    "secondTarget": for put, the container; otherwise null.
+                    for drop, put, use (potions and food) and equip (weapons), an item listed under Carrying; \
+                    for talk, the person's name; null for leave, flee, look and inventory.
+                    "secondTarget": for put, a container listed under Carrying; otherwise null.
                     Copy names exactly as they appear in the game state, without the details in parentheses, \
                     and list the actions in the player's order.
                     If the input asks for something impossible or is not an action, answer {"actions":[]}.
@@ -53,7 +58,8 @@ public class PromptBuilder {
 
     /**
      * The current location with its items, enemies and exits (each with the direction and the
-     * neighbouring location's name), the mode and the player's HP.
+     * neighbouring location's name), the mode, the player's HP, what the player carries (with the
+     * contents of containers) and the equipped weapon.
      */
     public String stateSummary(GameState state) {
         Objects.requireNonNull(state, "state");
@@ -64,12 +70,25 @@ public class PromptBuilder {
         String mode = state.getMode() instanceof CombatMode combat
                 ? "in combat with the " + combat.getEnemy().getName()
                 : "exploring";
+        List<Item> carried = player.getInventory().getItems();
+        Weapon weapon = player.getEquippedWeapon();
         return "Location: " + location.getName() + "\n"
                 + "Items here: " + items + "\n"
                 + "Enemies here: " + location.describeEnemies() + "\n"
                 + "Exits: " + location.describeExits() + "\n"
                 + "Mode: " + mode + "\n"
-                + "Player: " + player.getName() + ", " + player.getHp() + "/" + player.getMaxHp() + " HP";
+                + "Player: " + player.getName() + ", " + player.getHp() + "/" + player.getMaxHp() + " HP\n"
+                + "Carrying: " + (carried.isEmpty() ? "none" : names(carried)) + "\n"
+                + "Equipped weapon: " + (weapon == null ? "none" : weapon.getName());
+    }
+
+    /** The item names, each container followed by its contents in parentheses. */
+    private static String names(List<Item> items) {
+        return items.stream()
+                .map(item -> item instanceof Container container && !container.getContents().isEmpty()
+                        ? item.getName() + " (holding " + names(container.getContents()) + ")"
+                        : item.getName())
+                .collect(Collectors.joining(", "));
     }
 
     /**
