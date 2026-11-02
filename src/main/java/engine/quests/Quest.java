@@ -12,7 +12,8 @@ import java.util.Objects;
  */
 public class Quest {
 
-    private static final int MAX_OBJECTIVES = 3;
+    /** Most objectives a quest can have (F07: 1-3). */
+    public static final int MAX_OBJECTIVES = 3;
 
     private final String id;
     private final String title;

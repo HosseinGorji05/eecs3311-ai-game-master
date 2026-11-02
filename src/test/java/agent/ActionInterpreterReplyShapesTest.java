@@ -9,6 +9,7 @@ import engine.commands.ActionType;
 import engine.core.FixedDiceRoller;
 import engine.core.GameState;
 import engine.items.Consumable;
+import engine.quests.Quest;
 import engine.world.World;
 import llm.LLMClient;
 import llm.LlmRequest;
@@ -154,6 +155,10 @@ class ActionInterpreterReplyShapesTest {
 
             @Override
             public void showError(String message) {
+            }
+
+            @Override
+            public void showQuestOffer(Quest quest) {
             }
         });
         controller.newGame("Ari", CharacterClass.WARRIOR, new Stats(5, 3, 2));

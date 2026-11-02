@@ -12,6 +12,7 @@ import engine.core.GameState;
 import engine.events.EventType;
 import engine.events.GameEvent;
 import engine.events.GameEventListener;
+import engine.quests.Quest;
 import llm.ScriptedLLMClient;
 import org.junit.jupiter.api.Test;
 
@@ -57,6 +58,11 @@ class GameControllerDialogueTest {
         }
 
         @Override
+        public void showQuestOffer(Quest quest) {
+            shown.add("offer: " + quest.getTitle());
+        }
+
+        @Override
         public void onEvent(GameEvent event) {
             events.add(event);
         }
@@ -64,7 +70,11 @@ class GameControllerDialogueTest {
 
     private final RecordingView view = new RecordingView();
 
-    /** A started game, already in the Forge talking to Brann, with these model answers for the dialogue. */
+    /**
+     * A started game, already in the Forge talking to Brann, with these model answers for the dialogue.
+     * The conversation is marked as having had its quest offer, so every answer goes to the dialogue;
+     * quest offers are tested in {@code GameControllerQuestTest}.
+     */
     private GameController talkingToBrann(String... llmResponses) {
         GameController controller = new GameController(new ScriptedLLMClient(List.of(llmResponses)), new FixedDiceRoller());
         controller.newGame("Ari", CharacterClass.WARRIOR, new Stats(5, 3, 2));
@@ -72,6 +82,7 @@ class GameControllerDialogueTest {
         controller.performAction(new ActionProposal(ActionType.MOVE, "west", null));
         TurnResult talk = controller.performAction(new ActionProposal(ActionType.TALK, "the blacksmith", null));
         assertEquals("You start talking to Brann, the blacksmith.", talk.getNarration());
+        ((DialogueMode) controller.getState().getMode()).setQuestOffered();
         controller.addView(view);
         return controller;
     }

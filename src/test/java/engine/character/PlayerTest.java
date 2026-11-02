@@ -5,6 +5,7 @@ import engine.items.Inventory;
 import engine.items.Item;
 import engine.items.KeyItem;
 import engine.items.Weapon;
+import engine.quests.Reward;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -168,5 +169,21 @@ class PlayerTest {
         Player player = newPlayer(new Stats(4, 3, 3), List.of(potion));
         assertNotNull(player.getInventory().find("Healing Potion"));
         assertEquals(10, potion.getHealAmount());
+    }
+
+
+    @Test
+    void theLevelRisesEveryHundredXp() {
+        Player player = newPlayer(new Stats(4, 3, 3), List.of());
+        assertEquals(1, player.getLevel());
+
+        player.addReward(new Reward(0, 99, null));
+        assertEquals(1, player.getLevel());
+        player.addReward(new Reward(0, 1, null));
+        assertEquals(2, player.getLevel());
+        player.addReward(new Reward(5, 150, "iron key"));
+        assertEquals(3, player.getLevel());
+        assertEquals(5, player.getGold());
+        assertNull(player.getInventory().find("iron key"), "the item is handed over by the quest tracker");
     }
 }

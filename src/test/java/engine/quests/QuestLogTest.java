@@ -1,5 +1,7 @@
 package engine.quests;
 
+import engine.world.NPC;
+
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -96,5 +98,57 @@ class QuestLogTest {
         QuestLog log = new QuestLog();
         log.accept(sideQuest("a"));
         assertThrows(UnsupportedOperationException.class, () -> log.activeQuests().add(sideQuest("b")));
+    }
+
+
+    private static final NPC BRANN = new NPC("blacksmith", "Brann", "blacksmith", "gruff", List.of(), List.of(), true);
+    private static final NPC MARTA = new NPC("tavern-keeper", "Marta", "tavern keeper", "warm", List.of(), List.of(), false);
+
+    @Test
+    void hasQuestFromCountsOnlyActiveQuestsFromThatGiver() {
+        QuestLog log = new QuestLog();
+        assertFalse(log.hasQuestFrom(BRANN));
+
+        Quest quest = sideQuest("a");
+        log.accept(quest);
+        assertTrue(log.hasQuestFrom(BRANN));
+        assertFalse(log.hasQuestFrom(MARTA));
+
+        quest.complete();
+        assertFalse(log.hasQuestFrom(BRANN), "a finished quest is no open quest");
+    }
+
+    @Test
+    void canOfferFromNeedsAQuestGiverWithoutAnOpenQuestAndRoomInTheLog() {
+        QuestLog log = new QuestLog();
+        assertTrue(log.canOfferFrom(BRANN));
+        assertFalse(log.canOfferFrom(MARTA), "Marta gives no quests");
+
+        log.accept(sideQuest("a"));
+        assertFalse(log.canOfferFrom(BRANN), "Brann's quest is still open");
+
+        QuestLog full = new QuestLog();
+        for (String id : List.of("x", "y", "z")) {
+            full.accept(new Quest(id, "Quest " + id, "Someone else's.", "someone", false,
+                    List.of(new Objective(ObjectiveType.VISIT, "wolf-den", 1)), new Reward(1, 1, null)));
+        }
+        assertFalse(full.canOfferFrom(BRANN), "three side quests are active");
+        full.activeQuests().get(0).fail();
+        assertTrue(full.canOfferFrom(BRANN));
+    }
+
+    @Test
+    void allQuestsListsActiveAndFinishedQuestsInOrder() {
+        QuestLog log = new QuestLog();
+        Quest a = sideQuest("a");
+        Quest b = sideQuest("b");
+        log.accept(a);
+        log.accept(b);
+        a.complete();
+
+        assertEquals(List.of(a, b), log.allQuests());
+        assertEquals(List.of(b), log.activeQuests());
+        assertThrows(UnsupportedOperationException.class, () -> log.allQuests().clear());
+        assertThrows(NullPointerException.class, () -> log.hasQuestFrom(null));
     }
 }

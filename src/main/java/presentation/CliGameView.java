@@ -13,6 +13,7 @@ import engine.events.GameEvent;
 import engine.events.GameEventListener;
 import engine.quests.Quest;
 import engine.world.Location;
+import engine.world.NPC;
 import engine.world.Region;
 
 import java.io.InputStream;
@@ -33,12 +34,13 @@ import java.util.stream.Collectors;
  *
  * <p>Pattern roles: <b>View</b> of MVC and <b>ConcreteObserver</b> of the Observer pattern.
  *
- * <p>Command table ({@link #dispatch}): {@code map} and {@code quests} show the situation,
- * {@code history [type]} the event history, {@code flee} and {@code leave} are sent as fixed
- * actions, {@code help} lists the commands and {@code quit} ends the game; any other line is said to
- * the NPC in a conversation, and otherwise played as a natural-language command. In a conversation
- * {@code bye} and {@code goodbye} also leave, and the prompt names the NPC. The journal, saving,
- * loading and quest offers are not available yet.
+ * <p>Command table ({@link #dispatch}): {@code map} and {@code quests} show the situation with the
+ * quest log (active and finished quests, their giver, progress and reward), {@code history [type]}
+ * the event history, {@code accept} and {@code decline} answer the quest last offered,
+ * {@code flee} and {@code leave} are sent as fixed actions, {@code help} lists the commands and
+ * {@code quit} ends the game; any other line is said to the NPC in a conversation, and otherwise
+ * played as a natural-language command. In a conversation {@code bye} and {@code goodbye} also leave,
+ * and the prompt names the NPC. The journal, saving and loading are not available yet.
  */
 public class CliGameView implements GameView, GameEventListener {
 
@@ -49,12 +51,13 @@ public class CliGameView implements GameView, GameEventListener {
             CharacterClass.MAGE, new Stats(2, 3, 5));
 
     private static final int HISTORY_COUNT = 20;
-    private static final Set<String> NOT_AVAILABLE_YET = Set.of("journal", "save", "load", "saves", "accept", "decline");
+    private static final Set<String> NOT_AVAILABLE_YET = Set.of("journal", "save", "load", "saves");
     private static final String HELP = """
             Commands: type what you want to do, e.g. "go north", "go to the tavern", "take shed key",
             "equip sword", "use healing potion", "drop bread", "put bread in pouch", "look", "inventory",
             "talk to Marta", "attack wolf", "flee", or several at once: "take shed key and go south".
             In a conversation, everything you type is said to the person; leave (or bye) ends it.
+            When someone offers you a quest, type accept or decline.
             Also: map, quests, history, history <type>, help, quit.""";
     private static final Set<String> LEAVE_WORDS = Set.of("leave", "bye", "goodbye");
 
@@ -62,6 +65,7 @@ public class CliGameView implements GameView, GameEventListener {
     private final Scanner in;
     private final PrintStream out;
     private final List<String> pendingNotices = new ArrayList<>();
+    private Quest offeredQuest;
     private boolean running;
 
     public CliGameView(GameController controller, InputStream in, PrintStream out) {
@@ -116,6 +120,10 @@ public class CliGameView implements GameView, GameEventListener {
                 || talking && LEAVE_WORDS.contains(first))) {
             ActionType type = first.equals("flee") ? ActionType.FLEE : ActionType.LEAVE;
             result = controller.performAction(new ActionProposal(type, null, null));
+        } else if (words.length == 1 && (first.equals("accept") || first.equals("decline"))) {
+            Quest quest = offeredQuest;
+            offeredQuest = null;
+            controller.respondToQuest(quest, first.equals("accept"));
         } else if (NOT_AVAILABLE_YET.contains(first)) {
             showError("\"" + first + "\" is not available yet.");
         } else if (talking) {
@@ -145,9 +153,13 @@ public class CliGameView implements GameView, GameEventListener {
         } else if (state.getMode() instanceof DialogueMode dialogue) {
             out.println("Talking to " + dialogue.getNpc().describe() + ".");
         }
-        List<Quest> quests = state.getQuestLog().activeQuests();
-        out.println("Quests: " + (quests.isEmpty() ? "none" : quests.stream()
-                .map(CliGameView::describeQuest).collect(Collectors.joining("; "))));
+        List<Quest> quests = state.getQuestLog().allQuests();
+        out.println("Quests:" + (quests.isEmpty() ? " none" : ""));
+        for (Quest quest : quests) {
+            out.println("- " + quest.getTitle() + " (" + quest.getStatus().name().toLowerCase(Locale.ROOT)
+                    + ", from " + giverName(state, quest) + "): " + describeObjectives(quest, true)
+                    + "; reward: " + quest.getReward().describe());
+        }
         List<String> visited = new ArrayList<>();
         for (Region region : state.getWorld().getRegions()) {
             for (Location location : region.getLocations()) {
@@ -172,6 +184,17 @@ public class CliGameView implements GameView, GameEventListener {
     @Override
     public void showError(String message) {
         out.println("! " + message);
+    }
+
+    /** Prints the offer and remembers the quest, so {@code accept} and {@code decline} can answer it. */
+    @Override
+    public void showQuestOffer(Quest quest) {
+        offeredQuest = quest;
+        out.println(giverName(controller.getState(), quest) + " offers you a quest: " + quest.getTitle());
+        out.println("  " + quest.getDescription());
+        out.println("  Objectives: " + describeObjectives(quest, false));
+        out.println("  Reward: " + quest.getReward().describe());
+        out.println("Type accept or decline.");
     }
 
     /** Remembers quest updates and prints them after the turn's narration. */
@@ -244,9 +267,17 @@ public class CliGameView implements GameView, GameEventListener {
         }
     }
 
-    private static String describeQuest(Quest quest) {
-        return quest.getTitle() + " (" + quest.getObjectives().stream()
-                .map(objective -> objective.getTargetId() + " " + objective.getProgress() + "/" + objective.getRequired())
-                .collect(Collectors.joining(", ")) + ")";
+    /** "fetch bread 0/1, visit old-mill 1/1" with progress, or "fetch bread (1)" without. */
+    private static String describeObjectives(Quest quest, boolean progress) {
+        return quest.getObjectives().stream()
+                .map(objective -> objective.getType().name().toLowerCase(Locale.ROOT) + " " + objective.getTargetId()
+                        + (progress ? " " + objective.getProgress() + "/" + objective.getRequired()
+                                : " (" + objective.getRequired() + ")"))
+                .collect(Collectors.joining(", "));
+    }
+
+    private static String giverName(GameState state, Quest quest) {
+        NPC giver = quest.getGiverId() == null ? null : state.getWorld().findNpc(quest.getGiverId());
+        return giver != null ? giver.getName() : quest.getGiverId() != null ? quest.getGiverId() : "nobody";
     }
 }

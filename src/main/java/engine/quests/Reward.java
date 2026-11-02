@@ -3,8 +3,8 @@ package engine.quests;
 /**
  * What the player receives for completing a quest: gold, experience and optionally an item.
  *
- * <p>The item is only named here; the quest giver hands it over once quest offers exist, so
- * {@code Player.addReward()} currently grants the gold and XP only.
+ * <p>The item is only named here: it is an item the quest giver owns, and {@code QuestTracker} hands
+ * it over when the quest completes, while {@code Player.addReward()} grants the gold and XP.
  */
 public class Reward {
 
@@ -39,5 +39,10 @@ public class Reward {
     /** The name of the reward item, or {@code null} if there is none. */
     public String getItemName() {
         return itemName;
+    }
+
+    /** "15 gold, 15 XP", followed by ", the iron key" when there is an item. */
+    public String describe() {
+        return gold + " gold, " + xp + " XP" + (itemName == null ? "" : ", the " + itemName);
     }
 }

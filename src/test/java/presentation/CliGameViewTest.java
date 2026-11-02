@@ -229,4 +229,51 @@ class CliGameViewTest {
         CliGameView.PRESET_STATS.values().forEach(stats -> assertTrue(stats.isValid()));
         assertEquals(3, CliGameView.PRESET_STATS.size());
     }
+
+    @Test
+    void aFullOfflineSessionAcceptsBrannsQuestPlaysItToTheEndAndShowsTheQuestLog() {
+        String output = play(List.of(), new FixedDiceRoller(),
+                "Ari", "warrior",
+                "accept",                      // nothing on offer yet
+                "go west",
+                "talk to Brann",
+                "Do you have any work for me?",
+                "accept",
+                "quests",
+                "leave",
+                "go east",
+                "go north",
+                "take shed key",
+                "quests",
+                "journal",
+                "quit");
+
+        assertContains(output, "! " + GameController.NO_OFFER);
+        assertContains(output, "Brann offers you a quest: Find the shed key\n"
+                + "  Brann needs the shed key from the Tavern. Find it and pick it up.\n"
+                + "  Objectives: fetch shed key (1)\n"
+                + "  Reward: 15 gold, 15 XP\n"
+                + "Type accept or decline.\n");
+        assertContains(output, "(Brann offers a pre-written quest. Reason: LLM unavailable.)");
+        assertContains(output, "(Quest accepted: Find the shed key)");
+        assertContains(output, "Quests:\n- Find the shed key (active, from Brann): fetch shed key 0/1; reward: 15 gold, 15 XP\n");
+        assertContains(output, "You take the shed key.\n(Quest completed: Find the shed key. Reward: 15 gold, 15 XP.)");
+        assertContains(output, " HP | Gold 15 | XP 15 | ");
+        assertContains(output, "- Find the shed key (completed, from Brann): fetch shed key 1/1; reward: 15 gold, 15 XP\n");
+        assertContains(output, "! \"journal\" is not available yet.");
+        assertEquals(1, output.split("Brann offers you a quest:", -1).length - 1, "one offer in the conversation");
+    }
+
+    @Test
+    void declineDiscardsTheOfferAndTheQuestLogStaysEmpty() {
+        String output = play(List.of(), new FixedDiceRoller(),
+                "Vex", "rogue", "go west", "talk to the blacksmith", "hello", "decline", "hello again", "accept",
+                "quests", "quit");
+
+        assertContains(output, "You decline \"Find the shed key\".");
+        assertContains(output, "! " + GameController.NO_OFFER);
+        assertContains(output, "Quests: none");
+        assertEquals(1, output.split("Brann offers you a quest:", -1).length - 1, "no second offer in the conversation");
+        assertTrue(controller.getState().getQuestLog().allQuests().isEmpty());
+    }
 }

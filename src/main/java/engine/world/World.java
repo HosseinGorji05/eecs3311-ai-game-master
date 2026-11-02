@@ -157,9 +157,24 @@ public class World {
         return regions;
     }
 
+    /** The NPC with this id, wherever it is, or {@code null} if there is none. */
+    public NPC findNpc(String id) {
+        for (Region region : regions) {
+            for (Location location : region.getLocations()) {
+                for (NPC npc : location.getNpcs()) {
+                    if (npc.getId().equals(id)) {
+                        return npc;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
     /**
-     * A plain-text overview of every location with its id, items and exits, one line each, for
-     * prompts that must only refer to things that exist.
+     * A plain-text overview of every location with its id, items (an owned item followed by its
+     * owner, e.g. {@code "iron key (Brann's)"}), people, enemies and exits, one line each, for prompts
+     * that must only refer to things that exist. People and enemies appear only where there are any.
      */
     public String summarize() {
         StringBuilder text = new StringBuilder();
@@ -168,13 +183,22 @@ public class World {
             for (Location location : region.getLocations()) {
                 String items = location.getItems().isEmpty()
                         ? "none"
-                        : location.getItems().stream().map(Item::getName).collect(Collectors.joining(", "));
+                        : location.getItems().stream().map(this::summarizeItem).collect(Collectors.joining(", "));
+                String people = location.getNpcs().isEmpty() ? "" : "; people: " + location.describeNpcs();
                 String enemies = location.getEnemies().isEmpty() ? "" : "; enemies: " + location.describeEnemies();
-                text.append(String.format(Locale.ROOT, "- %s [%s]; items: %s%s; exits: %s\n",
-                        location.getName(), location.getId(), items, enemies, location.describeExits()));
+                text.append(String.format(Locale.ROOT, "- %s [%s]; items: %s%s%s; exits: %s\n",
+                        location.getName(), location.getId(), items, people, enemies, location.describeExits()));
             }
         }
         return text.toString();
+    }
+
+    private String summarizeItem(Item item) {
+        if (item.getOwnerId() == null) {
+            return item.getName();
+        }
+        NPC owner = findNpc(item.getOwnerId());
+        return item.getName() + " (" + (owner == null ? item.getOwnerId() : owner.getName()) + "'s)";
     }
 
     private static void connect(Location a, Direction aToB, Location b, Direction bToA) {

@@ -46,4 +46,15 @@ class DialogueModeTest {
         assertFalse(new ExplorationMode().allows(ActionType.LEAVE));
         assertFalse(new CombatMode(new Enemy("wolf", 8, 3, 11)).allows(ActionType.TALK));
     }
+
+
+    @Test
+    void aConversationStartsWithoutAQuestOfferAndRemembersOne() {
+        DialogueMode mode = new DialogueMode(MARTA);
+        assertFalse(mode.isQuestOffered());
+
+        mode.setQuestOffered();
+        assertTrue(mode.isQuestOffered());
+        assertFalse(new DialogueMode(MARTA).isQuestOffered(), "a new conversation may offer again");
+    }
 }

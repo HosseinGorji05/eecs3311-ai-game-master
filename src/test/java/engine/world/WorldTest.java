@@ -140,8 +140,28 @@ class WorldTest {
         }
         assertTrue(summary.startsWith("Village:\n"), summary);
         assertTrue(summary.contains("\nForest:\n"), summary);
-        assertTrue(summary.contains("- Tavern [tavern]; items: shed key, bread; exits: south (Village Square)\n"),
-                summary);
+        assertTrue(summary.contains("- Tavern [tavern]; items: shed key, bread; people: Marta (tavern keeper); "
+                + "exits: south (Village Square)\n"), summary);
+    }
+
+    @Test
+    void summarizeNamesThePeopleAndWhoOwnsAnItem() {
+        String summary = World.createDefault().summarize();
+
+        assertTrue(summary.contains("- Blacksmith's Forge [forge]; items: iron key (Brann's), warhammer (Brann's); "
+                + "people: Brann (blacksmith); exits: east (Village Square)\n"), summary);
+        assertTrue(summary.contains("- Village Square [village-square]; items: none; exits: "), "no people part: " + summary);
+        assertFalse(summary.contains("bandit leader money"), "secrets never appear");
+    }
+
+    @Test
+    void findNpcLooksThroughEveryLocation() {
+        World world = World.createDefault();
+
+        assertEquals("Brann", world.findNpc("blacksmith").getName());
+        assertEquals("Marta", world.findNpc("tavern-keeper").getName());
+        assertNull(world.findNpc("Brann"), "by id only");
+        assertNull(world.findNpc("nobody"));
     }
 
     @Test

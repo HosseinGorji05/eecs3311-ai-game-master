@@ -17,6 +17,8 @@ public enum EventVerb {
     DIED,
     /** The player escaped from a fight. */
     FLED,
+    /** The player accepted a quest offer. */
+    ACCEPTED,
     /** A quest was completed. */
     COMPLETED,
     /** A quest failed. */

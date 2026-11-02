@@ -10,6 +10,7 @@ import engine.core.GameState;
 import engine.events.EventType;
 import engine.events.GameEvent;
 import engine.events.GameEventListener;
+import engine.quests.Quest;
 import engine.quests.Objective;
 import engine.quests.ObjectiveType;
 import engine.quests.Quest;
@@ -52,6 +53,11 @@ class GameControllerTest {
         @Override
         public void showError(String message) {
             shown.add("error: " + message);
+        }
+
+        @Override
+        public void showQuestOffer(Quest quest) {
+            shown.add("offer: " + quest.getTitle());
         }
 
         @Override

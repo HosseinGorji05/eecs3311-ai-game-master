@@ -4,6 +4,7 @@ import agent.ActionInterpreter;
 import agent.NpcDialogueAgent;
 import agent.NpcReply;
 import agent.PromptBuilder;
+import agent.QuestGenerator;
 import agent.ResponseParser;
 import engine.character.CharacterClass;
 import engine.character.CharacterFactory;
@@ -18,9 +19,11 @@ import engine.core.DialogueMode;
 import engine.core.GameState;
 import engine.core.RulesEngine;
 import engine.events.EventType;
+import engine.events.EventVerb;
 import engine.events.GameEvent;
 import engine.events.GameEventBus;
 import engine.events.GameEventListener;
+import engine.quests.Quest;
 import engine.quests.QuestTracker;
 import engine.world.NPC;
 import engine.world.World;
@@ -46,8 +49,15 @@ import java.util.stream.Collectors;
  * the rules engine like any command, and the exchange is published as a DIALOGUE event. LEAVE ends
  * the conversation through {@link #performAction}.
  *
+ * <p>Quest offers (SD07, F07): after a reply, if the NPC has not offered a quest in this conversation
+ * and {@code QuestLog.canOfferFrom} allows it, the conversation is marked as offered and the quest
+ * generator builds a quest, which the views show. The player answers with {@link #respondToQuest};
+ * only the quest offered in the current conversation can be answered. Accepting adds it to the quest
+ * log and publishes a QUEST event (verb ACCEPTED); declining discards it, and the NPC offers nothing
+ * more until a later conversation.
+ *
  * <p>Not yet included (they come with their features): narration by the LLM (the narration is the
- * results' messages), quest offers, the backstory, saving and loading, the journal and the ending.
+ * results' messages), the backstory, saving and loading, the journal and the ending.
  * Until the ending exists, a turn is "game over" when the player has died.
  */
 public class GameController {
@@ -57,6 +67,8 @@ public class GameController {
     static final String EXAMPLES = "Try: go north, take shed key, equip sword, inventory, talk to Marta, attack wolf, flee.";
     static final String NOT_TALKING = "You are not talking to anyone.";
     static final String GAME_OVER = "The game is over.";
+    static final String NO_OFFER = "Nobody is offering you a quest right now.";
+    static final String QUEST_LOG_FULL = "Your quest log is full.";
 
     private final GameState state = new GameState();
     private final List<GameView> views = new ArrayList<>();
@@ -65,7 +77,10 @@ public class GameController {
     private final GameEventBus eventBus = new GameEventBus();
     private final ActionInterpreter interpreter;
     private final NpcDialogueAgent dialogueAgent;
+    private final QuestGenerator questGenerator;
     private Player newPlayer;
+    private Quest offeredQuest;
+    private DialogueMode offerConversation;
 
     public GameController(LLMClient llm) {
         this(llm, new DiceRoller(System.nanoTime()));
@@ -77,17 +92,19 @@ public class GameController {
         this.rules = new RulesEngine(Objects.requireNonNull(dice, "dice"), eventBus);
         this.interpreter = new ActionInterpreter(llm, new PromptBuilder(), new ResponseParser(), state);
         this.dialogueAgent = new NpcDialogueAgent(llm, new PromptBuilder(), new ResponseParser(), state);
+        this.questGenerator = new QuestGenerator(llm, new PromptBuilder(), new ResponseParser(), state);
         eventBus.subscribe(state.getEventLog());
         eventBus.subscribe(new QuestTracker(state, eventBus));
     }
 
     /**
-     * Where the interpreter and the dialogue agent describe failed model attempts (the reason and the
+     * Where the interpreter, the dialogue agent and the quest generator describe failed model attempts (the reason and the
      * raw reply), e.g. {@code System.err}; {@code null} turns this off.
      */
     public void setLlmDebugOutput(PrintStream debug) {
         interpreter.setDebugOutput(debug);
         dialogueAgent.setDebugOutput(debug);
+        questGenerator.setDebugOutput(debug);
     }
 
     /** Adds a view; a view that listens to events is also subscribed to the bus. */
@@ -161,7 +178,8 @@ public class GameController {
      * {@code Name: "text"} (with a notice when it is a pre-written line); a side effect runs through
      * the rules engine, which may refuse it, and only an accepted one's message is shown (F03). The
      * exchange is published as a DIALOGUE event with the NPC's id as subject. Only a side effect uses
-     * up a turn.
+     * up a turn. Then the NPC may offer a quest (see the class comment), with a notice when it is a
+     * template quest.
      *
      * @return the reply, or {@code null} if the player is not in a conversation (an error is shown)
      *         or the game is over
@@ -198,7 +216,38 @@ public class GameController {
                 views.forEach(view -> view.showNarration(effect.getMessage()));
             }
         }
+        offerQuest(dialogue);
         return reply;
+    }
+
+    /**
+     * Answers the quest offered in the current conversation (SD07). Accepting adds it to the quest log
+     * and publishes a QUEST event; if the log has filled up meanwhile, an error is shown instead.
+     * Declining discards the offer. Either way the offer is closed. Answering does not use up a turn.
+     * An error is shown if this quest is not the one on offer, e.g. after the conversation ended.
+     */
+    public void respondToQuest(Quest quest, boolean accept) {
+        requireStarted();
+        if (isPlayerDead()) {
+            error(GAME_OVER, true);
+            return;
+        }
+        if (quest == null || quest != offeredQuest || state.getMode() != offerConversation) {
+            error(NO_OFFER, false);
+            return;
+        }
+        offeredQuest = null;
+        offerConversation = null;
+        if (!accept) {
+            views.forEach(view -> view.showNarration("You decline \"" + quest.getTitle() + "\"."));
+            return;
+        }
+        if (!state.getQuestLog().accept(quest)) {
+            error(QUEST_LOG_FULL, false);
+            return;
+        }
+        eventBus.publish(new GameEvent(EventType.QUEST, state.getTurn(), "Quest accepted: " + quest.getTitle(),
+                quest.getId(), 0, EventVerb.ACCEPTED));
     }
 
     /** The recorded events of this type, oldest first. */
@@ -229,6 +278,26 @@ public class GameController {
         String narration = results.stream().map(ActionResult::getMessage).collect(Collectors.joining("\n"));
         views.forEach(view -> view.showNarration(narration));
         return new TurnResult(narration, results, isPlayerDead());
+    }
+
+    /** SD07: offers a quest if the conversation is still going, nothing was offered yet and the NPC may offer one. */
+    private void offerQuest(DialogueMode dialogue) {
+        NPC npc = dialogue.getNpc();
+        if (state.getMode() != dialogue || dialogue.isQuestOffered() || !state.getQuestLog().canOfferFrom(npc)) {
+            return;
+        }
+        dialogue.setQuestOffered();
+        Quest quest = questGenerator.generate(npc);
+        if (questGenerator.isFallbackUsed() && quest != null) {
+            String notice = npc.getName() + " offers a pre-written quest. Reason: "
+                    + questGenerator.getFallbackReason() + ".";
+            views.forEach(view -> view.showNotice(notice));
+        }
+        if (quest != null) {
+            offeredQuest = quest;
+            offerConversation = dialogue;
+            views.forEach(view -> view.showQuestOffer(quest));
+        }
     }
 
     private TurnResult error(String message, boolean gameOver) {

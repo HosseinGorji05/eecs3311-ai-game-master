@@ -14,8 +14,8 @@ import java.util.Set;
  *
  * <p>Pattern role: <b>ConcreteState</b> of the State pattern.
  *
- * <p>The design's {@code questOffered} flag ({@code isQuestOffered()}, {@code setQuestOffered()}) is
- * added together with quest offers.
+ * <p>The mode also remembers whether the NPC has offered a quest in this conversation, so it offers
+ * at most one (SD07 n2), whether the player accepts or declines it.
  */
 public class DialogueMode implements GameMode {
 
@@ -23,6 +23,7 @@ public class DialogueMode implements GameMode {
             ActionType.LEAVE, ActionType.TAKE, ActionType.LOOK, ActionType.INVENTORY);
 
     private final NPC npc;
+    private boolean questOffered;
 
     public DialogueMode(NPC npc) {
         this.npc = Objects.requireNonNull(npc, "npc");
@@ -31,6 +32,16 @@ public class DialogueMode implements GameMode {
     /** The NPC the player is talking to. */
     public NPC getNpc() {
         return npc;
+    }
+
+    /** Whether the NPC has already offered a quest in this conversation. */
+    public boolean isQuestOffered() {
+        return questOffered;
+    }
+
+    /** Records that the NPC has offered a quest; a new conversation starts without the mark. */
+    public void setQuestOffered() {
+        questOffered = true;
     }
 
     @Override

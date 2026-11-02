@@ -17,7 +17,8 @@ import java.util.Objects;
  *
  * <p>Combat values (the report gives no formulas; tuning numbers may change): attack bonus =
  * strength, defense = {@value #BASE_DEFENSE} + agility, damage = the equipped weapon's damage or
- * {@value #UNARMED_DAMAGE} without one.
+ * {@value #UNARMED_DAMAGE} without one. Level = 1 + XP / {@value #XP_PER_LEVEL}; it caps quest rewards
+ * (F07).
  */
 public class Player extends Combatant {
 
@@ -25,6 +26,8 @@ public class Player extends Combatant {
     public static final int BASE_DEFENSE = 10;
     /** Damage of a hit without an equipped weapon. */
     public static final int UNARMED_DAMAGE = 2;
+    /** Experience per level after the first (Stage 2 tuning number; the report gives no formula). */
+    public static final int XP_PER_LEVEL = 100;
 
     private final CharacterClass characterClass;
     private final Stats stats;
@@ -107,8 +110,8 @@ public class Player extends Combatant {
     }
 
     /**
-     * Adds a quest reward's gold and XP. The reward item is handed over by the quest giver once
-     * quest offers exist, so it is not added here.
+     * Adds a quest reward's gold and XP. The reward item belongs to the quest giver, so
+     * {@code QuestTracker} hands it over from the world.
      */
     public void addReward(Reward reward) {
         Objects.requireNonNull(reward, "reward");
@@ -122,6 +125,11 @@ public class Player extends Combatant {
 
     public int getXp() {
         return xp;
+    }
+
+    /** 1 + XP / {@value #XP_PER_LEVEL}: level 1 from 0 XP, level 2 from 100 XP. */
+    public int getLevel() {
+        return 1 + xp / XP_PER_LEVEL;
     }
 
     public void setBackstory(String text) {
