@@ -56,6 +56,11 @@ public class Container extends Item {
         return Collections.unmodifiableList(contents);
     }
 
+    /** The weight of the empty container, without its contents. */
+    public double getOwnWeight() {
+        return weight;
+    }
+
     /** How many items this container can hold directly. */
     public int getCapacity() {
         return capacity;

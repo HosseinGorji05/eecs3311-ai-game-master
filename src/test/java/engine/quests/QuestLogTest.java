@@ -151,4 +151,34 @@ class QuestLogTest {
         assertThrows(UnsupportedOperationException.class, () -> log.allQuests().clear());
         assertThrows(NullPointerException.class, () -> log.hasQuestFrom(null));
     }
+
+    @Test
+    void restoreReplacesTheLogWithFinishedQuestsAsTheyAre() {
+        QuestLog log = new QuestLog();
+        log.accept(sideQuest("old"));
+        Quest done = sideQuest("done");
+        done.complete();
+        Quest active = sideQuest("active");
+
+        log.restore(List.of(done, active));
+
+        assertEquals(List.of(done, active), log.allQuests());
+        assertEquals(List.of(active), log.activeQuests());
+    }
+
+    @Test
+    void restoreRefusesDuplicatesAndTooManyActiveSideQuestsAndThenChangesNothing() {
+        QuestLog log = new QuestLog();
+        Quest kept = sideQuest("kept");
+        log.accept(kept);
+        Quest a = sideQuest("a");
+
+        assertThrows(IllegalArgumentException.class, () -> log.restore(List.of(a, a)));
+        assertThrows(IllegalArgumentException.class, () -> log.restore(List.of(a, sideQuest("a"))));
+        assertThrows(IllegalArgumentException.class, () -> log.restore(
+                List.of(sideQuest("1"), sideQuest("2"), sideQuest("3"), sideQuest("4"))));
+        assertEquals(List.of(kept), log.allQuests());
+        log.restore(List.of(sideQuest("1"), sideQuest("2"), sideQuest("3"), mainQuest()));
+        assertEquals(4, log.activeQuests().size(), "the main quest does not count");
+    }
 }

@@ -25,12 +25,16 @@ import engine.events.EventVerb;
 import engine.events.GameEvent;
 import engine.events.GameEventBus;
 import engine.events.GameEventListener;
+import engine.persistence.GameSnapshot;
+import engine.persistence.SaveManager;
+import engine.persistence.SaveSlotInfo;
 import engine.quests.Quest;
 import engine.quests.QuestTracker;
 import engine.world.NPC;
 import engine.world.World;
 import llm.LLMClient;
 
+import java.io.IOException;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -64,8 +68,15 @@ import java.util.stream.Collectors;
  * log and publishes a QUEST event (verb ACCEPTED); declining discards it, and the NPC offers nothing
  * more until a later conversation.
  *
+ * <p>Saving and loading (F10, SD08): {@link #saveGame} asks the state whether the mode allows saving,
+ * has it create a snapshot and gives it to the {@link SaveManager}, then confirms with a notice; the
+ * view asks before overwriting a slot listed by {@link #listSaves}. {@link #loadGame} reads the slot,
+ * checks the version and has the state restore itself, then every view renders the loaded game; a
+ * pending quest offer is dropped. Every failure is shown as an error and leaves the game as it was.
+ * Loading also works before a game has started or after the player died.
+ *
  * <p>Not yet included (they come with their features): narration by the LLM (the narration is the
- * results' messages), the backstory, saving and loading and the ending.
+ * results' messages), the backstory and the ending.
  * Until the ending exists, a turn is "game over" when the player has died.
  */
 public class GameController {
@@ -77,6 +88,8 @@ public class GameController {
     static final String GAME_OVER = "The game is over.";
     static final String NO_OFFER = "Nobody is offering you a quest right now.";
     static final String QUEST_LOG_FULL = "Your quest log is full.";
+    static final String CANNOT_SAVE = "You can't save during combat.";
+    static final String SAVED = "Game saved.";
 
     private final GameState state = new GameState();
     private final List<GameView> views = new ArrayList<>();
@@ -84,6 +97,7 @@ public class GameController {
     private final CommandFactory commandFactory = new CommandFactory();
     private final GameEventBus eventBus = new GameEventBus();
     private final MemoryManager memory;
+    private final SaveManager saves;
     private final ActionInterpreter interpreter;
     private final NpcDialogueAgent dialogueAgent;
     private final QuestGenerator questGenerator;
@@ -95,9 +109,15 @@ public class GameController {
         this(llm, new DiceRoller(System.nanoTime()));
     }
 
-    /** Creates a controller with the given dice, so tests can fix every roll. */
+    /** Creates a controller with the given dice, so tests can fix every roll; saves go to the default directory. */
     public GameController(LLMClient llm, DiceRoller dice) {
+        this(llm, dice, new SaveManager());
+    }
+
+    /** Creates a controller with the given dice and save manager (e.g. one using a temporary directory). */
+    public GameController(LLMClient llm, DiceRoller dice, SaveManager saves) {
         Objects.requireNonNull(llm, "llm");
+        this.saves = Objects.requireNonNull(saves, "saves");
         this.rules = new RulesEngine(Objects.requireNonNull(dice, "dice"), eventBus);
         this.memory = new MemoryManager(state, new MemorySummarizer(llm, new PromptBuilder(), new ResponseParser(), state));
         PromptBuilder prompts = new PromptBuilder(memory);
@@ -263,6 +283,64 @@ public class GameController {
         }
         eventBus.publish(new GameEvent(EventType.QUEST, state.getTurn(), "Quest accepted: " + quest.getTitle(),
                 quest.getId(), 0, EventVerb.ACCEPTED));
+    }
+
+    /**
+     * Saves the game in the slot (UC10, SD08), replacing a save already there: the view asks the player
+     * first. Shows "Game saved." or an error: during combat, after death, for an invalid slot name, or
+     * when the file cannot be written (the game continues unchanged).
+     */
+    public void saveGame(String slot) {
+        requireStarted();
+        if (isPlayerDead()) {
+            error(GAME_OVER, true);
+            return;
+        }
+        if (!state.canSave()) {
+            error(CANNOT_SAVE, false);
+            return;
+        }
+        try {
+            saves.save(slot, state.createSnapshot());
+        } catch (IllegalArgumentException | IOException failure) {
+            error("Could not save: " + failure.getMessage(), false);
+            return;
+        }
+        views.forEach(view -> view.showNotice(SAVED));
+    }
+
+    /**
+     * Replaces the game with the one saved in the slot (UC11, SD08) and renders it in every view. If
+     * the file is missing, damaged or from another version, an error is shown and the game is left
+     * untouched. Loading uses no turn and publishes no event.
+     */
+    public void loadGame(String slot) {
+        GameSnapshot loaded;
+        try {
+            loaded = saves.load(slot);
+        } catch (IllegalArgumentException | IOException failure) {
+            error("Could not load: " + failure.getMessage(), false);
+            return;
+        }
+        if (!loaded.isCompatible()) {
+            error("Could not load: the save was made by another version of the game (format " + loaded.getVersion()
+                    + "; this game reads format " + GameSnapshot.CURRENT_VERSION + ").", false);
+            return;
+        }
+        try {
+            state.restore(loaded);
+        } catch (IllegalArgumentException damaged) {
+            error("Could not load: " + damaged.getMessage(), false);
+            return;
+        }
+        offeredQuest = null;
+        offerConversation = null;
+        views.forEach(view -> view.render(state));
+    }
+
+    /** The saved games, newest first, with their character, location and time (for the load menu). */
+    public List<SaveSlotInfo> listSaves() {
+        return saves.listSlots();
     }
 
     /**

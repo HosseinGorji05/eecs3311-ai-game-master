@@ -36,7 +36,7 @@ public class StoryMemory {
         String description = clean(event.getDescription(), MAX_EVENT_CHARS);
         recentEvents.add(description.equals(event.getDescription()) ? event
                 : new GameEvent(event.getType(), event.getTurn(), description, event.getSubjectId(),
-                        event.getAlignmentDelta(), event.getVerb()));
+                        event.getAlignmentDelta(), event.getVerb(), event.getTimestamp()));
     }
 
     /** Adds a fact that is never summarized away; a blank fact or one already known is ignored. */
@@ -77,6 +77,22 @@ public class StoryMemory {
         if (summaries.size() > MAX_SUMMARIES) {
             summaries.remove(0);
         }
+    }
+
+    /**
+     * Replaces the whole memory (when a saved game is loaded). Every text goes through the same
+     * cleaning and limits as when it was first stored.
+     */
+    public void restore(List<String> facts, List<String> savedSummaries, List<GameEvent> events) {
+        List<String> factsCopy = List.copyOf(facts);
+        List<String> summariesCopy = List.copyOf(savedSummaries);
+        List<GameEvent> eventsCopy = List.copyOf(events);
+        fixedFacts.clear();
+        summaries.clear();
+        recentEvents.clear();
+        factsCopy.forEach(this::addFixedFact);
+        summariesCopy.forEach(this::addSummary);
+        eventsCopy.forEach(this::record);
     }
 
     /** The fixed facts, oldest first, as a read-only list. */

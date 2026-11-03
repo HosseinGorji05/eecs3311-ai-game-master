@@ -36,3 +36,6 @@ target/
 .env.*
 !.env.example
 config.local.json
+
+# Saved games (F10)
+saves/

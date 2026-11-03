@@ -32,6 +32,15 @@ public class GameEvent {
      */
     public GameEvent(EventType type, int turn, String description, String subjectId, int alignmentDelta,
                      EventVerb verb) {
+        this(type, turn, description, subjectId, alignmentDelta, verb, Instant.now());
+    }
+
+    /**
+     * Recreates an event exactly as it was recorded, with its original timestamp (when a game is
+     * loaded, or when a copy of the event is stored).
+     */
+    public GameEvent(EventType type, int turn, String description, String subjectId, int alignmentDelta,
+                     EventVerb verb, Instant timestamp) {
         this.type = Objects.requireNonNull(type, "type");
         if (turn < 0) {
             throw new IllegalArgumentException("Turn must not be negative: " + turn);
@@ -41,7 +50,7 @@ public class GameEvent {
             throw new IllegalArgumentException("Event description must not be blank");
         }
         this.turn = turn;
-        this.timestamp = Instant.now();
+        this.timestamp = Objects.requireNonNull(timestamp, "timestamp");
         this.description = description;
         this.subjectId = subjectId;
         this.alignmentDelta = alignmentDelta;

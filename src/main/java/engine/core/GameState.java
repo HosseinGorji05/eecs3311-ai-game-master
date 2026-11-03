@@ -3,6 +3,7 @@ package engine.core;
 import engine.character.Player;
 import engine.commands.ActionType;
 import engine.events.EventLog;
+import engine.persistence.GameSnapshot;
 import engine.quests.QuestLog;
 import engine.world.Location;
 import engine.world.World;
@@ -13,15 +14,16 @@ import java.util.Objects;
  * The single source of truth of a running game: the player, the world, the current location,
  * the current mode, the turn number, the quest log, the event log and the story memory.
  *
- * <p>Pattern role: <b>Context</b> of the State pattern; {@link #allows} and {@link #canSave}
- * delegate to the current {@link GameMode}.
+ * <p>Pattern roles: <b>Context</b> of the State pattern ({@link #allows} and {@link #canSave}
+ * delegate to the current {@link GameMode}) and <b>Originator</b> of the Memento pattern
+ * ({@link #createSnapshot} and {@link #restore}, SD08). Only this class and the objects it owns read
+ * and write the snapshot's state.
  *
  * <p>The state owns its {@link EventLog}, {@link QuestLog} and {@link StoryMemory}; whoever owns
  * the {@code GameEventBus} subscribes the event log (and a {@code QuestTracker} and a
  * {@code MemoryManager}, which fill the quest log and the story memory) to it.
  *
- * <p>{@code isGameOver()} and the Memento operations {@code createSnapshot()} / {@code restore()}
- * of the design are added together with the ending and saving.
+ * <p>{@code isGameOver()} of the design is added together with the ending.
  */
 public class GameState {
 
@@ -100,6 +102,45 @@ public class GameState {
 
     public void nextTurn() {
         turn++;
+    }
+
+    /**
+     * A snapshot of the full state (see {@code StateJson} for what it holds), named after the player
+     * and the current location.
+     *
+     * @throws IllegalStateException if the game has not started or the current mode does not allow saving
+     */
+    public GameSnapshot createSnapshot() {
+        if (!canSave()) {
+            throw new IllegalStateException("Saving is not allowed right now");
+        }
+        return new GameSnapshot(StateJson.write(this), player.getName(), currentLocation.getName());
+    }
+
+    /**
+     * Replaces the game with the snapshot's. The whole snapshot is read and checked first; only then
+     * are the player, the world, the location, the mode and the turn replaced and the existing quest
+     * log, event log and story memory refilled, so everything that holds this state, the event log or
+     * the memory keeps working. No event is published.
+     *
+     * @throws IllegalArgumentException if the snapshot is from another version or its state is damaged;
+     *                                  the game is then left as it was
+     */
+    public void restore(GameSnapshot snapshot) {
+        Objects.requireNonNull(snapshot, "snapshot");
+        if (!snapshot.isCompatible()) {
+            throw new IllegalArgumentException("The save was made by another version of the game (format "
+                    + snapshot.getVersion() + "; this game reads format " + GameSnapshot.CURRENT_VERSION + ").");
+        }
+        StateJson.Restored saved = StateJson.read(snapshot.getStateJson());
+        turn = saved.turn();
+        player = saved.player();
+        world = saved.world();
+        currentLocation = saved.currentLocation();
+        mode = saved.mode();
+        questLog.restore(saved.quests());
+        eventLog.restore(saved.events());
+        storyMemory.restore(saved.facts(), saved.summaries(), saved.recent());
     }
 
     private GameMode requireMode() {

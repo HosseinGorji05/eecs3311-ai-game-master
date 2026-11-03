@@ -11,6 +11,7 @@ import engine.core.GameState;
 import engine.events.EventType;
 import engine.events.GameEvent;
 import engine.events.GameEventListener;
+import engine.persistence.SaveSlotInfo;
 import engine.quests.Quest;
 import engine.world.Location;
 import engine.world.NPC;
@@ -18,6 +19,8 @@ import engine.world.Region;
 
 import java.io.InputStream;
 import java.io.PrintStream;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,9 +41,12 @@ import java.util.stream.Collectors;
  * quest log (active and finished quests, their giver, progress and reward), {@code journal} the story
  * so far (the story memory), {@code history [type]} the event history, {@code accept} and
  * {@code decline} answer the quest last offered, {@code flee} and {@code leave} are sent as fixed
- * actions, {@code help} lists the commands and {@code quit} ends the game; any other line is said to the NPC in a conversation, and otherwise
+ * actions, {@code save <name>}, {@code load <name>} and {@code saves} save, load and list games
+ * (saving over an existing name asks for a yes or no first), {@code help} lists the commands and
+ * {@code quit} ends the game; any other line is said to the NPC in a conversation, and otherwise
  * played as a natural-language command. In a conversation {@code bye} and {@code goodbye} also leave,
- * and the prompt names the NPC. Saving and loading are not available yet.
+ * and the prompt names the NPC. After the player dies, the session goes on so a save can be loaded
+ * (UC11); every other command answers that the game is over.
  */
 public class CliGameView implements GameView, GameEventListener {
 
@@ -51,13 +57,16 @@ public class CliGameView implements GameView, GameEventListener {
             CharacterClass.MAGE, new Stats(2, 3, 5));
 
     private static final int HISTORY_COUNT = 20;
-    private static final Set<String> NOT_AVAILABLE_YET = Set.of("save", "load", "saves");
+    private static final DateTimeFormatter SAVE_TIME = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.ROOT)
+            .withZone(ZoneId.systemDefault());
+    static final String GAME_OVER_LINE = "You have died. Game over. Type load <name> to continue from a save, or quit.";
     private static final String HELP = """
             Commands: type what you want to do, e.g. "go north", "go to the tavern", "take shed key",
             "equip sword", "use healing potion", "drop bread", "put bread in pouch", "look", "inventory",
             "talk to Marta", "attack wolf", "flee", or several at once: "take shed key and go south".
             In a conversation, everything you type is said to the person; leave (or bye) ends it.
             When someone offers you a quest, type accept or decline.
+            save <name> saves the game (not during combat), load <name> continues a saved game, saves lists them.
             Also: map, quests, journal, history, history <type>, help, quit.""";
     private static final Set<String> LEAVE_WORDS = Set.of("leave", "bye", "goodbye");
 
@@ -67,6 +76,7 @@ public class CliGameView implements GameView, GameEventListener {
     private final List<String> pendingNotices = new ArrayList<>();
     private Quest offeredQuest;
     private boolean running;
+    private boolean deathAnnounced;
 
     public CliGameView(GameController controller, InputStream in, PrintStream out) {
         this.controller = Objects.requireNonNull(controller, "controller");
@@ -126,8 +136,18 @@ public class CliGameView implements GameView, GameEventListener {
             Quest quest = offeredQuest;
             offeredQuest = null;
             controller.respondToQuest(quest, first.equals("accept"));
-        } else if (NOT_AVAILABLE_YET.contains(first)) {
-            showError("\"" + first + "\" is not available yet.");
+        } else if ((first.equals("save") || first.equals("load")) && words.length <= 2) {
+            if (words.length == 1) {
+                showError("Type " + first + " <name>, e.g. " + first + " mygame.");
+            } else if (first.equals("save")) {
+                save(words[1]);
+            } else {
+                offeredQuest = null;
+                controller.loadGame(words[1]);
+                deathAnnounced = !controller.getState().getPlayer().isAlive();
+            }
+        } else if (words.length == 1 && first.equals("saves")) {
+            showSaves();
         } else if (talking) {
             controller.sendDialogue(line);
         } else {
@@ -136,10 +156,10 @@ public class CliGameView implements GameView, GameEventListener {
         if (!talking && controller.getState().getMode() instanceof DialogueMode dialogue) {
             showNotice("You are talking to " + dialogue.getNpc().getName() + ". Say something, or type leave to end the conversation.");
         }
-        if (result != null && result.isGameOver()) {
+        if (result != null && result.isGameOver() && !deathAnnounced) {
             flushNotices();
-            out.println("You have died. Game over.");
-            running = false;
+            out.println(GAME_OVER_LINE);
+            deathAnnounced = true;
         }
     }
 
@@ -253,6 +273,33 @@ public class CliGameView implements GameView, GameEventListener {
         for (GameEvent event : events) {
             out.println("[turn " + event.getTurn() + "] " + event.getType().name().toLowerCase(Locale.ROOT)
                     + ": " + event.getDescription());
+        }
+    }
+
+    /** Saves in the slot; if a save of that name exists (and saving is allowed), asks first. */
+    private void save(String slot) {
+        boolean exists = controller.listSaves().stream().anyMatch(info -> info.getSlot().equalsIgnoreCase(slot));
+        if (exists && controller.getState().canSave()) {
+            out.print("A save named \"" + slot + "\" already exists. Overwrite it? (yes/no) ");
+            String answer = in.hasNextLine() ? in.nextLine().trim().toLowerCase(Locale.ROOT) : "";
+            if (!answer.equals("yes") && !answer.equals("y")) {
+                showNotice("Not saved. Type save with another name to keep both.");
+                return;
+            }
+        }
+        controller.saveGame(slot);
+    }
+
+    private void showSaves() {
+        List<SaveSlotInfo> slots = controller.listSaves();
+        if (slots.isEmpty()) {
+            out.println("No saves yet.");
+            return;
+        }
+        out.println("Saves (newest first):");
+        for (SaveSlotInfo slot : slots) {
+            out.println("- " + slot.getSlot() + ": " + slot.getCharacterName() + " at " + slot.getLocationName()
+                    + ", saved " + SAVE_TIME.format(slot.getSavedAt()));
         }
     }
 

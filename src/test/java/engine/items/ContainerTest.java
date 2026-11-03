@@ -121,4 +121,13 @@ class ContainerTest {
         assertEquals("iron key (0.2 kg)", key.describe());
         assertEquals("pouch (0.4 kg)", pouch.describe());
     }
+
+    @Test
+    void theOwnWeightLeavesTheContentsOut() {
+        Container backpack = new Container("backpack", 1.0, 8);
+        backpack.add(new Consumable("bread", 0.3, 2));
+
+        assertEquals(1.0, backpack.getOwnWeight());
+        assertEquals(1.3, backpack.getWeight(), 1e-9);
+    }
 }

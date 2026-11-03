@@ -4,15 +4,19 @@ import engine.core.ExplorationMode;
 import engine.core.FixedDiceRoller;
 import engine.core.GameState;
 import engine.core.StoryMemory;
+import engine.persistence.SaveManager;
 import engine.events.GameEvent;
 import engine.world.Direction;
 import llm.ScriptedLLMClient;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +29,14 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CliGameViewTest {
 
+    @TempDir
+    Path saveDirectory;
+
     private GameController controller;
 
     /** Plays the input lines through a CLI with the given model answers and dice; returns the output. */
     private String play(List<String> llmResponses, FixedDiceRoller dice, String... lines) {
-        controller = new GameController(new ScriptedLLMClient(llmResponses), dice);
+        controller = new GameController(new ScriptedLLMClient(llmResponses), dice, new SaveManager(saveDirectory));
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         PrintStream out = new PrintStream(bytes, true, StandardCharsets.UTF_8);
         String input = String.join("\n", lines) + "\n";
@@ -72,7 +79,7 @@ class CliGameViewTest {
         assertContains(output, "Ari attacks wolf: rolls 10 + 5 = 15 against defense 11. Hit for 2 damage (wolf: 6/8 HP).");
         assertContains(output, "wolf attacks Ari: rolls 5 + 3 = 8 against defense 13. Miss.");
         assertContains(output, "That is not possible right now.");   // no talking in combat
-        assertContains(output, "! \"save\" is not available yet.");
+        assertContains(output, "! You can't save during combat.");
         assertContains(output, "[turn 5] combat: Ari attacks wolf");
         assertTrue(output.endsWith("> Goodbye.\n"), output);
         assertTrue(controller.getRecentHistory(1).get(0).getDescription().startsWith("Rejected TALK"),
@@ -195,7 +202,7 @@ class CliGameViewTest {
     }
 
     @Test
-    void theSessionEndsWhenThePlayerDies() {
+    void afterDeathTheSessionOnlyWaitsForALoadOrQuit() {
         String[] lines = new String[2 + 10 + 2];
         lines[0] = "Ari";
         lines[1] = "mage";   // 18 HP, defense 13: each wolf hit takes 3
@@ -214,9 +221,65 @@ class CliGameViewTest {
         String output = play(List.of(), new FixedDiceRoller(rolls), lines);
 
         assertContains(output, "You die.");
-        assertContains(output, "You have died. Game over.\nGoodbye.");
+        assertContains(output, CliGameView.GAME_OVER_LINE + "\n> ! The game is over.\n");
+        assertEquals(1, output.split("You have died", -1).length - 1, "the death is announced once");
+        assertTrue(output.endsWith("> Goodbye.\n"), output);
         assertFalse(controller.getState().getPlayer().isAlive());
         assertEquals("wolf-den", controller.getState().currentLocation().getId());
+    }
+
+    @Test
+    void saveSavesAndLoadWorkInAnOfflineSessionAndOverwritingAsksFirst() throws Exception {
+        String output = play(List.of(), new FixedDiceRoller(),
+                "Ari", "warrior",
+                "saves",
+                "save",
+                "save ../x",
+                "go north",
+                "save Tavern",
+                "saves",
+                "go south",
+                "save tavern", "no",
+                "save tavern", "yes",
+                "go west",
+                "load tavern",
+                "load nothing",
+                "help",
+                "quit");
+
+        assertContains(output, "No saves yet.");
+        assertContains(output, "! Type save <name>, e.g. save mygame.");
+        assertContains(output, "! Could not save: A save name has 1 to 32 letters, digits, hyphens (-) or underscores (_).");
+        assertContains(output, "> (Game saved.)\n");
+        assertContains(output, "Saves (newest first):\n- tavern: Ari at Tavern, saved ");
+        assertContains(output, "A save named \"tavern\" already exists. Overwrite it? (yes/no) "
+                + "(Not saved. Type save with another name to keep both.)");
+        assertContains(output, "Overwrite it? (yes/no) (Game saved.)");
+        assertContains(output, "> Village Square\n");   // the loaded game is shown
+        assertContains(output, "! Could not load: There is no save named \"nothing\".");
+        assertContains(output, "save <name> saves the game (not during combat), load <name> continues a saved game, "
+                + "saves lists them.");
+        assertEquals("village-square", controller.getState().currentLocation().getId(), "the overwritten save was loaded");
+        assertEquals(List.of("tavern.json"), Files.list(saveDirectory).map(path -> path.getFileName().toString()).toList());
+    }
+
+    @Test
+    void aDeadPlayerCanLoadASaveAndPlayOn() {
+        int[] rolls = new int[16];
+        for (int i = 0; i < rolls.length; i += 2) {
+            rolls[i] = 1;        // Ari misses
+            rolls[i + 1] = 20;   // the wolf hits for 3 (Ari the mage has 18 HP)
+        }
+        String[] lines = {"Ari", "mage", "go south", "save edge", "go west",
+                "attack wolf", "attack wolf", "attack wolf", "attack wolf", "attack wolf", "attack wolf",
+                "go east", "load edge", "go north", "quit"};
+
+        String output = play(List.of(), new FixedDiceRoller(rolls), lines);
+
+        assertContains(output, CliGameView.GAME_OVER_LINE);
+        assertContains(output, "! The game is over.");
+        assertTrue(controller.getState().getPlayer().isAlive());
+        assertEquals("village-square", controller.getState().currentLocation().getId(), "played on after the load");
     }
 
     @Test

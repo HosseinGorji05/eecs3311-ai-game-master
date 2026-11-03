@@ -101,4 +101,15 @@ class EventLogTest {
         assertThrows(IllegalArgumentException.class, () -> new GameEvent(EventType.ITEM, 1, " ", null, 0));
         assertThrows(NullPointerException.class, () -> new GameEvent(EventType.ITEM, 1, null, null, 0));
     }
+
+    @Test
+    void restoreReplacesTheHistoryWithoutAnyBus() {
+        EventLog log = logWithFourEvents();
+
+        log.restore(List.of(STOLE, MOVED));
+
+        assertEquals(List.of(STOLE, MOVED), log.recent(10));
+        log.restore(List.of());
+        assertTrue(log.recent(10).isEmpty());
+    }
 }

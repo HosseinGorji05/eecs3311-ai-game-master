@@ -36,6 +36,16 @@ public class EventLog implements GameEventListener {
         return List.copyOf(events.subList(Math.max(0, events.size() - count), events.size()));
     }
 
+    /**
+     * Replaces the whole history with these events, oldest first, without notifying anyone; used when
+     * a saved game is loaded (this log stays subscribed to the bus).
+     */
+    public void restore(List<GameEvent> history) {
+        List<GameEvent> copy = List.copyOf(history);
+        events.clear();
+        events.addAll(copy);
+    }
+
     private void append(GameEvent event) {
         events.add(event);
     }
