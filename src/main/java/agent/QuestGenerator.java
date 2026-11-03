@@ -36,7 +36,8 @@ import java.util.stream.Collectors;
  *  "objectives":[{"type":"fetch|defeat|visit","target":"...","count":1}],
  *  "reward":{"gold":15,"xp":15,"item":null}}
  * </pre>
- * ({@code giver} is optional). The proposal is data and nothing in it is executed:
+ * ({@code giver} is optional). The prompt holds the giver's profile, the world, the quests already
+ * taken and the story memory focused on the giver. The proposal is data and nothing in it is executed:
  * <ul>
  *   <li>{@link #parse} reads only these fields. It returns {@code null} (an invalid answer, asked
  *       again once) for an objective type other than fetch, defeat or visit, a count that is not a
@@ -114,6 +115,7 @@ public class QuestGenerator extends LlmTask<NPC, QuestProposal> {
                 .collect(Collectors.joining(", "));
         String user = prompts.fromTemplate("quest.user", Map.of(
                 "world", state.getWorld().summarize().strip(),
+                "memory", prompts.memoryContext(giver.getId(), PromptBuilder.MAX_MEMORY_CHARS),
                 "player", player.getName(),
                 "level", String.valueOf(player.getLevel()),
                 "location", state.currentLocation().getName() + " [" + state.currentLocation().getId() + "]",

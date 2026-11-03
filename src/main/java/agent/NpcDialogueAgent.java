@@ -27,9 +27,10 @@ import java.util.stream.Collectors;
  * ({@code {"type":"leave"}}).
  *
  * <p>Pattern role: <b>ConcreteClass</b> of the Template Method pattern. The prompt holds the NPC's
- * name, role, personality and knowledge (never its secrets), the items it owns here, the game state
- * and the last {@value #MAX_RECENT_DIALOGUE} dialogue events with this NPC; the player's message is
- * capped at {@value #MAX_MESSAGE_CHARS} characters and the reply at {@value #MAX_REPLY_CHARS}.
+ * name, role, personality and knowledge (never its secrets), the items it owns here, the game state,
+ * the story memory focused on this NPC and the last {@value #MAX_RECENT_DIALOGUE} dialogue events
+ * with this NPC; the player's message is capped at {@value #MAX_MESSAGE_CHARS} characters and the
+ * reply at {@value #MAX_REPLY_CHARS}.
  *
  * <p>"The LLM speaks, the rules decide": the text is only shown, and nothing in it is ever read as an
  * action. {@link #parse} rejects a side effect whose type is not an action type of the game;
@@ -91,6 +92,7 @@ public class NpcDialogueAgent extends LlmTask<String, NpcReply> {
                 "maxChars", String.valueOf(MAX_REPLY_CHARS)));
         String user = prompts.fromTemplate("dialogue.user", Map.of(
                 "state", prompts.stateSummary(state),
+                "memory", prompts.memoryContext(npc.getId(), PromptBuilder.MAX_MEMORY_CHARS),
                 "recent", recentDialogue(npc),
                 "player", state.getPlayer().getName(),
                 "message", capMessage(message)));

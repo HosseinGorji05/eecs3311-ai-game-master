@@ -49,6 +49,9 @@ class GameStateTest {
         assertNull(state.getMode());
         assertThrows(IllegalStateException.class, () -> state.allows(ActionType.MOVE));
         assertThrows(IllegalStateException.class, state::canSave);
+        assertTrue(state.getStoryMemory().getFixedFacts().isEmpty(), "the story memory starts empty");
+        assertEquals(0, state.getStoryMemory().recentCount());
+        assertSame(state.getStoryMemory(), state.getStoryMemory());
     }
 
     @Test

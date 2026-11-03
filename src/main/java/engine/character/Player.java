@@ -61,6 +61,10 @@ public class Player extends Combatant {
         }
     }
 
+    public CharacterClass getCharacterClass() {
+        return characterClass;
+    }
+
     public Stats getStats() {
         return stats;
     }

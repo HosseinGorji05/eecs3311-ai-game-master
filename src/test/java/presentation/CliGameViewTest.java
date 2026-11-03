@@ -3,6 +3,7 @@ package presentation;
 import engine.core.ExplorationMode;
 import engine.core.FixedDiceRoller;
 import engine.core.GameState;
+import engine.core.StoryMemory;
 import engine.events.GameEvent;
 import engine.world.Direction;
 import llm.ScriptedLLMClient;
@@ -12,6 +13,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -189,7 +191,7 @@ class CliGameViewTest {
         assertContains(output, "Quests: none");
         assertContains(output, "[turn 1] movement: moved to Tavern");
         assertContains(output, "! Unknown event type. Valid types: movement, item, combat, dialogue, quest, rejected.");
-        assertContains(output, "Also: map, quests, history, history <type>, help, quit.");
+        assertContains(output, "Also: map, quests, journal, history, history <type>, help, quit.");
     }
 
     @Test
@@ -260,8 +262,38 @@ class CliGameViewTest {
         assertContains(output, "You take the shed key.\n(Quest completed: Find the shed key. Reward: 15 gold, 15 XP.)");
         assertContains(output, " HP | Gold 15 | XP 15 | ");
         assertContains(output, "- Find the shed key (completed, from Brann): fetch shed key 1/1; reward: 15 gold, 15 XP\n");
-        assertContains(output, "! \"journal\" is not available yet.");
+        assertContains(output, "Journal of Ari\nFacts:\n- Ari, a warrior, arrived at the Village Square in the Village "
+                + "when the story began.\n");
+        assertContains(output, "- Quest completed: Find the shed key. Reward: 15 gold, 15 XP.\nRecent events:\n");
+        assertContains(output, "] took the shed key\n");
         assertEquals(1, output.split("Brann offers you a quest:", -1).length - 1, "one offer in the conversation");
+    }
+
+    @Test
+    void aLongOfflineSessionSummarizesOlderEventsAndTheJournalShowsTheStorySoFar() {
+        List<String> lines = new ArrayList<>(List.of("Ari", "warrior", "journal"));
+        for (int i = 0; i < 23; i++) {
+            lines.add(i % 2 == 0 ? "go north" : "go south");   // ends in the Tavern
+        }
+        lines.addAll(List.of("attack dragon", "take shed key", "talk to Marta", "hello", "leave", "journal", "quit"));
+
+        String output = play(List.of(), new FixedDiceRoller(), lines.toArray(String[]::new));
+
+        assertContains(output, "Journal of Ari\nFacts:\n- Ari, a warrior, arrived at the Village Square in the Village "
+                + "when the story began.\n- Ari set out carrying: sword, healing potion.\n"
+                + "- Marta the tavern keeper can be found at the Tavern.\n"
+                + "- Brann the blacksmith can be found at the Blacksmith's Forge.\nThe story has just begun.\n");
+        String journal = output.substring(output.lastIndexOf("Journal of Ari"));
+        assertContains(journal, "Earlier:\n- Turns 1-10: moved to Tavern; moved to Village Square; moved to Tavern;");
+        assertContains(journal, "Recent events:\n- [turn 11] moved to Tavern\n");
+        assertContains(journal, "- [turn 25] took the shed key\n- [turn 26] started talking to Marta\n"
+                + "- [turn 27] Ari said \"hello\" to Marta; Marta replied \"");
+        assertContains(journal, "- [turn 27] left the conversation with Marta\n> Goodbye.");
+        assertFalse(journal.contains("Rejected"), "a refused attempt is not part of the story");
+        assertFalse(journal.contains("The story has just begun."));
+        StoryMemory memory = controller.getState().getStoryMemory();
+        assertEquals(1, memory.getSummaries().size());
+        assertTrue(memory.recentCount() <= 20);
     }
 
     @Test

@@ -1,6 +1,8 @@
 package presentation;
 
 import agent.ActionInterpreter;
+import agent.MemoryManager;
+import agent.MemorySummarizer;
 import agent.NpcDialogueAgent;
 import agent.NpcReply;
 import agent.PromptBuilder;
@@ -41,8 +43,14 @@ import java.util.stream.Collectors;
  * engine, and runs each turn (SD02, SD03).
  *
  * <p>Pattern roles: <b>Controller</b> of MVC and <b>Facade</b> over the engine and agent layers.
- * The event log and the quest tracker are subscribed to the bus when the controller is created;
- * views that are {@link GameEventListener}s are subscribed when added.
+ * The event log, the memory manager and the quest tracker are subscribed to the bus, in this order,
+ * when the controller is created, so the story memory records an event before the quest update it
+ * causes; views that are {@link GameEventListener}s are subscribed when added.
+ *
+ * <p>Story memory (F09, SD06): the memory manager records the events, keeps key facts and summarizes
+ * older events with its own LLM task; the interpreter, the dialogue agent and the quest generator share
+ * one prompt builder that adds the memory to their prompts. A new game starts with the memory manager's
+ * starting facts, and {@link #getJournal} shows the memory without calling the model.
  *
  * <p>Dialogue (SD07): while the player talks to an NPC, the view sends each line to
  * {@link #sendDialogue}; the NPC's reply is shown as speech, its side effect (if any) runs through
@@ -57,7 +65,7 @@ import java.util.stream.Collectors;
  * more until a later conversation.
  *
  * <p>Not yet included (they come with their features): narration by the LLM (the narration is the
- * results' messages), the backstory, saving and loading, the journal and the ending.
+ * results' messages), the backstory, saving and loading and the ending.
  * Until the ending exists, a turn is "game over" when the player has died.
  */
 public class GameController {
@@ -75,6 +83,7 @@ public class GameController {
     private final RulesEngine rules;
     private final CommandFactory commandFactory = new CommandFactory();
     private final GameEventBus eventBus = new GameEventBus();
+    private final MemoryManager memory;
     private final ActionInterpreter interpreter;
     private final NpcDialogueAgent dialogueAgent;
     private final QuestGenerator questGenerator;
@@ -90,21 +99,25 @@ public class GameController {
     public GameController(LLMClient llm, DiceRoller dice) {
         Objects.requireNonNull(llm, "llm");
         this.rules = new RulesEngine(Objects.requireNonNull(dice, "dice"), eventBus);
-        this.interpreter = new ActionInterpreter(llm, new PromptBuilder(), new ResponseParser(), state);
-        this.dialogueAgent = new NpcDialogueAgent(llm, new PromptBuilder(), new ResponseParser(), state);
-        this.questGenerator = new QuestGenerator(llm, new PromptBuilder(), new ResponseParser(), state);
+        this.memory = new MemoryManager(state, new MemorySummarizer(llm, new PromptBuilder(), new ResponseParser(), state));
+        PromptBuilder prompts = new PromptBuilder(memory);
+        this.interpreter = new ActionInterpreter(llm, prompts, new ResponseParser(), state);
+        this.dialogueAgent = new NpcDialogueAgent(llm, prompts, new ResponseParser(), state);
+        this.questGenerator = new QuestGenerator(llm, prompts, new ResponseParser(), state);
         eventBus.subscribe(state.getEventLog());
+        eventBus.subscribe(memory);
         eventBus.subscribe(new QuestTracker(state, eventBus));
     }
 
     /**
-     * Where the interpreter, the dialogue agent and the quest generator describe failed model attempts (the reason and the
-     * raw reply), e.g. {@code System.err}; {@code null} turns this off.
+     * Where the interpreter, the dialogue agent, the quest generator and the memory summarizer describe failed
+     * model attempts (the reason and the raw reply), e.g. {@code System.err}; {@code null} turns this off.
      */
     public void setLlmDebugOutput(PrintStream debug) {
         interpreter.setDebugOutput(debug);
         dialogueAgent.setDebugOutput(debug);
         questGenerator.setDebugOutput(debug);
+        memory.setDebugOutput(debug);
     }
 
     /** Adds a view; a view that listens to events is also subscribed to the bus. */
@@ -130,7 +143,8 @@ public class GameController {
     }
 
     /**
-     * Creates the world, places the new character in its start location and shows it.
+     * Creates the world, places the new character in its start location, adds the starting facts to the
+     * story memory and shows the game.
      *
      * @throws IllegalStateException if no character was created with {@link #newGame}
      */
@@ -139,6 +153,7 @@ public class GameController {
             throw new IllegalStateException("Create a character with newGame() first");
         }
         state.start(newPlayer, World.createDefault());
+        memory.addStartingFacts();
         views.forEach(view -> view.render(state));
     }
 
@@ -248,6 +263,15 @@ public class GameController {
         }
         eventBus.publish(new GameEvent(EventType.QUEST, state.getTurn(), "Quest accepted: " + quest.getTitle(),
                 quest.getId(), 0, EventVerb.ACCEPTED));
+    }
+
+    /**
+     * The story so far (UC09, SD06): the fixed facts, the summaries of older events and the recent
+     * events. Reading it changes nothing and never calls the model.
+     */
+    public String getJournal() {
+        requireStarted();
+        return memory.journalText();
     }
 
     /** The recorded events of this type, oldest first. */

@@ -11,17 +11,17 @@ import java.util.Objects;
 
 /**
  * The single source of truth of a running game: the player, the world, the current location,
- * the current mode, the turn number, the quest log and the event log.
+ * the current mode, the turn number, the quest log, the event log and the story memory.
  *
  * <p>Pattern role: <b>Context</b> of the State pattern; {@link #allows} and {@link #canSave}
  * delegate to the current {@link GameMode}.
  *
- * <p>The state owns its {@link EventLog} and {@link QuestLog}; whoever owns the
- * {@code GameEventBus} subscribes the event log (and a {@code QuestTracker}) to it.
+ * <p>The state owns its {@link EventLog}, {@link QuestLog} and {@link StoryMemory}; whoever owns
+ * the {@code GameEventBus} subscribes the event log (and a {@code QuestTracker} and a
+ * {@code MemoryManager}, which fill the quest log and the story memory) to it.
  *
- * <p>The story memory of the design, {@code isGameOver()} and the Memento operations
- * {@code createSnapshot()} / {@code restore()} are added together with story memory, the ending
- * and saving.
+ * <p>{@code isGameOver()} and the Memento operations {@code createSnapshot()} / {@code restore()}
+ * of the design are added together with the ending and saving.
  */
 public class GameState {
 
@@ -32,6 +32,7 @@ public class GameState {
     private GameMode mode;
     private final QuestLog questLog = new QuestLog();
     private final EventLog eventLog = new EventLog();
+    private final StoryMemory storyMemory = new StoryMemory();
 
     /**
      * Starts a new game: the player is placed in the world's start location (marked visited),
@@ -91,6 +92,10 @@ public class GameState {
 
     public EventLog getEventLog() {
         return eventLog;
+    }
+
+    public StoryMemory getStoryMemory() {
+        return storyMemory;
     }
 
     public void nextTurn() {

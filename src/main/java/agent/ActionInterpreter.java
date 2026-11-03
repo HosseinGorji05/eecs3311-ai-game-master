@@ -26,7 +26,8 @@ import java.util.Set;
  * common variations of that shape and rejects malformed JSON and unknown action types;
  * {@link #isValid} rejects answers the command factory could not build (a missing target) or that
  * are implausible (too many actions, very long targets), so such output never reaches
- * {@code CommandFactory}. The fallback is {@link OfflineFallbackParser}. Whether
+ * {@code CommandFactory}. The prompt also holds the story memory, focused on the current location;
+ * it is context only, never parsed into actions. The fallback is {@link OfflineFallbackParser}. Whether
  * a valid proposal may actually happen is still decided by the rules engine.
  */
 public class ActionInterpreter extends LlmTask<String, List<ActionProposal>> {
@@ -54,8 +55,10 @@ public class ActionInterpreter extends LlmTask<String, List<ActionProposal>> {
     @Override
     protected LlmRequest buildPrompt(String input) {
         String system = prompts.fromTemplate("interpret.system", Map.of());
-        String user = prompts.fromTemplate("interpret.user",
-                Map.of("state", prompts.stateSummary(state), "input", input));
+        String user = prompts.fromTemplate("interpret.user", Map.of(
+                "state", prompts.stateSummary(state),
+                "memory", prompts.memoryContext(state.currentLocation().getId(), PromptBuilder.MAX_MEMORY_CHARS),
+                "input", input));
         return new LlmRequest(system, user, true, MAX_TOKENS);
     }
 

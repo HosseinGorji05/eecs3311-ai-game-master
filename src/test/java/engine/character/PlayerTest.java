@@ -186,4 +186,9 @@ class PlayerTest {
         assertEquals(5, player.getGold());
         assertNull(player.getInventory().find("iron key"), "the item is handed over by the quest tracker");
     }
+
+    @Test
+    void thePlayerKnowsItsClass() {
+        assertEquals(CharacterClass.WARRIOR, newPlayer(new Stats(4, 3, 3), List.of()).getCharacterClass());
+    }
 }

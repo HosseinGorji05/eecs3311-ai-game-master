@@ -35,12 +35,12 @@ import java.util.stream.Collectors;
  * <p>Pattern roles: <b>View</b> of MVC and <b>ConcreteObserver</b> of the Observer pattern.
  *
  * <p>Command table ({@link #dispatch}): {@code map} and {@code quests} show the situation with the
- * quest log (active and finished quests, their giver, progress and reward), {@code history [type]}
- * the event history, {@code accept} and {@code decline} answer the quest last offered,
- * {@code flee} and {@code leave} are sent as fixed actions, {@code help} lists the commands and
- * {@code quit} ends the game; any other line is said to the NPC in a conversation, and otherwise
+ * quest log (active and finished quests, their giver, progress and reward), {@code journal} the story
+ * so far (the story memory), {@code history [type]} the event history, {@code accept} and
+ * {@code decline} answer the quest last offered, {@code flee} and {@code leave} are sent as fixed
+ * actions, {@code help} lists the commands and {@code quit} ends the game; any other line is said to the NPC in a conversation, and otherwise
  * played as a natural-language command. In a conversation {@code bye} and {@code goodbye} also leave,
- * and the prompt names the NPC. The journal, saving and loading are not available yet.
+ * and the prompt names the NPC. Saving and loading are not available yet.
  */
 public class CliGameView implements GameView, GameEventListener {
 
@@ -51,14 +51,14 @@ public class CliGameView implements GameView, GameEventListener {
             CharacterClass.MAGE, new Stats(2, 3, 5));
 
     private static final int HISTORY_COUNT = 20;
-    private static final Set<String> NOT_AVAILABLE_YET = Set.of("journal", "save", "load", "saves");
+    private static final Set<String> NOT_AVAILABLE_YET = Set.of("save", "load", "saves");
     private static final String HELP = """
             Commands: type what you want to do, e.g. "go north", "go to the tavern", "take shed key",
             "equip sword", "use healing potion", "drop bread", "put bread in pouch", "look", "inventory",
             "talk to Marta", "attack wolf", "flee", or several at once: "take shed key and go south".
             In a conversation, everything you type is said to the person; leave (or bye) ends it.
             When someone offers you a quest, type accept or decline.
-            Also: map, quests, history, history <type>, help, quit.""";
+            Also: map, quests, journal, history, history <type>, help, quit.""";
     private static final Set<String> LEAVE_WORDS = Set.of("leave", "bye", "goodbye");
 
     private final GameController controller;
@@ -114,6 +114,8 @@ public class CliGameView implements GameView, GameEventListener {
             out.println(HELP);
         } else if (words.length == 1 && (first.equals("map") || first.equals("quests"))) {
             render(controller.getState());
+        } else if (words.length == 1 && first.equals("journal")) {
+            out.println(controller.getJournal());
         } else if (first.equals("history") && words.length <= 2) {
             showHistory(words.length == 1 ? null : words[1]);
         } else if (words.length == 1 && (first.equals("flee") || first.equals("leave")
