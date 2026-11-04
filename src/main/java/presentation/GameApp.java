@@ -6,15 +6,23 @@ import llm.LLMClient;
 import llm.OpenAiCompatibleClient;
 import llm.ScriptedLLMClient;
 
+import java.awt.AWTError;
+import java.awt.GraphicsEnvironment;
+import java.awt.HeadlessException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.nio.file.Path;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 /**
- * Starts the game in the terminal: {@code ./mvnw -q compile exec:java}.
+ * Starts the game: in the terminal with {@code ./mvnw -q compile exec:java}, or in a window (the Swing
+ * GUI) with {@code ./mvnw -q compile exec:java -Dexec.args="gui"}; a provider can follow, e.g.
+ * {@code -Dexec.args="gui groq"} (for the CLI {@code -Dexec.args="groq"}). It creates the chosen view,
+ * the controller and the LLM client from the configuration.
  *
  * <p>The provider is the first argument if there is one, else {@code LLM_PROVIDER} from the
  * configuration ({@code .env}, overridden by environment variables), else DeepSeek. {@code deepseek}
@@ -27,23 +35,56 @@ import java.util.Optional;
 public class GameApp {
 
     static final String DEFAULT_PROVIDER = "deepseek";
+    /** The first argument that starts the Swing GUI instead of the CLI. */
+    static final String GUI_ARGUMENT = "gui";
+    static final String NO_DISPLAY = "No display is available, so the window cannot open."
+            + " Start the game in the terminal instead: ./mvnw -q compile exec:java";
     private static final String GROQ_KEY_PREFIX = "gsk_";
     private static final String DEEPSEEK_KEY_PREFIX = "sk-";
 
     public static void main(String[] args) {
-        run(args, EnvConfig.load(Path.of(".env"), System.getenv()), System.in, System.out, System.err);
+        run(args, EnvConfig.load(Path.of(".env"), System.getenv()), System.in, System.out, System.err,
+                GraphicsEnvironment.isHeadless(), SwingGameView::launch);
     }
 
     /**
-     * Plays one game with the given configuration and streams, so tests use neither the real .env
-     * nor the console. With {@code LLM_DEBUG=true}, failed model attempts are described on {@code err}.
+     * Plays one game in the terminal with the given configuration and streams, so tests use neither the
+     * real .env nor the console. With {@code LLM_DEBUG=true}, failed model attempts are described on
+     * {@code err}. It never opens a window: a first argument {@code gui} gets the no-display message.
      */
     static void run(String[] args, EnvConfig config, InputStream in, PrintStream out, PrintStream err) {
-        String provider = args.length > 0 ? args[0] : config.get(EnvConfig.LLM_PROVIDER).orElse(DEFAULT_PROVIDER);
+        run(args, config, in, out, err, true, controller -> {
+            throw new IllegalStateException("No window in this run");
+        });
+    }
+
+    /**
+     * Starts the chosen view: with the first argument {@code gui} the Swing window ({@code guiLauncher},
+     * which returns at once; the window keeps the program running), else the CLI. Any next argument is
+     * the provider. Without a display ({@code headless}) the GUI is not started and a message on
+     * {@code out} says how to start the CLI instead; no LLM client is created then.
+     */
+    static void run(String[] args, EnvConfig config, InputStream in, PrintStream out, PrintStream err,
+                    boolean headless, Consumer<GameController> guiLauncher) {
+        boolean gui = args.length > 0 && args[0].trim().equalsIgnoreCase(GUI_ARGUMENT);
+        String[] rest = gui ? Arrays.copyOfRange(args, 1, args.length) : args;
+        if (gui && headless) {
+            out.println(NO_DISPLAY);
+            return;
+        }
+        String provider = rest.length > 0 ? rest[0] : config.get(EnvConfig.LLM_PROVIDER).orElse(DEFAULT_PROVIDER);
         GameController controller = new GameController(createLlmClient(provider, config, out));
         if (config.get(EnvConfig.LLM_DEBUG).filter("true"::equalsIgnoreCase).isPresent()) {
             controller.setLlmDebugOutput(err);
             out.println("LLM debug output is on (standard error).");
+        }
+        if (gui) {
+            try {
+                guiLauncher.accept(controller);
+            } catch (HeadlessException | AWTError noDisplay) {
+                out.println(NO_DISPLAY);
+            }
+            return;
         }
         CliGameView view = new CliGameView(controller, in, out);
         controller.addView(view);

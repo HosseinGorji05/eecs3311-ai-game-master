@@ -104,6 +104,9 @@ public class GameController {
     static final String QUEST_LOG_FULL = "Your quest log is full.";
     static final String CANNOT_SAVE = "You can't save during combat.";
     static final String SAVED = "Game saved.";
+    /** SD01's messages for a blank name and for stat points that break the rules. */
+    static final String NAME_MISSING = "Enter a name for your character";
+    static final String STATS_INVALID = "Spend exactly 10 points, 1–8 per stat";
 
     /** Id of the hand-written main quest (Stage 1 decision "Main quest"). */
     static final String MAIN_QUEST_ID = "main-quest";
@@ -181,11 +184,24 @@ public class GameController {
     }
 
     /**
-     * Creates the player character with its class's HP and starting kit (SD01).
+     * Creates the player character with its class's HP and starting kit (SD01). The name and the stat
+     * points are checked first: a blank name shows {@value #NAME_MISSING} and stats that break the rules
+     * show {@value #STATS_INVALID} (with {@code showError}); then nothing is created and {@code null} is
+     * returned, and {@link #startGame} needs a valid character first.
      *
-     * @throws IllegalArgumentException if the name is blank or the stats break the rules
+     * @return the new character, or {@code null} if the input was invalid
      */
     public Player newGame(String name, CharacterClass cls, Stats stats) {
+        Objects.requireNonNull(cls, "cls");
+        newPlayer = null;
+        if (name == null || name.isBlank()) {
+            error(NAME_MISSING, false);
+            return null;
+        }
+        if (stats == null || !stats.isValid()) {
+            error(STATS_INVALID, false);
+            return null;
+        }
         newPlayer = CharacterFactory.forClass(cls).createCharacter(name, stats);
         return newPlayer;
     }

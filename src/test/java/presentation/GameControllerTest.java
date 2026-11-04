@@ -26,6 +26,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -103,8 +104,32 @@ class GameControllerTest {
         GameController controller = new GameController(new ScriptedLLMClient(List.of()), new FixedDiceRoller());
         assertThrows(IllegalStateException.class, controller::startGame);
         assertThrows(IllegalStateException.class, () -> controller.submitCommand("go north"));
-        assertThrows(IllegalArgumentException.class,
-                () -> controller.newGame("Ari", CharacterClass.MAGE, new Stats(9, 1, 0)));
+        assertNull(controller.newGame("Ari", CharacterClass.MAGE, new Stats(9, 1, 0)));
+        assertThrows(IllegalStateException.class, controller::startGame);
+    }
+
+    @Test
+    void newGameShowsTheSd01MessagesAndCreatesNothingForInvalidInput() {
+        GameController controller = new GameController(new ScriptedLLMClient(List.of()), new FixedDiceRoller());
+        controller.addView(view);
+
+        assertNull(controller.newGame("  ", CharacterClass.ROGUE, new Stats(2, 6, 2)));
+        assertNull(controller.newGame("Ari", CharacterClass.ROGUE, new Stats(2, 6, 3)));
+        assertNull(controller.newGame("Ari", CharacterClass.ROGUE, new Stats(9, 1, 0)));
+
+        assertEquals(List.of("error: Enter a name for your character", "error: Spend exactly 10 points, 1–8 per stat",
+                "error: Spend exactly 10 points, 1–8 per stat"), view.shown);
+        assertThrows(IllegalStateException.class, controller::startGame);
+    }
+
+    @Test
+    void anInvalidSecondAttemptDropsTheCharacterOfTheFirst() {
+        GameController controller = new GameController(new ScriptedLLMClient(List.of()), new FixedDiceRoller());
+        assertNotNull(controller.newGame("Ari", CharacterClass.MAGE, new Stats(2, 3, 5)));
+
+        assertNull(controller.newGame("", CharacterClass.MAGE, new Stats(2, 3, 5)));
+
+        assertThrows(IllegalStateException.class, controller::startGame);
     }
 
     @Test
