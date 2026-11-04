@@ -6,6 +6,7 @@ import engine.character.Enemy;
 import engine.character.Stats;
 import engine.commands.ActionProposal;
 import engine.commands.ActionType;
+import engine.core.Ending;
 import engine.core.FixedDiceRoller;
 import engine.core.GameState;
 import engine.items.Consumable;
@@ -159,6 +160,10 @@ class ActionInterpreterReplyShapesTest {
 
             @Override
             public void showQuestOffer(Quest quest) {
+            }
+
+            @Override
+            public void showEnding(Ending ending) {
             }
         });
         controller.newGame("Ari", CharacterClass.WARRIOR, new Stats(5, 3, 2));

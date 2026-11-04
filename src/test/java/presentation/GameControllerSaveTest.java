@@ -7,6 +7,7 @@ import engine.commands.ActionProposal;
 import engine.commands.ActionType;
 import engine.core.CombatMode;
 import engine.core.DialogueMode;
+import engine.core.Ending;
 import engine.core.FixedDiceRoller;
 import engine.core.GameState;
 import engine.events.GameEvent;
@@ -52,6 +53,7 @@ class GameControllerSaveTest {
     /** Records everything the controller shows, every quest offered and every published event. */
     private static final class RecordingView implements GameView, GameEventListener {
         final List<String> shown = new ArrayList<>();
+        final List<Ending> endings = new ArrayList<>();
         final List<Quest> offers = new ArrayList<>();
         final List<GameEvent> events = new ArrayList<>();
         int renders;
@@ -79,6 +81,12 @@ class GameControllerSaveTest {
         @Override
         public void showQuestOffer(Quest quest) {
             offers.add(quest);
+        }
+
+        @Override
+        public void showEnding(Ending ending) {
+            endings.add(ending);
+            shown.add("ending: " + ending.getType());
         }
 
         @Override
@@ -193,8 +201,11 @@ class GameControllerSaveTest {
         assertEquals(10, vex.getGold());
         assertFalse(state().getWorld().findLocation("village-square").getExit(Direction.EAST).isLocked());
         assertTrue(state().getWorld().findLocation("wolf-den").getEnemies().isEmpty(), "the wolf stays dead");
-        assertEquals(List.of(QuestStatus.ACTIVE, QuestStatus.COMPLETED),
+        assertEquals(List.of(QuestStatus.ACTIVE, QuestStatus.ACTIVE, QuestStatus.COMPLETED),
                 state().getQuestLog().allQuests().stream().map(Quest::getStatus).toList());
+        Quest main = state().getQuestLog().allQuests().get(0);
+        assertTrue(main.isMain(), "the main quest survives the load");
+        assertEquals(GameController.MAIN_QUEST_TITLE, main.getTitle());
         assertEquals(-2 + 2, state().getEventLog().recent(1000).stream().mapToInt(GameEvent::getAlignmentDelta).sum(),
                 "the theft and the completed quest");
         assertTrue(state().getStoryMemory().getFixedFacts().contains("stole the iron key from Brann"));
@@ -212,7 +223,7 @@ class GameControllerSaveTest {
         assertSame(eventLog, state().getEventLog(), "the same objects were reloaded");
         assertSame(questLog, state().getQuestLog());
         assertSame(memory, state().getStoryMemory());
-        Quest brannsQuest = questLog.activeQuests().get(0);
+        Quest brannsQuest = questLog.activeQuests().stream().filter(quest -> !quest.isMain()).findFirst().orElseThrow();
         assertEquals("Find the hand axe", brannsQuest.getTitle());
 
         act(ActionType.MOVE, "east");
@@ -246,7 +257,8 @@ class GameControllerSaveTest {
         assertEquals("Brann", dialogue.getNpc().getName());
         assertSame(state().currentLocation().findNpc("Brann"), dialogue.getNpc());
         assertTrue(dialogue.isQuestOffered(), "no second offer in the same conversation");
-        assertTrue(state().getQuestLog().allQuests().isEmpty());
+        assertEquals(List.of(GameController.MAIN_QUEST_TITLE),
+                state().getQuestLog().allQuests().stream().map(Quest::getTitle).toList(), "only the main quest");
         controller.respondToQuest(view.offers.get(0), true);
         assertEquals("error: " + GameController.NO_OFFER, lastShown(), "the pending offer is not part of the save");
     }
@@ -335,7 +347,7 @@ class GameControllerSaveTest {
                 List.of("garbage", "{not json at all", "damaged or not a saved game"),
                 List.of("truncated", good.substring(0, good.length() / 2), "damaged or not a saved game"),
                 List.of("empty", "", "damaged or not a saved game"),
-                List.of("other-version", good.replace("\"version\": 1", "\"version\": 2"), "another version of the game (format 2"),
+                List.of("other-version", good.replace("\"version\": 2", "\"version\": 1"), "another version of the game (format 1;"),
                 List.of("bad-location", good.replace("\"currentLocation\": \"tavern\"", "\"currentLocation\": \"moon\""),
                         "damaged (the current location is not in the world)"),
                 List.of("bad-last-event", good.substring(0, last) + "\"type\": \"EXPLOSION\"" + good.substring(last + lastEventType.length()),

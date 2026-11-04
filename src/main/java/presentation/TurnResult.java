@@ -5,7 +5,10 @@ import engine.commands.ActionResult;
 import java.util.List;
 import java.util.Objects;
 
-/** What one turn produced: the narration shown to the player, the real results, and whether the game is over. */
+/**
+ * What one turn produced: the narration shown to the player, the real results, and whether the game is
+ * over ({@code GameState.isGameOver()}: the main quest is completed or the player died).
+ */
 public class TurnResult {
 
     private final String narration;

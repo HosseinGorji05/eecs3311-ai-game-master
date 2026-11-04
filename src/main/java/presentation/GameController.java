@@ -1,6 +1,7 @@
 package presentation;
 
 import agent.ActionInterpreter;
+import agent.EndingWriter;
 import agent.MemoryManager;
 import agent.MemorySummarizer;
 import agent.NpcDialogueAgent;
@@ -18,6 +19,8 @@ import engine.commands.CommandFactory;
 import engine.commands.GameCommand;
 import engine.core.DiceRoller;
 import engine.core.DialogueMode;
+import engine.core.Ending;
+import engine.core.EndingCalculator;
 import engine.core.GameState;
 import engine.core.RulesEngine;
 import engine.events.EventType;
@@ -28,8 +31,11 @@ import engine.events.GameEventListener;
 import engine.persistence.GameSnapshot;
 import engine.persistence.SaveManager;
 import engine.persistence.SaveSlotInfo;
+import engine.quests.Objective;
+import engine.quests.ObjectiveType;
 import engine.quests.Quest;
 import engine.quests.QuestTracker;
+import engine.quests.Reward;
 import engine.world.NPC;
 import engine.world.World;
 import llm.LLMClient;
@@ -73,11 +79,19 @@ import java.util.stream.Collectors;
  * view asks before overwriting a slot listed by {@link #listSaves}. {@link #loadGame} reads the slot,
  * checks the version and has the state restore itself, then every view renders the loaded game; a
  * pending quest offer is dropped. Every failure is shown as an error and leaves the game as it was.
- * Loading also works before a game has started or after the player died.
+ * Loading also works before a game has started or after the game is over.
+ *
+ * <p>The main quest and the ending (F12, UC13): a new game starts with the hand-written main quest
+ * ({@link #MAIN_QUEST_TITLE}) in the quest log; the quest tracker completes it like any quest. When a
+ * turn leaves {@code GameState.isGameOver()} true (the main quest completed or the player died), the
+ * narration is shown and {@link #endGame} runs (SD02, SD09): the {@link EndingCalculator} picks the
+ * ending type and the statistics from the event log, the {@link EndingWriter} writes the epilogue
+ * within that type, and every view shows the end screen. After that every command answers
+ * {@value #GAME_OVER}, until a save is loaded or a new game is started with {@link #newGame} and
+ * {@link #startGame}.
  *
  * <p>Not yet included (they come with their features): narration by the LLM (the narration is the
- * results' messages), the backstory and the ending.
- * Until the ending exists, a turn is "game over" when the player has died.
+ * results' messages) and the backstory.
  */
 public class GameController {
 
@@ -91,6 +105,15 @@ public class GameController {
     static final String CANNOT_SAVE = "You can't save during combat.";
     static final String SAVED = "Game saved.";
 
+    /** Id of the hand-written main quest (Stage 1 decision "Main quest"). */
+    static final String MAIN_QUEST_ID = "main-quest";
+    static final String MAIN_QUEST_TITLE = "Recover the village relic";
+    static final String MAIN_QUEST_DESCRIPTION = "Bandits stole the village relic and took it to their camp in the"
+            + " Forest. Defeat the bandit leader and take the relic back.";
+    /** Reward of the main quest (not given by the report). */
+    static final int MAIN_QUEST_GOLD = 50;
+    static final int MAIN_QUEST_XP = 50;
+
     private final GameState state = new GameState();
     private final List<GameView> views = new ArrayList<>();
     private final RulesEngine rules;
@@ -101,6 +124,8 @@ public class GameController {
     private final ActionInterpreter interpreter;
     private final NpcDialogueAgent dialogueAgent;
     private final QuestGenerator questGenerator;
+    private final EndingCalculator endingCalculator = new EndingCalculator();
+    private final EndingWriter endingWriter;
     private Player newPlayer;
     private Quest offeredQuest;
     private DialogueMode offerConversation;
@@ -124,20 +149,23 @@ public class GameController {
         this.interpreter = new ActionInterpreter(llm, prompts, new ResponseParser(), state);
         this.dialogueAgent = new NpcDialogueAgent(llm, prompts, new ResponseParser(), state);
         this.questGenerator = new QuestGenerator(llm, prompts, new ResponseParser(), state);
+        this.endingWriter = new EndingWriter(llm, prompts, new ResponseParser(), state);
         eventBus.subscribe(state.getEventLog());
         eventBus.subscribe(memory);
         eventBus.subscribe(new QuestTracker(state, eventBus));
     }
 
     /**
-     * Where the interpreter, the dialogue agent, the quest generator and the memory summarizer describe failed
-     * model attempts (the reason and the raw reply), e.g. {@code System.err}; {@code null} turns this off.
+     * Where the interpreter, the dialogue agent, the quest generator, the memory summarizer and the ending writer
+     * describe failed model attempts (the reason and the raw reply), e.g. {@code System.err}; {@code null} turns
+     * this off.
      */
     public void setLlmDebugOutput(PrintStream debug) {
         interpreter.setDebugOutput(debug);
         dialogueAgent.setDebugOutput(debug);
         questGenerator.setDebugOutput(debug);
         memory.setDebugOutput(debug);
+        endingWriter.setDebugOutput(debug);
     }
 
     /** Adds a view; a view that listens to events is also subscribed to the bus. */
@@ -163,8 +191,9 @@ public class GameController {
     }
 
     /**
-     * Creates the world, places the new character in its start location, adds the starting facts to the
-     * story memory and shows the game.
+     * Creates the world, places the new character in its start location with the main quest active, adds
+     * the starting facts to the story memory and shows the game. It also starts a new game after an ending
+     * (the end screen's New Game): the logs and the memory start empty.
      *
      * @throws IllegalStateException if no character was created with {@link #newGame}
      */
@@ -173,6 +202,9 @@ public class GameController {
             throw new IllegalStateException("Create a character with newGame() first");
         }
         state.start(newPlayer, World.createDefault());
+        state.getQuestLog().accept(mainQuest());
+        offeredQuest = null;
+        offerConversation = null;
         memory.addStartingFacts();
         views.forEach(view -> view.render(state));
     }
@@ -184,7 +216,7 @@ public class GameController {
      */
     public TurnResult submitCommand(String text) {
         requireStarted();
-        if (isPlayerDead()) {
+        if (state.isGameOver()) {
             return error(GAME_OVER, true);
         }
         List<ActionProposal> proposals = interpreter.interpret(text);
@@ -202,7 +234,7 @@ public class GameController {
     public TurnResult performAction(ActionProposal proposal) {
         requireStarted();
         Objects.requireNonNull(proposal, "proposal");
-        if (isPlayerDead()) {
+        if (state.isGameOver()) {
             return error(GAME_OVER, true);
         }
         return execute(List.of(proposal));
@@ -214,14 +246,14 @@ public class GameController {
      * the rules engine, which may refuse it, and only an accepted one's message is shown (F03). The
      * exchange is published as a DIALOGUE event with the NPC's id as subject. Only a side effect uses
      * up a turn. Then the NPC may offer a quest (see the class comment), with a notice when it is a
-     * template quest.
+     * template quest. If the side effect ends the game, the ending runs instead of an offer.
      *
      * @return the reply, or {@code null} if the player is not in a conversation (an error is shown)
      *         or the game is over
      */
     public NpcReply sendDialogue(String message) {
         requireStarted();
-        if (isPlayerDead()) {
+        if (state.isGameOver()) {
             error(GAME_OVER, true);
             return null;
         }
@@ -251,6 +283,10 @@ public class GameController {
                 views.forEach(view -> view.showNarration(effect.getMessage()));
             }
         }
+        if (state.isGameOver()) {
+            endGame();
+            return reply;
+        }
         offerQuest(dialogue);
         return reply;
     }
@@ -263,7 +299,7 @@ public class GameController {
      */
     public void respondToQuest(Quest quest, boolean accept) {
         requireStarted();
-        if (isPlayerDead()) {
+        if (state.isGameOver()) {
             error(GAME_OVER, true);
             return;
         }
@@ -287,12 +323,12 @@ public class GameController {
 
     /**
      * Saves the game in the slot (UC10, SD08), replacing a save already there: the view asks the player
-     * first. Shows "Game saved." or an error: during combat, after death, for an invalid slot name, or
+     * first. Shows "Game saved." or an error: during combat, after the game is over, for an invalid slot name, or
      * when the file cannot be written (the game continues unchanged).
      */
     public void saveGame(String slot) {
         requireStarted();
-        if (isPlayerDead()) {
+        if (state.isGameOver()) {
             error(GAME_OVER, true);
             return;
         }
@@ -352,6 +388,31 @@ public class GameController {
         return memory.journalText();
     }
 
+    /**
+     * Ends the game (UC13, SD09): the ending type comes from the alignment score of the event log (DEATH if
+     * the player died), the statistics from the same log, and the epilogue from the {@link EndingWriter}
+     * (a template, with a notice naming the reason, when the model gives no valid one). Every view shows the
+     * ending. Called after the turn that ends the game; writing the epilogue never fails.
+     *
+     * @throws IllegalStateException if the game has not started or is not over
+     */
+    public Ending endGame() {
+        requireStarted();
+        if (!state.isGameOver()) {
+            throw new IllegalStateException("The game is not over");
+        }
+        int score = endingCalculator.alignmentScore(state.getEventLog());
+        Ending ending = new Ending(endingCalculator.determineType(state, score),
+                endingCalculator.statistics(state.getEventLog()));
+        ending.setEpilogue(endingWriter.write(ending));
+        if (endingWriter.isFallbackUsed()) {
+            String notice = "The epilogue is pre-written. Reason: " + endingWriter.getFallbackReason() + ".";
+            views.forEach(view -> view.showNotice(notice));
+        }
+        views.forEach(view -> view.showEnding(ending));
+        return ending;
+    }
+
     /** The recorded events of this type, oldest first. */
     public List<GameEvent> getHistory(EventType filter) {
         return state.getEventLog().filter(filter);
@@ -378,8 +439,20 @@ public class GameController {
         }
         List<ActionResult> results = rules.executeAll(commands, state);
         String narration = results.stream().map(ActionResult::getMessage).collect(Collectors.joining("\n"));
+        boolean gameOver = state.isGameOver();
         views.forEach(view -> view.showNarration(narration));
-        return new TurnResult(narration, results, isPlayerDead());
+        if (gameOver) {
+            endGame();
+        }
+        return new TurnResult(narration, results, gameOver);
+    }
+
+    /** The hand-written main quest: defeat the bandit leader and take back the relic (both lie in the Bandit Camp). */
+    private static Quest mainQuest() {
+        return new Quest(MAIN_QUEST_ID, MAIN_QUEST_TITLE, MAIN_QUEST_DESCRIPTION, null, true,
+                List.of(new Objective(ObjectiveType.DEFEAT, World.BANDIT_LEADER, 1),
+                        new Objective(ObjectiveType.FETCH, World.RELIC, 1)),
+                new Reward(MAIN_QUEST_GOLD, MAIN_QUEST_XP, null));
     }
 
     /** SD07: offers a quest if the conversation is still going, nothing was offered yet and the NPC may offer one. */
@@ -405,10 +478,6 @@ public class GameController {
     private TurnResult error(String message, boolean gameOver) {
         views.forEach(view -> view.showError(message));
         return new TurnResult(message, List.of(), gameOver);
-    }
-
-    private boolean isPlayerDead() {
-        return !state.getPlayer().isAlive();
     }
 
     private void requireStarted() {

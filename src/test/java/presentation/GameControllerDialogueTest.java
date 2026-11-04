@@ -6,6 +6,7 @@ import engine.character.Stats;
 import engine.commands.ActionProposal;
 import engine.commands.ActionType;
 import engine.core.DialogueMode;
+import engine.core.Ending;
 import engine.core.ExplorationMode;
 import engine.core.FixedDiceRoller;
 import engine.core.GameState;
@@ -36,6 +37,7 @@ class GameControllerDialogueTest {
     /** Records everything the controller shows and every published event. */
     private static final class RecordingView implements GameView, GameEventListener {
         final List<String> shown = new ArrayList<>();
+        final List<Ending> endings = new ArrayList<>();
         final List<GameEvent> events = new ArrayList<>();
 
         @Override
@@ -60,6 +62,12 @@ class GameControllerDialogueTest {
         @Override
         public void showQuestOffer(Quest quest) {
             shown.add("offer: " + quest.getTitle());
+        }
+
+        @Override
+        public void showEnding(Ending ending) {
+            endings.add(ending);
+            shown.add("ending: " + ending.getType());
         }
 
         @Override

@@ -29,6 +29,12 @@ public class World {
     static final String SHED_KEY = "shed key";
     /** Id of the blacksmith, who owns the iron key and the warhammer in the Forge. */
     static final String BLACKSMITH_ID = "blacksmith";
+    /** Name of the stolen village relic in the Bandit Camp, which the main quest recovers. */
+    public static final String RELIC = "village relic";
+    /** Name of the bandit leader in the Bandit Camp, whom the main quest defeats. */
+    public static final String BANDIT_LEADER = "bandit leader";
+    /** Weight of the relic in kg (not given by the report). */
+    static final double RELIC_WEIGHT = 1.0;
 
     // Enemy tuning numbers (not given by the report): HP, attack (= attack bonus and damage), defense.
     static final int WOLF_HP = 8;
@@ -67,7 +73,9 @@ public class World {
      * eight locations in total. The Tool Shed, east of the Village Square, is locked; its shed key
      * lies in the Tavern. Brann the blacksmith (a quest giver, owner of the iron key and the
      * warhammer) works in the Forge and Marta keeps the Tavern. A wolf lives in the Wolf Den and the
-     * bandit leader in the Bandit Camp.
+     * bandit leader in the Bandit Camp, where the stolen village relic lies (Stage 1 decision "Main
+     * quest"). The relic belongs to nobody, so taking it back is not a theft; the design has no
+     * quest-item class, so it is a {@link KeyItem} that opens no door.
      *
      * <pre>
      *                  Tavern
@@ -112,6 +120,7 @@ public class World {
         shed.addItem(new Weapon("hand axe", 2.0, 5));
         shed.addItem(new Container("backpack", 1.0, 8));
         oldMill.addItem(new Consumable("healing herbs", 0.2, 5));
+        banditCamp.addItem(new KeyItem(RELIC, RELIC_WEIGHT));
 
         forge.addNpc(new NPC(BLACKSMITH_ID, "Brann", "blacksmith",
                 "gruff and blunt, proud of her work, angry about the bandits",
@@ -129,7 +138,7 @@ public class World {
                 false));
 
         wolfDen.addEnemy(new Enemy("wolf", WOLF_HP, WOLF_ATTACK, WOLF_DEFENSE));
-        banditCamp.addEnemy(new Enemy("bandit leader", BANDIT_LEADER_HP, BANDIT_LEADER_ATTACK, BANDIT_LEADER_DEFENSE));
+        banditCamp.addEnemy(new Enemy(BANDIT_LEADER, BANDIT_LEADER_HP, BANDIT_LEADER_ATTACK, BANDIT_LEADER_DEFENSE));
 
         Region village = new Region("Village", List.of(square, tavern, forge, shed));
         Region forest = new Region("Forest", List.of(forestEdge, wolfDen, oldMill, banditCamp));

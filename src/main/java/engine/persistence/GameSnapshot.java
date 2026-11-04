@@ -20,15 +20,18 @@ import java.util.Objects;
  * writes and reads {@link #getStateJson()}; {@code SaveManager} (the Caretaker) only stores
  * {@link #toJson()} and reads it back with {@link #fromJson}. A file looks like this:
  * <pre>
- * {"version":1,"createdAt":"2026-11-03T14:05:00Z","characterName":"Ari","locationName":"Tavern",
+ * {"version":2,"createdAt":"2026-11-03T14:05:00Z","characterName":"Ari","locationName":"Tavern",
  *  "state":{...}}
  * </pre>
  * {@link #isCompatible()} tells whether this game can read the state (same {@link #CURRENT_VERSION}).
  */
 public class GameSnapshot {
 
-    /** The format version this game writes and reads. */
-    public static final int CURRENT_VERSION = 1;
+    /**
+     * The format version this game writes and reads. Format 2 (F12) adds the main quest and the
+     * village relic; format 1 saves have neither and are refused as incompatible.
+     */
+    public static final int CURRENT_VERSION = 2;
 
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 

@@ -5,9 +5,11 @@ import engine.commands.ActionType;
 import engine.events.EventLog;
 import engine.persistence.GameSnapshot;
 import engine.quests.QuestLog;
+import engine.quests.QuestStatus;
 import engine.world.Location;
 import engine.world.World;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -23,7 +25,8 @@ import java.util.Objects;
  * the {@code GameEventBus} subscribes the event log (and a {@code QuestTracker} and a
  * {@code MemoryManager}, which fill the quest log and the story memory) to it.
  *
- * <p>{@code isGameOver()} of the design is added together with the ending.
+ * <p>The game is over ({@link #isGameOver}) once the main quest is completed or the player's HP
+ * reaches 0 (F12, UC13).
  */
 public class GameState {
 
@@ -38,7 +41,8 @@ public class GameState {
 
     /**
      * Starts a new game: the player is placed in the world's start location (marked visited),
-     * in exploration mode, on turn 1.
+     * in exploration mode, on turn 1, with an empty quest log, event log and story memory (the same
+     * objects, emptied, so a new game after an ending starts clean).
      */
     public void start(Player player, World world) {
         this.player = Objects.requireNonNull(player, "player");
@@ -47,6 +51,9 @@ public class GameState {
         this.currentLocation.markVisited();
         this.mode = new ExplorationMode();
         this.turn = 1;
+        questLog.restore(List.of());
+        eventLog.restore(List.of());
+        storyMemory.restore(List.of(), List.of(), List.of());
     }
 
     /** The current turn number: 1 during the first turn, 0 before {@link #start}. */
@@ -102,6 +109,18 @@ public class GameState {
 
     public void nextTurn() {
         turn++;
+    }
+
+    /**
+     * Whether the game has ended: the main quest is completed or the player's HP has reached 0
+     * (SD09 n1); {@code false} before {@link #start}.
+     */
+    public boolean isGameOver() {
+        if (player == null) {
+            return false;
+        }
+        return !player.isAlive() || questLog.allQuests().stream()
+                .anyMatch(quest -> quest.isMain() && quest.getStatus() == QuestStatus.COMPLETED);
     }
 
     /**

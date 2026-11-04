@@ -6,6 +6,7 @@ import engine.character.Stats;
 import engine.commands.ActionProposal;
 import engine.commands.ActionType;
 import engine.core.DialogueMode;
+import engine.core.Ending;
 import engine.core.FixedDiceRoller;
 import engine.core.GameState;
 import engine.events.EventType;
@@ -48,6 +49,7 @@ class GameControllerQuestTest {
     /** Records everything the controller shows, the quests it offers and every published event. */
     private static final class RecordingView implements GameView, GameEventListener {
         final List<String> shown = new ArrayList<>();
+        final List<Ending> endings = new ArrayList<>();
         final List<Quest> offers = new ArrayList<>();
         final List<GameEvent> events = new ArrayList<>();
 
@@ -74,6 +76,12 @@ class GameControllerQuestTest {
         public void showQuestOffer(Quest quest) {
             offers.add(quest);
             shown.add("offer: " + quest.getTitle());
+        }
+
+        @Override
+        public void showEnding(Ending ending) {
+            endings.add(ending);
+            shown.add("ending: " + ending.getType());
         }
 
         @Override
@@ -110,6 +118,11 @@ class GameControllerQuestTest {
         return controller.getState();
     }
 
+    /** The side quests in the log (the main quest is there from the start). */
+    private List<Quest> sideQuests() {
+        return state().getQuestLog().allQuests().stream().filter(quest -> !quest.isMain()).toList();
+    }
+
     private List<GameEvent> questEvents() {
         return view.events.stream().filter(event -> event.getType() == EventType.QUEST).toList();
     }
@@ -133,7 +146,7 @@ class GameControllerQuestTest {
 
         assertEquals(List.of("narration: Brann: \"Work? Maybe.\"", "offer: Herbs for the Forge"), view.shown);
         assertTrue(((DialogueMode) state().getMode()).isQuestOffered());
-        assertTrue(state().getQuestLog().allQuests().isEmpty(), "offered, not accepted");
+        assertTrue(sideQuests().isEmpty(), "offered, not accepted");
         assertEquals(turn, state().getTurn(), "neither the line nor the offer uses up a turn");
     }
 
@@ -220,7 +233,7 @@ class GameControllerQuestTest {
 
         controller.respondToQuest(offer, true);
 
-        assertEquals(List.of(offer), state().getQuestLog().activeQuests());
+        assertEquals(List.of(offer), sideQuests());
         assertTrue(state().getQuestLog().hasQuestFrom(state().getWorld().findNpc("blacksmith")));
         GameEvent accepted = questEvents().get(0);
         assertEquals(EventVerb.ACCEPTED, accepted.getVerb());
@@ -231,7 +244,7 @@ class GameControllerQuestTest {
 
         controller.respondToQuest(offer, true);
         assertEquals("error: " + GameController.NO_OFFER, view.shown.get(view.shown.size() - 1), "the offer is closed");
-        assertEquals(1, state().getQuestLog().allQuests().size());
+        assertEquals(1, sideQuests().size());
     }
 
     @Test
@@ -242,7 +255,7 @@ class GameControllerQuestTest {
 
         controller.respondToQuest(view.offers.get(0), false);
 
-        assertTrue(state().getQuestLog().allQuests().isEmpty());
+        assertTrue(sideQuests().isEmpty());
         assertEquals("narration: You decline \"Herbs for the Forge\".", view.shown.get(view.shown.size() - 1));
         assertTrue(questEvents().isEmpty());
         controller.sendDialogue("Changed my mind.");
@@ -271,7 +284,7 @@ class GameControllerQuestTest {
 
         assertEquals(List.of("error: " + GameController.NO_OFFER, "error: " + GameController.NO_OFFER,
                 "error: " + GameController.NO_OFFER), view.shown.stream().filter(line -> line.startsWith("error")).toList());
-        assertTrue(state().getQuestLog().allQuests().isEmpty());
+        assertTrue(sideQuests().isEmpty());
     }
 
     @Test
@@ -284,7 +297,7 @@ class GameControllerQuestTest {
         controller.respondToQuest(view.offers.get(0), true);
 
         assertEquals("error: Your quest log is full.", view.shown.get(view.shown.size() - 1));
-        assertFalse(state().getQuestLog().allQuests().contains(view.offers.get(0)));
+        assertFalse(sideQuests().contains(view.offers.get(0)));
     }
 
     // Played to completion with the real engine

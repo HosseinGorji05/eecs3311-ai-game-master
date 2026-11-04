@@ -5,6 +5,8 @@ import engine.character.Player;
 import engine.character.Stats;
 import engine.commands.ActionProposal;
 import engine.commands.ActionType;
+import engine.core.Ending;
+import engine.core.EndingType;
 import engine.core.FixedDiceRoller;
 import engine.core.GameState;
 import engine.events.EventType;
@@ -32,6 +34,7 @@ class GameControllerTest {
     /** Records everything the controller shows. */
     private static final class RecordingView implements GameView, GameEventListener {
         final List<String> shown = new ArrayList<>();
+        final List<Ending> endings = new ArrayList<>();
         final List<GameEvent> events = new ArrayList<>();
         int renders;
 
@@ -58,6 +61,12 @@ class GameControllerTest {
         @Override
         public void showQuestOffer(Quest quest) {
             shown.add("offer: " + quest.getTitle());
+        }
+
+        @Override
+        public void showEnding(Ending ending) {
+            endings.add(ending);
+            shown.add("ending: " + ending.getType());
         }
 
         @Override
@@ -212,9 +221,13 @@ class GameControllerTest {
 
         assertTrue(turn.isGameOver());
         assertFalse(ari.isAlive());
+        assertTrue(controller.getState().isGameOver());
+        assertEquals(1, view.endings.size(), "the turn that kills the player ends the game");
+        assertEquals(EndingType.DEATH, view.endings.get(0).getType());
         TurnResult after = controller.submitCommand("go east");
         assertTrue(after.isGameOver());
         assertEquals(GameController.GAME_OVER, after.getNarration());
+        assertEquals(1, view.endings.size(), "the ending is shown once");
     }
 
     @Test

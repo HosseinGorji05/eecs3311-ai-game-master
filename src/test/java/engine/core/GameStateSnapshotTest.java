@@ -117,7 +117,7 @@ class GameStateSnapshotTest {
         state.nextTurn();
         String before = state.createSnapshot().getStateJson();
 
-        assertThrows(IllegalArgumentException.class, () -> state.restore(withState(good, "\"version\": 1", "\"version\": 0")));
+        assertThrows(IllegalArgumentException.class, () -> state.restore(withState(good, "\"version\": 2", "\"version\": 1")));
         assertThrows(IllegalArgumentException.class, () -> state.restore(withState(good, "\"hp\": 18", "\"hp\": 0")));
         assertThrows(IllegalArgumentException.class, () -> state.restore(withState(good, "\"kind\": \"weapon\"",
                 "\"kind\": \"spell\"")));

@@ -7,6 +7,7 @@ import engine.commands.ActionProposal;
 import engine.commands.ActionType;
 import engine.core.CombatMode;
 import engine.core.DialogueMode;
+import engine.core.Ending;
 import engine.core.GameState;
 import engine.events.EventType;
 import engine.events.GameEvent;
@@ -45,8 +46,13 @@ import java.util.stream.Collectors;
  * (saving over an existing name asks for a yes or no first), {@code help} lists the commands and
  * {@code quit} ends the game; any other line is said to the NPC in a conversation, and otherwise
  * played as a natural-language command. In a conversation {@code bye} and {@code goodbye} also leave,
- * and the prompt names the NPC. After the player dies, the session goes on so a save can be loaded
- * (UC11); every other command answers that the game is over.
+ * and the prompt names the NPC.
+ *
+ * <p>The ending (F12, UC13): {@link #showEnding} prints the ending type, the epilogue and the
+ * statistics, then how to go on. The session goes on: {@code load <name>} continues a save (UC11) and
+ * {@code new} creates a character and starts a new game (the end screen's New Game); the commands that
+ * only read (map, journal, history, saves, help) still work, and every other command answers that the
+ * game is over. {@code new} is refused while a game is still running.
  */
 public class CliGameView implements GameView, GameEventListener {
 
@@ -59,7 +65,8 @@ public class CliGameView implements GameView, GameEventListener {
     private static final int HISTORY_COUNT = 20;
     private static final DateTimeFormatter SAVE_TIME = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.ROOT)
             .withZone(ZoneId.systemDefault());
-    static final String GAME_OVER_LINE = "You have died. Game over. Type load <name> to continue from a save, or quit.";
+    static final String AFTER_ENDING = "Type load <name> to continue from a save, new to start a new game, or quit.";
+    static final String GAME_NOT_OVER = "You can start a new game once this one has ended.";
     private static final String HELP = """
             Commands: type what you want to do, e.g. "go north", "go to the tavern", "take shed key",
             "equip sword", "use healing potion", "drop bread", "put bread in pouch", "look", "inventory",
@@ -67,6 +74,7 @@ public class CliGameView implements GameView, GameEventListener {
             In a conversation, everything you type is said to the person; leave (or bye) ends it.
             When someone offers you a quest, type accept or decline.
             save <name> saves the game (not during combat), load <name> continues a saved game, saves lists them.
+            Your quest: recover the village relic from the bandit leader. After the ending, new starts a new game.
             Also: map, quests, journal, history, history <type>, help, quit.""";
     private static final Set<String> LEAVE_WORDS = Set.of("leave", "bye", "goodbye");
 
@@ -76,7 +84,6 @@ public class CliGameView implements GameView, GameEventListener {
     private final List<String> pendingNotices = new ArrayList<>();
     private Quest offeredQuest;
     private boolean running;
-    private boolean deathAnnounced;
 
     public CliGameView(GameController controller, InputStream in, PrintStream out) {
         this.controller = Objects.requireNonNull(controller, "controller");
@@ -84,7 +91,7 @@ public class CliGameView implements GameView, GameEventListener {
         this.out = Objects.requireNonNull(out, "out");
     }
 
-    /** Creates the character, starts the game and plays until "quit", the end of input or death. */
+    /** Creates the character, starts the game and plays until "quit" or the end of input. */
     public void readLoop() {
         out.println("=== AI Game Master ===");
         if (!createCharacter()) {
@@ -117,7 +124,6 @@ public class CliGameView implements GameView, GameEventListener {
         String[] words = line.toLowerCase(Locale.ROOT).split("\\s+");
         String first = words[0];
         boolean talking = controller.getState().getMode() instanceof DialogueMode;
-        TurnResult result = null;
         if (words.length == 1 && (first.equals("quit") || first.equals("exit"))) {
             running = false;
         } else if (words.length == 1 && first.equals("help")) {
@@ -131,7 +137,7 @@ public class CliGameView implements GameView, GameEventListener {
         } else if (words.length == 1 && (first.equals("flee") || first.equals("leave")
                 || talking && LEAVE_WORDS.contains(first))) {
             ActionType type = first.equals("flee") ? ActionType.FLEE : ActionType.LEAVE;
-            result = controller.performAction(new ActionProposal(type, null, null));
+            controller.performAction(new ActionProposal(type, null, null));
         } else if (words.length == 1 && (first.equals("accept") || first.equals("decline"))) {
             Quest quest = offeredQuest;
             offeredQuest = null;
@@ -144,22 +150,18 @@ public class CliGameView implements GameView, GameEventListener {
             } else {
                 offeredQuest = null;
                 controller.loadGame(words[1]);
-                deathAnnounced = !controller.getState().getPlayer().isAlive();
             }
         } else if (words.length == 1 && first.equals("saves")) {
             showSaves();
+        } else if (words.length == 1 && first.equals("new")) {
+            startNewGame();
         } else if (talking) {
             controller.sendDialogue(line);
         } else {
-            result = controller.submitCommand(line);
+            controller.submitCommand(line);
         }
-        if (!talking && controller.getState().getMode() instanceof DialogueMode dialogue) {
+        if (!talking && !controller.getState().isGameOver() && controller.getState().getMode() instanceof DialogueMode dialogue) {
             showNotice("You are talking to " + dialogue.getNpc().getName() + ". Say something, or type leave to end the conversation.");
-        }
-        if (result != null && result.isGameOver() && !deathAnnounced) {
-            flushNotices();
-            out.println(GAME_OVER_LINE);
-            deathAnnounced = true;
         }
     }
 
@@ -178,8 +180,9 @@ public class CliGameView implements GameView, GameEventListener {
         List<Quest> quests = state.getQuestLog().allQuests();
         out.println("Quests:" + (quests.isEmpty() ? " none" : ""));
         for (Quest quest : quests) {
-            out.println("- " + quest.getTitle() + " (" + quest.getStatus().name().toLowerCase(Locale.ROOT)
-                    + ", from " + giverName(state, quest) + "): " + describeObjectives(quest, true)
+            String status = quest.getStatus().name().toLowerCase(Locale.ROOT);
+            out.println("- " + quest.getTitle() + " (" + (quest.isMain() ? "main quest, " + status
+                    : status + ", from " + giverName(state, quest)) + "): " + describeObjectives(quest, true)
                     + "; reward: " + quest.getReward().describe());
         }
         List<String> visited = new ArrayList<>();
@@ -217,6 +220,21 @@ public class CliGameView implements GameView, GameEventListener {
         out.println("  Objectives: " + describeObjectives(quest, false));
         out.println("  Reward: " + quest.getReward().describe());
         out.println("Type accept or decline.");
+    }
+
+    /**
+     * Prints the end screen: the quest updates of the last turn first, then the ending type, the epilogue,
+     * the statistics and how to go on.
+     */
+    @Override
+    public void showEnding(Ending ending) {
+        flushNotices();
+        String type = ending.getType().name();
+        out.println("=== The End: " + type.charAt(0) + type.substring(1).toLowerCase(Locale.ROOT) + " ending ===");
+        out.println(ending.getEpilogue());
+        out.println("Statistics: " + ending.getStatistics().entrySet().stream()
+                .map(entry -> entry.getKey() + " " + entry.getValue()).collect(Collectors.joining(", ")) + ".");
+        out.println(AFTER_ENDING);
     }
 
     /** Remembers quest updates and prints them after the turn's narration. */
@@ -276,10 +294,24 @@ public class CliGameView implements GameView, GameEventListener {
         }
     }
 
+    /** After the ending: creates a character and starts a new game (UC13, UC01); refused while a game runs. */
+    private void startNewGame() {
+        if (!controller.getState().isGameOver()) {
+            showError(GAME_NOT_OVER);
+            return;
+        }
+        offeredQuest = null;
+        if (!createCharacter()) {
+            running = false;
+            return;
+        }
+        controller.startGame();
+    }
+
     /** Saves in the slot; if a save of that name exists (and saving is allowed), asks first. */
     private void save(String slot) {
         boolean exists = controller.listSaves().stream().anyMatch(info -> info.getSlot().equalsIgnoreCase(slot));
-        if (exists && controller.getState().canSave()) {
+        if (exists && controller.getState().canSave() && !controller.getState().isGameOver()) {
             out.print("A save named \"" + slot + "\" already exists. Overwrite it? (yes/no) ");
             String answer = in.hasNextLine() ? in.nextLine().trim().toLowerCase(Locale.ROOT) : "";
             if (!answer.equals("yes") && !answer.equals("y")) {

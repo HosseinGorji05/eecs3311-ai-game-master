@@ -22,7 +22,7 @@ class GameSnapshotTest {
         GameSnapshot snapshot = new GameSnapshot(STATE, "Ari", "Tavern");
 
         assertEquals(GameSnapshot.CURRENT_VERSION, snapshot.getVersion());
-        assertEquals(1, GameSnapshot.CURRENT_VERSION);
+        assertEquals(2, GameSnapshot.CURRENT_VERSION);
         assertTrue(snapshot.isCompatible());
         assertFalse(snapshot.getCreatedAt().isBefore(before));
         assertEquals("Ari", snapshot.getCharacterName());
@@ -47,7 +47,7 @@ class GameSnapshotTest {
 
     @Test
     void aSnapshotOfAnotherVersionIsReadButNotCompatible() throws IOException {
-        String json = new GameSnapshot(STATE, "Ari", "Tavern").toJson().replace("\"version\": 1", "\"version\": 7");
+        String json = new GameSnapshot(STATE, "Ari", "Tavern").toJson().replace("\"version\": 2", "\"version\": 7");
 
         GameSnapshot read = GameSnapshot.fromJson(json);
 

@@ -47,6 +47,10 @@ class CliGameViewTest {
         return bytes.toString(StandardCharsets.UTF_8);
     }
 
+    /** The quest log of a new game: only the main quest. */
+    private static final String MAIN_QUEST_ONLY = "Quests:\n- Recover the village relic (main quest, active): "
+            + "defeat bandit leader 0/1, fetch village relic 0/1; reward: 50 gold, 50 XP\nVisited: ";
+
     private static void assertContains(String output, String expected) {
         assertTrue(output.contains(expected), "missing \"" + expected + "\" in:\n" + output);
     }
@@ -195,14 +199,14 @@ class CliGameViewTest {
                 "history dragons", "help", "quit");
 
         assertContains(output, "Visited: Village Square, Tavern");
-        assertContains(output, "Quests: none");
+        assertContains(output, MAIN_QUEST_ONLY);
         assertContains(output, "[turn 1] movement: moved to Tavern");
         assertContains(output, "! Unknown event type. Valid types: movement, item, combat, dialogue, quest, rejected.");
         assertContains(output, "Also: map, quests, journal, history, history <type>, help, quit.");
     }
 
     @Test
-    void afterDeathTheSessionOnlyWaitsForALoadOrQuit() {
+    void aDeathBeforeAnyQuestShowsTheShortDeathEndingAndTheSessionWaitsForALoadOrQuit() {
         String[] lines = new String[2 + 10 + 2];
         lines[0] = "Ari";
         lines[1] = "mage";   // 18 HP, defense 13: each wolf hit takes 3
@@ -220,9 +224,13 @@ class CliGameViewTest {
 
         String output = play(List.of(), new FixedDiceRoller(rolls), lines);
 
-        assertContains(output, "You die.");
-        assertContains(output, CliGameView.GAME_OVER_LINE + "\n> ! The game is over.\n");
-        assertEquals(1, output.split("You have died", -1).length - 1, "the death is announced once");
+        assertContains(output, "You die.\n(The epilogue is pre-written. Reason: the player died before completing any quest.)\n"
+                + "=== The End: Death ending ===\n"
+                + "Ari the mage died after 8 turns, before completing a single quest. The village relic stayed in the "
+                + "bandits' hands.\n"
+                + "Statistics: turns played 8, quests completed 0, enemies defeated 0.\n"
+                + CliGameView.AFTER_ENDING + "\n> ! The game is over.\n");
+        assertEquals(1, output.split("=== The End", -1).length - 1, "the ending is shown once");
         assertTrue(output.endsWith("> Goodbye.\n"), output);
         assertFalse(controller.getState().getPlayer().isAlive());
         assertEquals("wolf-den", controller.getState().currentLocation().getId());
@@ -276,10 +284,84 @@ class CliGameViewTest {
 
         String output = play(List.of(), new FixedDiceRoller(rolls), lines);
 
-        assertContains(output, CliGameView.GAME_OVER_LINE);
-        assertContains(output, "! The game is over.");
+        assertContains(output, "=== The End: Death ending ===");
+        assertContains(output, CliGameView.AFTER_ENDING + "\n> ! The game is over.");
         assertTrue(controller.getState().getPlayer().isAlive());
         assertEquals("village-square", controller.getState().currentLocation().getId(), "played on after the load");
+    }
+
+    @Test
+    void recoveringTheRelicShowsTheEndingAndAfterItOnlyReadingLoadingAndQuittingWork() {
+        String output = play(List.of(), new FixedDiceRoller(20, 1, 20),   // Ari hits, the leader misses, Ari hits
+                "Ari", "warrior",
+                "equip sword",
+                "go south",
+                "save edge",
+                "go south",
+                "take village relic",
+                "attack bandit leader",
+                "attack bandit leader",
+                "go north",
+                "save late",
+                "accept",
+                "quests",
+                "load edge",
+                "new",
+                "quit");
+
+        assertContains(output, "Your quest: recover the village relic from the bandit leader. "
+                + "After the ending, new starts a new game.");
+        assertContains(output, "(The epilogue is pre-written. Reason: LLM unavailable.)\n"
+                + "(Quest completed: Recover the village relic. Reward: 50 gold, 50 XP.)\n"
+                + "=== The End: Neutral ending ===\n"
+                + "Ari the warrior brought the village relic back from the Bandit Camp. In 6 turns, Ari completed 1 quest "
+                + "and defeated 1 enemy.\n\n"
+                + "The villagers were glad to have the relic home, though few could say what kind of person had returned "
+                + "it. Ari moved on soon after, and the village went back to its quiet ways.\n"
+                + "Statistics: turns played 6, quests completed 1, enemies defeated 1.\n"
+                + CliGameView.AFTER_ENDING + "\n"
+                + "> ! The game is over.\n"         // go north
+                + "> ! The game is over.\n"         // save late
+                + "> ! The game is over.\n");       // accept
+        assertContains(output, "- Recover the village relic (main quest, completed): defeat bandit leader 1/1, "
+                + "fetch village relic 1/1; reward: 50 gold, 50 XP\n");
+        assertContains(output, "> Forest Edge\n");   // the save was loaded after the ending (UC11)
+        assertContains(output, "> ! " + CliGameView.GAME_NOT_OVER + "\n");
+        assertEquals(1, output.split("=== The End", -1).length - 1);
+
+        GameState state = controller.getState();
+        assertFalse(state.isGameOver());
+        assertEquals("forest-edge", state.currentLocation().getId());
+        assertEquals("Ari", state.getPlayer().getName(), "new was refused while the loaded game runs");
+        assertNotNull(state.getWorld().findLocation("bandit-camp").findItem("village relic"));
+    }
+
+    @Test
+    void afterTheEndingNewCreatesACharacterAndStartsANewGame() {
+        int[] rolls = new int[12];
+        for (int round = 0; round < 6; round++) {
+            rolls[2 * round] = 1;        // Ari misses
+            rolls[2 * round + 1] = 20;   // the wolf hits for 3 (Ari the mage has 18 HP)
+        }
+        String output = play(List.of(), new FixedDiceRoller(rolls),
+                "Ari", "mage", "go south", "go west",
+                "attack wolf", "attack wolf", "attack wolf", "attack wolf", "attack wolf", "attack wolf",
+                "new", "", "Bo", "dragon", "rogue",
+                "map", "go north", "quit");
+
+        assertContains(output, "=== The End: Death ending ===");
+        assertContains(output, CliGameView.AFTER_ENDING + "\n> Your name: Your name: Class (warrior, rogue, mage): "
+                + "! Please choose warrior, rogue or mage.\nClass (warrior, rogue, mage): Bo the rogue sets out.\n"
+                + "Village Square\n");
+        assertContains(output, "Bo: 24/24 HP | Gold 0 | XP 0 | ");
+        assertContains(output, MAIN_QUEST_ONLY + "Village Square\n");
+        assertContains(output, "Reason: LLM unavailable.)\nTavern\n");
+
+        GameState state = controller.getState();
+        assertEquals("Bo", state.getPlayer().getName());
+        assertEquals("tavern", state.currentLocation().getId());
+        assertFalse(state.isGameOver());
+        assertEquals(1, state.getEventLog().recent(100).size(), "only Bo's move is in the history");
     }
 
     @Test
@@ -321,7 +403,9 @@ class CliGameViewTest {
                 + "Type accept or decline.\n");
         assertContains(output, "(Brann offers a pre-written quest. Reason: LLM unavailable.)");
         assertContains(output, "(Quest accepted: Find the shed key)");
-        assertContains(output, "Quests:\n- Find the shed key (active, from Brann): fetch shed key 0/1; reward: 15 gold, 15 XP\n");
+        assertContains(output, "Quests:\n- Recover the village relic (main quest, active): defeat bandit leader 0/1, "
+                + "fetch village relic 0/1; reward: 50 gold, 50 XP\n"
+                + "- Find the shed key (active, from Brann): fetch shed key 0/1; reward: 15 gold, 15 XP\n");
         assertContains(output, "You take the shed key.\n(Quest completed: Find the shed key. Reward: 15 gold, 15 XP.)");
         assertContains(output, " HP | Gold 15 | XP 15 | ");
         assertContains(output, "- Find the shed key (completed, from Brann): fetch shed key 1/1; reward: 15 gold, 15 XP\n");
@@ -360,15 +444,16 @@ class CliGameViewTest {
     }
 
     @Test
-    void declineDiscardsTheOfferAndTheQuestLogStaysEmpty() {
+    void declineDiscardsTheOfferAndOnlyTheMainQuestIsInTheLog() {
         String output = play(List.of(), new FixedDiceRoller(),
                 "Vex", "rogue", "go west", "talk to the blacksmith", "hello", "decline", "hello again", "accept",
                 "quests", "quit");
 
         assertContains(output, "You decline \"Find the shed key\".");
         assertContains(output, "! " + GameController.NO_OFFER);
-        assertContains(output, "Quests: none");
+        assertContains(output, MAIN_QUEST_ONLY);
         assertEquals(1, output.split("Brann offers you a quest:", -1).length - 1, "no second offer in the conversation");
-        assertTrue(controller.getState().getQuestLog().allQuests().isEmpty());
+        assertTrue(controller.getState().getQuestLog().allQuests().stream().allMatch(quest -> quest.isMain()),
+                "no side quest was added");
     }
 }
