@@ -1,5 +1,6 @@
 package agent;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
@@ -24,6 +25,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -39,11 +41,17 @@ import java.util.stream.Collectors;
  * ({@code giver} is optional). The prompt holds the giver's profile, the world, the quests already
  * taken and the story memory focused on the giver. The proposal is data and nothing in it is executed:
  * <ul>
- *   <li>{@link #parse} reads only these fields. It returns {@code null} (an invalid answer, asked
- *       again once) for an objective type other than fetch, defeat or visit, a count that is not a
- *       whole number of at least 1, gold or XP that are not whole non-negative numbers, a missing
- *       field, or any other field (such as {@code "status"} or {@code "progress"}), since a proposal
- *       may not set game state.</li>
+ *   <li>{@link #parse} reads only these fields and ignores any other (such as {@code "status"} or
+ *       {@code "progress"}): nothing else is read, so a proposal can never set game state. It is tolerant
+ *       where that is safe: field names in any case and with {@code _} or {@code -}, a few common names
+ *       for the same field (see {@link #TITLE_FIELDS} and the others), the quest wrapped as
+ *       {@code {"quest":{...}}} or as a one-element array, a single objective object instead of a list,
+ *       whole numbers written as text ({@code "15"}), missing gold or XP counting as 0, and a reward item
+ *       of {@code "none"}. It returns {@code null} (an invalid answer, asked again once) for an objective
+ *       type other than fetch, defeat or visit, a count that is not a whole number of at least 1, gold
+ *       or XP that are not whole non-negative numbers, or a missing title, description, objective list,
+ *       target or reward; {@link #describeUnparsable} names the {@link ParseRule} it broke for
+ *       {@code LLM_DEBUG}.</li>
  *   <li>{@link #isValid} asks {@link QuestValidator} whether every target exists and can be reached,
  *       the texts fit, the reward item is the giver's, the quest is no duplicate and the giver may
  *       offer it.</li>
@@ -73,11 +81,40 @@ public class QuestGenerator extends LlmTask<NPC, QuestProposal> {
 
     private static final int MAX_TOKENS = 400;
 
-    private static final Set<String> QUEST_FIELDS = Set.of("title", "description", "objectives", "reward", "giver");
-    private static final Set<String> OBJECTIVE_FIELDS = Set.of("type", "target", "count");
-    private static final Set<String> REWARD_FIELDS = Set.of("gold", "xp", "item");
+    /** Field names read for each part (compared ignoring case, {@code _} and {@code -}). */
+    static final Set<String> TITLE_FIELDS = Set.of("title", "name", "questtitle", "questname");
+    static final Set<String> DESCRIPTION_FIELDS = Set.of("description", "desc", "summary");
+    static final Set<String> OBJECTIVES_FIELDS = Set.of("objectives", "objective", "goals", "tasks");
+    static final Set<String> REWARD_FIELDS = Set.of("reward", "rewards");
+    static final Set<String> GIVER_FIELDS = Set.of("giver", "questgiver", "npc");
+    static final Set<String> TYPE_FIELDS = Set.of("type", "kind", "objectivetype");
+    static final Set<String> TARGET_FIELDS = Set.of("target", "targetid", "targetname");
+    static final Set<String> COUNT_FIELDS = Set.of("count", "quantity", "amount", "required", "number");
+    static final Set<String> GOLD_FIELDS = Set.of("gold", "coins");
+    static final Set<String> XP_FIELDS = Set.of("xp", "experience", "exp");
+    static final Set<String> ITEM_FIELDS = Set.of("item", "itemname", "rewarditem");
+    private static final Pattern WHOLE_NUMBER_TEXT = Pattern.compile("\\s*\\d{1,9}\\s*");
+
+    /** The rules of the reply's shape, named in the debug output when a reply breaks one. */
+    enum ParseRule {
+        /** No JSON object (also not inside a code fence, a {"quest":...} wrapper or a one-element array). */
+        JSON,
+        TITLE,
+        DESCRIPTION,
+        /** The objective list is missing, or an objective is not an object. */
+        OBJECTIVES,
+        OBJECTIVE_TYPE,
+        OBJECTIVE_TARGET,
+        OBJECTIVE_COUNT,
+        /** The reward is missing or not an object. */
+        REWARD,
+        REWARD_AMOUNT,
+        REWARD_ITEM,
+        GIVER
+    }
 
     private final QuestValidator questValidator;
+    private String parseProblem;
 
     public QuestGenerator(LLMClient llm, PromptBuilder prompts, ResponseParser parser, GameState state) {
         super(llm, prompts, parser, state);
@@ -127,38 +164,85 @@ public class QuestGenerator extends LlmTask<NPC, QuestProposal> {
     /** The proposal, or {@code null} if the answer breaks the schema described in the class comment. */
     @Override
     protected QuestProposal parse(LlmResponse response) {
-        JsonElement root = parser.parseJson(response.getText(), JsonElement.class);
-        if (root == null || !root.isJsonObject() || !onlyFields(root.getAsJsonObject(), QUEST_FIELDS)) {
+        parseProblem = null;
+        try {
+            return read(parser.parseJson(response.getText(), JsonElement.class));
+        } catch (ShapeProblem problem) {
+            parseProblem = problem.getMessage();
             return null;
         }
-        JsonObject quest = root.getAsJsonObject();
-        String title = ActionInterpreter.field(quest, Set.of("title"));
-        String description = ActionInterpreter.field(quest, Set.of("description"));
-        JsonElement objectivesJson = element(quest, "objectives");
-        JsonElement rewardJson = element(quest, "reward");
-        if (title == null || description == null || objectivesJson == null || !objectivesJson.isJsonArray()
-                || rewardJson == null || !rewardJson.isJsonObject()) {
-            return null;
+    }
+
+    /** The {@link ParseRule} the last unparsable reply broke, e.g. {@code "OBJECTIVE_TYPE: \"collect\" is not ..."}. */
+    @Override
+    protected String describeUnparsable(LlmResponse response) {
+        return parseProblem == null ? super.describeUnparsable(response) : parseProblem;
+    }
+
+    /** A broken {@link ParseRule}, thrown while reading and turned into {@code null} by {@link #parse}. */
+    private static final class ShapeProblem extends RuntimeException {
+        ShapeProblem(ParseRule rule, String detail) {
+            super(rule.name() + ": " + detail, null, false, false);
+        }
+    }
+
+    private static QuestProposal read(JsonElement root) {
+        JsonObject quest = questObject(root);
+        String title = text(quest, TITLE_FIELDS, ParseRule.TITLE, "title");
+        String description = text(quest, DESCRIPTION_FIELDS, ParseRule.DESCRIPTION, "description");
+        JsonElement objectivesJson = element(quest, OBJECTIVES_FIELDS);
+        if (objectivesJson == null || objectivesJson.isJsonNull()) {
+            throw new ShapeProblem(ParseRule.OBJECTIVES, "there is no objective list");
+        }
+        JsonArray list;
+        if (objectivesJson.isJsonArray()) {
+            list = objectivesJson.getAsJsonArray();
+        } else if (objectivesJson.isJsonObject()) {
+            list = new JsonArray();
+            list.add(objectivesJson);
+        } else {
+            throw new ShapeProblem(ParseRule.OBJECTIVES, "the objectives are not a list of objects");
         }
         List<Objective> objectives = new ArrayList<>();
-        for (JsonElement objectiveJson : objectivesJson.getAsJsonArray()) {
-            Objective objective = objective(objectiveJson);
-            if (objective == null) {
-                return null;
-            }
-            objectives.add(objective);
+        for (JsonElement objectiveJson : list) {
+            objectives.add(objective(objectiveJson));
+        }
+        JsonElement rewardJson = element(quest, REWARD_FIELDS);
+        if (rewardJson == null || !rewardJson.isJsonObject()) {
+            throw new ShapeProblem(ParseRule.REWARD, "the reward is missing or not an object with gold, xp and item");
         }
         Reward reward = reward(rewardJson.getAsJsonObject());
-        if (reward == null) {
-            return null;
-        }
-        JsonElement giverJson = element(quest, "giver");
+        JsonElement giverJson = element(quest, GIVER_FIELDS);
         if (giverJson != null && !giverJson.isJsonNull() && !giverJson.isJsonPrimitive()) {
-            return null;
+            throw new ShapeProblem(ParseRule.GIVER, "the giver is not a name");
         }
         String giver = giverJson == null || giverJson.isJsonNull() || giverJson.getAsString().isBlank()
                 ? null : giverJson.getAsString().trim();
         return new QuestProposal(title.strip(), description.strip(), objectives, reward, giver);
+    }
+
+    /** The quest object: the reply itself, the one object of a one-element array, or the value of a "quest" field. */
+    private static JsonObject questObject(JsonElement root) {
+        if (root != null && root.isJsonArray() && root.getAsJsonArray().size() == 1) {
+            root = root.getAsJsonArray().get(0);
+        }
+        if (root == null || !root.isJsonObject()) {
+            throw new ShapeProblem(ParseRule.JSON, "the reply holds no JSON object");
+        }
+        JsonObject object = root.getAsJsonObject();
+        JsonElement wrapped = element(object, Set.of("quest"));
+        if (element(object, TITLE_FIELDS) == null && wrapped != null && wrapped.isJsonObject()) {
+            return wrapped.getAsJsonObject();
+        }
+        return object;
+    }
+
+    private static String text(JsonObject object, Set<String> names, ParseRule rule, String what) {
+        JsonElement value = element(object, names);
+        if (value == null || !value.isJsonPrimitive()) {
+            throw new ShapeProblem(rule, "the " + what + " is missing or not text");
+        }
+        return value.getAsString();
     }
 
     @Override
@@ -286,12 +370,13 @@ public class QuestGenerator extends LlmTask<NPC, QuestProposal> {
         if (proposed == null) {
             return null;
         }
+        String wanted = QuestValidator.normalizeName(proposed);
         return locations().stream()
                 .flatMap(location -> location.getItems().stream())
-                .filter(item -> item.getName().equalsIgnoreCase(proposed.trim()) && giver.getId().equals(item.getOwnerId()))
+                .filter(item -> item.getName().equalsIgnoreCase(wanted) && giver.getId().equals(item.getOwnerId()))
                 .map(Item::getName)
                 .findFirst()
-                .orElse(proposed.trim());
+                .orElse(wanted);
     }
 
     private int maxReward() {
@@ -315,45 +400,69 @@ public class QuestGenerator extends LlmTask<NPC, QuestProposal> {
         return locations;
     }
 
-    /** {@code {"type":"fetch","target":"bread","count":1}} as an objective, or {@code null}. */
+    /**
+     * {@code {"type":"fetch","target":"bread","count":1}} as an objective. The target may also be named
+     * after its kind ({@code "item"} for fetch, {@code "enemy"} for defeat, {@code "location"} for visit);
+     * a missing count is 1.
+     */
     private static Objective objective(JsonElement json) {
-        if (!json.isJsonObject() || !onlyFields(json.getAsJsonObject(), OBJECTIVE_FIELDS)) {
-            return null;
+        if (!json.isJsonObject()) {
+            throw new ShapeProblem(ParseRule.OBJECTIVES, "an objective is not an object");
         }
         JsonObject object = json.getAsJsonObject();
-        String typeName = ActionInterpreter.field(object, Set.of("type"));
-        String target = ActionInterpreter.field(object, Set.of("target"));
-        JsonElement countJson = element(object, "count");
-        Integer count = countJson == null ? Integer.valueOf(1) : wholeNumber(countJson);
+        JsonElement typeJson = element(object, TYPE_FIELDS);
+        String typeName = typeJson != null && typeJson.isJsonPrimitive() ? typeJson.getAsString() : null;
         ObjectiveType type = objectiveType(typeName);
-        if (type == null || target == null || target.isBlank() || count == null || count < 1) {
-            return null;
+        if (type == null) {
+            throw new ShapeProblem(ParseRule.OBJECTIVE_TYPE, (typeName == null ? "the type is missing"
+                    : "\"" + typeName + "\" is not") + " fetch, defeat or visit");
         }
-        return new Objective(type, target.strip(), count);
+        JsonElement targetJson = element(object, TARGET_FIELDS);
+        if (targetJson == null) {
+            targetJson = element(object, Set.of(switch (type) {
+                case FETCH -> "item";
+                case DEFEAT -> "enemy";
+                case VISIT -> "location";
+            }));
+        }
+        if (targetJson == null || !targetJson.isJsonPrimitive() || targetJson.getAsString().isBlank()) {
+            throw new ShapeProblem(ParseRule.OBJECTIVE_TARGET, typeName.trim().toLowerCase(Locale.ROOT)
+                    + " objective has no target name");
+        }
+        JsonElement countJson = element(object, COUNT_FIELDS);
+        Integer count = countJson == null || countJson.isJsonNull() ? Integer.valueOf(1) : wholeNumber(countJson);
+        if (count == null || count < 1) {
+            throw new ShapeProblem(ParseRule.OBJECTIVE_COUNT, "count " + countJson + " is not a whole number of at least 1");
+        }
+        return new Objective(type, targetJson.getAsString().strip(), count);
     }
 
-    /** {@code {"gold":15,"xp":15,"item":null}} as a reward, or {@code null}. */
+    /** {@code {"gold":15,"xp":15,"item":null}} as a reward; missing gold or XP is 0. */
     private static Reward reward(JsonObject object) {
-        if (!onlyFields(object, REWARD_FIELDS)) {
-            return null;
-        }
-        JsonElement goldJson = element(object, "gold");
-        JsonElement xpJson = element(object, "xp");
-        Integer gold = goldJson == null ? null : wholeNumber(goldJson);
-        Integer xp = xpJson == null ? null : wholeNumber(xpJson);
-        if (gold == null || xp == null || gold < 0 || xp < 0) {
-            return null;
-        }
-        JsonElement itemJson = element(object, "item");
+        int gold = amount(object, GOLD_FIELDS, "gold");
+        int xp = amount(object, XP_FIELDS, "xp");
+        JsonElement itemJson = element(object, ITEM_FIELDS);
         String item = null;
         if (itemJson != null && !itemJson.isJsonNull()) {
             if (!itemJson.isJsonPrimitive()) {
-                return null;
+                throw new ShapeProblem(ParseRule.REWARD_ITEM, "the reward item is not a name");
             }
             String text = itemJson.getAsString().trim();
             item = text.isEmpty() || text.equalsIgnoreCase("none") || text.equalsIgnoreCase("null") ? null : text;
         }
         return new Reward(gold, xp, item);
+    }
+
+    private static int amount(JsonObject object, Set<String> names, String what) {
+        JsonElement value = element(object, names);
+        if (value == null || value.isJsonNull()) {
+            return 0;
+        }
+        Integer amount = wholeNumber(value);
+        if (amount == null || amount < 0) {
+            throw new ShapeProblem(ParseRule.REWARD_AMOUNT, what + " " + value + " is not a whole number of at least 0");
+        }
+        return amount;
     }
 
     /** FETCH, DEFEAT or VISIT for its name in any case; {@code null} for any other type. */
@@ -369,9 +478,20 @@ public class QuestGenerator extends LlmTask<NPC, QuestProposal> {
         return null;
     }
 
-    /** The value as an int if it is a JSON number without a fractional part, else {@code null}. */
+    /**
+     * The value as an int if it is a JSON number without a fractional part, or text holding only digits
+     * ({@code "15"}); else {@code null}.
+     */
     private static Integer wholeNumber(JsonElement value) {
-        if (!value.isJsonPrimitive() || !((JsonPrimitive) value).isNumber()) {
+        if (!value.isJsonPrimitive()) {
+            return null;
+        }
+        JsonPrimitive primitive = (JsonPrimitive) value;
+        if (primitive.isString()) {
+            return WHOLE_NUMBER_TEXT.matcher(primitive.getAsString()).matches()
+                    ? Integer.valueOf(primitive.getAsString().trim()) : null;
+        }
+        if (!primitive.isNumber()) {
             return null;
         }
         double number = value.getAsDouble();
@@ -381,14 +501,10 @@ public class QuestGenerator extends LlmTask<NPC, QuestProposal> {
         return (int) number;
     }
 
-    /** Whether every field's normalized name is one of {@code allowed}. */
-    private static boolean onlyFields(JsonObject object, Set<String> allowed) {
-        return object.keySet().stream().allMatch(name -> allowed.contains(ActionInterpreter.normalize(name)));
-    }
-
-    private static JsonElement element(JsonObject object, String name) {
+    /** The value of the first field whose normalized name is one of {@code names}, or {@code null}. */
+    private static JsonElement element(JsonObject object, Set<String> names) {
         for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
-            if (ActionInterpreter.normalize(entry.getKey()).equals(name)) {
+            if (names.contains(ActionInterpreter.normalize(entry.getKey()))) {
                 return entry.getValue();
             }
         }

@@ -132,6 +132,8 @@ public class SwingGameView implements GameView, GameEventListener {
     private static final Color PROBLEM = new Color(170, 30, 30);
 
     private final GameController controller;
+    /** The provider and model, or "offline"; fixed for the controller's life, read once. */
+    private final String llmDescription;
     private final JFrame frame;
     private final JPanel newGamePanel;
     private final JTextArea storyArea;
@@ -250,7 +252,8 @@ public class SwingGameView implements GameView, GameEventListener {
         cardPanel.add(newGamePanel, NEW_GAME_CARD);
         cardPanel.add(buildGamePanel(), GAME_CARD);
         cardPanel.add(endPanel, END_CARD);
-        this.frame = new JFrame(TITLE);
+        this.llmDescription = controller.getLlmDescription();
+        this.frame = new JFrame(GuiText.windowTitle(llmDescription));
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         frame.setJMenuBar(buildMenuBar());
         frame.setContentPane(cardPanel);
@@ -308,7 +311,7 @@ public class SwingGameView implements GameView, GameEventListener {
             endingShown = false;
             hideQuestCard();
             if (storyArea.getDocument().getLength() == 0) {
-                append(GuiText.HELP);
+                append(GuiText.help(llmDescription));
             }
             if (arrival != null) {
                 append("\n" + arrival);
@@ -836,7 +839,7 @@ public class SwingGameView implements GameView, GameEventListener {
         field.setText("");
         append("> " + line);
         switch (route) {
-            case HELP -> append(GuiText.HELP);
+            case HELP -> append(GuiText.help(llmDescription));
             case LEAVE -> runOnWorker(() -> controller.performAction(new ActionProposal(ActionType.LEAVE, null, null)));
             case FLEE -> runOnWorker(() -> controller.performAction(new ActionProposal(ActionType.FLEE, null, null)));
             case ACCEPT, DECLINE -> respond(route == TypedInput.Route.ACCEPT);

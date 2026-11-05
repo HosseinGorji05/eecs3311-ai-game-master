@@ -26,6 +26,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -36,7 +37,7 @@ import java.util.stream.Collectors;
  * ({@code "TARGET_REACHABLE: ..."}):
  * <ol>
  *   <li>{@link Rule#GIVER}: the giver is the NPC the player is talking to, gives quests, and is the
- *       giver the proposal names (if it names one).</li>
+ *       giver the proposal names (if it names one; "Brann", "the blacksmith", "Brann the blacksmith").</li>
  *   <li>{@link Rule#OPEN_QUEST}: the player has no active quest from this giver.</li>
  *   <li>{@link Rule#QUEST_LOG_FULL}: fewer than three side quests are active.</li>
  *   <li>{@link Rule#TITLE} and {@link Rule#DESCRIPTION}: not blank, at most
@@ -44,6 +45,8 @@ import java.util.stream.Collectors;
  *   <li>{@link Rule#OBJECTIVE_COUNT}: 1-3 objectives.</li>
  *   <li>{@link Rule#TARGET_EXISTS}: a FETCH item lies in some location, a DEFEAT enemy is alive
  *       somewhere, a VISIT location exists (by id or name).</li>
+ *   <li>{@link Rule#MAIN_QUEST}: no objective is one of the main quest's (DEFEAT the bandit leader,
+ *       FETCH the village relic): a side quest must not advance the main quest, so they are reserved.</li>
  *   <li>{@link Rule#TARGET_AVAILABLE}: a FETCH item belongs to nobody (taking an NPC's item is a
  *       theft), and a VISIT location is not where the player already is.</li>
  *   <li>{@link Rule#TARGET_REACHABLE}: the target's location can be reached from the player's
@@ -56,6 +59,10 @@ import java.util.stream.Collectors;
  *   <li>{@link Rule#DUPLICATE}: no active or completed quest has the same title or the same
  *       objectives.</li>
  * </ol>
+ *
+ * <p>Names are compared with {@link #normalizeName}: case, a leading "the", "a" or "an", details in
+ * parentheses or brackets copied from the world summary ("iron key (Brann's)", "Old Mill [old-mill]") and
+ * extra spaces do not matter, so a reply that names a real thing a little differently is still accepted.
  *
  * <p>The objective types themselves (FETCH, DEFEAT, VISIT only), whole non-negative numbers and the
  * absence of unknown fields are checked earlier, when {@code QuestGenerator} reads the JSON, because
@@ -82,12 +89,16 @@ public class QuestValidator {
         DESCRIPTION,
         OBJECTIVE_COUNT,
         TARGET_EXISTS,
+        MAIN_QUEST,
         TARGET_AVAILABLE,
         TARGET_REACHABLE,
         TARGET_COUNT,
         REWARD_ITEM,
         DUPLICATE
     }
+
+    private static final Pattern TRAILING_DETAIL = Pattern.compile("\\s*(?:\\([^()]*\\)|\\[[^\\[\\]]*\\])$");
+    private static final Pattern LEADING_ARTICLE = Pattern.compile("^(?i:the|a|an)\\s+");
 
     private final GameState state;
 
@@ -118,7 +129,7 @@ public class QuestValidator {
         if (!giver.isQuestGiver()) {
             return fail(Rule.GIVER, giver.getName() + " does not give quests");
         }
-        if (proposal.getGiverName() != null && !giver.isCalled(proposal.getGiverName())) {
+        if (proposal.getGiverName() != null && !namesGiver(proposal.getGiverName(), giver)) {
             return fail(Rule.GIVER, "the proposal names " + proposal.getGiverName() + " as the giver, not "
                     + giver.getName());
         }
@@ -185,7 +196,7 @@ public class QuestValidator {
      * location's id for VISIT (the model may name the location); {@code null} if there is no such thing.
      */
     String canonicalTarget(ObjectiveType type, String target) {
-        String wanted = target.trim();
+        String wanted = normalizeName(target);
         for (Location location : locations()) {
             switch (type) {
                 case FETCH -> {
@@ -227,6 +238,11 @@ public class QuestValidator {
                     + " in the world" + carried);
         }
         target.canonical = canonical;
+        Quest main = mainQuestWith(objective.getType(), canonical);
+        if (main != null) {
+            return fail(Rule.MAIN_QUEST, typeName(objective.getType()) + " " + canonical
+                    + " is an objective of the main quest " + main.getTitle());
+        }
         switch (objective.getType()) {
             case FETCH -> {
                 List<Item> unowned = new ArrayList<>();
@@ -288,13 +304,51 @@ public class QuestValidator {
         return null;
     }
 
+    /**
+     * A name as the game compares it: trimmed, single spaces, without details in parentheses or brackets
+     * at the end ("iron key (0.2 kg)", "Old Mill [old-mill]") and without a leading "the", "a" or "an".
+     */
+    static String normalizeName(String text) {
+        String name = text.strip().replaceAll("\\s+", " ");
+        String previous;
+        do {
+            previous = name;
+            name = TRAILING_DETAIL.matcher(name).replaceFirst("").strip();
+        } while (!name.equals(previous) && !name.isEmpty());
+        String withoutArticle = LEADING_ARTICLE.matcher(name).replaceFirst("").strip();
+        return withoutArticle.isEmpty() ? name : withoutArticle;
+    }
+
+    /** Whether the giver named in a proposal is this NPC: its name, role or id, or its name followed by a title. */
+    private boolean namesGiver(String named, NPC giver) {
+        String text = normalizeName(named);
+        if (giver.isCalled(text)) {
+            return true;
+        }
+        String lower = text.toLowerCase(Locale.ROOT);
+        String name = giver.getName().toLowerCase(Locale.ROOT);
+        return lower.startsWith(name + " ") || lower.startsWith(name + ",");
+    }
+
+    /** The main quest that has this objective, or {@code null}. */
+    private Quest mainQuestWith(ObjectiveType type, String canonical) {
+        for (Quest quest : state.getQuestLog().allQuests()) {
+            if (quest.isMain() && quest.getObjectives().stream().anyMatch(objective -> objective.getType() == type
+                    && objective.getTargetId().equalsIgnoreCase(canonical))) {
+                return quest;
+            }
+        }
+        return null;
+    }
+
     private ValidationResult checkRewardItem(String itemName, NPC giver) {
         if (itemName == null) {
             return null;
         }
+        String wanted = normalizeName(itemName);
         for (Location location : locations()) {
             for (Item item : location.getItems()) {
-                if (item.getName().equalsIgnoreCase(itemName.trim()) && giver.getId().equals(item.getOwnerId())) {
+                if (item.getName().equalsIgnoreCase(wanted) && giver.getId().equals(item.getOwnerId())) {
                     double limit = state.getPlayer().getInventory().getMaxWeight();
                     if (item.getWeight() > limit) {
                         return fail(Rule.REWARD_ITEM, "the " + item.getName() + " weighs more than the "

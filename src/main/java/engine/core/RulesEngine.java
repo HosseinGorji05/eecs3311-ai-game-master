@@ -2,6 +2,7 @@ package engine.core;
 
 import engine.character.Combatant;
 import engine.commands.ActionResult;
+import engine.commands.ActionType;
 import engine.commands.GameCommand;
 import engine.commands.ValidationResult;
 import engine.events.EventType;
@@ -23,13 +24,19 @@ import java.util.Objects;
  * each result are then published to the {@link GameEventBus} (SD03); a failed result that carries
  * no event of its own gets a REJECTED event, so the history also shows what the player attempted.
  *
+ * <p>A refusal by the mode says why, from the mode and the action type ({@link #notAllowed}): e.g.
+ * "You can't leave during the fight with the wolf. Attack it, or flee." The wording is fixed text, never
+ * the model's.
+ *
  * <p>Combat and skill checks are decided here by the {@link DiceRoller} and the combatants'
  * stats, never by the LLM (SD04, SD12).
  */
 public class RulesEngine {
 
-    /** Message for an action the current mode does not allow (SD03). */
+    /** Message for an action the current mode does not allow when no more specific one applies (SD03). */
     static final String NOT_ALLOWED = "That is not possible right now.";
+    /** What the player can still do in combat (CombatMode's allowed actions). */
+    static final String COMBAT_CHOICES = "You can attack, flee, use or equip an item, look around or check your inventory.";
 
     private final DiceRoller dice;
     private final GameEventBus eventBus;
@@ -51,7 +58,7 @@ public class RulesEngine {
         for (GameCommand command : commands) {
             ActionResult result;
             if (!state.allows(command.getType())) {
-                result = reject(command, NOT_ALLOWED);
+                result = reject(command, notAllowed(state, command.getType()));
             } else {
                 ValidationResult validation = command.validate(state);
                 result = validation.isValid()
@@ -98,6 +105,51 @@ public class RulesEngine {
     /** Whether a d20 roll plus {@code statValue} reaches {@code difficulty}. */
     public boolean skillCheck(int statValue, int difficulty) {
         return dice.rollD20() + statValue >= difficulty;
+    }
+
+    /** Why the current mode refuses this action type, in words that say what the player can do instead. */
+    static String notAllowed(GameState state, ActionType type) {
+        GameMode mode = state.getMode();
+        if (mode instanceof CombatMode combat) {
+            String fight = "the fight with the " + combat.getEnemy().getName();
+            return switch (type) {
+                case MOVE -> "You can't leave during " + fight + ". Attack it, or flee.";
+                case LEAVE -> "You are in " + fight + ", not in a conversation. Attack it, or flee.";
+                case TALK -> "You can't talk to anyone during " + fight + ". " + COMBAT_CHOICES;
+                default -> "You can't " + verb(type) + " during " + fight + ". " + COMBAT_CHOICES;
+            };
+        }
+        if (mode instanceof DialogueMode dialogue) {
+            String npc = dialogue.getNpc().getName();
+            return switch (type) {
+                case TALK -> "You are already talking to " + npc + ".";
+                case FLEE -> "You are not in a fight. To end the conversation with " + npc + ", leave.";
+                default -> "You can't " + verb(type) + " while talking to " + npc + ". Leave the conversation first.";
+            };
+        }
+        return switch (type) {
+            case FLEE -> "You are not in a fight.";
+            case LEAVE -> "You are not talking to anyone.";
+            default -> NOT_ALLOWED;
+        };
+    }
+
+    /** The action in a refusal: "go anywhere", "pick things up", "attack". */
+    private static String verb(ActionType type) {
+        return switch (type) {
+            case MOVE -> "go anywhere";
+            case TAKE -> "pick things up";
+            case DROP -> "drop things";
+            case PUT -> "pack things away";
+            case USE -> "use things";
+            case EQUIP -> "change weapons";
+            case TALK -> "talk to anyone";
+            case LEAVE -> "leave";
+            case ATTACK -> "attack";
+            case FLEE -> "flee";
+            case LOOK -> "look around";
+            case INVENTORY -> "check your inventory";
+        };
     }
 
     private ActionResult reject(GameCommand command, String reason) {

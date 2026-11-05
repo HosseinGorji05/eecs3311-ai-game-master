@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * Turns the player's free text into action proposals with the language model (F02), e.g.
@@ -28,7 +29,15 @@ import java.util.Set;
  * are implausible (too many actions, very long targets), so such output never reaches
  * {@code CommandFactory}. The prompt also holds the story memory, focused on the current location;
  * it is context only, never parsed into actions. The fallback is {@link OfflineFallbackParser}. Whether
- * a valid proposal may actually happen is still decided by the rules engine.
+ * a valid proposal may actually happen is still decided by the rules engine: the model is asked to
+ * translate what the player wants even when it looks impossible, so the engine can say why it is not
+ * (F02, UC02 4a), and a leading "the", "a" or "an" is dropped from every target, as the keyword parser does.
+ *
+ * <p>Keyword safety net (an addition to SD02): when the model answers with no action at all,
+ * {@link #interpret} also tries the keyword parser on the text. If that finds actions (say "east" at a
+ * locked door, which a model may wrongly think it should refuse), they are used, so a simple command
+ * still reaches the rules engine and its real reason; otherwise the text was not understood. This uses no
+ * model output, so the reason the player sees never depends on the model.
  */
 public class ActionInterpreter extends LlmTask<String, List<ActionProposal>> {
 
@@ -41,15 +50,28 @@ public class ActionInterpreter extends LlmTask<String, List<ActionProposal>> {
     private static final Set<ActionType> NEED_TARGET = EnumSet.of(ActionType.MOVE, ActionType.TAKE,
             ActionType.DROP, ActionType.PUT, ActionType.USE, ActionType.EQUIP, ActionType.TALK, ActionType.ATTACK);
 
+    private static final Pattern LEADING_ARTICLE = Pattern.compile("^(?i:the|a|an)\\s+");
+
     private final OfflineFallbackParser offlineParser = new OfflineFallbackParser();
 
     public ActionInterpreter(LLMClient llm, PromptBuilder prompts, ResponseParser parser, GameState state) {
         super(llm, prompts, parser, state);
     }
 
-    /** The actions in the text; empty if it was not understood. */
+    /**
+     * The actions in the text; empty if it was not understood. An empty answer from the model is checked
+     * with the keyword parser (see the class comment).
+     */
     public List<ActionProposal> interpret(String text) {
-        return run(text);
+        List<ActionProposal> proposals = run(text);
+        if (!proposals.isEmpty() || isFallbackUsed()) {
+            return proposals;
+        }
+        List<ActionProposal> keywords = offlineParser.parse(text);
+        if (!keywords.isEmpty()) {
+            debugLine("the model proposed no action; the keyword parser found " + keywords.size());
+        }
+        return keywords;
     }
 
     @Override
@@ -149,8 +171,13 @@ public class ActionInterpreter extends LlmTask<String, List<ActionProposal>> {
         }
     }
 
+    /** The target trimmed and without a leading article; {@code null} if nothing is left. */
     private static String clean(String target) {
-        return target == null || target.isBlank() ? null : target.trim();
+        if (target == null) {
+            return null;
+        }
+        String cleaned = LEADING_ARTICLE.matcher(target.trim()).replaceFirst("").trim();
+        return cleaned.isEmpty() ? null : cleaned;
     }
 
     private static boolean tooLong(String target) {

@@ -137,6 +137,7 @@ class DropCommandTest {
     void droppingIsNotPossibleInCombat() {
         CommandTestGame game = new CommandTestGame(CharacterClass.WARRIOR, "wolf-den");
         game.fight("wolf");
-        game.assertRejectedWithoutChange(new DropCommand("sword"), "That is not possible right now.");
+        game.assertRejectedWithoutChange(new DropCommand("sword"),
+                "You can't drop things during the fight with the wolf. You can attack, flee, use or equip an item, look around or check your inventory.");
     }
 }

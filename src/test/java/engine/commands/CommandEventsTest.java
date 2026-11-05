@@ -159,7 +159,7 @@ class CommandEventsTest {
 
         ActionResult result = run(leave);
 
-        assertEquals("That is not possible right now.", result.getMessage());
+        assertEquals("You are not talking to anyone.", result.getMessage());
         assertOnlyRejected(result, ActionType.LEAVE);
     }
 

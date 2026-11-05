@@ -37,6 +37,18 @@ final class GuiText {
             accept or decline). In a fight, the combat panel shows both HP bars and the last dice rolls, with \
             Attack and Flee. The Event log and Journal tabs show what has happened so far.""";
 
+    /** The window title with the language model in use: "AI Game Master - groq (openai/gpt-oss-20b)" or "... - offline". */
+    static String windowTitle(String llmDescription) {
+        return SwingGameView.TITLE + " - " + llmDescription;
+    }
+
+    /** The help with the language model in use at the end; offline, typed commands use the basic keywords. */
+    static String help(String llmDescription) {
+        return HELP + "\n" + (llmDescription.equals("offline")
+                ? "Language model: offline (basic commands only, e.g. \"go north\", \"take bread\")."
+                : "Language model: " + llmDescription + ".");
+    }
+
     private static final DateTimeFormatter SAVE_TIME = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.ROOT);
 
     private GuiText() {

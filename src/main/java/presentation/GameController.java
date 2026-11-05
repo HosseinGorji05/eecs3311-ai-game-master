@@ -39,6 +39,7 @@ import engine.quests.Reward;
 import engine.world.NPC;
 import engine.world.World;
 import llm.LLMClient;
+import llm.OpenAiCompatibleClient;
 
 import java.io.IOException;
 import java.io.PrintStream;
@@ -129,6 +130,7 @@ public class GameController {
     private final QuestGenerator questGenerator;
     private final EndingCalculator endingCalculator = new EndingCalculator();
     private final EndingWriter endingWriter;
+    private final String llmDescription;
     private Player newPlayer;
     private Quest offeredQuest;
     private DialogueMode offerConversation;
@@ -145,6 +147,7 @@ public class GameController {
     /** Creates a controller with the given dice and save manager (e.g. one using a temporary directory). */
     public GameController(LLMClient llm, DiceRoller dice, SaveManager saves) {
         Objects.requireNonNull(llm, "llm");
+        this.llmDescription = describe(llm);
         this.saves = Objects.requireNonNull(saves, "saves");
         this.rules = new RulesEngine(Objects.requireNonNull(dice, "dice"), eventBus);
         this.memory = new MemoryManager(state, new MemorySummarizer(llm, new PromptBuilder(), new ResponseParser(), state));
@@ -169,6 +172,21 @@ public class GameController {
         questGenerator.setDebugOutput(debug);
         memory.setDebugOutput(debug);
         endingWriter.setDebugOutput(debug);
+    }
+
+    /**
+     * Which language model the game uses, for the views: the provider and model, e.g.
+     * {@code "groq (openai/gpt-oss-20b)"}, or {@code "offline"} without a real provider. It never holds any
+     * part of a key.
+     */
+    public String getLlmDescription() {
+        return llmDescription;
+    }
+
+    private static String describe(LLMClient llm) {
+        return llm instanceof OpenAiCompatibleClient client
+                ? client.providerName() + " (" + client.getModel() + ")"
+                : "offline";
     }
 
     /** Adds a view; a view that listens to events is also subscribed to the bus. */

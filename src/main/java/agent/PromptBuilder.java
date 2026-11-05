@@ -35,14 +35,19 @@ public class PromptBuilder {
                     Answer with one JSON object and nothing else (no explanation, no code fence), exactly in this schema:
                     {"actions":[{"type":"<type>","target":"<name or null>","secondTarget":"<name or null>"}]}
                     "type" is one of: move, take, drop, put, use, equip, talk, leave, attack, flee, look, inventory.
-                    "target": for move, a direction (north, south, east, west) or a location name listed under Exits; \
-                    for take, an item listed under Items here; for attack, an enemy listed under Enemies here; \
-                    for drop, put, use (potions and food) and equip (weapons), an item listed under Carrying; \
-                    for talk, a person listed under People here; null for leave, flee, look and inventory.
-                    "secondTarget": for put, a container listed under Carrying; otherwise null.
-                    Copy names exactly as they appear in the game state, without the details in parentheses, \
-                    and list the actions in the player's order.
-                    If the input asks for something impossible or is not an action, answer {"actions":[]}.
+                    "target": for move, a direction (north, south, east, west) or a location name; for take, \
+                    the item; for attack, the enemy; for drop, put, use (potions and food) and equip (weapons), the \
+                    carried item; for talk, the person (a person's name alone means talking to them); null for \
+                    leave, flee, look and inventory.
+                    "secondTarget": for put, the container; otherwise null.
+                    When the player means something in the game state (Exits, Items here, Enemies here, People \
+                    here, Carrying), copy its name exactly, without "the" and without the details in parentheses; \
+                    otherwise use the player's own word for it. List the actions in the player's order.
+                    Translate what the player asks for even if it looks impossible right now (a locked exit, \
+                    a fight, someone who is not here, something that is not there): the game checks every \
+                    action and tells the player why it cannot happen.
+                    Answer {"actions":[]} only if the input is not a game action at all, or is ambiguous \
+                    (for example "take it" when several items could be meant).
                     Example: "grab the bread and head north" gives \
                     {"actions":[{"type":"take","target":"bread","secondTarget":null},\
                     {"type":"move","target":"north","secondTarget":null}]}""",

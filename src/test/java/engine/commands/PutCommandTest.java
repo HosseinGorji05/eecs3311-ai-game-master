@@ -139,6 +139,7 @@ class PutCommandTest {
     void puttingIsNotPossibleInCombat() {
         CommandTestGame game = new CommandTestGame(CharacterClass.ROGUE, "wolf-den");
         game.fight("wolf");
-        game.assertRejectedWithoutChange(new PutCommand("dagger", "pouch"), "That is not possible right now.");
+        game.assertRejectedWithoutChange(new PutCommand("dagger", "pouch"),
+                "You can't pack things away during the fight with the wolf. You can attack, flee, use or equip an item, look around or check your inventory.");
     }
 }

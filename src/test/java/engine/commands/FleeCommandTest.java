@@ -127,7 +127,7 @@ class FleeCommandTest {
         ActionResult result = run(new FleeCommand());
 
         assertFalse(result.isSuccess());
-        assertEquals("That is not possible right now.", result.getMessage());
+        assertEquals("You are not in a fight.", result.getMessage());
         assertEquals(before, StateFingerprint.of(state));
         assertEquals(List.of(EventType.REJECTED), published.stream().map(GameEvent::getType).toList());
     }

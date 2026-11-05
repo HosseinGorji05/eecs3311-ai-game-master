@@ -82,7 +82,7 @@ class CliGameViewTest {
         assertContains(output, "Enemies: wolf (8/8 HP)");
         assertContains(output, "Ari attacks wolf: rolls 10 + 5 = 15 against defense 11. Hit for 2 damage (wolf: 6/8 HP).");
         assertContains(output, "wolf attacks Ari: rolls 5 + 3 = 8 against defense 13. Miss.");
-        assertContains(output, "That is not possible right now.");   // no talking in combat
+        assertContains(output, "You can't talk to anyone during the fight with the wolf. You can attack, flee, use or equip an item, look around or check your inventory.");   // no talking in combat
         assertContains(output, "! You can't save during combat.");
         assertContains(output, "[turn 5] combat: Ari attacks wolf");
         assertTrue(output.endsWith("> Goodbye.\n"), output);

@@ -5,7 +5,9 @@ import engine.core.GameState;
 import engine.core.RulesEngine;
 import engine.events.EventType;
 import engine.events.GameEvent;
+import engine.world.Location;
 import engine.world.NPC;
+import engine.world.Region;
 
 import java.util.Objects;
 
@@ -15,7 +17,8 @@ import java.util.Objects;
  *
  * <p>Pattern role: <b>ConcreteCommand</b>. The NPC is found by name or role ("Brann", "the
  * blacksmith"). Exploration is the only mode that allows TALK, so it is rejected in combat and while
- * already talking. A successful talk adds a DIALOGUE event (subject = the NPC's id).
+ * already talking. A successful talk adds a DIALOGUE event (subject = the NPC's id). An NPC who lives
+ * elsewhere is refused with "Brann isn't here."; a name nobody has with "There is no dragon here.".
  */
 public class TalkCommand implements GameCommand {
 
@@ -41,9 +44,25 @@ public class TalkCommand implements GameCommand {
             return new ValidationResult(false, "You are already talking to " + dialogue.getNpc().getName() + ".");
         }
         if (state.currentLocation().findNpc(npcName) == null) {
-            return new ValidationResult(false, "There is no " + npcName + " here.");
+            NPC elsewhere = findAnywhere(state, npcName);
+            return new ValidationResult(false, elsewhere != null
+                    ? elsewhere.getName() + " isn't here."
+                    : "There is no " + npcName + " here.");
         }
         return new ValidationResult(true, null);
+    }
+
+    /** The NPC with this name, role or id anywhere in the world, or {@code null}. */
+    private static NPC findAnywhere(GameState state, String name) {
+        for (Region region : state.getWorld().getRegions()) {
+            for (Location location : region.getLocations()) {
+                NPC npc = location.findNpc(name);
+                if (npc != null) {
+                    return npc;
+                }
+            }
+        }
+        return null;
     }
 
     @Override

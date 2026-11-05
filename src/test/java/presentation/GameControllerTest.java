@@ -231,7 +231,7 @@ class GameControllerTest {
 
         TurnResult turn = controller.performAction(new ActionProposal(ActionType.FLEE, null, null));
 
-        assertEquals("That is not possible right now.", turn.getNarration());
+        assertEquals("You are not in a fight.", turn.getNarration());
         assertFalse(view.shown.stream().anyMatch(line -> line.startsWith("notice")));
     }
 

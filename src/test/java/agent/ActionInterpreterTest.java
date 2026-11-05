@@ -159,7 +159,7 @@ class ActionInterpreterTest {
     void thePromptListsWhatThePlayerCarriesAndWields() {
         assertTrue(new PromptBuilder().stateSummary(state).endsWith(
                 "\nCarrying: sword, healing potion\nEquipped weapon: none"));
-        assertTrue(PromptBuilder.DEFAULT_TEMPLATES.get("interpret.system").contains("an item listed under Carrying"));
+        assertTrue(PromptBuilder.DEFAULT_TEMPLATES.get("interpret.system").contains("People here, Carrying)"));
 
         state.getPlayer().equip((Weapon) state.getPlayer().getInventory().find("sword"));
         Container pouch = new Container("pouch", 0.2, 4);

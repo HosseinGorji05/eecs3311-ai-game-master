@@ -203,10 +203,12 @@ class AttackCommandTest {
     void nonCombatActionsAreRejectedDuringAFight() {
         run(new AttackCommand("wolf"), 10, 5);
         published.clear();
-        assertRejectedWithoutChange(new MoveCommand(Direction.EAST), "That is not possible right now.");
+        assertRejectedWithoutChange(new MoveCommand(Direction.EAST),
+                "You can't leave during the fight with the wolf. Attack it, or flee.");
         published.clear();
         den.addItem(new Weapon("bone", 0.5, 1));
-        assertRejectedWithoutChange(new TakeCommand("bone"), "That is not possible right now.");
+        assertRejectedWithoutChange(new TakeCommand("bone"),
+                "You can't pick things up during the fight with the wolf. You can attack, flee, use or equip an item, look around or check your inventory.");
     }
 
     @Test

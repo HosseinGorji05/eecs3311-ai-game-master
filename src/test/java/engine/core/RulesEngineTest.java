@@ -103,7 +103,7 @@ class RulesEngineTest {
         assertEquals(0, leave.validateCalls);
         assertEquals(0, leave.executeCalls);
         assertFalse(result.isSuccess());
-        assertEquals("That is not possible right now.", result.getMessage());
+        assertEquals("You are not talking to anyone.", result.getMessage());
     }
 
     @Test

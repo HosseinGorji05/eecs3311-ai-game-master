@@ -183,13 +183,7 @@ class QuestGeneratorTest {
             // an objective type the game does not have
             "{\"title\":\"T\",\"description\":\"D\",\"objectives\":[{\"type\":\"escort\",\"target\":\"Marta\"}],"
                     + "\"reward\":{\"gold\":1,\"xp\":1,\"item\":null}}",
-            // fields that try to set game state
-            "{\"title\":\"T\",\"description\":\"D\",\"status\":\"COMPLETED\",\"objectives\":[{\"type\":\"visit\","
-                    + "\"target\":\"old-mill\"}],\"reward\":{\"gold\":1,\"xp\":1,\"item\":null}}",
-            "{\"title\":\"T\",\"description\":\"D\",\"objectives\":[{\"type\":\"visit\",\"target\":\"old-mill\","
-                    + "\"progress\":1}],\"reward\":{\"gold\":1,\"xp\":1,\"item\":null}}",
-            "{\"title\":\"T\",\"description\":\"D\",\"objectives\":[{\"type\":\"visit\",\"target\":\"old-mill\"}],"
-                    + "\"reward\":{\"gold\":1,\"xp\":1,\"item\":null,\"hp\":100}}",
+            // a giver that is not a name
             "{\"title\":\"T\",\"description\":\"D\",\"giver\":{\"name\":\"Brann\"},\"objectives\":[{\"type\":"
                     + "\"visit\",\"target\":\"old-mill\"}],\"reward\":{\"gold\":1,\"xp\":1,\"item\":null}}",
             // numbers that are not whole and non-negative

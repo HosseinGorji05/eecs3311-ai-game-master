@@ -9,7 +9,9 @@ import engine.events.GameEvent;
 import engine.world.Direction;
 import org.junit.jupiter.api.Test;
 
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
@@ -53,7 +55,7 @@ class DialogueCommandsTest {
     @Test
     void anNpcThatIsNotHereCannotBeTalkedTo() {
         CommandTestGame game = new CommandTestGame(CharacterClass.WARRIOR, "tavern");
-        game.assertRejectedWithoutChange(new TalkCommand("Brann"), "There is no Brann here.");
+        game.assertRejectedWithoutChange(new TalkCommand("Brann"), "Brann isn't here.");
         game.assertRejectedWithoutChange(new TalkCommand("wolf"), "There is no wolf here.");
     }
 
@@ -61,7 +63,7 @@ class DialogueCommandsTest {
     void talkingAgainWhileTalkingIsRejected() {
         CommandTestGame game = talkingToMarta();
 
-        game.assertRejectedWithoutChange(new TalkCommand("Marta"), "That is not possible right now.");
+        game.assertRejectedWithoutChange(new TalkCommand("Marta"), "You are already talking to Marta.");
         assertEquals("You are already talking to Marta.", new TalkCommand("Marta").validate(game.state).getReason());
     }
 
@@ -71,7 +73,8 @@ class DialogueCommandsTest {
         game.state.currentLocation().addEnemy(new Enemy("rat", 2, 1, 5));
         game.fight("rat");
 
-        game.assertRejectedWithoutChange(new TalkCommand("Marta"), "That is not possible right now.");
+        game.assertRejectedWithoutChange(new TalkCommand("Marta"),
+                "You can't talk to anyone during the fight with the rat. You can attack, flee, use or equip an item, look around or check your inventory.");
     }
 
     @Test
@@ -93,7 +96,7 @@ class DialogueCommandsTest {
     void leavingIsOnlyPossibleInAConversation() {
         CommandTestGame game = new CommandTestGame(CharacterClass.WARRIOR, "tavern");
 
-        game.assertRejectedWithoutChange(new LeaveCommand(), "That is not possible right now.");
+        game.assertRejectedWithoutChange(new LeaveCommand(), "You are not talking to anyone.");
         assertEquals("You are not talking to anyone.", new LeaveCommand().validate(game.state).getReason());
     }
 
@@ -111,11 +114,16 @@ class DialogueCommandsTest {
         CommandTestGame game = talkingToMarta();
         game.ari.takeDamage(5);
 
-        for (GameCommand command : List.of(new MoveCommand(Direction.SOUTH), new EquipCommand("sword"),
-                new UseItemCommand("healing potion"), new DropCommand("sword"), new PutCommand("sword", "pouch"),
-                new AttackCommand("Marta"), new FleeCommand())) {
-            game.assertRejectedWithoutChange(command, "That is not possible right now.");
-        }
+        String leaveFirst = " while talking to Marta. Leave the conversation first.";
+        Map<GameCommand, String> refusals = new LinkedHashMap<>();
+        refusals.put(new MoveCommand(Direction.SOUTH), "You can't go anywhere" + leaveFirst);
+        refusals.put(new EquipCommand("sword"), "You can't change weapons" + leaveFirst);
+        refusals.put(new UseItemCommand("healing potion"), "You can't use things" + leaveFirst);
+        refusals.put(new DropCommand("sword"), "You can't drop things" + leaveFirst);
+        refusals.put(new PutCommand("sword", "pouch"), "You can't pack things away" + leaveFirst);
+        refusals.put(new AttackCommand("Marta"), "You can't attack" + leaveFirst);
+        refusals.put(new FleeCommand(), "You are not in a fight. To end the conversation with Marta, leave.");
+        refusals.forEach(game::assertRejectedWithoutChange);
     }
 
     @Test
