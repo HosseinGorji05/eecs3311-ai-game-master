@@ -27,10 +27,14 @@ final class GuiState {
     private final List<InventoryTreeModel.ItemNode> itemsHere;
     private final QuestListModel quests;
     private final ControlRules rules;
+    private final DialogueState dialogue;
+    private final List<DialogueState.Person> peopleHere;
+    private final CombatSummary combat;
 
     private GuiState(String statusLine, String modeLine, String prompt, MapModel map, DefaultTreeModel inventory,
                      double weight, double maxWeight, List<InventoryTreeModel.ItemNode> itemsHere,
-                     QuestListModel quests, ControlRules rules) {
+                     QuestListModel quests, ControlRules rules, DialogueState dialogue,
+                     List<DialogueState.Person> peopleHere, CombatSummary combat) {
         this.statusLine = statusLine;
         this.modeLine = modeLine;
         this.prompt = prompt;
@@ -41,12 +45,16 @@ final class GuiState {
         this.itemsHere = List.copyOf(itemsHere);
         this.quests = quests;
         this.rules = rules;
+        this.dialogue = dialogue;
+        this.peopleHere = List.copyOf(peopleHere);
+        this.combat = combat;
     }
 
     /** The empty panels before a game starts. */
     static GuiState empty() {
         return new GuiState(GuiText.NO_GAME, "", GuiText.COMMAND_PROMPT, MapModel.EMPTY, InventoryTreeModel.empty(),
-                0, Inventory.MAX_CARRY_WEIGHT, List.of(), QuestListModel.EMPTY, ControlRules.NOT_STARTED);
+                0, Inventory.MAX_CARRY_WEIGHT, List.of(), QuestListModel.EMPTY, ControlRules.NOT_STARTED,
+                DialogueState.NONE, List.of(), CombatSummary.NONE);
     }
 
     /** Copies the state; the empty panels if no game has started. */
@@ -60,7 +68,8 @@ final class GuiState {
                 MapModel.of(state), InventoryTreeModel.build(player.getInventory(), player.getEquippedWeapon()),
                 player.getInventory().totalWeight(), player.getInventory().getMaxWeight(),
                 InventoryTreeModel.itemsHere(state), QuestListModel.of(state.getQuestLog(), state.getWorld()),
-                ControlRules.of(state));
+                ControlRules.of(state), DialogueState.of(state), DialogueState.peopleHere(state),
+                CombatSummary.of(state));
     }
 
     String getStatusLine() {
@@ -101,5 +110,17 @@ final class GuiState {
 
     ControlRules getRules() {
         return rules;
+    }
+
+    DialogueState getDialogue() {
+        return dialogue;
+    }
+
+    List<DialogueState.Person> getPeopleHere() {
+        return peopleHere;
+    }
+
+    CombatSummary getCombat() {
+        return combat;
     }
 }

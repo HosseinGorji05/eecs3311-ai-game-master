@@ -1,5 +1,6 @@
 package presentation;
 
+import agent.NpcReply;
 import engine.character.CharacterClass;
 import engine.commands.ActionProposal;
 import engine.commands.ActionType;
@@ -18,6 +19,7 @@ import javax.swing.BoxLayout;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
@@ -34,6 +36,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSplitPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.JTree;
@@ -56,6 +59,10 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -78,8 +85,9 @@ import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /**
- * The Swing desktop interface (part 1): the New Game screen, the main window with the story panel and
- * its input field, the status area, the map, the inventory and the quest log, the Game menu with Save,
+ * The Swing desktop interface: the New Game screen, the main window with the story panel and its input
+ * field, the status area, the map with the people here, the inventory, the quest log, the event log and
+ * the journal, the dialogue panel with the quest offer card and the combat panel, the Game menu with Save,
  * Load and New Game, and the end screen. It forwards all input to the single {@link GameController} and
  * never touches the engine.
  *
@@ -100,8 +108,18 @@ import java.util.function.Supplier;
  * through {@code performAction}, without the model. {@link ControlRules} turns the controls off where
  * the CLI could not do the same.
  *
- * <p>Not yet in this view (part 2): the dialogue, combat, event log and journal panels. Until then a
- * conversation, a quest offer and a fight are played through the story panel and typed text.
+ * <p><b>Mode panels.</b> Above the story panel, the dialogue panel (F03, SD07) is shown while the mode is a
+ * conversation: the NPC's name, a drawn portrait, the conversation's lines ({@link ConversationLog}), a
+ * message field whose lines go where the story input's do, and Leave (a LEAVE proposal, SD12). An offer
+ * ({@link #showQuestOffer}) appears in it as a card with Accept and Decline ({@code respondToQuest}, F07).
+ * In combat the combat panel (F04, SD04) shows both fighters' HP bars, the last round's dice from the
+ * engine's COMBAT events ({@link CombatSummary}) and Attack and Flee ({@code performAction}). A click on a
+ * person here sends a TALK proposal (F03). The story panel keeps the whole text in every mode.
+ *
+ * <p><b>Event log and journal.</b> The Event log tab (F11, UC12, SD06) is a table of the history, newest
+ * first, from {@code getRecentHistory} or, for a type filter, {@code getHistory(type)}; it refreshes with
+ * every event. The Journal tab (F09) shows {@code getJournal()}, refreshed after every controller call and
+ * after a load; it never calls the model.
  */
 public class SwingGameView implements GameView, GameEventListener {
 
@@ -123,6 +141,10 @@ public class SwingGameView implements GameView, GameEventListener {
     private final JList<Quest> questList;
     private JDialog saveDialog;
     private final JPanel endPanel;
+    private final JPanel dialoguePanel = new JPanel(new BorderLayout(10, 6));
+    private final JPanel combatPanel = new JPanel(new BorderLayout(10, 6));
+    private final JTable eventTable = new JTable(EventTableModel.empty());
+    private final JTextArea journalArea = new JTextArea();
 
     private final ExecutorService worker = Executors.newSingleThreadExecutor(task -> {
         Thread thread = new Thread(task, "game-controller");
@@ -165,12 +187,45 @@ public class SwingGameView implements GameView, GameEventListener {
     private final JButton endNewGameButton = new JButton("New Game");
     private final JButton endLoadButton = new JButton("Load Game...");
 
+    private final JPanel modeHolder = new JPanel(new BorderLayout());
+    private JComponent shownModePanel;
+    private final JPanel peoplePanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 4, 2));
+    private final List<JButton> talkButtons = new ArrayList<>();
+    private List<DialogueState.Person> shownPeople = List.of();
+
+    private final Portrait portrait = new Portrait();
+    private final JLabel dialogueHeading = new JLabel(" ");
+    private final JTextArea conversationArea = new JTextArea(6, 30);
+    private final JTextField dialogueField = new JTextField();
+    private final JButton dialogueSendButton = new JButton("Send");
+    private final JButton leaveButton = new JButton("Leave");
+    private final JPanel questCardPanel = new JPanel(new BorderLayout(6, 6));
+    private final JLabel questCardText = new JLabel();
+    private final JButton acceptButton = new JButton("Accept");
+    private final JButton declineButton = new JButton("Decline");
+    private final ConversationLog conversation = new ConversationLog();
+
+    private final JLabel playerHpLabel = new JLabel(" ");
+    private final JLabel enemyHpLabel = new JLabel(" ");
+    private final JProgressBar playerHpBar = new JProgressBar();
+    private final JProgressBar enemyHpBar = new JProgressBar();
+    private final JTextArea diceArea = new JTextArea(3, 30);
+    private final JButton attackButton = new JButton("Attack");
+    private final JButton fleeButton = new JButton("Flee");
+
+    private final JComboBox<HistoryFilter> filterBox = new JComboBox<>(HistoryFilter.choices().toArray(new HistoryFilter[0]));
+    private final JCheckBox showAllBox = new JCheckBox("Show all");
+    private final JLabel eventCountLabel = new JLabel(" ");
+    private volatile HistoryFilter historyFilter = HistoryFilter.ALL;
+    private volatile boolean showAllEvents;
+
     private GuiState shown = GuiState.empty();
     /** Controller calls submitted and not finished yet; the input is off while there are any. */
     private int pendingCalls;
     private boolean busy;
     private boolean endingShown;
-    private volatile Quest offeredQuest;
+    /** The quest on the card, which a typed accept or decline also answers; on the event thread. */
+    private Quest offeredQuest;
     private final List<String> pendingNotices = Collections.synchronizedList(new ArrayList<>());
     private Predicate<String> overwriteConfirmer = this::askOverwrite;
 
@@ -238,14 +293,20 @@ public class SwingGameView implements GameView, GameEventListener {
         nameField.requestFocusInWindow();
     }
 
-    /** Shows the loaded or new game: the location in the story panel and every panel refreshed. */
+    /**
+     * Shows the loaded or new game: the location in the story panel and every panel refreshed, the event
+     * log and the journal included. A conversation in a loaded game opens the dialogue panel afresh.
+     */
     @Override
     public void render(GameState state) {
         GuiState copy = GuiState.of(state);
         String arrival = state.currentLocation() == null ? null : state.currentLocation().describe();
         String mode = GuiText.modeLine(state);
+        EventTableModel history = history();
+        String journal = journal(state);
         onEdt(() -> {
             endingShown = false;
+            hideQuestCard();
             if (storyArea.getDocument().getLength() == 0) {
                 append(GuiText.HELP);
             }
@@ -255,7 +316,9 @@ public class SwingGameView implements GameView, GameEventListener {
             if (!mode.isEmpty()) {
                 append(mode);
             }
-            apply(copy);
+            apply(copy, true);
+            showHistory(history);
+            showJournal(journal);
             if (copy.getRules().isStarted()) {
                 showCard(GAME_CARD);
                 inputField.requestFocusInWindow();
@@ -289,14 +352,22 @@ public class SwingGameView implements GameView, GameEventListener {
     }
 
     /**
-     * Shows the offer in the story panel, as the CLI does, and remembers it, so a typed accept or decline
-     * answers it (the quest card comes with the dialogue panel, part 2).
+     * Shows the offer as a card in the dialogue panel with Accept and Decline (F07, SD07), and its text in
+     * the story panel as the CLI prints it; a typed accept or decline answers it too.
      */
     @Override
     public void showQuestOffer(Quest quest) {
         String text = GuiText.questOffer(quest, controller.getState().getWorld());
-        offeredQuest = quest;
-        onEdt(() -> append(text));
+        DialogueState.QuestCard card = DialogueState.QuestCard.of(quest, controller.getState().getWorld());
+        onEdt(() -> {
+            append(text);
+            offeredQuest = quest;
+            questCardPanel.setBorder(BorderFactory.createTitledBorder(card.giver() + " offers you a quest"));
+            questCardText.setText(card.toHtml());
+            questCardPanel.setVisible(true);
+            dialoguePanel.revalidate();
+            updateControls();
+        });
     }
 
     /**
@@ -312,7 +383,7 @@ public class SwingGameView implements GameView, GameEventListener {
         String statistics = GuiText.statistics(ending);
         onEdt(() -> {
             endingShown = true;
-            offeredQuest = null;
+            hideQuestCard();
             endTitle.setText(title);
             epilogueArea.setText(epilogue);
             epilogueArea.setCaretPosition(0);
@@ -332,10 +403,29 @@ public class SwingGameView implements GameView, GameEventListener {
         refresh();
     }
 
-    /** Copies the controller's state on this thread and shows it on the event thread. */
+    /** Copies the controller's state and the event log on this thread and shows them on the event thread. */
     private void refresh() {
         GuiState copy = GuiState.of(controller.getState());
-        onEdt(() -> apply(copy));
+        EventTableModel history = history();
+        onEdt(() -> {
+            apply(copy, false);
+            showHistory(history);
+        });
+    }
+
+    /** The event log panel's rows for the chosen filter (SD06), read through the controller on this thread. */
+    private EventTableModel history() {
+        HistoryFilter filter = historyFilter;
+        int cap = showAllEvents ? Integer.MAX_VALUE : EventTableModel.DEFAULT_CAP;
+        List<GameEvent> events = filter.isAll()
+                ? controller.getRecentHistory(cap == Integer.MAX_VALUE ? cap : cap + 1)
+                : controller.getHistory(filter.type());
+        return EventTableModel.of(events, cap, ZoneId.systemDefault());
+    }
+
+    /** The journal (SD06) read through the controller on this thread; empty before a game. */
+    private String journal(GameState state) {
+        return state.getPlayer() == null ? "" : controller.getJournal();
     }
 
     // ---- building the screens -------------------------------------------------------------------------
@@ -454,21 +544,31 @@ public class SwingGameView implements GameView, GameEventListener {
         input.add(promptLabel, BorderLayout.WEST);
         input.add(inputField, BorderLayout.CENTER);
         input.add(sendButton, BorderLayout.EAST);
-        JPanel story = new JPanel(new BorderLayout());
+        JPanel story = new JPanel(new BorderLayout(0, 8));
         story.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 6));
+        modeHolder.setVisible(false);
+        story.add(modeHolder, BorderLayout.NORTH);
         story.add(new JScrollPane(storyArea), BorderLayout.CENTER);
         story.add(input, BorderLayout.SOUTH);
+        buildDialoguePanel();
+        buildCombatPanel();
 
         mapPanel.setOnMove(node -> act(new ActionProposal(ActionType.MOVE, node.name(), null), "go to " + node.name()));
         JPanel map = titled("Map", new BorderLayout());
         map.add(mapPanel, BorderLayout.CENTER);
         JLabel legend = new JLabel("Click a place with a blue border to walk there. Dashed line: locked door.");
         legend.setFont(legend.getFont().deriveFont(11f));
-        map.add(legend, BorderLayout.SOUTH);
+        JPanel mapFoot = new JPanel(new BorderLayout());
+        mapFoot.add(legend, BorderLayout.NORTH);
+        mapFoot.add(peoplePanel, BorderLayout.CENTER);
+        map.add(mapFoot, BorderLayout.SOUTH);
+        showPeople(List.of());
 
         JTabbedPane tabs = new JTabbedPane();
         tabs.addTab("Inventory", buildInventoryTab());
         tabs.addTab("Quests", buildQuestTab());
+        tabs.addTab("Event log", buildEventLogTab());
+        tabs.addTab("Journal", buildJournalTab());
 
         JSplitPane side = new JSplitPane(JSplitPane.VERTICAL_SPLIT, map, tabs);
         side.setResizeWeight(0.45);
@@ -541,6 +641,135 @@ public class SwingGameView implements GameView, GameEventListener {
         return new JScrollPane(questList);
     }
 
+    /** F03: the NPC's name and portrait, the conversation, the message field with Send, Leave and the quest card. */
+    private void buildDialoguePanel() {
+        dialogueHeading.setFont(dialogueHeading.getFont().deriveFont(Font.BOLD, 15f));
+        conversationArea.setEditable(false);
+        conversationArea.setLineWrap(true);
+        conversationArea.setWrapStyleWord(true);
+        conversationArea.setMargin(new Insets(4, 6, 4, 6));
+        conversationArea.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, STORY_FONT_SIZE - 1));
+        dialogueField.addActionListener(event -> sendFromDialogue());
+        dialogueSendButton.addActionListener(event -> sendFromDialogue());
+        leaveButton.addActionListener(event -> leave());
+        acceptButton.addActionListener(event -> answer(true));
+        declineButton.addActionListener(event -> answer(false));
+
+        JPanel say = new JPanel(new BorderLayout(6, 0));
+        say.add(new JLabel("Say:"), BorderLayout.WEST);
+        say.add(dialogueField, BorderLayout.CENTER);
+        JPanel sayButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 4, 0));
+        sayButtons.add(dialogueSendButton);
+        sayButtons.add(leaveButton);
+        say.add(sayButtons, BorderLayout.EAST);
+
+        JPanel cardButtons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 4, 0));
+        cardButtons.add(declineButton);
+        cardButtons.add(acceptButton);
+        questCardPanel.add(questCardText, BorderLayout.CENTER);
+        questCardPanel.add(cardButtons, BorderLayout.SOUTH);
+        questCardPanel.setVisible(false);
+
+        JPanel center = new JPanel(new BorderLayout(0, 6));
+        center.add(dialogueHeading, BorderLayout.NORTH);
+        JScrollPane lines = new JScrollPane(conversationArea);
+        lines.setPreferredSize(new Dimension(300, 120));
+        center.add(lines, BorderLayout.CENTER);
+        center.add(say, BorderLayout.SOUTH);
+
+        dialoguePanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Conversation"),
+                BorderFactory.createEmptyBorder(2, 4, 4, 4)));
+        dialoguePanel.add(portrait, BorderLayout.WEST);
+        dialoguePanel.add(center, BorderLayout.CENTER);
+        dialoguePanel.add(questCardPanel, BorderLayout.SOUTH);
+    }
+
+    /** F04: both fighters' HP bars, the last round's dice, Attack and Flee. */
+    private void buildCombatPanel() {
+        for (JProgressBar bar : List.of(playerHpBar, enemyHpBar)) {
+            bar.setPreferredSize(new Dimension(200, 16));
+        }
+        playerHpBar.setForeground(new Color(60, 150, 70));
+        enemyHpBar.setForeground(new Color(190, 60, 50));
+        diceArea.setEditable(false);
+        diceArea.setLineWrap(true);
+        diceArea.setWrapStyleWord(true);
+        diceArea.setOpaque(false);
+        diceArea.setFont(new Font(Font.MONOSPACED, Font.PLAIN, 13));
+        attackButton.addActionListener(event -> attack());
+        fleeButton.addActionListener(event -> act(new ActionProposal(ActionType.FLEE, null, null), "flee"));
+
+        JPanel bars = new JPanel(new GridBagLayout());
+        GridBagConstraints at = new GridBagConstraints();
+        at.insets = new Insets(2, 0, 2, 8);
+        at.anchor = GridBagConstraints.WEST;
+        at.gridx = 0;
+        at.gridy = 0;
+        bars.add(playerHpLabel, at);
+        at.gridx = 1;
+        at.fill = GridBagConstraints.HORIZONTAL;
+        at.weightx = 1;
+        bars.add(playerHpBar, at);
+        at.gridx = 0;
+        at.gridy = 1;
+        at.fill = GridBagConstraints.NONE;
+        at.weightx = 0;
+        bars.add(enemyHpLabel, at);
+        at.gridx = 1;
+        at.fill = GridBagConstraints.HORIZONTAL;
+        at.weightx = 1;
+        bars.add(enemyHpBar, at);
+
+        JPanel dice = new JPanel(new BorderLayout());
+        dice.setBorder(BorderFactory.createTitledBorder("Last round"));
+        dice.add(diceArea, BorderLayout.CENTER);
+        JPanel buttons = new JPanel(new FlowLayout(FlowLayout.RIGHT, 4, 0));
+        buttons.add(attackButton);
+        buttons.add(fleeButton);
+
+        combatPanel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createTitledBorder("Combat"),
+                BorderFactory.createEmptyBorder(2, 4, 4, 4)));
+        combatPanel.add(bars, BorderLayout.NORTH);
+        combatPanel.add(dice, BorderLayout.CENTER);
+        combatPanel.add(buttons, BorderLayout.SOUTH);
+    }
+
+    /** F11, UC12: the history table, newest first, with the type filter and "Show all". */
+    private JPanel buildEventLogTab() {
+        eventTable.setFillsViewportHeight(true);
+        eventTable.getTableHeader().setReorderingAllowed(false);
+        eventTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        sizeEventColumns();
+        filterBox.addActionListener(event -> {
+            historyFilter = (HistoryFilter) filterBox.getSelectedItem();
+            runOnWorker(() -> { });
+        });
+        showAllBox.setToolTipText("Also show events older than the " + EventTableModel.DEFAULT_CAP + " most recent");
+        showAllBox.addActionListener(event -> {
+            showAllEvents = showAllBox.isSelected();
+            runOnWorker(() -> { });
+        });
+        JPanel top = new JPanel(new FlowLayout(FlowLayout.LEFT, 6, 2));
+        top.add(new JLabel("Show:"));
+        top.add(filterBox);
+        top.add(showAllBox);
+        top.add(eventCountLabel);
+        JPanel tab = new JPanel(new BorderLayout());
+        tab.add(top, BorderLayout.NORTH);
+        tab.add(new JScrollPane(eventTable), BorderLayout.CENTER);
+        return tab;
+    }
+
+    /** F09: the journal, read-only. */
+    private JComponent buildJournalTab() {
+        journalArea.setEditable(false);
+        journalArea.setLineWrap(true);
+        journalArea.setWrapStyleWord(true);
+        journalArea.setMargin(new Insets(8, 8, 8, 8));
+        journalArea.setFont(new Font(Font.SANS_SERIF, Font.PLAIN, STORY_FONT_SIZE - 1));
+        return new JScrollPane(journalArea);
+    }
+
     private JPanel buildEndPanel() {
         endTitle.setFont(endTitle.getFont().deriveFont(Font.BOLD, 22f));
         epilogueArea.setEditable(false);
@@ -587,28 +816,78 @@ public class SwingGameView implements GameView, GameEventListener {
         });
     }
 
-    /** Sends the typed line where the CLI would ({@link TypedInput}). */
+    /** The story panel's input. */
     private void send() {
-        String line = inputField.getText().trim();
+        submitLine(inputField);
+    }
+
+    /** The dialogue panel's message field: the same routes as the story input, in a conversation. */
+    private void sendFromDialogue() {
+        submitLine(dialogueField);
+    }
+
+    /** Sends the typed line where the CLI would ({@link TypedInput}). */
+    private void submitLine(JTextField field) {
+        String line = field.getText().trim();
         TypedInput.Route route = TypedInput.route(line, shown.getRules().isTalking());
-        if (route == TypedInput.Route.EMPTY || !inputField.isEnabled()) {
+        if (route == TypedInput.Route.EMPTY || !field.isEnabled()) {
             return;
         }
-        inputField.setText("");
+        field.setText("");
         append("> " + line);
         switch (route) {
             case HELP -> append(GuiText.HELP);
             case LEAVE -> runOnWorker(() -> controller.performAction(new ActionProposal(ActionType.LEAVE, null, null)));
             case FLEE -> runOnWorker(() -> controller.performAction(new ActionProposal(ActionType.FLEE, null, null)));
-            case ACCEPT, DECLINE -> {
-                Quest quest = offeredQuest;
-                offeredQuest = null;
-                runOnWorker(() -> controller.respondToQuest(quest, route == TypedInput.Route.ACCEPT));
-            }
-            case SAY -> runOnWorker(() -> controller.sendDialogue(line));
+            case ACCEPT, DECLINE -> respond(route == TypedInput.Route.ACCEPT);
+            case SAY -> say(line);
             case COMMAND -> runOnWorker(() -> controller.submitCommand(line));
             case EMPTY -> {
             }
+        }
+    }
+
+    /** Says the line to the NPC (SD07); the line and the reply's text join the conversation. */
+    private void say(String line) {
+        String npcName = shown.getDialogue().npcName();
+        conversation.addPlayerLine(line);
+        showConversation();
+        runOnWorker(() -> {
+            NpcReply reply = controller.sendDialogue(line);
+            if (reply != null) {
+                onEdt(() -> {
+                    if (conversation.isActive()) {
+                        conversation.addNpcLine(npcName, reply.getText());
+                        showConversation();
+                    }
+                });
+            }
+        });
+    }
+
+    /** The dialogue panel's Leave: a LEAVE proposal, as typing leave (SD12), so it never reaches the NPC. */
+    private void leave() {
+        act(new ActionProposal(ActionType.LEAVE, null, null), "leave");
+    }
+
+    /** The quest card's Accept or Decline. */
+    private void answer(boolean accept) {
+        append("> " + (accept ? "accept" : "decline"));
+        respond(accept);
+    }
+
+    /** Answers the offer on the card (or none, which the controller refuses); the card goes away. */
+    private void respond(boolean accept) {
+        Quest quest = offeredQuest;
+        hideQuestCard();
+        runOnWorker(() -> controller.respondToQuest(quest, accept));
+    }
+
+    /** The combat panel's Attack: the enemy being fought (F04). */
+    private void attack() {
+        CombatSummary.Fighter enemy = shown.getCombat().getEnemy();
+        if (enemy != null) {
+            act(new ActionProposal(ActionType.ATTACK, enemy.name(), null), "attack " + enemy.name());
         }
     }
 
@@ -767,8 +1046,9 @@ public class SwingGameView implements GameView, GameEventListener {
 
     /**
      * Runs a controller call on the worker thread with the input disabled until it is done; then shows the
-     * turn's quest updates and, as the CLI does, a hint when the call started a conversation. Anything the
-     * controller throws is shown as an error, so the window never breaks.
+     * turn's quest updates and, as the CLI does, a hint when the call started a conversation, and refreshes
+     * the event log and the journal. Anything the controller throws is shown as an error, so the window
+     * never breaks.
      */
     private void runOnWorker(Runnable call) {
         pendingCalls++;
@@ -788,12 +1068,27 @@ public class SwingGameView implements GameView, GameEventListener {
                     showError("That did not work: " + unexpected.getMessage());
                 } finally {
                     flushNotices();
+                    EventTableModel history = null;
+                    String journal = null;
+                    try {
+                        history = history();
+                        journal = journal(controller.getState());
+                    } catch (RuntimeException unreadable) {
+                        showError("That did not work: " + unreadable.getMessage());
+                    }
+                    EventTableModel shownHistory = history;
+                    String shownJournal = journal;
                     onEdt(() -> {
+                        if (shownHistory != null) {
+                            showHistory(shownHistory);
+                            showJournal(shownJournal);
+                        }
                         pendingCalls--;
                         busy = pendingCalls > 0;
                         updateControls();
-                        if (currentCard.equals(GAME_CARD) && inputField.isEnabled()) {
-                            inputField.requestFocusInWindow();
+                        JTextField focus = shownModePanel == dialoguePanel ? dialogueField : inputField;
+                        if (currentCard.equals(GAME_CARD) && focus.isEnabled()) {
+                            focus.requestFocusInWindow();
                         }
                     });
                 }
@@ -816,7 +1111,12 @@ public class SwingGameView implements GameView, GameEventListener {
 
     // ---- updating the panels (on the event thread) ----------------------------------------------------
 
-    private void apply(GuiState copy) {
+    /**
+     * Shows a copy of the state in every panel.
+     *
+     * @param loaded whether it comes from {@link #render} (a new or loaded game)
+     */
+    private void apply(GuiState copy, boolean loaded) {
         List<String> selectedPath = selectedNames();
         String selectedHere = itemsHereList.getSelectedValue() == null ? null : itemsHereList.getSelectedValue().name();
         shown = copy;
@@ -844,7 +1144,101 @@ public class SwingGameView implements GameView, GameEventListener {
         DefaultListModel<Quest> quests = new DefaultListModel<>();
         copy.getQuests().getQuests().forEach(quests::addElement);
         questList.setModel(quests);
+        if (!copy.getPeopleHere().equals(shownPeople)) {
+            showPeople(copy.getPeopleHere());
+        }
+        showModePanels(copy, loaded);
         updateControls();
+    }
+
+    /** Swaps the dialogue or the combat panel in above the story panel, by mode, and fills it. */
+    private void showModePanels(GuiState copy, boolean loaded) {
+        DialogueState dialogue = copy.getDialogue();
+        if (conversation.follow(dialogue, loaded)) {
+            hideQuestCard();
+            showConversation();
+        }
+        if (dialogue.talking()) {
+            dialogueHeading.setText(dialogue.heading());
+            portrait.setInitial(dialogue.initial());
+        }
+        CombatSummary combat = copy.getCombat();
+        if (combat.isFighting()) {
+            showFighter(playerHpLabel, playerHpBar, combat.getPlayer());
+            showFighter(enemyHpLabel, enemyHpBar, combat.getEnemy());
+            diceArea.setText(combat.getLastRound().isEmpty() ? "No rolls yet." : String.join("\n", combat.getLastRound()));
+        }
+        JComponent wanted = combat.isFighting() ? combatPanel : dialogue.talking() ? dialoguePanel : null;
+        if (wanted != shownModePanel) {
+            modeHolder.removeAll();
+            if (wanted != null) {
+                modeHolder.add(wanted, BorderLayout.CENTER);
+            }
+            modeHolder.setVisible(wanted != null);
+            shownModePanel = wanted;
+            modeHolder.revalidate();
+            modeHolder.repaint();
+        }
+    }
+
+    /** The bar shows the HP; its text ("20 / 24 HP") is in the label, readable in every look and feel. */
+    private static void showFighter(JLabel label, JProgressBar bar, CombatSummary.Fighter fighter) {
+        String hp = fighter.hp() + " / " + fighter.maxHp() + " HP";
+        label.setText(fighter.name() + ": " + hp);
+        bar.setMaximum(Math.max(1, fighter.maxHp()));
+        bar.setValue(fighter.hp());
+        bar.setString(hp);
+    }
+
+    /** One Talk button per person here (F03: a click on the NPC starts the conversation). */
+    private void showPeople(List<DialogueState.Person> people) {
+        shownPeople = people;
+        peoplePanel.removeAll();
+        talkButtons.clear();
+        peoplePanel.add(new JLabel(people.isEmpty() ? "Nobody else is here." : "People here:"));
+        for (DialogueState.Person person : people) {
+            JButton talk = new JButton("Talk to " + person.name());
+            talk.setToolTipText(person.label());
+            talk.addActionListener(event -> act(new ActionProposal(ActionType.TALK, person.name(), null),
+                    "talk to " + person.name()));
+            talkButtons.add(talk);
+            peoplePanel.add(talk);
+        }
+        peoplePanel.revalidate();
+        peoplePanel.repaint();
+    }
+
+    private void showConversation() {
+        conversationArea.setText(conversation.text());
+        conversationArea.setCaretPosition(conversationArea.getDocument().getLength());
+    }
+
+    private void hideQuestCard() {
+        offeredQuest = null;
+        questCardPanel.setVisible(false);
+        questCardText.setText("");
+        dialoguePanel.revalidate();
+        updateControls();
+    }
+
+    private void showHistory(EventTableModel history) {
+        eventTable.setModel(history);
+        sizeEventColumns();
+        eventCountLabel.setText(history.isCapped()
+                ? "Newest first; the " + EventTableModel.DEFAULT_CAP + " most recent."
+                : "Newest first; " + history.getRowCount() + (history.getRowCount() == 1 ? " event." : " events."));
+    }
+
+    private void sizeEventColumns() {
+        int[] widths = {45, 70, 80, 420};
+        for (int column = 0; column < widths.length && column < eventTable.getColumnCount(); column++) {
+            eventTable.getColumnModel().getColumn(column).setPreferredWidth(widths[column]);
+        }
+    }
+
+    private void showJournal(String journal) {
+        journalArea.setText(journal);
+        journalArea.setCaretPosition(0);
     }
 
     private void updateControls() {
@@ -868,6 +1262,17 @@ public class SwingGameView implements GameView, GameEventListener {
         newGameItem.setEnabled(newGame);
         endNewGameButton.setEnabled(newGame);
         startButton.setEnabled(!busy && allocation().isValid());
+        boolean say = rules.enabled(ControlRules.PanelControl.SAY, busy, endingShown);
+        dialogueField.setEnabled(say);
+        dialogueSendButton.setEnabled(say);
+        leaveButton.setEnabled(rules.enabled(ControlRules.PanelControl.LEAVE, busy, endingShown));
+        boolean answer = offeredQuest != null && rules.enabled(ControlRules.PanelControl.ANSWER, busy, endingShown);
+        acceptButton.setEnabled(answer);
+        declineButton.setEnabled(answer);
+        attackButton.setEnabled(rules.enabled(ControlRules.PanelControl.ATTACK, busy, endingShown));
+        fleeButton.setEnabled(rules.enabled(ControlRules.PanelControl.FLEE, busy, endingShown));
+        boolean talk = rules.enabled(ControlRules.PanelControl.TALK, busy, endingShown);
+        talkButtons.forEach(button -> button.setEnabled(talk));
     }
 
     /** Live validation of the New Game screen (UC01 3a): the points left, the problem and the highlighted field. */
@@ -1138,9 +1543,134 @@ public class SwingGameView implements GameView, GameEventListener {
         return endLoadButton;
     }
 
+    JPanel dialoguePanel() {
+        return dialoguePanel;
+    }
+
+    JPanel combatPanel() {
+        return combatPanel;
+    }
+
+    /** "dialogue", "combat" or "none": which mode panel is above the story panel. */
+    String modePanelName() {
+        return shownModePanel == dialoguePanel ? "dialogue" : shownModePanel == combatPanel ? "combat" : "none";
+    }
+
+    JLabel dialogueHeading() {
+        return dialogueHeading;
+    }
+
+    JTextArea conversationArea() {
+        return conversationArea;
+    }
+
+    JTextField dialogueField() {
+        return dialogueField;
+    }
+
+    JButton dialogueSendButton() {
+        return dialogueSendButton;
+    }
+
+    JButton leaveButton() {
+        return leaveButton;
+    }
+
+    JPanel questCardPanel() {
+        return questCardPanel;
+    }
+
+    JLabel questCardText() {
+        return questCardText;
+    }
+
+    JButton acceptButton() {
+        return acceptButton;
+    }
+
+    JButton declineButton() {
+        return declineButton;
+    }
+
+    JProgressBar playerHpBar() {
+        return playerHpBar;
+    }
+
+    JProgressBar enemyHpBar() {
+        return enemyHpBar;
+    }
+
+    JTextArea diceArea() {
+        return diceArea;
+    }
+
+    JButton attackButton() {
+        return attackButton;
+    }
+
+    JButton fleeButton() {
+        return fleeButton;
+    }
+
+    List<JButton> talkButtons() {
+        return List.copyOf(talkButtons);
+    }
+
+    JTable eventTable() {
+        return eventTable;
+    }
+
+    JComboBox<HistoryFilter> filterBox() {
+        return filterBox;
+    }
+
+    JCheckBox showAllBox() {
+        return showAllBox;
+    }
+
+    JTextArea journalArea() {
+        return journalArea;
+    }
+
     /** The quest text a quest-list cell shows. */
     String questText(Quest quest) {
         QuestListModel.Entry entry = shown.getQuests().entryOf(quest);
         return entry == null ? null : entry.toHtml();
+    }
+
+    /** The dialogue panel's portrait area (F03): a drawn circle with the NPC's initial, no image file. */
+    private static final class Portrait extends JComponent {
+
+        private static final Color FILL = new Color(120, 96, 70);
+        private String initial = "";
+
+        Portrait() {
+            setPreferredSize(new Dimension(76, 76));
+        }
+
+        void setInitial(String initial) {
+            this.initial = initial;
+            repaint();
+        }
+
+        @Override
+        protected void paintComponent(Graphics graphics) {
+            Graphics2D g = (Graphics2D) graphics.create();
+            try {
+                g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+                int size = Math.min(getWidth(), getHeight()) - 6;
+                int x = (getWidth() - size) / 2;
+                int y = 3;
+                g.setColor(FILL);
+                g.fillOval(x, y, size, size);
+                g.setColor(Color.WHITE);
+                g.setFont(getFont().deriveFont(Font.BOLD, size / 2f));
+                FontMetrics metrics = g.getFontMetrics();
+                g.drawString(initial, x + (size - metrics.stringWidth(initial)) / 2,
+                        y + (size - metrics.getHeight()) / 2 + metrics.getAscent());
+            } finally {
+                g.dispose();
+            }
+        }
     }
 }

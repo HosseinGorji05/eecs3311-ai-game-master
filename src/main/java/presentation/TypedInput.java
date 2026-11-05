@@ -12,8 +12,8 @@ import java.util.Set;
  * natural-language command ({@code submitCommand}).
  *
  * <p>The CLI's other words (map, quests, save, load, saves, new, quit) are the GUI's panels and menu;
- * typed, they go to the interpreter like any text. {@code journal} and {@code history} come with their
- * panels.
+ * typed, they go to the interpreter like any text. {@code journal} and {@code history} are the Journal
+ * and Event log tabs.
  */
 final class TypedInput {
 

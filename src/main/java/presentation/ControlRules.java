@@ -1,6 +1,7 @@
 package presentation;
 
 import engine.commands.ActionType;
+import engine.core.CombatMode;
 import engine.core.DialogueMode;
 import engine.core.GameState;
 
@@ -25,6 +26,10 @@ import java.util.Set;
  *   <li>Typing and Save stay on in every mode: typed text goes through the same controller as in the CLI,
  *       and the controller refuses a save during combat with a message (SD08).</li>
  *   <li>New Game works only when no game is in progress (UC01's precondition; the CLI's {@code new}).</li>
+ *   <li>The mode panels' controls ({@link PanelControl}) follow the mode too: Talk (a click on a person
+ *       here, F03) when the mode allows TALK; the combat panel's Attack and Flee in combat (ATTACK and
+ *       FLEE); the dialogue panel's Send, Leave and the quest card's Accept and Decline in a conversation
+ *       (LEAVE ends it, SD12).</li>
  * </ul>
  */
 final class ControlRules {
@@ -34,17 +39,39 @@ final class ControlRules {
         SEND, MOVE, TAKE, USE, EQUIP, DROP, SAVE, LOAD, NEW_GAME
     }
 
-    static final ControlRules NOT_STARTED = new ControlRules(false, false, false, EnumSet.noneOf(ActionType.class));
+    /**
+     * The controls of the dialogue panel, the combat panel and the people here; a separate enum from
+     * {@link Control}, whose set of controls stays as it was.
+     */
+    enum PanelControl {
+        /** Talk to a person here. */
+        TALK,
+        /** The combat panel's Attack. */
+        ATTACK,
+        /** The combat panel's Flee. */
+        FLEE,
+        /** The dialogue panel's message field and Send. */
+        SAY,
+        /** The dialogue panel's Leave. */
+        LEAVE,
+        /** The quest card's Accept and Decline. */
+        ANSWER
+    }
+
+    static final ControlRules NOT_STARTED = new ControlRules(false, false, false, false,
+            EnumSet.noneOf(ActionType.class));
 
     private final boolean started;
     private final boolean gameOver;
     private final boolean talking;
+    private final boolean fighting;
     private final Set<ActionType> allowed;
 
-    ControlRules(boolean started, boolean gameOver, boolean talking, Set<ActionType> allowed) {
+    ControlRules(boolean started, boolean gameOver, boolean talking, boolean fighting, Set<ActionType> allowed) {
         this.started = started;
         this.gameOver = gameOver;
         this.talking = talking;
+        this.fighting = fighting;
         this.allowed = allowed.isEmpty() ? EnumSet.noneOf(ActionType.class) : EnumSet.copyOf(allowed);
     }
 
@@ -60,7 +87,8 @@ final class ControlRules {
                 allowed.add(type);
             }
         }
-        return new ControlRules(true, state.isGameOver(), state.getMode() instanceof DialogueMode, allowed);
+        return new ControlRules(true, state.isGameOver(), state.getMode() instanceof DialogueMode,
+                state.getMode() instanceof CombatMode, allowed);
     }
 
     /**
@@ -95,6 +123,21 @@ final class ControlRules {
         };
     }
 
+    /** Whether a control of the mode panels works; nothing works while busy, before a game or after it. */
+    boolean enabled(PanelControl control, boolean busy, boolean endingShown) {
+        Objects.requireNonNull(control, "control");
+        if (busy || !started || gameOver || endingShown) {
+            return false;
+        }
+        return switch (control) {
+            case TALK -> allowed.contains(ActionType.TALK);
+            case ATTACK -> fighting && allowed.contains(ActionType.ATTACK);
+            case FLEE -> fighting && allowed.contains(ActionType.FLEE);
+            case SAY, ANSWER -> talking;
+            case LEAVE -> talking && allowed.contains(ActionType.LEAVE);
+        };
+    }
+
     boolean isStarted() {
         return started;
     }
@@ -105,5 +148,9 @@ final class ControlRules {
 
     boolean isTalking() {
         return talking;
+    }
+
+    boolean isFighting() {
+        return fighting;
     }
 }

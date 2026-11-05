@@ -30,9 +30,12 @@ final class GuiText {
     static final String HELP = """
             Type what you want to do and press Enter, e.g. "go north", "take shed key", "equip sword", \
             "use healing potion", "talk to Marta", "attack wolf", "flee". Click a neighbouring place on the map \
-            to walk there; use the inventory buttons for your items and the Game menu to save or load.
-            In a conversation, everything you type is said to the person; type leave (or bye) to end it. \
-            When someone offers you a quest, type accept or decline.""";
+            to walk there, a Talk button under the map to talk to someone there; use the inventory buttons for \
+            your items and the Game menu to save or load.
+            In a conversation, the panel above shows the person; everything you type is said to them, and Leave \
+            (or typing leave or bye) ends it. A quest offer appears there as a card: Accept or Decline (or type \
+            accept or decline). In a fight, the combat panel shows both HP bars and the last dice rolls, with \
+            Attack and Flee. The Event log and Journal tabs show what has happened so far.""";
 
     private static final DateTimeFormatter SAVE_TIME = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm", Locale.ROOT);
 
@@ -108,7 +111,7 @@ final class GuiText {
                 .collect(Collectors.joining(" | "));
     }
 
-    /** The quest offer as the story panel shows it (the CLI's lines; a quest card comes with the dialogue panel). */
+    /** The quest offer as the story panel shows it (the CLI's lines); the dialogue panel shows it as a card too. */
     static String questOffer(Quest quest, World world) {
         String objectives = quest.getObjectives().stream()
                 .map(objective -> objective.getType().name().toLowerCase(Locale.ROOT) + " " + objective.getTargetId()
