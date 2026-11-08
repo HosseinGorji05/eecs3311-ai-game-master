@@ -106,6 +106,7 @@ class RejectionReasonTest {
     @Test
     void goingNorthDuringAFightSaysToAttackOrFlee() {
         GameController controller = start(List.of("{\"actions\":[{\"type\":\"attack\",\"target\":\"wolf\"}]}",
+                "{\"narration\":\"You swing at the wolf and miss. The wolf misses you as well.\"}",
                 "{\"actions\":[{\"type\":\"move\",\"target\":\"north\"}]}"), 1, 1);
         moveTo(controller, "wolf-den");
         controller.submitCommand("attack wolf");
@@ -118,9 +119,11 @@ class RejectionReasonTest {
     @Test
     void talkingToSomeoneInAnotherPlaceSaysTheyAreNotHere() {
         GameController controller = start(List.of("{\"actions\":[{\"type\":\"talk\",\"target\":\"Brann\"}]}",
+                "{\"narration\":\"You look around for Brann. Brann works at the forge, not here.\"}",
                 "{\"actions\":[{\"type\":\"talk\",\"target\":\"the blacksmith\"}]}"));
 
-        assertEquals("Brann isn't here.", controller.submitCommand("Brann").getNarration());
+        assertEquals("Brann isn't here.\nYou look around for Brann. Brann works at the forge, not here.",
+                controller.submitCommand("Brann").getNarration(), "the engine's reason, then the narration");
         assertEquals("Brann isn't here.", controller.submitCommand("talk to the blacksmith").getNarration());
     }
 

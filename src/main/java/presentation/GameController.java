@@ -5,6 +5,7 @@ import agent.BackstoryWriter;
 import agent.EndingWriter;
 import agent.MemoryManager;
 import agent.MemorySummarizer;
+import agent.Narrator;
 import agent.NpcDialogueAgent;
 import agent.NpcReply;
 import agent.PromptBuilder;
@@ -48,7 +49,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 /**
  * The single entry point the views use to play: it owns the game state, the event bus and the
@@ -100,8 +100,14 @@ import java.util.stream.Collectors;
  * {@code regenerateBackstory()} call, not from inside {@code newGame}, which only validates and creates
  * the character.
  *
- * <p>Not yet included (it comes with its feature): narration by the LLM (the narration is the results'
- * messages).
+ * <p>Narration (F02, F04, SD02): after a typed command ({@link #submitCommand}) the {@link Narrator}
+ * describes the turn's real results. What the player sees is the engine's own result text, exactly as
+ * without narration (every roll, damage, HP and the arrival text stay, F04 "roll results are printed each
+ * turn", F06), followed by the model's narration if it gave a valid one; the template narration is that
+ * result text itself, so a failure shows the turn as before. A notice ("The narration is pre-written.
+ * Reason: ...") appears at most once per turn: not when the interpreter already showed its basic-command
+ * notice, and not in offline play. Buttons and fixed words ({@link #performAction}) and dialogue are never
+ * narrated (SD02 note, SD10-SD12). The narration is only shown: it is not recorded and changes nothing.
  */
 public class GameController {
 
@@ -140,6 +146,7 @@ public class GameController {
     private final EndingCalculator endingCalculator = new EndingCalculator();
     private final EndingWriter endingWriter;
     private final BackstoryWriter backstoryWriter;
+    private final Narrator narrator;
     private final String llmDescription;
     private Player newPlayer;
     private Quest offeredQuest;
@@ -167,6 +174,7 @@ public class GameController {
         this.questGenerator = new QuestGenerator(llm, prompts, new ResponseParser(), state);
         this.endingWriter = new EndingWriter(llm, prompts, new ResponseParser(), state);
         this.backstoryWriter = new BackstoryWriter(llm, new PromptBuilder(), new ResponseParser(), state);
+        this.narrator = new Narrator(llm, prompts, new ResponseParser(), state);
         eventBus.subscribe(state.getEventLog());
         eventBus.subscribe(memory);
         eventBus.subscribe(new QuestTracker(state, eventBus));
@@ -184,6 +192,7 @@ public class GameController {
         memory.setDebugOutput(debug);
         endingWriter.setDebugOutput(debug);
         backstoryWriter.setDebugOutput(debug);
+        narrator.setDebugOutput(debug);
     }
 
     /**
@@ -297,7 +306,7 @@ public class GameController {
         if (proposals.isEmpty()) {
             return error(interpreter.isFallbackUsed() ? NOT_UNDERSTOOD + " " + EXAMPLES : NOT_UNDERSTOOD, false);
         }
-        return execute(proposals);
+        return execute(proposals, true, interpreter.isFallbackUsed());
     }
 
     /** Plays one turn from a button or a fixed CLI word, without the interpreter (SD10-SD12). */
@@ -307,7 +316,7 @@ public class GameController {
         if (state.isGameOver()) {
             return error(GAME_OVER, true);
         }
-        return execute(List.of(proposal));
+        return execute(List.of(proposal), false, false);
     }
 
     /**
@@ -497,7 +506,11 @@ public class GameController {
      * Builds every command first, so a proposal the factory cannot build (a missing target) stops the
      * whole turn with a message before anything happens; then runs them all.
      */
-    private TurnResult execute(List<ActionProposal> proposals) {
+    /**
+     * @param narrate        whether the {@link Narrator} describes the results (typed commands only)
+     * @param noticeShown    whether a notice was already shown this turn (the basic-command notice)
+     */
+    private TurnResult execute(List<ActionProposal> proposals, boolean narrate, boolean noticeShown) {
         List<GameCommand> commands = new ArrayList<>();
         for (ActionProposal proposal : proposals) {
             try {
@@ -508,13 +521,30 @@ public class GameController {
             }
         }
         List<ActionResult> results = rules.executeAll(commands, state);
-        String narration = results.stream().map(ActionResult::getMessage).collect(Collectors.joining("\n"));
+        String resultText = Narrator.template(results);
+        String narration = narrate ? narrated(results, resultText, noticeShown) : resultText;
         boolean gameOver = state.isGameOver();
         views.forEach(view -> view.showNarration(narration));
         if (gameOver) {
             endGame();
         }
         return new TurnResult(narration, results, gameOver);
+    }
+
+    /**
+     * The result text followed by the model's narration, or the result text alone if the narrator fell back
+     * (with a notice, unless one was shown this turn or the game is offline).
+     */
+    private String narrated(List<ActionResult> results, String resultText, boolean noticeShown) {
+        String narration = narrator.narrate(results);
+        if (!narrator.isFallbackUsed()) {
+            return resultText + "\n" + narration;
+        }
+        if (!noticeShown && !narrator.isClientUnavailable()) {
+            String notice = "The narration is pre-written. Reason: " + narrator.getFallbackReason() + ".";
+            views.forEach(view -> view.showNotice(notice));
+        }
+        return resultText;
     }
 
     /** The hand-written main quest: defeat the bandit leader and take back the relic (both lie in the Bandit Camp). */

@@ -176,7 +176,9 @@ class CliGameViewTest {
         String output = play(List.of(
                         BACKSTORY_REPLY,
                         "{\"actions\":[{\"type\":\"move\",\"target\":\"west\"}]}",
+                        "{\"narration\":\"You walk west into the Blacksmith's Forge. The air is still warm.\"}",
                         "{\"actions\":[{\"type\":\"talk\",\"target\":\"the blacksmith\"}]}",
+                        "{\"narration\":\"You step up to Brann. Brann looks up from her work.\"}",
                         "{\"text\":\"For the relic? Take it, and bring it back.\","
                                 + "\"sideEffect\":{\"type\":\"take\",\"target\":\"iron key\"}}"),
                 new FixedDiceRoller(),
@@ -188,7 +190,8 @@ class CliGameViewTest {
                 "inventory",
                 "quit");
 
-        assertContains(output, "You start talking to Brann, the blacksmith.");
+        assertContains(output, "You start talking to Brann, the blacksmith.\nYou step up to Brann. Brann looks up from her work.\n");
+        assertContains(output, "Exits: east (Village Square)\nYou walk west into the Blacksmith's Forge. The air is still warm.\n");
         assertContains(output, "Brann: \"For the relic? Take it, and bring it back.\"\nBrann hands you the iron key.\n");
         assertFalse(output.contains("pre-written line"), output);
         assertContains(output, "You leave the conversation with Brann.");

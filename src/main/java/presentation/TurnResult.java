@@ -6,8 +6,9 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * What one turn produced: the narration shown to the player, the real results, and whether the game is
- * over ({@code GameState.isGameOver()}: the main quest is completed or the player died).
+ * What one turn produced: the text shown to the player (the results' own messages, followed by the
+ * narrator's narration on a narrated turn), the real results, and whether the game is over
+ * ({@code GameState.isGameOver()}: the main quest is completed or the player died).
  */
 public class TurnResult {
 

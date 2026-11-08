@@ -81,6 +81,14 @@ public abstract class LlmTask<I, O> {
         return fallbackUsed;
     }
 
+    /**
+     * Whether the last {@link #run} fell back because the client is not available at all (offline play), as
+     * opposed to a failed call or an unusable answer.
+     */
+    public boolean isClientUnavailable() {
+        return fallbackUsed && UNAVAILABLE.equals(fallbackReason);
+    }
+
     /** Why the last {@link #run} fell back, as a short category; {@code null} if it did not. */
     public String getFallbackReason() {
         return fallbackUsed ? fallbackReason : null;

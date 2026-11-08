@@ -157,15 +157,9 @@ public class BackstoryWriter extends LlmTask<Player, String> {
         if (backstory.length() > MAX_BACKSTORY_CHARS) {
             return Rule.TOO_LONG + ": " + backstory.length() + " characters, at most " + MAX_BACKSTORY_CHARS;
         }
-        Matcher markup = MARKUP.matcher(backstory);
-        if (markup.find()) {
-            return Rule.MARKUP + ": it contains \"" + markup.group() + "\"";
-        }
-        if (LIST_ITEM.matcher(backstory).find()) {
-            return Rule.MARKUP + ": it contains a list";
-        }
-        if (ROLE_LABEL.matcher(backstory).find() || ORDER.matcher(backstory).find()) {
-            return Rule.INSTRUCTION + ": it gives an instruction instead of telling a story";
+        String plain = notPlainProse(backstory);
+        if (plain != null) {
+            return plain;
         }
         int sentences = sentenceCount(backstory);
         char last = backstory.charAt(backstory.length() - 1);
@@ -173,6 +167,25 @@ public class BackstoryWriter extends LlmTask<Player, String> {
         if (sentences < MIN_SENTENCES || sentences > MAX_SENTENCES || !ended) {
             return Rule.SENTENCES + ": " + sentences + " sentences" + (ended ? "" : ", the last one unfinished")
                     + ", it needs " + MIN_SENTENCES + "-" + MAX_SENTENCES;
+        }
+        return null;
+    }
+
+    /**
+     * Why the text is no plain prose, as "MARKUP: ..." or "INSTRUCTION: ...", or {@code null}: the markup
+     * characters, a list line, a role label or an order to ignore or override rules (shared with the
+     * {@link Narrator}).
+     */
+    static String notPlainProse(String text) {
+        Matcher markup = MARKUP.matcher(text);
+        if (markup.find()) {
+            return Rule.MARKUP + ": it contains \"" + markup.group() + "\"";
+        }
+        if (LIST_ITEM.matcher(text).find()) {
+            return Rule.MARKUP + ": it contains a list";
+        }
+        if (ROLE_LABEL.matcher(text).find() || ORDER.matcher(text).find()) {
+            return Rule.INSTRUCTION + ": it gives an instruction instead of telling a story";
         }
         return null;
     }
