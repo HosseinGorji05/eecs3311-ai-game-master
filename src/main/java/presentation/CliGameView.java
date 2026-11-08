@@ -77,6 +77,9 @@ public class CliGameView implements GameView, GameEventListener {
             Your quest: recover the village relic from the bandit leader. After the ending, new starts a new game.
             Also: map, quests, journal, history, history <type>, help, quit.""";
     private static final Set<String> LEAVE_WORDS = Set.of("leave", "bye", "goodbye");
+    static final String BACKSTORY_CHOICE = "Type regenerate for another backstory, or press Enter to start: ";
+    private static final Set<String> REGENERATE_WORDS = Set.of("regenerate", "again");
+    private static final Set<String> START_WORDS = Set.of("start", "begin");
 
     private final GameController controller;
     private final Scanner in;
@@ -84,6 +87,8 @@ public class CliGameView implements GameView, GameEventListener {
     private final List<String> pendingNotices = new ArrayList<>();
     private Quest offeredQuest;
     private boolean running;
+    /** A line typed at the backstory prompt that was no choice: it starts the game and is its first command. */
+    private String firstCommand;
 
     public CliGameView(GameController controller, InputStream in, PrintStream out) {
         this.controller = Objects.requireNonNull(controller, "controller");
@@ -104,10 +109,16 @@ public class CliGameView implements GameView, GameEventListener {
         while (running) {
             out.print(controller.getState().getMode() instanceof DialogueMode dialogue
                     ? "(to " + dialogue.getNpc().getName() + ") > " : "> ");
-            if (!in.hasNextLine()) {
-                break;
+            String line;
+            if (firstCommand != null) {
+                line = firstCommand;
+                firstCommand = null;
+            } else {
+                if (!in.hasNextLine()) {
+                    break;
+                }
+                line = in.nextLine().trim();
             }
-            String line = in.nextLine().trim();
             if (!line.isEmpty()) {
                 try {
                     dispatch(line);
@@ -245,7 +256,12 @@ public class CliGameView implements GameView, GameEventListener {
         }
     }
 
-    /** Asks for a name and a class until both are valid; {@code false} if the input ends first. */
+    /**
+     * Asks for a name and a class until both are valid, creates the character with the class's preset stats,
+     * then shows its backstory (F01, SD01): {@code regenerate} (or {@code again}) asks for another, Enter (or
+     * {@code start}) starts. Any other line also starts and is played as the first command, so a player who
+     * just begins typing commands is not stopped. {@code false} if the input ends before the class is chosen.
+     */
     private boolean createCharacter() {
         String name = null;
         while (name == null) {
@@ -268,8 +284,31 @@ public class CliGameView implements GameView, GameEventListener {
             }
         }
         controller.newGame(name, cls, PRESET_STATS.get(cls));
+        chooseBackstory();
         out.println(name + " the " + cls.name().toLowerCase(Locale.ROOT) + " sets out.");
         return true;
+    }
+
+    /** Shows the backstory until the player starts (SD01's Regenerate loop); the end of input starts too. */
+    private void chooseBackstory() {
+        String backstory = controller.regenerateBackstory();
+        while (true) {
+            out.println("Your backstory:");
+            out.println(backstory);
+            out.print(BACKSTORY_CHOICE);
+            if (!in.hasNextLine()) {
+                return;
+            }
+            String line = in.nextLine().trim();
+            String word = line.toLowerCase(Locale.ROOT);
+            if (!REGENERATE_WORDS.contains(word)) {
+                if (!line.isEmpty() && !START_WORDS.contains(word)) {
+                    firstCommand = line;
+                }
+                return;
+            }
+            backstory = controller.regenerateBackstory();
+        }
     }
 
     private void showHistory(String typeName) {

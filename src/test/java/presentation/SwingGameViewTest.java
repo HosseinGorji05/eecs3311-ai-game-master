@@ -179,8 +179,9 @@ class SwingGameViewTest {
             sliders.get(0).setValue(2);
             sliders.get(1).setValue(6);
             sliders.get(2).setValue(2);
-            view.startButton().doClick();
+            view.createButton().doClick();
         });
+        edt(() -> view.startButton().doClick());   // F01/SD01: Generate Backstory, then Start
         controller.calls.clear();
         controller.onEventThread.clear();
     }
@@ -238,14 +239,14 @@ class SwingGameViewTest {
     void theNewGameScreenValidatesLiveAndStartCreatesAndStartsTheGame() throws Exception {
         assertEquals(SwingGameView.NEW_GAME_CARD, onEdt(view::currentCard));
         edt(() -> view.nameField().setText(" "));
-        assertFalse(onEdt(() -> view.startButton().isEnabled()));
+        assertFalse(onEdt(() -> view.createButton().isEnabled()));
         assertEquals(GameController.NAME_MISSING, onEdt(() -> view.newGameMessage().getText()));
 
         edt(() -> {
             view.nameField().setText("Ari");
             view.statSliders().get(0).setValue(8);
         });
-        assertFalse(onEdt(() -> view.startButton().isEnabled()));
+        assertFalse(onEdt(() -> view.createButton().isEnabled()));
         assertEquals(GameController.STATS_INVALID, onEdt(() -> view.newGameMessage().getText()));
         assertEquals("3 points too many", onEdt(() -> view.pointsLabel().getText()));
 
@@ -268,8 +269,9 @@ class SwingGameViewTest {
             view.statSliders().get(0).setValue(2);
             view.statSliders().get(1).setValue(3);
             view.statSliders().get(2).setValue(5);
-            view.startButton().doClick();
+            view.createButton().doClick();
         });
+        edt(() -> view.startButton().doClick());   // F01/SD01: Generate Backstory, then Start
 
         assertEquals(List.of("newGame Ari MAGE", "startGame"), controller.calls);
         assertEquals(List.of(false, false), controller.onEventThread);
@@ -470,6 +472,7 @@ class SwingGameViewTest {
 
         edt(() -> view.endNewGameButton().doClick());
         assertEquals(SwingGameView.NEW_GAME_CARD, onEdt(view::currentCard));
+        edt(() -> view.createButton().doClick());
         edt(() -> view.startButton().doClick());
         assertEquals(List.of("newGame Ari ROGUE", "startGame"), controller.calls);
         assertEquals(SwingGameView.GAME_CARD, onEdt(view::currentCard));

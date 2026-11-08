@@ -47,6 +47,10 @@ class CliGameViewTest {
         return bytes.toString(StandardCharsets.UTF_8);
     }
 
+    /** A valid backstory from the model, which the character creation now asks for first (F01). */
+    private static final String BACKSTORY_REPLY = "{\"backstory\":\"Ari grew up near the forge. Ari learned to"
+            + " work hard. Ari now seeks the stolen relic.\"}";
+
     /** The quest log of a new game: only the main quest. */
     private static final String MAIN_QUEST_ONLY = "Quests:\n- Recover the village relic (main quest, active): "
             + "defeat bandit leader 0/1, fetch village relic 0/1; reward: 50 gold, 50 XP\nVisited: ";
@@ -58,7 +62,8 @@ class CliGameViewTest {
     @Test
     void aFullSessionCreatesACharacterMovesTakesTheKeyAttacksAndQuits() {
         String output = play(
-                List.of("{\"actions\":[{\"type\":\"move\",\"target\":\"north\"}]}"),   // the model answers once
+                List.of(BACKSTORY_REPLY,                                                // the backstory
+                        "{\"actions\":[{\"type\":\"move\",\"target\":\"north\"}]}"),   // the model answers once
                 new FixedDiceRoller(10, 5),   // Ari hits the wolf (10 + 5 = 15 vs 11); the wolf misses (5 + 3 vs 13)
                 "Ari", "knight", "warrior",
                 "go north",                    // understood by the model
@@ -169,6 +174,7 @@ class CliGameViewTest {
     @Test
     void aConversationWithAScriptedModelHandsOverTheIronKeyAndByeEndsIt() {
         String output = play(List.of(
+                        BACKSTORY_REPLY,
                         "{\"actions\":[{\"type\":\"move\",\"target\":\"west\"}]}",
                         "{\"actions\":[{\"type\":\"talk\",\"target\":\"the blacksmith\"}]}",
                         "{\"text\":\"For the relic? Take it, and bring it back.\","
@@ -351,8 +357,9 @@ class CliGameViewTest {
 
         assertContains(output, "=== The End: Death ending ===");
         assertContains(output, CliGameView.AFTER_ENDING + "\n> Your name: Your name: Class (warrior, rogue, mage): "
-                + "! Please choose warrior, rogue or mage.\nClass (warrior, rogue, mage): Bo the rogue sets out.\n"
-                + "Village Square\n");
+                + "! Please choose warrior, rogue or mage.\nClass (warrior, rogue, mage): "
+                + "(The backstory is pre-written. Reason: LLM unavailable.)\nYour backstory:\nBo learned early");
+        assertContains(output, CliGameView.BACKSTORY_CHOICE + "Bo the rogue sets out.\nVillage Square\n");
         assertContains(output, "Bo: 24/24 HP | Gold 0 | XP 0 | ");
         assertContains(output, MAIN_QUEST_ONLY + "Village Square\n");
         assertContains(output, "Reason: LLM unavailable.)\nTavern\n");

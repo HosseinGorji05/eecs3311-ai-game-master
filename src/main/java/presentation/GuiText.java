@@ -37,6 +37,11 @@ final class GuiText {
             accept or decline). In a fight, the combat panel shows both HP bars and the last dice rolls, with \
             Attack and Flee. The Event log and Journal tabs show what has happened so far.""";
 
+    /** The backstory as the story panel shows it once when the game starts: "Ari's story:" and the text. */
+    static String backstoryIntro(String name, String backstory) {
+        return name + "'s story:\n" + backstory;
+    }
+
     /** The window title with the language model in use: "AI Game Master - groq (openai/gpt-oss-20b)" or "... - offline". */
     static String windowTitle(String llmDescription) {
         return SwingGameView.TITLE + " - " + llmDescription;

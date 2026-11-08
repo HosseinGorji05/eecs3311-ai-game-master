@@ -178,7 +178,16 @@ public class SwingGameView implements GameView, GameEventListener {
     private final JSlider intelligenceSlider = statSlider();
     private final JLabel pointsLabel = new JLabel();
     private final JLabel newGameMessage = new JLabel(" ");
+    private final JLabel newGameNotice = new JLabel(" ");
+    private final JButton createButton = new JButton("Generate Backstory");
+    private final JTextArea backstoryArea = new JTextArea(5, 44);
+    private final JPanel backstoryPanel = new JPanel(new BorderLayout(0, 6));
+    private final JButton regenerateButton = new JButton("Regenerate");
     private final JButton startButton = new JButton("Start");
+    private final CharacterCreation creation = new CharacterCreation();
+    /** The backstory to show once in the story panel when the game it belongs to starts; on the event thread. */
+    private String backstoryToShow;
+    private boolean helpShown;
     private final JButton newGameLoadButton = new JButton("Load Game...");
     private Border nameBorder;
 
@@ -305,13 +314,19 @@ public class SwingGameView implements GameView, GameEventListener {
         GuiState copy = GuiState.of(state);
         String arrival = state.currentLocation() == null ? null : state.currentLocation().describe();
         String mode = GuiText.modeLine(state);
+        String playerName = state.getPlayer() == null ? "" : state.getPlayer().getName();
         EventTableModel history = history();
         String journal = journal(state);
         onEdt(() -> {
             endingShown = false;
             hideQuestCard();
-            if (storyArea.getDocument().getLength() == 0) {
+            if (!helpShown) {
                 append(GuiText.help(llmDescription));
+                helpShown = true;
+            }
+            if (backstoryToShow != null && copy.getRules().isStarted()) {
+                append("\n" + GuiText.backstoryIntro(playerName, backstoryToShow));
+                backstoryToShow = null;
             }
             if (arrival != null) {
                 append("\n" + arrival);
@@ -336,9 +351,16 @@ public class SwingGameView implements GameView, GameEventListener {
         }
     }
 
+    /** In the story panel; on the New Game screen (e.g. a pre-written backstory) on that screen instead. */
     @Override
     public void showNotice(String text) {
-        onEdt(() -> append("(" + text + ")"));
+        onEdt(() -> {
+            if (currentCard.equals(NEW_GAME_CARD)) {
+                newGameNotice.setText("(" + text + ")");
+            } else {
+                append("(" + text + ")");
+            }
+        });
     }
 
     /** In the story panel; on the New Game and end screens also on the screen itself. */
@@ -475,11 +497,32 @@ public class SwingGameView implements GameView, GameEventListener {
         newGameMessage.setForeground(PROBLEM);
         form.add(newGameMessage, at);
         JPanel buttons = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
-        buttons.add(startButton);
+        buttons.add(createButton);
         buttons.add(Box.createHorizontalStrut(10));
         buttons.add(newGameLoadButton);
         at.gridy = 8;
         form.add(buttons, at);
+        at.gridy = 9;
+        newGameNotice.setFont(newGameNotice.getFont().deriveFont(Font.ITALIC));
+        form.add(newGameNotice, at);
+
+        backstoryArea.setEditable(false);
+        backstoryArea.setLineWrap(true);
+        backstoryArea.setWrapStyleWord(true);
+        backstoryArea.setMargin(new Insets(8, 8, 8, 8));
+        backstoryArea.setFont(new Font(Font.SERIF, Font.PLAIN, 15));
+        JPanel backstoryButtons = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        backstoryButtons.add(regenerateButton);
+        backstoryButtons.add(Box.createHorizontalStrut(10));
+        backstoryButtons.add(startButton);
+        backstoryPanel.setBorder(BorderFactory.createTitledBorder("Your backstory"));
+        backstoryPanel.add(new JScrollPane(backstoryArea), BorderLayout.CENTER);
+        backstoryPanel.add(backstoryButtons, BorderLayout.SOUTH);
+        backstoryPanel.setVisible(false);
+        at.gridy = 10;
+        at.fill = GridBagConstraints.HORIZONTAL;
+        form.add(backstoryPanel, at);
+        at.fill = GridBagConstraints.NONE;
 
         StatAllocation preset = StatAllocation.preset("", CharacterClass.WARRIOR);
         strengthSlider.setValue(preset.strength());
@@ -489,22 +532,23 @@ public class SwingGameView implements GameView, GameEventListener {
         nameField.getDocument().addDocumentListener(new DocumentListener() {
             @Override
             public void insertUpdate(DocumentEvent event) {
-                updateAllocation();
+                formChanged();
             }
 
             @Override
             public void removeUpdate(DocumentEvent event) {
-                updateAllocation();
+                formChanged();
             }
 
             @Override
             public void changedUpdate(DocumentEvent event) {
-                updateAllocation();
+                formChanged();
             }
         });
-        strengthSlider.addChangeListener(event -> updateAllocation());
-        agilitySlider.addChangeListener(event -> updateAllocation());
-        intelligenceSlider.addChangeListener(event -> updateAllocation());
+        strengthSlider.addChangeListener(event -> formChanged());
+        agilitySlider.addChangeListener(event -> formChanged());
+        intelligenceSlider.addChangeListener(event -> formChanged());
+        classBox.addActionListener(event -> formChanged());
         classBox.setRenderer(new DefaultListCellRenderer() {
             @Override
             public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean selected,
@@ -513,10 +557,12 @@ public class SwingGameView implements GameView, GameEventListener {
                 return super.getListCellRendererComponent(list, text, index, selected, focused);
             }
         });
+        createButton.addActionListener(event -> generate());
+        regenerateButton.addActionListener(event -> regenerate());
         startButton.addActionListener(event -> start());
         nameField.addActionListener(event -> {
-            if (startButton.isEnabled()) {
-                start();
+            if (createButton.isEnabled()) {
+                generate();
             }
         });
         newGameLoadButton.addActionListener(event -> chooseSlot(false));
@@ -808,15 +854,61 @@ public class SwingGameView implements GameView, GameEventListener {
 
     // ---- actions (on the event thread) ----------------------------------------------------------------
 
-    /** Creates the character and starts the game (SD01); the controller shows a problem with showError. */
-    private void start() {
+    /**
+     * Generate Backstory (F01, SD01): creates the character, then asks for its backstory, which is shown with
+     * Regenerate and Start; the controller shows a problem with showError and a pre-written backstory with a
+     * notice.
+     */
+    private void generate() {
         StatAllocation allocation = allocation();
         String name = allocation.name() == null ? "" : allocation.name().trim();
+        int version = creation.version();
+        newGameNotice.setText(" ");
         runOnWorker(() -> {
             if (controller.newGame(name, allocation.characterClass(), allocation.toStats()) != null) {
-                controller.startGame();
+                String backstory = controller.regenerateBackstory();
+                onEdt(() -> showBackstory(version, backstory));
             }
         });
+    }
+
+    /** Regenerate: another backstory for the same character (SD01's loop). */
+    private void regenerate() {
+        int version = creation.version();
+        newGameNotice.setText(" ");
+        runOnWorker(() -> {
+            String backstory = controller.regenerateBackstory();
+            onEdt(() -> showBackstory(version, backstory));
+        });
+    }
+
+    /** Start: begins the game with the shown backstory, which the story panel then shows once. */
+    private void start() {
+        if (!creation.hasBackstory()) {
+            return;
+        }
+        backstoryToShow = creation.getBackstory();
+        runOnWorker(controller::startGame);
+    }
+
+    private void showBackstory(int version, String backstory) {
+        if (creation.backstoryWritten(version, backstory)) {
+            backstoryArea.setText(backstory);
+            backstoryArea.setCaretPosition(0);
+            backstoryPanel.setVisible(true);
+            newGamePanel.revalidate();
+            newGamePanel.repaint();
+        }
+        updateControls();
+    }
+
+    /** An edit of the form: the backstory shown belonged to the character as it was. */
+    private void formChanged() {
+        creation.formChanged();
+        backstoryPanel.setVisible(false);
+        backstoryArea.setText("");
+        updateAllocation();
+        updateControls();
     }
 
     /** The story panel's input. */
@@ -915,8 +1007,9 @@ public class SwingGameView implements GameView, GameEventListener {
             return;
         }
         newGameMessage.setText(" ");
+        newGameNotice.setText(" ");
         showCard(NEW_GAME_CARD);
-        updateAllocation();
+        formChanged();
         nameField.requestFocusInWindow();
     }
 
@@ -1264,7 +1357,10 @@ public class SwingGameView implements GameView, GameEventListener {
         endLoadButton.setEnabled(load);
         newGameItem.setEnabled(newGame);
         endNewGameButton.setEnabled(newGame);
-        startButton.setEnabled(!busy && allocation().isValid());
+        createButton.setEnabled(creation.canGenerate(allocation(), busy));
+        boolean backstoryStep = creation.canRegenerateOrStart(busy);
+        regenerateButton.setEnabled(backstoryStep);
+        startButton.setEnabled(backstoryStep);
         boolean say = rules.enabled(ControlRules.PanelControl.SAY, busy, endingShown);
         dialogueField.setEnabled(say);
         dialogueSendButton.setEnabled(say);
@@ -1287,7 +1383,7 @@ public class SwingGameView implements GameView, GameEventListener {
                 : BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(PROBLEM), nameBorder));
         String problem = allocation.problem();
         showNewGameMessage(problem == null ? " " : problem);
-        startButton.setEnabled(!busy && allocation.isValid());
+        createButton.setEnabled(creation.canGenerate(allocation, busy));
     }
 
     private void showNewGameMessage(String message) {
@@ -1450,8 +1546,30 @@ public class SwingGameView implements GameView, GameEventListener {
         return newGameMessage;
     }
 
+    /** The form's Generate Backstory button. */
+    JButton createButton() {
+        return createButton;
+    }
+
+    JButton regenerateButton() {
+        return regenerateButton;
+    }
+
+    /** The backstory step's Start button, which begins the game. */
     JButton startButton() {
         return startButton;
+    }
+
+    JTextArea backstoryArea() {
+        return backstoryArea;
+    }
+
+    JPanel backstoryPanel() {
+        return backstoryPanel;
+    }
+
+    JLabel newGameNotice() {
+        return newGameNotice;
     }
 
     JTextArea storyArea() {

@@ -99,8 +99,9 @@ class SwingGameViewPanelsTest {
             sliders.get(0).setValue(2);
             sliders.get(1).setValue(6);
             sliders.get(2).setValue(2);
-            view.startButton().doClick();
+            view.createButton().doClick();
         });
+        edt(() -> view.startButton().doClick());   // F01/SD01: Generate Backstory, then Start
         controller.calls.clear();
     }
 

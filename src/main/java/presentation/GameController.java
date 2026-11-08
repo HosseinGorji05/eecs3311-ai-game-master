@@ -1,6 +1,7 @@
 package presentation;
 
 import agent.ActionInterpreter;
+import agent.BackstoryWriter;
 import agent.EndingWriter;
 import agent.MemoryManager;
 import agent.MemorySummarizer;
@@ -91,8 +92,16 @@ import java.util.stream.Collectors;
  * {@value #GAME_OVER}, until a save is loaded or a new game is started with {@link #newGame} and
  * {@link #startGame}.
  *
- * <p>Not yet included (they come with their features): narration by the LLM (the narration is the
- * results' messages) and the backstory.
+ * <p>The backstory (F01, SD01): after {@link #newGame} the view calls {@link #regenerateBackstory} for the
+ * new character's backstory, shows it, and may call it again for another; {@link #startGame} then starts
+ * with the last one. The {@link BackstoryWriter} writes it (a class template, with a notice naming the
+ * reason, when the model gives none). The step may be skipped: a character without a backstory starts
+ * just the same. Deviation from SD01: the first backstory comes from the view's first
+ * {@code regenerateBackstory()} call, not from inside {@code newGame}, which only validates and creates
+ * the character.
+ *
+ * <p>Not yet included (it comes with its feature): narration by the LLM (the narration is the results'
+ * messages).
  */
 public class GameController {
 
@@ -130,6 +139,7 @@ public class GameController {
     private final QuestGenerator questGenerator;
     private final EndingCalculator endingCalculator = new EndingCalculator();
     private final EndingWriter endingWriter;
+    private final BackstoryWriter backstoryWriter;
     private final String llmDescription;
     private Player newPlayer;
     private Quest offeredQuest;
@@ -156,6 +166,7 @@ public class GameController {
         this.dialogueAgent = new NpcDialogueAgent(llm, prompts, new ResponseParser(), state);
         this.questGenerator = new QuestGenerator(llm, prompts, new ResponseParser(), state);
         this.endingWriter = new EndingWriter(llm, prompts, new ResponseParser(), state);
+        this.backstoryWriter = new BackstoryWriter(llm, new PromptBuilder(), new ResponseParser(), state);
         eventBus.subscribe(state.getEventLog());
         eventBus.subscribe(memory);
         eventBus.subscribe(new QuestTracker(state, eventBus));
@@ -172,6 +183,7 @@ public class GameController {
         questGenerator.setDebugOutput(debug);
         memory.setDebugOutput(debug);
         endingWriter.setDebugOutput(debug);
+        backstoryWriter.setDebugOutput(debug);
     }
 
     /**
@@ -225,9 +237,33 @@ public class GameController {
     }
 
     /**
+     * Writes a backstory for the character {@link #newGame} created and gives it to the character, replacing
+     * any earlier one (SD01: the first backstory and every Regenerate). The model writes it from the name,
+     * class and stats; when it gives no valid one (no model, an error, invalid output twice), the class's
+     * template is used and a notice names the reason. Never fails; it uses no turn and publishes no event.
+     * The backstory is flavour text: it changes nothing else about the character.
+     *
+     * @return the backstory to show
+     * @throws IllegalStateException if no new character waits to start (none was created, or it has started)
+     */
+    public String regenerateBackstory() {
+        if (newPlayer == null || state.getPlayer() == newPlayer) {
+            throw new IllegalStateException("Create a character with newGame() first");
+        }
+        String backstory = backstoryWriter.write(newPlayer);
+        if (backstoryWriter.isFallbackUsed()) {
+            String notice = "The backstory is pre-written. Reason: " + backstoryWriter.getFallbackReason() + ".";
+            views.forEach(view -> view.showNotice(notice));
+        }
+        newPlayer.setBackstory(backstory);
+        return backstory;
+    }
+
+    /**
      * Creates the world, places the new character in its start location with the main quest active, adds
      * the starting facts to the story memory and shows the game. It also starts a new game after an ending
-     * (the end screen's New Game): the logs and the memory start empty.
+     * (the end screen's New Game): the logs and the memory start empty. The character starts with the
+     * backstory {@link #regenerateBackstory} gave it last, or with none if that step was skipped.
      *
      * @throws IllegalStateException if no character was created with {@link #newGame}
      */
