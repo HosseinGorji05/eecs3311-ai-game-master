@@ -10,16 +10,16 @@
       <h>2200</h>
     </coordinates>
     <panel_attributes>title=SD05 — Propagate Game Events and Track Quests (UC08, F08, F11; Observer)\nreferenced by SD03, SD04, SD07 and SD10–SD12
-desc=Notes\n(n1) notifies every subscribed GameEventListener in turn\n(n2) e.g. the potion a FETCH objective asks for was used up\n(n3) QUEST event, alignment delta −1 (side quests only)\n(n4) QUEST event; alignment delta +2 for a side quest (the player helped its giver), 0 for the main quest; delivered to all listeners the same way\n(n5) redraws the map, inventory, quest log and event log panels
+desc=Notes\n(n1) notifies every subscribed GameEventListener in subscription order: EventLog, MemoryManager, QuestTracker, then the views (subscribed when they are added to the controller)\n(n2) e.g. the potion a FETCH objective asks for was used up\n(n3) QUEST event, alignment delta −1 (side quests only)\n(n4) QUEST event; alignment delta +2 for a side quest (the player helped its giver), 0 for the main quest; delivered to all listeners the same way\n(n5) redraws the map, inventory, quest log and event log panels
 obj=_:GameEventBus_~BUS
 obj=_:EventLog_~EL
+obj=_:MemoryManager_~MM
 obj=_:QuestTracker_~QT
 obj=_:GameState_~GS
 obj=_:QuestLog_~QL
 obj=_quest : Quest_~Q
 obj=_objective : Objective_~O
 obj=_player : Player_~PL
-obj=_:MemoryManager_~MM
 obj=«boundary»\n_:SwingGameView_~V
 
 gate-&gt;&gt;&gt;BUS :publish(event); on=BUS
@@ -28,6 +28,9 @@ BUS-&gt;&gt;&gt;EL :onEvent(event); on=EL
 EL-&gt;&gt;&gt;EL + :append(event)
 EL.&gt;EL +
 EL.&gt;BUS; off=EL
+BUS-&gt;&gt;&gt;MM :onEvent(event); on=MM
+ref=MM MM :SD06 — update\nstory memory
+MM.&gt;BUS; off=MM
 BUS-&gt;&gt;&gt;QT :onEvent(event); on=QT
 QT-&gt;&gt;&gt;GS :getQuestLog(); on=GS
 GS.&gt;QT :questLog; off=GS
@@ -72,9 +75,6 @@ BUS.&gt;QT
 --=cf4
 --=cf1
 QT.&gt;BUS; off=QT
-BUS-&gt;&gt;&gt;MM :onEvent(event); on=MM
-ref=MM MM :SD06 — update\nstory memory
-MM.&gt;BUS; off=MM
 BUS-&gt;&gt;&gt;V :onEvent(event); on=V
 V-&gt;&gt;&gt;V + :refresh() (n5)
 V.&gt;V +

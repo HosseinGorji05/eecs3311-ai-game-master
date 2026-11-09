@@ -10,7 +10,7 @@ fontsize=16</panel_attributes>
   </element>
   <element>
     <id>UMLPackage</id>
-    <coordinates><x>80</x><y>80</y><w>1310</w><h>1040</h></coordinates>
+    <coordinates><x>80</x><y>80</y><w>1310</w><h>1190</h></coordinates>
     <panel_attributes>presentation</panel_attributes>
     <additional_attributes></additional_attributes>
   </element>
@@ -58,11 +58,11 @@ fontsize=16</panel_attributes>
   </element>
   <element>
     <id>UMLClass</id>
-    <coordinates><x>560</x><y>120</y><w>340</w><h>70</h></coordinates>
+    <coordinates><x>560</x><y>120</y><w>580</w><h>70</h></coordinates>
     <panel_attributes>*GameApp*
 --
 _+ main(args: String[])_
-_- createLlmClient(provider: String): LLMClient_</panel_attributes>
+_- createLlmClient(provider: String, config: EnvConfig, out: PrintStream): LLMClient_</panel_attributes>
     <additional_attributes></additional_attributes>
   </element>
   <element>
@@ -82,7 +82,7 @@ _- createLlmClient(provider: String): LLMClient_</panel_attributes>
   </element>
   <element>
     <id>UMLClass</id>
-    <coordinates><x>100</x><y>480</y><w>250</w><h>410</h></coordinates>
+    <coordinates><x>100</x><y>480</y><w>250</w><h>425</h></coordinates>
     <panel_attributes>&lt;&lt;View&gt;&gt;
 *SwingGameView*
 --
@@ -91,7 +91,8 @@ _- createLlmClient(provider: String): LLMClient_</panel_attributes>
 - newGamePanel: JPanel
 - storyArea: JTextArea
 - inputField: JTextField
-- mapPanel: JPanel
+- mapPanel: MapPanel
+- creation: CharacterCreation
 - inventoryTree: JTree
 - questList: JList&lt;Quest&gt;
 - eventTable: JTable
@@ -666,5 +667,103 @@ cbase=d</panel_attributes>
     <coordinates><x>326</x><y>76</y><w>1248</w><h>438</h></coordinates>
     <panel_attributes>lt=&lt;&lt;.</panel_attributes>
     <additional_attributes>1224.0;54.0;594.0;54.0;594.0;24.0;54.0;24.0;54.0;414.0;24.0;414.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>88</x><y>110</y><w>290</w><h>75</h></coordinates>
+    <panel_attributes>*EnvConfig*
+--
+_+ load(file: Path, env: Map): EnvConfig_
++ get(key: String): Optional&lt;String&gt;
+(environment variables and .env)</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLNote</id>
+    <coordinates><x>1180</x><y>140</y><w>200</w><h>60</h></coordinates>
+    <panel_attributes>bg=#FFFDE7
+GameApp: argument "gui"
+opens SwingGameView,
+otherwise CliGameView.</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>90</x><y>1030</y><w>360</w><h>120</h></coordinates>
+    <panel_attributes>*CharacterCreation*
+--
+- version: int
+- backstory: String
+--
++ formChanged()
++ backstoryWritten(version: int, text: String): boolean
++ getBackstory(): String</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLPackage</id>
+    <coordinates><x>470</x><y>1030</y><w>320</w><h>150</h></coordinates>
+    <panel_attributes>Swing helpers</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>490</x><y>1065</y><w>110</w><h>30</h></coordinates>
+    <panel_attributes>*MapPanel*</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>620</x><y>1065</y><w>110</w><h>30</h></coordinates>
+    <panel_attributes>*MapModel*</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>490</x><y>1110</y><w>150</w><h>30</h></coordinates>
+    <panel_attributes>*InventoryTreeModel*</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>655</x><y>1110</y><w>120</w><h>30</h></coordinates>
+    <panel_attributes>*QuestListModel*</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates><x>490</x><y>1150</y><w>140</w><h>30</h></coordinates>
+    <panel_attributes>*EventTableModel*</panel_attributes>
+    <additional_attributes></additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>321</x><y>131</y><w>263</w><h>48</h></coordinates>
+    <panel_attributes>lt=.&gt;
+«use»</panel_attributes>
+    <additional_attributes>239.0;24.0;24.0;24.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>176</x><y>866</y><w>48</w><h>188</h></coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+m2=1</panel_attributes>
+    <additional_attributes>24.0;24.0;24.0;164.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>246</x><y>866</y><w>338</w><h>188</h></coordinates>
+    <panel_attributes>lt=-&gt;
+m1=1
+m2=1
+uses</panel_attributes>
+    <additional_attributes>24.0;24.0;24.0;139.0;314.0;139.0;314.0;164.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates><x>1116</x><y>141</y><w>88</w><h>48</h></coordinates>
+    <panel_attributes>lt=.</panel_attributes>
+    <additional_attributes>24.0;24.0;64.0;24.0</additional_attributes>
   </element>
 </diagram>

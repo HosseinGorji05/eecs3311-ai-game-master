@@ -10,7 +10,7 @@
       <h>2460</h>
     </coordinates>
     <panel_attributes>title=SD02 — Perform Action in Natural Language (UC02, UC05, UC06, UC14; F02, F05, F06; Facade, Command)
-desc=Notes\n(n1) In dialogue mode the view calls sendDialogue() instead (SD07). Buttons and map clicks call performAction(proposal), which skips interpret() and narrate() (SD10, SD11, SD12).\n      :CliGameView can take the place of :SwingGameView in every diagram.\n(n2) narration = the error text, results = [], gameOver = false
+desc=Notes\n(n1) In dialogue mode the view calls sendDialogue() instead (SD07). Buttons and map clicks call performAction(proposal), which skips interpret() and narrate() (SD10, SD11, SD12).\n      :CliGameView can take the place of :SwingGameView in every diagram.\n(n2) narration = the error text, results = [], gameOver = false\n(n3) Only typed commands are narrated, including ones the engine refused. The narration is shown IN ADDITION to the engine's own result text, not in place of it, and it is not stored in the event log or the memory.\n(n4) Narrator allows at most one retry. If the check still fails (or the model is unavailable) the template is used: the engine's result text. The notice appears at most once per turn.
 obj=Player~P ACTOR
 obj=«boundary»\n_:SwingGameView_~V
 obj=«control»\n_:GameController_~GC
@@ -58,12 +58,18 @@ RE.&gt;GC :results :\nList&lt;ActionResult&gt;; off=RE
 GC-&gt;&gt;&gt;N :narrate(results); on=N
 N-&gt;&gt;&gt;N + :run(results)
 tick=
-ref=LLM CF :SD00 — Run an LLM Task\n(isValid: narration only describes the results\;\nfallback: template text built from the results)
+ref=LLM CF :SD00 — Run an LLM Task\n(isValid: narration only describes the results\;\nfallback after at most one retry: template = the engine's result text)
 N.&gt;N + :narration
 N.&gt;GC :narration; off=N
 GC-&gt;&gt;&gt;GS :isGameOver(); on=GS
 GS.&gt;GC :gameOver; off=GS
-GC-&gt;&gt;&gt;V :showNarration(narration)
+combinedFragment=opt~cf5 V GC
+V:[template used (check failed or\nmodel unavailable), at most\nonce per turn]
+GC-&gt;&gt;&gt;V :showNotice(\n"The narration is pre-written.\nReason: ...")
+tick=1
+V.&gt;GC
+--=cf5
+GC-&gt;&gt;&gt;V :showNarration(\nresult text + narration) (n3)(n4)
 V.&gt;GC
 combinedFragment=opt~cf4 GC GC
 GC:[gameOver]
