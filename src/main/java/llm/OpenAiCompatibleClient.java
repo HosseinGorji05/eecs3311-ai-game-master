@@ -128,6 +128,13 @@ public abstract class OpenAiCompatibleClient implements LLMClient {
     }
 
     /**
+     * Extra top-level fields for this provider's request body; none by default, so a provider that
+     * does not override it sends exactly the common fields.
+     */
+    protected void addProviderFields(JsonObject body) {
+    }
+
+    /**
      * The chat-completions request: the system and user prompts as two messages, the model, the
      * answer length limit, the temperature and, for JSON mode, {@code response_format json_object}
      * (unless the provider rejected it before).
@@ -147,6 +154,7 @@ public abstract class OpenAiCompatibleClient implements LLMClient {
             format.addProperty("type", "json_object");
             body.add("response_format", format);
         }
+        addProviderFields(body);
         return HttpRequest.newBuilder(URI.create(baseUrl + "/chat/completions"))
                 .timeout(requestTimeout)
                 .header("Content-Type", "application/json")

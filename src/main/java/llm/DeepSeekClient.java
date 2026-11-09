@@ -1,5 +1,7 @@
 package llm;
 
+import com.google.gson.JsonObject;
+
 /**
  * The primary provider: DeepSeek's OpenAI-compatible API, by default with the DeepSeek-V4.1-Flash
  * model.
@@ -28,6 +30,17 @@ public class DeepSeekClient extends OpenAiCompatibleClient {
     @Override
     public String providerName() {
         return "deepseek";
+    }
+
+    /**
+     * Turns thinking off: DeepSeek's V4 models think by default, and the reasoning can use up
+     * {@code max_tokens} and leave the message content empty.
+     */
+    @Override
+    protected void addProviderFields(JsonObject body) {
+        JsonObject thinking = new JsonObject();
+        thinking.addProperty("type", "disabled");
+        body.add("thinking", thinking);
     }
 
     @Override

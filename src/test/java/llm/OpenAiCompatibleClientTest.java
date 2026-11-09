@@ -411,8 +411,26 @@ class OpenAiCompatibleClientTest {
         assertFalse(deepSeekRequest.toString().contains(KEY));
     }
 
-    /** The model field of a built request's body, read through its body publisher. */
+    @Test
+    void onlyTheDeepSeekRequestDisablesThinking() {
+        JsonObject deepSeekBody = bodyOf(new DeepSeekClient(KEY).toHttpRequest(JSON_REQUEST));
+        assertEquals("disabled", deepSeekBody.getAsJsonObject("thinking").get("type").getAsString());
+        assertEquals(JSON_REQUEST.getMaxTokens(), deepSeekBody.get("max_tokens").getAsInt());
+        assertEquals(OpenAiCompatibleClient.TEMPERATURE, deepSeekBody.get("temperature").getAsDouble());
+
+        JsonObject groqBody = bodyOf(new GroqClient(KEY).toHttpRequest(JSON_REQUEST));
+        assertFalse(groqBody.has("thinking"));
+        // The Groq body is exactly the common fields.
+        assertEquals(java.util.Set.of("model", "messages", "max_tokens", "temperature", "stream", "response_format"),
+                groqBody.keySet());
+    }
+
     private static String modelIn(HttpRequest request) {
+        return bodyOf(request).get("model").getAsString();
+    }
+
+    /** A built request's JSON body, read through its body publisher. */
+    private static JsonObject bodyOf(HttpRequest request) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         request.bodyPublisher().orElseThrow().subscribe(new Flow.Subscriber<>() {
             @Override
@@ -435,6 +453,6 @@ class OpenAiCompatibleClientTest {
             public void onComplete() {
             }
         });
-        return JsonParser.parseString(bytes.toString(StandardCharsets.UTF_8)).getAsJsonObject().get("model").getAsString();
+        return JsonParser.parseString(bytes.toString(StandardCharsets.UTF_8)).getAsJsonObject();
     }
 }
