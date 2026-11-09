@@ -154,7 +154,8 @@ Without debug output, a fallback is still reported in one line in the game, for 
 - NPC dialogue is only checked for revealed secrets and for well-formed side effects, not against the world's facts.
 - The Narrator rejects invented capitalized names but does not catch invented lowercase nouns (such as "a golden amulet").
 - Story-memory summaries are generated synchronously, during the turn that triggers them.
-- DeepSeek has not been confirmed with a live call in this project; only Groq has.
+- DeepSeek (`deepseek-flash`) was tested live on Nov 9 for F01, F04, F07, F09 and F12. Thinking mode is disabled for DeepSeek requests, because otherwise long replies came back empty.
+- With DeepSeek, the quest offered by Brann can fall back to a pre-written quest when the model repeats the main quest's objectives; the engine's checker rejects those, which is intended.
 - `mvnw.cmd` (Windows) is untested.
 
 ## 10. Security
