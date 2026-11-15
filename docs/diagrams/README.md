@@ -1,6 +1,6 @@
 # Diagrams (UMLet)
 
-All UML diagrams of the Stage 1 report are drawn in [UMLet](https://www.umlet.com/). Each diagram is an editable UMLet file (`.uxf`) with a PNG and an SVG export next to it. To edit one, open the `.uxf` in UMLet (File > Open).
+All UML diagrams were first drawn for the Stage 1 report and have been updated to match the final Stage 2 code. They are drawn in [UMLet](https://www.umlet.com/). Each diagram is an editable UMLet file (`.uxf`) with a PNG and an SVG export next to it. To edit one, open the `.uxf` in UMLet (File > Open).
 
 | Diagram | Files |
 |---|---|
@@ -25,6 +25,8 @@ All UML diagrams of the Stage 1 report are drawn in [UMLet](https://www.umlet.co
 | SD10 Take an item with an inventory button | `sd10-take-item` |
 | SD11 Move to an adjacent location through a locked door | `sd11-move` |
 | SD12 Flee from combat or leave a conversation | `sd12-flee-and-leave` |
+
+The diagrams show the design-level classes; small GUI helper classes are omitted.
 
 Reading the sequence diagrams: notes are numbered (n1), (n2), ... and listed under the diagram title; the number is shown where the note applies. A **ref** frame points to another sequence diagram that is drawn once and reused. SD06 and SD08 contain one frame per scenario (for example Save and Load).
 

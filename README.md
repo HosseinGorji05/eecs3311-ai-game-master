@@ -1,5 +1,16 @@
 # AI Game Master (EECS 3311, Stage 2)
 
+This is the Stage 2 implementation of the EECS 3311 AI Game Master: a working GUI and CLI, 12 features, 10 design patterns, and a real LLM with offline fallbacks.
+
+## Demo videos
+
+- CLI demo: TBD
+- GUI demo: TBD
+
+Timestamps for each feature are in the report.
+
+**Report:** [stage2-report.pdf](stage2-report.pdf)
+
 A text adventure for EECS 3311 (York University) in which a language model acts as the game master. The rule of the design is **"the LLM proposes, the engine decides"**: the model reads the player's words, voices the NPCs, offers side quests, keeps the story memory, writes the backstory and the epilogue, and narrates each turn, but a deterministic rules engine checks and executes every action that changes the game. Every AI feature has an offline fallback (a keyword parser, pre-written lines or a template), so the game is fully playable without a key or a network. It runs in a terminal (CLI) and in a Swing window (GUI) that share one controller.
 
 **Author:** Hossein Gorji (221396551)
@@ -10,7 +21,7 @@ A text adventure for EECS 3311 (York University) in which a language model acts 
 | 2     | Implementation                       | Implemented |
 | 3     | Testing and validation               | Planned     |
 
-The Stage 1 design is in [`docs/`](docs/): the [design report (PDF)](docs/AI-Game-Master-Stage1-Design-Report.pdf) and the UMLet diagrams in [`docs/diagrams/`](docs/diagrams/).
+The design is in [`docs/`](docs/): the Stage 1 [design report (PDF)](docs/AI-Game-Master-Stage1-Design-Report.pdf) and the UMLet diagrams in [`docs/diagrams/`](docs/diagrams/), which were updated to match the final Stage 2 code.
 
 ## 1. Requirements
 
@@ -36,7 +47,7 @@ GROQ_API_KEY=<your Groq key>
 
 - **DeepSeek is the default provider** (model `deepseek-flash`). For **Groq**, set `LLM_PROVIDER=groq` and `GROQ_API_KEY` (model `openai/gpt-oss-20b`).
 - `LLM_API_KEY` is used for either provider when its own key is not set.
-- `DEEPSEEK_MODEL` and `GROQ_MODEL` override the model, for example `GROQ_MODEL=openai/gpt-oss-120b`. Left blank or commented out, the default is used. An unknown model makes each call fail with `HTTP 404 (model <model> not found; set GROQ_MODEL)`.
+- `DEEPSEEK_MODEL` and `GROQ_MODEL` override the model, for example `GROQ_MODEL=openai/gpt-oss-120b`. Left blank or commented out, the default is used. An unknown model makes each call fail with `HTTP 404 (model <model> not found; set GROQ_MODEL)`, or `set DEEPSEEK_MODEL` with DeepSeek.
 - A value left as `YOUR_LOCAL_API_KEY_HERE` (the placeholder in `.env.example`) counts as not set.
 - **Real environment variables override `.env`.** If `GROQ_API_KEY` or `DEEPSEEK_API_KEY` is exported in your shell (for example from an old session or your shell profile), that value is used instead of the one in `.env`. If you see `HTTP 401 (API key rejected)`, check for one and remove it, for example `unset GROQ_API_KEY`.
 - **Without any key the game still runs**, in offline mode: typed commands go through a keyword parser and every AI feature uses its deterministic fallback. The game prints which key is missing at start-up.
@@ -85,7 +96,7 @@ Character creation: the CLI asks for a name and a class (`warrior`, `rogue` or `
 | Map and quests          | `map`, `quests`                                                      | the Map panel and the Quests tab                                      |
 | Journal (story so far)  | `journal`                                                            | the Journal tab                                                       |
 | Event history           | `history`, `history combat` (also `movement`, `item`, `dialogue`, `quest`, `rejected`) | the Event log tab with its filter                   |
-| Help and quit           | `help`, `quit` (or `exit`)                                           | Game > Quit                                                           |
+| Help and quit           | `help`, `quit` (or `exit`)                                           | type `help` in the input field; Game > Quit                           |
 
 Saves are JSON files in `saves/<name>.json` in the current directory. A save name is 1 to 32 letters, digits, `-` or `_`, stored in lower case. The save format is version 2; a save in another format is refused with a message and the current game is left as it was. The game ends when the main quest is completed or the player dies; the end screen shows the ending type, the epilogue and statistics.
 
