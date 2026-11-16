@@ -4,12 +4,12 @@ This is the Stage 2 implementation of the EECS 3311 AI Game Master: a working GU
 
 ## Demo videos
 
-- CLI demo: TBD
-- GUI demo: TBD
+- CLI demo: https://www.youtube.com/playlist?list=PLG8hyW-V3VQU
+- GUI demo: https://www.youtube.com/playlist?list=PLdlqte1I3O9U
 
 Timestamps for each feature are in the report.
 
-**Report:** [stage2-report.pdf](stage2-report.pdf)
+**Report:** [docs/stage2-report.pdf](docs/stage2-report.pdf)
 
 A text adventure for EECS 3311 (York University) in which a language model acts as the game master. The rule of the design is **"the LLM proposes, the engine decides"**: the model reads the player's words, voices the NPCs, offers side quests, keeps the story memory, writes the backstory and the epilogue, and narrates each turn, but a deterministic rules engine checks and executes every action that changes the game. Every AI feature has an offline fallback (a keyword parser, pre-written lines or a template), so the game is fully playable without a key or a network. It runs in a terminal (CLI) and in a Swing window (GUI) that share one controller.
 
