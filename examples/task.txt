@@ -1,0 +1,33 @@
+# Recover the village relic (the main quest), as a warrior.
+# Run: java -jar target/ai-game-master.jar --llm offline --seed 42 --input examples/task.txt
+# One line per thing the player types. Lines starting with # and empty lines are skipped,
+# except the empty line right after the class, which accepts the backstory.
+
+# Character creation: name, class, then accept the backstory.
+Ari
+warrior
+
+# The shed key lies in the Tavern, north of the Village Square.
+go north
+take shed key
+go south
+
+# The warrior starts with a sword; equip it before the fight.
+equip sword
+
+# Village Square -> Forest Edge -> Bandit Camp.
+go south
+go south
+
+# Fight the bandit leader. A few spare attacks: once he is dead they are simply refused.
+attack bandit leader
+attack bandit leader
+attack bandit leader
+attack bandit leader
+attack bandit leader
+attack bandit leader
+attack bandit leader
+attack bandit leader
+
+# Take the relic back: this completes the main quest and shows the ending.
+take village relic

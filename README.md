@@ -72,7 +72,31 @@ The GUI: the first argument is `gui`, optionally followed by the provider.
 ./mvnw -q compile exec:java -Dexec.args="gui offline"
 ```
 
-There is no `cli` argument: any first word other than `gui` is read as the provider, and an unknown provider plays offline. Without a display, `gui` prints a message and starts nothing; use the CLI instead. The window title shows the provider and model in use, or `offline`.
+There is no `cli` argument: any word other than `gui` is read as the provider, and an unknown provider plays offline. Without a display, `gui` prints a message and starts nothing; use the CLI instead. The window title shows the provider and model in use, or `offline`.
+
+### Standalone CLI
+
+`./mvnw -q package` runs the tests and builds one runnable jar, `target/ai-game-master.jar`, with Gson inside. It is started with `java -jar` from the repository root (it reads `.env` there, like the commands above).
+
+```bash
+./mvnw -q package
+java -jar target/ai-game-master.jar --llm offline --seed 42 --input examples/task.txt
+java -jar target/ai-game-master.jar --llm deepseek --input examples/task.txt
+```
+
+| Option                          | What it does                                                                                     |
+| ------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `--llm deepseek\|groq\|offline` | The LLM provider. Default: `LLM_PROVIDER` from `.env`, else `deepseek`.                          |
+| `--input <file>`                | Reads every line the player would type from the file instead of the keyboard.                    |
+| `--seed <number>`               | Fixes the dice seed, so the same file gives the same rolls (and, offline, the same output).      |
+| `--gui`                         | Starts the GUI (same as `gui`). Cannot be combined with `--input`.                               |
+| `--help`                        | Prints the options and an example, exits with 0.                                                 |
+
+An input file has one line per thing the player types: the name, the class, an empty line to accept the backstory, then commands. Each line is echoed after its prompt (`> go north`), so the output reads as a transcript. Other empty lines and lines starting with `#` are skipped; at the end of the file the game quits as if `quit` was typed. `examples/task.txt` plays the main quest as a warrior: take the shed key, equip the sword, go to the Bandit Camp, attack the bandit leader (spare attacks after he dies are just refused) and take the village relic. With `--llm offline --seed 42` it reaches the ending. With DeepSeek the same commands go through the model, so the wording differs from run to run; a key must be set in `.env`, otherwise the game says so and plays offline.
+
+Piping still works: `java -jar target/ai-game-master.jar offline < examples/task.txt` plays the same file without the echo (`#` lines are skipped there too). The older forms (`gui`, `groq`, `deepseek`, `offline`, `gui groq`) work with the jar as well, for example `java -jar target/ai-game-master.jar gui groq`.
+
+Exit codes: 0 after a normal end (and for `--help`); 2 for an unknown option, a missing or invalid value, or an input file that is missing or cannot be read, with the reason on standard error.
 
 ## 4. Playing
 
@@ -138,7 +162,7 @@ Saves are JSON files in `saves/<name>.json` in the current directory. A save nam
 ./mvnw test        # or ./mvnw -q test for quiet output
 ```
 
-The tests use a scripted client and fixed dice, so they need no network and no key. The two live provider checks in `LiveProviderSmokeTest` are skipped unless `LLM_LIVE_TEST=true` and a key are set, and then they call the real provider.
+The tests use a scripted client and fixed dice, so they need no network and no key. `./mvnw -q package` runs them too before it builds the jar; `GameAppCliTest` plays `examples/task.txt` offline to the ending. The two live provider checks in `LiveProviderSmokeTest` are skipped unless `LLM_LIVE_TEST=true` and a key are set, and then they call the real provider.
 
 The Swing tests need a display (they keep the game window hidden; one shows the Load dialog briefly). On a machine without a display, or with
 
