@@ -53,6 +53,11 @@ import java.util.stream.Collectors;
  * {@code new} creates a character and starts a new game (the end screen's New Game); the commands that
  * only read (map, journal, history, saves, help) still work, and every other command answers that the
  * game is over. {@code new} is refused while a game is still running.
+ *
+ * <p>Input: lines starting with {@code #} are comments and are skipped. Read from an input file
+ * ({@code --input}), each line is also echoed after its prompt, so the output reads as a transcript;
+ * empty lines are skipped there too, except at the backstory prompt, where an empty line starts the game.
+ * The end of the input quits as {@code quit} does.
  */
 public class CliGameView implements GameView, GameEventListener {
 
@@ -84,6 +89,8 @@ public class CliGameView implements GameView, GameEventListener {
     private final GameController controller;
     private final Scanner in;
     private final PrintStream out;
+    /** Whether the lines come from an input file: they are echoed and empty lines are skipped. */
+    private final boolean fromFile;
     private final List<String> pendingNotices = new ArrayList<>();
     private Quest offeredQuest;
     private boolean running;
@@ -91,9 +98,37 @@ public class CliGameView implements GameView, GameEventListener {
     private String firstCommand;
 
     public CliGameView(GameController controller, InputStream in, PrintStream out) {
+        this(controller, in, out, false);
+    }
+
+    /** With {@code fromFile}, the lines are read as an input file: echoed after the prompt, empty ones skipped. */
+    public CliGameView(GameController controller, InputStream in, PrintStream out, boolean fromFile) {
         this.controller = Objects.requireNonNull(controller, "controller");
         this.in = new Scanner(Objects.requireNonNull(in, "in"));
         this.out = Objects.requireNonNull(out, "out");
+        this.fromFile = fromFile;
+    }
+
+    /**
+     * The next line typed (trimmed), after a prompt has been printed, or {@code null} at the end of the input.
+     * Comment lines ({@code #}) are skipped; from an input file empty lines are skipped too, unless
+     * {@code emptyAnswers} (the backstory prompt), and the line is echoed, or "(end of input)" at the end.
+     */
+    private String readLine(boolean emptyAnswers) {
+        while (in.hasNextLine()) {
+            String line = in.nextLine().trim();
+            if (line.startsWith("#") || fromFile && line.isEmpty() && !emptyAnswers) {
+                continue;
+            }
+            if (fromFile) {
+                out.println(line);
+            }
+            return line;
+        }
+        if (fromFile) {
+            out.println("(end of input)");
+        }
+        return null;
     }
 
     /** Creates the character, starts the game and plays until "quit" or the end of input. */
@@ -114,10 +149,10 @@ public class CliGameView implements GameView, GameEventListener {
                 line = firstCommand;
                 firstCommand = null;
             } else {
-                if (!in.hasNextLine()) {
+                line = readLine(false);
+                if (line == null) {
                     break;
                 }
-                line = in.nextLine().trim();
             }
             if (!line.isEmpty()) {
                 try {
@@ -266,19 +301,20 @@ public class CliGameView implements GameView, GameEventListener {
         String name = null;
         while (name == null) {
             out.print("Your name: ");
-            if (!in.hasNextLine()) {
+            String line = readLine(false);
+            if (line == null) {
                 return false;
             }
-            String line = in.nextLine().trim();
             name = line.isEmpty() ? null : line;
         }
         CharacterClass cls = null;
         while (cls == null) {
             out.print("Class (warrior, rogue, mage): ");
-            if (!in.hasNextLine()) {
+            String line = readLine(false);
+            if (line == null) {
                 return false;
             }
-            cls = characterClass(in.nextLine());
+            cls = characterClass(line);
             if (cls == null) {
                 showError("Please choose warrior, rogue or mage.");
             }
@@ -296,10 +332,10 @@ public class CliGameView implements GameView, GameEventListener {
             out.println("Your backstory:");
             out.println(backstory);
             out.print(BACKSTORY_CHOICE);
-            if (!in.hasNextLine()) {
+            String line = readLine(true);
+            if (line == null) {
                 return;
             }
-            String line = in.nextLine().trim();
             String word = line.toLowerCase(Locale.ROOT);
             if (!REGENERATE_WORDS.contains(word)) {
                 if (!line.isEmpty() && !START_WORDS.contains(word)) {
@@ -352,7 +388,8 @@ public class CliGameView implements GameView, GameEventListener {
         boolean exists = controller.listSaves().stream().anyMatch(info -> info.getSlot().equalsIgnoreCase(slot));
         if (exists && controller.getState().canSave() && !controller.getState().isGameOver()) {
             out.print("A save named \"" + slot + "\" already exists. Overwrite it? (yes/no) ");
-            String answer = in.hasNextLine() ? in.nextLine().trim().toLowerCase(Locale.ROOT) : "";
+            String line = readLine(false);
+            String answer = line == null ? "" : line.toLowerCase(Locale.ROOT);
             if (!answer.equals("yes") && !answer.equals("y")) {
                 showNotice("Not saved. Type save with another name to keep both.");
                 return;
