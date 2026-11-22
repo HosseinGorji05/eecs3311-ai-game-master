@@ -318,4 +318,81 @@ class EndingWriterTest {
         assertFalse(user.contains("forged blades"), "an NPC's secret never reaches the model");
         assertFalse(user.contains("owes the bandit leader"), "an NPC's secret never reaches the model");
     }
+
+    /** The epilogue of a live DeepSeek run of examples/task.txt: the wolf was never fought. */
+    private static final String WOLF_KILLED_BEFORE = "Ari the warrior brought the village relic back from the Bandit"
+            + " Camp after the bandit leader fell, and the wolf had been killed before that.";
+
+    /** The wolf was defeated too, before the bandit leader (it is gone from the Wolf Den). */
+    private void defeatTheWolf() {
+        var den = state.getWorld().findLocation("wolf-den");
+        den.removeEnemy(den.getEnemies().get(0));
+        state.getEventLog().onEvent(new GameEvent(EventType.COMBAT, 4, "wolf defeated", "wolf", 0, EventVerb.DEFEATED));
+    }
+
+    @Test
+    void anEpilogueSayingTheLivingWolfHadBeenKilledIsRejected() {
+        Ending ending = endingFor(EndingType.NEUTRAL);
+        EndingWriter writer = writer(reply(WOLF_KILLED_BEFORE), reply(WOLF_KILLED_BEFORE));
+
+        String written = writer.write(ending);
+
+        assertTrue(writer.isFallbackUsed(), written);
+        assertEquals(LlmTask.INVALID_OUTPUT, writer.getFallbackReason());
+        assertFalse(written.contains("wolf"), written);
+    }
+
+    @Test
+    void theSameEpilogueIsAcceptedWhenTheWolfWasDefeated() {
+        Ending ending = endingFor(EndingType.NEUTRAL);
+        defeatTheWolf();
+        EndingWriter writer = writer(reply(WOLF_KILLED_BEFORE));
+
+        assertEquals(WOLF_KILLED_BEFORE, writer.write(ending));
+        assertFalse(writer.isFallbackUsed());
+    }
+
+    @ParameterizedTest
+    @CsvSource(delimiter = '|', value = {
+            "The wolf had been killed before that.",
+            "The wolf was slain long ago.",
+            "The wolf has been defeated as well.",
+            "The wolf, which had long been dead, was forgotten.",
+            "The wolf lay dead in the Wolf Den.",
+            "The wolf is dead.",
+            "The wolf is no more.",
+            "The wolf died that winter.",
+            "The wolf fell too.",
+            "The wolf had fallen earlier.",
+            "The wolf perished in the snow.",
+            "Nobody mourned the wolf's death.",
+            "Hunters found the dead wolf in the Forest.",
+            "Ari kills the wolf on the way home."})
+    void anyTenseOfAnUndefeatedEnemysDefeatIsRejected(String sentence) {
+        Ending ending = endingFor(EndingType.NEUTRAL);
+        String epilogue = "Ari the warrior brought the village relic back from the Bandit Camp. " + sentence;
+        EndingWriter writer = writer(reply(epilogue), reply(epilogue));
+
+        writer.write(ending);
+
+        assertTrue(writer.isFallbackUsed(), sentence);
+        assertEquals(LlmTask.INVALID_OUTPUT, writer.getFallbackReason());
+    }
+
+    @ParameterizedTest
+    @CsvSource(delimiter = '|', value = {
+            "The wolf was never killed.",
+            "The wolf wasn't slain, and still prowls the Forest.",
+            "The wolf had killed a sheep that spring.",
+            "The wolf fell silent in the Wolf Den.",
+            "The wolf still howls in the Wolf Den.",
+            "The bandit leader had been killed before that."})
+    void aLivingEnemyNotSaidToBeDefeatedIsAccepted(String sentence) {
+        Ending ending = endingFor(EndingType.NEUTRAL);
+        String epilogue = "Ari the warrior brought the village relic back from the Bandit Camp. " + sentence;
+        EndingWriter writer = writer(reply(epilogue));
+
+        assertEquals(epilogue, writer.write(ending));
+        assertFalse(writer.isFallbackUsed(), sentence);
+    }
 }

@@ -45,7 +45,9 @@ import java.util.stream.Collectors;
  * written in digits appears in the results, a number before "damage" is a damage the results deal and a
  * number before "HP" is an HP value the results show); {@link Rule#HIT_MISS} (no hit words when no attack hit, no miss
  * words when no attack missed); {@link Rule#DEFEAT} (a defeated enemy is not said to be alive or to escape;
- * without a defeat or a death nobody is said to be killed, slain or dead); {@link Rule#UNSUPPORTED_EVENT}
+ * an enemy still in the world that was not defeated this turn is not said to be defeated, killed or dead in
+ * any tense, e.g. "the wolf had been killed" ({@link DefeatClaims}); without a defeat or a death nobody is
+ * said to be killed, slain or dead); {@link Rule#UNSUPPORTED_EVENT}
  * (no unlocking or opened door unless the results unlock it, no taking unless an item was taken, no
  * completed quest, and no gold, coins, reward or XP unless the results mention them); {@link
  * Rule#INVENTED_NAME} (every capitalized word inside a sentence is a word of the results, of a name in the
@@ -205,7 +207,7 @@ public class Narrator extends LlmTask<List<ActionResult>, String> {
         if (hitMiss != null) {
             return Rule.HIT_MISS + ": " + hitMiss;
         }
-        String defeat = defeatProblem(narration, events(results));
+        String defeat = defeatProblem(narration, events(results), livingEnemies());
         if (defeat != null) {
             return Rule.DEFEAT + ": " + defeat;
         }
@@ -266,7 +268,7 @@ public class Narrator extends LlmTask<List<ActionResult>, String> {
         return null;
     }
 
-    private static String defeatProblem(String narration, List<GameEvent> events) {
+    private static String defeatProblem(String narration, List<GameEvent> events, List<String> livingEnemies) {
         List<String> defeated = events.stream().filter(event -> event.getVerb() == EventVerb.DEFEATED)
                 .map(GameEvent::getSubjectId).toList();
         boolean died = events.stream().anyMatch(event -> event.getVerb() == EventVerb.DIED);
@@ -279,11 +281,28 @@ public class Narrator extends LlmTask<List<ActionResult>, String> {
                 }
             }
         }
+        List<String> sentences = DefeatClaims.sentences(narration);
+        for (String enemy : livingEnemies) {
+            if (!defeated.contains(enemy) && DefeatClaims.claimsDefeated(sentences, enemy)) {
+                return "the " + enemy + " was not defeated, but a sentence says it was";
+            }
+        }
         Matcher death = DEATH_WORDS.matcher(narration);
         if (defeated.isEmpty() && !died && death.find()) {
             return "it says \"" + death.group() + "\" but nobody was defeated or died";
         }
         return null;
+    }
+
+    /** The enemies still in the world: a defeated enemy is removed from its location. */
+    private List<String> livingEnemies() {
+        List<String> enemies = new ArrayList<>();
+        for (Region region : state.getWorld().getRegions()) {
+            for (Location location : region.getLocations()) {
+                location.getEnemies().stream().map(Enemy::getName).forEach(enemies::add);
+            }
+        }
+        return enemies;
     }
 
     private static String unsupportedProblem(String narration, String resultText, List<GameEvent> events) {

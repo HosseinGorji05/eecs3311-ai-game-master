@@ -49,7 +49,8 @@ import java.util.stream.Collectors;
  *       appears in no name of the world (people, places, regions, items, enemies), the player's name
  *       or class, a quest title, a recorded event (dialogue aside) or a fixed fact;</li>
  *   <li>contradicts the recorded facts: a defeated enemy said to live on, an enemy that was never
- *       defeated said to be defeated, a completed quest said to fail or a failed one said to succeed,
+ *       defeated said to be defeated, killed or dead in any tense ("Ari slew the wolf", "the wolf had
+ *       been killed", "the wolf fell": {@link DefeatClaims}), a completed quest said to fail or a failed one said to succeed,
  *       or the relic said to be recovered when the main quest was not completed;</li>
  *   <li>contradicts the ending type: a DEATH ending must tell of a death and may not say the player
  *       survived or triumphed; any other ending may not say the player died; HEROIC may not call the
@@ -90,8 +91,6 @@ public class EndingWriter extends LlmTask<Ending, String> {
     /** Words a NEUTRAL epilogue may not use: neither extreme. */
     private static final Pattern EXTREME_WORDS = Pattern.compile(
             "\\b(hero's welcome|beloved|despised|disgraced|infamous|villainous)\\b");
-    /** Verbs that, before an enemy's name (and without "by"), say it was defeated. */
-    private static final Pattern DEFEAT_VERBS = Pattern.compile("\\b(defeated|slew|vanquished|killed|slain|struck down)\\b");
     /** Verbs that, with "relic", say it was recovered. */
     private static final Pattern RECOVERED_WORDS = Pattern.compile("\\b(recovered|returned|brought back|reclaimed|restored|took back)\\b");
     /** Words that turn a sentence about the relic into a denial. */
@@ -272,7 +271,7 @@ public class EndingWriter extends LlmTask<Ending, String> {
             }
         }
         for (String enemy : livingEnemies()) {
-            if (!defeated.contains(enemy) && claimsDefeated(sentences, enemy.toLowerCase(Locale.ROOT))) {
+            if (!defeated.contains(enemy) && DefeatClaims.claimsDefeated(sentences, enemy)) {
                 return "the epilogue says the " + enemy + " was defeated, but it never was";
             }
         }
@@ -319,17 +318,6 @@ public class EndingWriter extends LlmTask<Ending, String> {
         };
         Matcher wrongTone = forbidden.matcher(text);
         return wrongTone.find() ? "the " + type + " epilogue says \"" + wrongTone.group() + "\"" : null;
-    }
-
-    /** A sentence where a defeat verb comes before the enemy's name and no "by" says who did it to whom. */
-    private static boolean claimsDefeated(List<String> sentences, String enemy) {
-        for (String sentence : sentences) {
-            int at = sentence.indexOf(enemy);
-            if (at > 0 && !sentence.contains(" by ") && DEFEAT_VERBS.matcher(sentence.substring(0, at)).find()) {
-                return true;
-            }
-        }
-        return false;
     }
 
     /** Whether one sentence names {@code subject} and also contains one of {@code words}. */

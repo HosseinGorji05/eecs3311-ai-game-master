@@ -114,6 +114,43 @@ class NarratorTest {
         assertBroken("DEFEAT", "You strike the wolf for 2 damage. The wolf is slain at once.", hitRound);
     }
 
+    private static final String LEADER_KILLED = "Ari attacks bandit leader: rolls 11 + 5 = 16 against defense 12."
+            + " Hit for 6 damage (bandit leader: 0/12 HP).";
+    private final List<ActionResult> leaderKillRound = List.of(result(true, LEADER_KILLED + "\nThe bandit leader is defeated.",
+            combat(LEADER_KILLED, "bandit leader", null),
+            combat("bandit leader defeated", "bandit leader", EventVerb.DEFEATED)));
+    private static final String WOLF_KILLED_BEFORE =
+            "Your blow lands for 6 damage. The bandit leader falls, and the wolf had been killed before that.";
+
+    /** The bandit leader is defeated this turn (and so gone from the camp), like in the real game. */
+    private void removeTheBanditLeader() {
+        var camp = state.getWorld().findLocation("bandit-camp");
+        camp.removeEnemy(camp.getEnemies().get(0));
+    }
+
+    @Test
+    void anotherEnemyThatWasNotDefeatedIsNotSaidToBeKilledInAnyTense() {
+        removeTheBanditLeader();
+
+        assertBroken("DEFEAT", WOLF_KILLED_BEFORE, leaderKillRound);
+        assertBroken("DEFEAT", "Your blow lands for 6 damage. The bandit leader falls; the wolf died long ago.", leaderKillRound);
+        assertBroken("DEFEAT", "Your blow lands for 6 damage. The bandit leader falls, as the wolf fell before him.",
+                leaderKillRound);
+        assertBroken("DEFEAT", "You strike the wolf for 2 damage. The wolf falls.", hitRound);
+        assertNull(problem("Your blow lands for 6 damage. The bandit leader falls, and the wolf still howls far away.",
+                leaderKillRound));
+        assertNull(problem("You strike the wolf for 2 damage. The wolf falls back, snarling.", hitRound));
+    }
+
+    @Test
+    void anEnemyDefeatedInAnEarlierTurnMayBeCalledKilled() {
+        removeTheBanditLeader();
+        var den = state.getWorld().findLocation("wolf-den");
+        den.removeEnemy(den.getEnemies().get(0));
+
+        assertNull(problem(WOLF_KILLED_BEFORE, leaderKillRound));
+    }
+
     @Test
     void eventsTheResultsDoNotContainAreRefused() {
         assertBroken("UNSUPPORTED_EVENT", "You step into the Tavern. You pick up the bread on the way in.", moveToTavern);
